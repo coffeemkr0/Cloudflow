@@ -1,0 +1,7 @@
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\bin\Debug\Cloudflow.Core.Web.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\bin\Debug\Cloudflow.Core.Web.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\bin\Debug\Cloudflow.Core.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\bin\Debug\Cloudflow.Core.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\obj\Debug\Cloudflow.Core.Web.csprojResolveAssemblyReference.cache
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\obj\Debug\Cloudflow.Core.Web.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core.Web\obj\Debug\Cloudflow.Core.Web.pdb

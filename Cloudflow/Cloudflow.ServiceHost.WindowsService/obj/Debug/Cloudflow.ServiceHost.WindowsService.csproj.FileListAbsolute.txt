@@ -1,0 +1,6 @@
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\bin\Debug\Cloudflow.ServiceHost.WindowsService.exe.config
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\bin\Debug\Cloudflow.ServiceHost.WindowsService.exe
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\bin\Debug\Cloudflow.ServiceHost.WindowsService.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\obj\Debug\Cloudflow.ServiceHost.WindowsService.csprojResolveAssemblyReference.cache
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\obj\Debug\Cloudflow.ServiceHost.WindowsService.exe
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\obj\Debug\Cloudflow.ServiceHost.WindowsService.pdb
