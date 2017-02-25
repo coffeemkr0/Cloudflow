@@ -34,8 +34,21 @@
 
 <script>
     $("#btnTestService").click(function () {
-        $.getJSON("http://localhost/Service1/GetData?value=1", null, function (result) {
-            alert(result);
+        //$.getJSON("http://localhost/Service1/GetData?value=1", null, function (result) {
+        //    alert(result);
+        //});
+        $.ajax({
+            url: "http://localhost/Service1/GetData/Mike",
+            type: "GET",
+            crossDomain: true,
+            data: "",
+            dataType: "json",
+            success: function (result) {
+                alert(result);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#result").text(textStatus);
+            }
         });
     });
 </script>

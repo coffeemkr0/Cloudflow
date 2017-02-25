@@ -12,10 +12,11 @@ namespace Cloudflow.WcfServiceLibrary
     [ServiceContract]
     public interface IService1
     {
-        [WebGet()]
+        [WebGet(UriTemplate = "GetData/{value}", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
         [OperationContract]
-        string GetData(int value);
+        string GetData(string value);
 
+        [WebInvoke(UriTemplate = "/GetDataUsingDataContract", Method = "POST", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
