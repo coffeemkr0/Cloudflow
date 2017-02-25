@@ -67,3 +67,5 @@ C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\bin\Micros
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\obj\Debug\Cloudflow.Web.csprojResolveAssemblyReference.cache
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\obj\Debug\Cloudflow.Web.dll
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\obj\Debug\Cloudflow.Web.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\bin\Cloudflow.Core.Web.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\bin\Cloudflow.Core.Web.pdb
