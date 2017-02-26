@@ -1,0 +1,6 @@
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\bin\Debug\Cloudflow.Agent.Service.dll.config
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\bin\Debug\Cloudflow.Agent.Service.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\bin\Debug\Cloudflow.Agent.Service.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\obj\Debug\Cloudflow.Agent.Service.csprojResolveAssemblyReference.cache
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\obj\Debug\Cloudflow.Agent.Service.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\obj\Debug\Cloudflow.Agent.Service.pdb

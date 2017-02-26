@@ -11,7 +11,8 @@ namespace Cloudflow.ServiceHost.Desktop
     {
         static void Main(string[] args)
         {
-            //Requires this admin level command on PC "netsh http add urlacl url=http://+:80/Service1 user=domain\user"
+            //Requires this admin level command on the PC that will host the service:
+            //"netsh http add urlacl url=http://+:80/Service1 user=domain\user"
             var epAddress = "http://localhost/Service1";
             Uri[] baseAddresses = new Uri[] { new Uri(epAddress) };
             using (var host = new Cloudflow.WcfServiceLibrary.CorsEnabledServiceHost(typeof(Cloudflow.WcfServiceLibrary.Service1), 
