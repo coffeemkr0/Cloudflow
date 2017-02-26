@@ -6,3 +6,4 @@ C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Setup\ob
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Setup\obj\Debug\Cloudflow.Agent.Setup.csproj.GenerateResource.Cache
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Setup\obj\Debug\Cloudflow.Agent.Setup.exe
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Setup\obj\Debug\Cloudflow.Agent.Setup.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Setup\obj\Debug\Cloudflow.Agent.Setup.Form1.resources
