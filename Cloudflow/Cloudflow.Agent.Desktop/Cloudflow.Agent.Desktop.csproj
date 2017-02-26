@@ -56,7 +56,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cloudflow.WcfServiceLibrary\Cloudflow.Agent.Service.csproj">
+    <ProjectReference Include="..\Cloudflow.Agent.Service\Cloudflow.Agent.Service.csproj">
       <Project>{59e67648-8b6c-43c7-b7f9-0ff853a4d893}</Project>
       <Name>Cloudflow.Agent.Service</Name>
     </ProjectReference>

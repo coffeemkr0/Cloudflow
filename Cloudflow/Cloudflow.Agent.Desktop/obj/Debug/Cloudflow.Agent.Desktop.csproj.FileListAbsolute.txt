@@ -6,3 +6,11 @@ C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.De
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\obj\Debug\Cloudflow.Agent.Desktop.csprojResolveAssemblyReference.cache
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\obj\Debug\Cloudflow.Agent.Desktop.exe
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\obj\Debug\Cloudflow.Agent.Desktop.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\obj\Debug\Cloudflow.Agent.Desktop.csprojResolveAssemblyReference.cache
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\obj\Debug\Cloudflow.Agent.Desktop.exe
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\obj\Debug\Cloudflow.Agent.Desktop.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Agent.Desktop.exe.config
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Agent.Desktop.exe
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Agent.Desktop.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Agent.Service.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Agent.Service.pdb
