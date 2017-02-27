@@ -25,6 +25,8 @@ namespace Cloudflow.Agent.Setup
             {
                 Process deleteCommand = new Process();
                 deleteCommand.StartInfo = new ProcessStartInfo("netsh");
+                deleteCommand.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                deleteCommand.StartInfo.CreateNoWindow = true;
                 deleteCommand.StartInfo.UseShellExecute = false;
                 deleteCommand.StartInfo.RedirectStandardOutput = true;
                 deleteCommand.StartInfo.Arguments = "http delete urlacl http://+:80/Service1";
@@ -36,6 +38,8 @@ namespace Cloudflow.Agent.Setup
 
                 Process registerCommand = new Process();
                 registerCommand.StartInfo = new ProcessStartInfo("netsh");
+                registerCommand.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                registerCommand.StartInfo.CreateNoWindow = true;
                 registerCommand.StartInfo.UseShellExecute = false;
                 registerCommand.StartInfo.RedirectStandardOutput = true;
                 registerCommand.StartInfo.Arguments = "http add urlacl http://+:80/Service1 user=" + GetUser();
