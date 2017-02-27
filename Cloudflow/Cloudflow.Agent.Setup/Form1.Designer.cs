@@ -34,6 +34,8 @@
             this.chkUsers = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.chkCreateShortcut = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnConfigure
@@ -94,11 +96,35 @@
             this.label2.Text = "Include the domain name when specifying a domain user or group.\r\nExample: domain\\" +
     "username or domain\\groupname.\r\n";
             // 
+            // chkCreateShortcut
+            // 
+            this.chkCreateShortcut.AutoSize = true;
+            this.chkCreateShortcut.Enabled = false;
+            this.chkCreateShortcut.Location = new System.Drawing.Point(41, 145);
+            this.chkCreateShortcut.Name = "chkCreateShortcut";
+            this.chkCreateShortcut.Size = new System.Drawing.Size(252, 17);
+            this.chkCreateShortcut.TabIndex = 20;
+            this.chkCreateShortcut.Text = "Create a desktop shortcut for the desktop agent";
+            this.chkCreateShortcut.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Enabled = false;
+            this.checkBox1.Location = new System.Drawing.Point(41, 168);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(210, 17);
+            this.checkBox1.TabIndex = 21;
+            this.checkBox1.Text = "Install the agent as a Windows Service\r\n";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(432, 246);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.chkCreateShortcut);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.chkUsers);
@@ -124,6 +150,8 @@
         private System.Windows.Forms.RadioButton chkUsers;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox chkCreateShortcut;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 
