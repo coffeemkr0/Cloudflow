@@ -1,0 +1,5 @@
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Interfaces\bin\Debug\Cloudflow.Interfaces.dll
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Interfaces\bin\Debug\Cloudflow.Interfaces.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Interfaces\obj\Debug\Cloudflow.Interfaces.csprojResolveAssemblyReference.cache
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Interfaces\obj\Debug\Cloudflow.Interfaces.dll
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Interfaces\obj\Debug\Cloudflow.Interfaces.pdb

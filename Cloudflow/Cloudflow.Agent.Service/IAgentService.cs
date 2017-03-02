@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloudflow.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -8,10 +9,13 @@ using System.Text;
 
 namespace Cloudflow.WcfServiceLibrary
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
-    public interface IService1
+    public interface IAgentService
     {
+        [WebInvoke(UriTemplate = "/GetAgentStatus", Method = "GET", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
+        [OperationContract]
+        AgentStatus GetAgentStatus();
+
         [WebGet(UriTemplate = "GetData/{value}", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
         [OperationContract]
         string GetData(string value);
@@ -19,8 +23,6 @@ namespace Cloudflow.WcfServiceLibrary
         [WebInvoke(UriTemplate = "/GetDataUsingDataContract", Method = "POST", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
-
-        // TODO: Add your service operations here
     }
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations.

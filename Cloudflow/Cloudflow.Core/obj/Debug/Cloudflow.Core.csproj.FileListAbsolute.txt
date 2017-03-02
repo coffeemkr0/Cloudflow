@@ -3,3 +3,8 @@ C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\bin\Debug
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\obj\Debug\Cloudflow.Core.csprojResolveAssemblyReference.cache
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\obj\Debug\Cloudflow.Core.dll
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\obj\Debug\Cloudflow.Core.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\bin\Debug\Cloudflow.Core.dll
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\bin\Debug\Cloudflow.Core.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\obj\Debug\Cloudflow.Core.csprojResolveAssemblyReference.cache
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\obj\Debug\Cloudflow.Core.dll
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Core\obj\Debug\Cloudflow.Core.pdb

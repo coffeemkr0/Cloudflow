@@ -4,3 +4,9 @@ C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Wi
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\obj\Debug\Cloudflow.Agent.WindowsService.csprojResolveAssemblyReference.cache
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\obj\Debug\Cloudflow.Agent.WindowsService.exe
 C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.WindowsService\obj\Debug\Cloudflow.Agent.WindowsService.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.WindowsService\bin\Debug\Cloudflow.Agent.WindowsService.exe.config
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.WindowsService\bin\Debug\Cloudflow.Agent.WindowsService.exe
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.WindowsService\bin\Debug\Cloudflow.Agent.WindowsService.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.WindowsService\obj\Debug\Cloudflow.Agent.WindowsService.csprojResolveAssemblyReference.cache
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.WindowsService\obj\Debug\Cloudflow.Agent.WindowsService.exe
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.WindowsService\obj\Debug\Cloudflow.Agent.WindowsService.pdb

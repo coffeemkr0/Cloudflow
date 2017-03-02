@@ -22,3 +22,5 @@ C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Deskto
 C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\obj\Debug\Cloudflow.Agent.Desktop.csprojResolveAssemblyReference.cache
 C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\obj\Debug\Cloudflow.Agent.Desktop.exe
 C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\obj\Debug\Cloudflow.Agent.Desktop.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Core.dll
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Agent.Desktop\bin\Debug\Cloudflow.Core.pdb

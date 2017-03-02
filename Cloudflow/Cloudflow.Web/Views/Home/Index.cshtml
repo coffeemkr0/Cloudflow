@@ -2,12 +2,14 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+<a class="btn btn-primary" id="btnTestService" href="#">Get Agent Status</a>
+
+@*<div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 
-    <a class="btn btn-primary" id="btnTestService" href="#">Test Wcf Service</a>
+    
 </div>
 
 <div class="row">
@@ -30,24 +32,22 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
-</div>
+</div>*@
 
 <script>
     $("#btnTestService").click(function () {
-        //$.getJSON("http://localhost/Service1/GetData?value=1", null, function (result) {
-        //    alert(result);
-        //});
         $.ajax({
-            url: "http://localhost/Service1/GetData/Mike",
+            url: "http://localhost/CloudflowAgentService/GetAgentStatus",
             type: "GET",
             crossDomain: true,
             data: "",
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 alert(result);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $("#result").text(textStatus);
+                alert("Agent is unreachable");
             }
         });
     });

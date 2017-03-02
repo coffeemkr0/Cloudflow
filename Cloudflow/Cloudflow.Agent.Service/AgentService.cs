@@ -4,12 +4,21 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using Cloudflow.Core;
 
 namespace Cloudflow.WcfServiceLibrary
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
-    public class Service1 : IService1
+    public class AgentService : IAgentService
     {
+        public AgentStatus GetAgentStatus()
+        {
+            return new AgentStatus()
+            {
+                Status = AgentStatus.AgentStatuses.Idle,
+                Message = ""
+            };
+        }
+
         public string GetData(string value)
         {
             return string.Format("You entered: {0}", value);
