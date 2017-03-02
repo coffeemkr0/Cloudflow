@@ -174,10 +174,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CloudflowWebDb.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Home\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -250,6 +252,10 @@
     <ProjectReference Include="..\Cloudflow.Core.Web\Cloudflow.Core.Web.csproj">
       <Project>{add20f9d-d068-45cb-9173-41382ce1d6f0}</Project>
       <Name>Cloudflow.Core.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
+      <Project>{ad7be488-acf7-4664-b6f5-73171f8ba8a7}</Project>
+      <Name>Cloudflow.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

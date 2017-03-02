@@ -140,3 +140,5 @@ C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\bin\Micr
 C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\obj\Debug\Cloudflow.Web.csprojResolveAssemblyReference.cache
 C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\obj\Debug\Cloudflow.Web.dll
 C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\obj\Debug\Cloudflow.Web.pdb
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\bin\Cloudflow.Core.dll
+C:\Users\mcoffey.IBML\Source\Repos\SideProjects\Cloudflow\Cloudflow.Web\bin\Cloudflow.Core.pdb

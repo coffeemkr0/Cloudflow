@@ -1,26 +1,67 @@
-﻿@{
+﻿@model Cloudflow.Web.ViewModels.Home.IndexViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
 <a class="btn btn-primary" id="btnTestService" href="#">Get Agent Status</a>
 
-@*<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-
-    
+<div class="jumbotron">
+    <h1>Cloudflow</h1>
+    <p class="lead">Blah blah blah blah</p>
+    <p><a href="#" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
+
+<script>
+    function SetStatusText(machineName) {
+        var statusText = "Unreachable";
+        $.ajax({
+            url: "http://" + machineName + "/CloudflowAgentService/GetAgentStatus",
+            type: "GET",
+            crossDomain: true,
+            data: "",
+            dataType: "json",
+            success: function (result) {
+                switch (result.Status) {
+                    case 1:
+                        statusText = "Idle";
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                
+            },
+            complete: function () {
+                $("#agentStatus-" + machineName).text(statusText);
+            }
+        });
+    }
+</script>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>Agents</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            List of configured agents goes here
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <table class="">
+            <tr>
+                <td>Enabled</td>
+                <td>Machine Name</td>
+                <td>Status</td>
+            </tr>
+            @foreach (var agent in Model.AgentConfigurations)
+            {
+                <tr>
+                    <td>@agent.Enabled.ToString()</td>
+                    <td>@agent.MachineName</td>
+                    <td id="agentStatus-@agent.MachineName">
+                        <script>
+                            SetStatusText("@agent.MachineName");
+                        </script>
+                    </td>
+                </tr>
+            }
+        </table>
     </div>
     <div class="col-md-4">
         <h2>Get more libraries</h2>
@@ -32,23 +73,4 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
-</div>*@
-
-<script>
-    $("#btnTestService").click(function () {
-        $.ajax({
-            url: "http://localhost/CloudflowAgentService/GetAgentStatus",
-            type: "GET",
-            crossDomain: true,
-            data: "",
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                alert(result);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert("Agent is unreachable");
-            }
-        });
-    });
-</script>
+</div>

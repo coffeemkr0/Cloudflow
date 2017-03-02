@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Web
 {
-    public class Class1
+    public class AgentConfiguration
     {
+        public int Id { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public string MachineName { get; set; }
     }
 }

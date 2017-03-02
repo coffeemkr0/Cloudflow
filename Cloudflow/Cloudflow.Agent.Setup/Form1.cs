@@ -30,7 +30,7 @@ namespace Cloudflow.Agent.Setup
                 deleteCommand.StartInfo.CreateNoWindow = true;
                 deleteCommand.StartInfo.UseShellExecute = false;
                 deleteCommand.StartInfo.RedirectStandardOutput = true;
-                deleteCommand.StartInfo.Arguments = "http delete urlacl http://+:80/Service1";
+                deleteCommand.StartInfo.Arguments = "http delete urlacl http://+:80/CloudflowAgentService";
                 deleteCommand.Start();
                 string output = deleteCommand.StandardOutput.ReadToEnd();
                 deleteCommand.WaitForExit();
@@ -42,7 +42,7 @@ namespace Cloudflow.Agent.Setup
                 registerCommand.StartInfo.CreateNoWindow = true;
                 registerCommand.StartInfo.UseShellExecute = false;
                 registerCommand.StartInfo.RedirectStandardOutput = true;
-                registerCommand.StartInfo.Arguments = "http add urlacl http://+:80/Service1 user=" + GetUser();
+                registerCommand.StartInfo.Arguments = "http add urlacl http://+:80/CloudflowAgentService user=" + GetUser();
                 registerCommand.Start();
                 output = registerCommand.StandardOutput.ReadToEnd();
                 registerCommand.WaitForExit();
