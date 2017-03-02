@@ -99,7 +99,6 @@
             // chkCreateShortcut
             // 
             this.chkCreateShortcut.AutoSize = true;
-            this.chkCreateShortcut.Enabled = false;
             this.chkCreateShortcut.Location = new System.Drawing.Point(41, 145);
             this.chkCreateShortcut.Name = "chkCreateShortcut";
             this.chkCreateShortcut.Size = new System.Drawing.Size(252, 17);

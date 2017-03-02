@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,7 +36,6 @@ namespace Cloudflow.Agent.Setup
                 deleteCommand.WaitForExit();
 
                 //Register the url with the correct user or group
-
                 Process registerCommand = new Process();
                 registerCommand.StartInfo = new ProcessStartInfo("netsh");
                 registerCommand.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -51,10 +51,18 @@ namespace Cloudflow.Agent.Setup
                     MessageBox.Show(string.Format("Could not register the agent for the specified user {0}. {1}",GetUser(), output),
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
+
+                if (chkCreateShortcut.Checked)
                 {
-                    MessageBox.Show("The agent has been successfully configured.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string desktopAgentPath = Path.GetFullPath("Cloudflow.Agent.Desktop.exe");
+                    if (!File.Exists(desktopAgentPath))
+                    {
+                        desktopAgentPath = Path.GetFullPath("..\\..\\..\\Cloudflow.Agent.Desktop\\bin\\Debug\\Cloudflow.Agent.Desktop.exe");
+                    }
+                    CreateApplicationShortcut(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), "Cloudflow Agent", desktopAgentPath);
                 }
+
+                MessageBox.Show("Configuration complete.");
             }
             catch (Exception ex)
             {
@@ -79,6 +87,31 @@ namespace Cloudflow.Agent.Setup
                 }
             }
             return user;
+        }
+
+        private void CreateApplicationShortcut(string shortcutLocation, string name, string target)
+        {
+            Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
+            dynamic shell = Activator.CreateInstance(t);
+            try
+            {
+                string shortcutPath = Path.Combine(shortcutLocation, name + ".lnk");
+                var lnk = shell.CreateShortcut(shortcutPath);
+                try
+                {
+                    lnk.TargetPath = target;
+                    lnk.IconLocation = target + " ,0";
+                    lnk.Save();
+                }
+                finally
+                {
+                    Marshal.FinalReleaseComObject(lnk);
+                }
+            }
+            finally
+            {
+                Marshal.FinalReleaseComObject(shell);
+            }
         }
     }
 }
