@@ -1,0 +1,14 @@
+Authenitcaiton - create a user account and only access "my stuff"
+Ability to add, edit and remove Agents
+Download the job and an agent to a "worker PC"
+Start the job from the web page
+Monitor progress from the web page to know when the work is done
+
+
+
+Ability to setup "jobs" - Jobs being the settings that are required for the agent to know what to do:
+	1. Input folder that contains the jpegs
+	2. Output folder to place the pdfs
+
+
+
