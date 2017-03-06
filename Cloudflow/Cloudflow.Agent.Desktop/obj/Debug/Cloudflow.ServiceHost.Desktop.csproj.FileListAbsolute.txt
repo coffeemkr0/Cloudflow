@@ -1,0 +1,8 @@
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\bin\Debug\Cloudflow.ServiceHost.Desktop.exe.config
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\bin\Debug\Cloudflow.ServiceHost.Desktop.exe
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\bin\Debug\Cloudflow.ServiceHost.Desktop.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\obj\Debug\Cloudflow.ServiceHost.Desktop.csprojResolveAssemblyReference.cache
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\obj\Debug\Cloudflow.ServiceHost.Desktop.exe
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\obj\Debug\Cloudflow.ServiceHost.Desktop.pdb
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\bin\Debug\Cloudflow.WcfServiceLibrary.dll
+C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.ServiceHost.Desktop\bin\Debug\Cloudflow.WcfServiceLibrary.pdb
