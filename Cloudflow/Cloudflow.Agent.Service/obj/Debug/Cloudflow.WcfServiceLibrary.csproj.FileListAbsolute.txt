@@ -1,6 +1,0 @@
-C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\bin\Debug\Cloudflow.WcfServiceLibrary.dll.config
-C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\bin\Debug\Cloudflow.WcfServiceLibrary.dll
-C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\bin\Debug\Cloudflow.WcfServiceLibrary.pdb
-C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\obj\Debug\Cloudflow.WcfServiceLibrary.csprojResolveAssemblyReference.cache
-C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\obj\Debug\Cloudflow.WcfServiceLibrary.dll
-C:\Users\JenandMike\Source\Repos\SideProjects\Cloudflow\Cloudflow.WcfServiceLibrary\obj\Debug\Cloudflow.WcfServiceLibrary.pdb
