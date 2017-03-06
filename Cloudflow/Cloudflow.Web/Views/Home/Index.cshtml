@@ -37,28 +37,35 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Agents</h2>
-        <p>
-            List of configured agents goes here
-        </p>
-        <table class="">
-            <tr>
-                <td>Enabled</td>
-                <td>Machine Name</td>
-                <td>Status</td>
-            </tr>
-            @foreach (var agent in Model.AgentConfigurations)
-            {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Agents</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Use this section to add, edit or remove Agents. You can also see what your Agents are working on and stop/start them here.
+                </p>
+            </div>
+            <table class="table table-striped table-bordered">
                 <tr>
-                    <td>@agent.Enabled.ToString()</td>
-                    <td>@agent.MachineName</td>
-                    <td id="agentStatus-@agent.MachineName">
-                        <script>
-                            SetStatusText("@agent.MachineName");
-                        </script>
-                    </td>
+                    <th>Enabled</th>
+                    <th>Machine Name</th>
+                    <th>Status</th>
                 </tr>
-            }
-        </table>
+                @foreach (var agent in Model.AgentConfigurations)
+                {
+                    <tr>
+                        <td>@agent.Enabled.ToString()</td>
+                        <td>@agent.MachineName</td>
+                        <td id="agentStatus-@agent.MachineName">
+                            <script>
+                            SetStatusText("@agent.MachineName");
+                            </script>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
     </div>
 </div>
