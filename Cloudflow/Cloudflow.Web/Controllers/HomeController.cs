@@ -15,15 +15,15 @@ namespace Cloudflow.Web.Controllers
         public ActionResult Index()
         {
             IndexViewModel model = new IndexViewModel();
-            //model.AgentConfigurations.AddRange(_db.AgentConfigurations.ToList());
+            model.AgentConfigurations.AddRange(_db.AgentConfigurations.ToList());
 
-            model.AgentConfigurations = new List<Core.Web.AgentConfiguration>();
-            model.AgentConfigurations.Add(new Core.Web.AgentConfiguration()
-            {
-                Id = 1,
-                MachineName = "mcoffey-vm1",
-                Enabled = true
-            });
+            //model.AgentConfigurations = new List<Core.Web.AgentConfiguration>();
+            //model.AgentConfigurations.Add(new Core.Web.AgentConfiguration()
+            //{
+            //    Id = 1,
+            //    MachineName = "mcoffey-vm1",
+            //    Enabled = true
+            //});
 
             return View(model);
         }

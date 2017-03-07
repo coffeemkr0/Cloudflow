@@ -13,7 +13,10 @@ namespace Cloudflow.Web.ViewModels.Home
         #endregion
 
         #region Constructors
-
+        public IndexViewModel()
+        {
+            this.AgentConfigurations = new List<AgentConfiguration>();
+        }
         #endregion
     }
 }
