@@ -1,4 +1,5 @@
-﻿using Cloudflow.Web.ViewModels.Home;
+﻿using Cloudflow.Core.Data;
+using Cloudflow.Web.ViewModels.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,22 @@ using System.Web.Mvc;
 
 namespace Cloudflow.Web.Controllers
 {
-    
     public class HomeController : Controller
     {
-        Models.CloudflowWebDb _db = new Models.CloudflowWebDb();
+        #region Module Level Declarations
+        CoreDbContext _databaseContext;
+        #endregion
 
         public ActionResult Index()
         {
+#if DEBUG
+            _databaseContext = new CoreDbContext(true);
+#else
+            _databaseContext = new CoreDbContext();
+#endif
             IndexViewModel model = new IndexViewModel();
-            model.AgentConfigurations.AddRange(_db.AgentConfigurations.ToList());
 
-            //model.AgentConfigurations = new List<Core.Web.AgentConfiguration>();
-            //model.AgentConfigurations.Add(new Core.Web.AgentConfiguration()
-            //{
-            //    Id = 1,
-            //    MachineName = "mcoffey-vm1",
-            //    Enabled = true
-            //});
+            model.AgentConfigurations.AddRange(_databaseContext.AgentConfigurations.ToList());
 
             return View(model);
         }
@@ -44,9 +44,9 @@ namespace Cloudflow.Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (_db != null)
+            if (_databaseContext != null)
             {
-                _db.Dispose();
+                _databaseContext.Dispose();
             }
 
             base.Dispose(disposing);
