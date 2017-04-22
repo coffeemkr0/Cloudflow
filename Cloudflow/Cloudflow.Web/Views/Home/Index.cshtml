@@ -45,7 +45,7 @@
                 <p>
                     Use this section to control your agents.
                 </p>
-                <a href="@Url.Action("AddAgent")">Add</a>
+                <a href="@Url.Action("Create", "AgentConfigurations")">Add</a>
             </div>
             <table class="table table-striped table-bordered">
                 <tr>
@@ -74,8 +74,8 @@
                                 }
                             }
                         </td>
-                        <td><a href="@Url.Action("Edit", new { id = agent.Id })">Edit</a></td>
-                        <td><a href="@Url.Action("Delete", new { id = agent.Id })">Delete</a></td>
+                        <td><a href="@Url.Action("Edit", "AgentConfigurations", new { id = agent.Id })">Edit</a></td>
+                        <td><a href="@Url.Action("Delete", "AgentConfigurations", new { id = agent.Id })">Delete</a></td>
                     </tr>
                 }
             </table>
