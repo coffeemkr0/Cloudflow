@@ -16,5 +16,5 @@ packages
 
 .vs
 
-.mdf
-.ldf
+*.mdf
+*.ldf
