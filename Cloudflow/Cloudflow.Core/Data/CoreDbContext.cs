@@ -15,7 +15,12 @@ namespace Cloudflow.Core.Data
         #endregion
 
         #region Constructors
-        public CoreDbContext(bool createTestData = false)
+        public CoreDbContext()
+        {
+
+        }
+
+        public CoreDbContext(bool createTestData) : this()
         {
             if (createTestData)
             {
