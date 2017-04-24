@@ -15,27 +15,6 @@ namespace Cloudflow.Web.Controllers
     {
         private CoreDbContext db = new CoreDbContext();
 
-        // GET: AgentConfigurations
-        public ActionResult Index()
-        {
-            return View(db.AgentConfigurations.ToList());
-        }
-
-        // GET: AgentConfigurations/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AgentConfiguration agentConfiguration = db.AgentConfigurations.Find(id);
-            if (agentConfiguration == null)
-            {
-                return HttpNotFound();
-            }
-            return View(agentConfiguration);
-        }
-
         // GET: AgentConfigurations/Create
         public ActionResult Create()
         {
