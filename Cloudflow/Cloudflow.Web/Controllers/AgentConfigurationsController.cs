@@ -69,7 +69,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(agentConfiguration);
+            return PartialView("_Edit", agentConfiguration);
         }
 
         // POST: AgentConfigurations/Edit/5
@@ -83,9 +83,9 @@ namespace Cloudflow.Web.Controllers
             {
                 db.Entry(agentConfiguration).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
-            return View(agentConfiguration);
+            return PartialView("_Edit", agentConfiguration);
         }
 
         // GET: AgentConfigurations/Delete/5

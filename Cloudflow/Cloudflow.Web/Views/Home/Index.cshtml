@@ -81,8 +81,24 @@
                                 }
                             }
                         </td>
-                        <td><a href="@Url.Action("Edit", "AgentConfigurations", new { id = agent.Id })">Edit</a></td>
-                        <td><a href="@Url.Action("Delete", "AgentConfigurations", new { id = agent.Id })">Delete</a></td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "AgentConfigurations", new { id = @agent.Id }, new
+                       {
+                           data_modal = "",
+                           data_modalcontainer = "modalAgent",
+                           data_modalcontent = "modalAgentContent",
+                           @class = "btn btn-small btn-default"
+                       })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Delete", "Delete", "AgentConfigurations", new { id = @agent.Id }, new
+                                {
+                                    data_modal = "",
+                                    data_modalcontainer = "modalAgent",
+                                    data_modalcontent = "modalAgentContent",
+                                    @class = "btn btn-small btn-default"
+                                })
+                        </td>
                     </tr>
                 }
             </table>

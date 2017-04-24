@@ -320,9 +320,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\AgentConfigurations\Delete.cshtml" />
     <Content Include="Views\AgentConfigurations\Details.cshtml" />
-    <Content Include="Views\AgentConfigurations\Edit.cshtml" />
     <Content Include="Views\AgentConfigurations\Index.cshtml" />
     <Content Include="Views\AgentConfigurations\_Create.cshtml" />
+    <Content Include="Views\AgentConfigurations\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
