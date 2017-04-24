@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.Service", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.WindowsService", "Cloudflow.Agent.WindowsService\Cloudflow.Agent.WindowsService.csproj", "{5EB8C218-86B0-4592-8A21-92996953C71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Interfaces", "Cloudflow.Interfaces\Cloudflow.Interfaces.csproj", "{D6FE16E6-F2D5-498D-8A1D-CEDE186DAB8E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4B44D5C6-EBF6-4F6E-8BDA-A36198C71AC6}"
 	ProjectSection(SolutionItems) = preProject
 		TODO.txt = TODO.txt
@@ -64,10 +62,6 @@ Global
 		{5EB8C218-86B0-4592-8A21-92996953C71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB8C218-86B0-4592-8A21-92996953C71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EB8C218-86B0-4592-8A21-92996953C71B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6FE16E6-F2D5-498D-8A1D-CEDE186DAB8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6FE16E6-F2D5-498D-8A1D-CEDE186DAB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6FE16E6-F2D5-498D-8A1D-CEDE186DAB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6FE16E6-F2D5-498D-8A1D-CEDE186DAB8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
