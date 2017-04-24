@@ -284,6 +284,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Shared\DialogHelper.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -317,11 +318,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\AgentConfigurations\Create.cshtml" />
     <Content Include="Views\AgentConfigurations\Delete.cshtml" />
     <Content Include="Views\AgentConfigurations\Details.cshtml" />
     <Content Include="Views\AgentConfigurations\Edit.cshtml" />
     <Content Include="Views\AgentConfigurations\Index.cshtml" />
+    <Content Include="Views\AgentConfigurations\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

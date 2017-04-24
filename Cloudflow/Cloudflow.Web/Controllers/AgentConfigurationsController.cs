@@ -39,24 +39,22 @@ namespace Cloudflow.Web.Controllers
         // GET: AgentConfigurations/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: AgentConfigurations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Enabled,MachineName")] AgentConfiguration agentConfiguration)
+        public ActionResult Create([Bind(Include = "Enabled,MachineName")] AgentConfiguration agentConfiguration)
         {
             if (ModelState.IsValid)
             {
                 db.AgentConfigurations.Add(agentConfiguration);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
 
-            return View(agentConfiguration);
+            return PartialView("_Create", agentConfiguration);
         }
 
         // GET: AgentConfigurations/Edit/5
