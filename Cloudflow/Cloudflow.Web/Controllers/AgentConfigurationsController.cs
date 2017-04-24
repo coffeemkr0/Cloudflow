@@ -100,7 +100,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(agentConfiguration);
+            return PartialView("_Delete", agentConfiguration);
         }
 
         // POST: AgentConfigurations/Delete/5
@@ -111,7 +111,7 @@ namespace Cloudflow.Web.Controllers
             AgentConfiguration agentConfiguration = db.AgentConfigurations.Find(id);
             db.AgentConfigurations.Remove(agentConfiguration);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { success = true });
         }
 
         protected override void Dispose(bool disposing)
