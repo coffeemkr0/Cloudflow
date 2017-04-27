@@ -8,6 +8,7 @@ using Cloudflow.Core;
 
 namespace Cloudflow.WcfServiceLibrary
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class AgentService : IAgentService
     {
         private Job _job;
