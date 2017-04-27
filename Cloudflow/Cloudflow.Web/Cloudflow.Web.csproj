@@ -331,10 +331,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cloudflow.Core.Web\Cloudflow.Core.Web.csproj">
-      <Project>{add20f9d-d068-45cb-9173-41382ce1d6f0}</Project>
-      <Name>Cloudflow.Core.Web</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
       <Project>{ad7be488-acf7-4664-b6f5-73171f8ba8a7}</Project>
       <Name>Cloudflow.Core</Name>
