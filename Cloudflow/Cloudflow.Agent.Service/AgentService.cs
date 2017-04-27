@@ -10,13 +10,36 @@ namespace Cloudflow.WcfServiceLibrary
 {
     public class AgentService : IAgentService
     {
+        private Job _job;
+
         public AgentStatus GetAgentStatus()
         {
-            return new AgentStatus()
+            if(_job == null)
             {
-                Status = AgentStatus.AgentStatuses.Idle,
-                Message = ""
-            };
+                return new AgentStatus()
+                {
+                    Status = AgentStatus.AgentStatuses.Idle,
+                    Message = ""
+                };
+            }
+            else
+            {
+                return new AgentStatus()
+                {
+                    Status = AgentStatus.AgentStatuses.Processing,
+                    Message = ""
+                };
+            }
+        }
+
+        public void EnableJob()
+        {
+            if(_job == null)
+            {
+                _job = Job.CreateTestJob();
+                _job.Enable();
+                Console.WriteLine("Job enabled");
+            }
         }
 
         public string GetData(string value)

@@ -16,6 +16,10 @@ namespace Cloudflow.WcfServiceLibrary
         [OperationContract]
         AgentStatus GetAgentStatus();
 
+        [WebInvoke(UriTemplate = "/EnableJob", Method = "GET", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
+        [OperationContract]
+        void EnableJob();
+
         [WebGet(UriTemplate = "GetData/{value}", ResponseFormat = WebMessageFormat.Json), CorsEnabled]
         [OperationContract]
         string GetData(string value);

@@ -62,10 +62,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cloudflow.Core.Agent\Cloudflow.Core.Agent.csproj">
-      <Project>{5359c5d1-00b4-4195-853a-63e3045c009e}</Project>
-      <Name>Cloudflow.Core.Agent</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
       <Project>{ad7be488-acf7-4664-b6f5-73171f8ba8a7}</Project>
       <Name>Cloudflow.Core</Name>

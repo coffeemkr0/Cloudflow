@@ -5,6 +5,25 @@
 }
 
 <script>
+    function EnableJob(machineName) {
+        $.ajax({
+            url: "http://" + machineName + "/CloudflowAgentService/EnableJob",
+            type: "GET",
+            crossDomain: true,
+            data: "",
+            dataType: "json",
+            success: function () {
+                
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+            },
+            complete: function () {
+                SetStatusText(machineName);
+            }
+        });
+    }
+
     function SetStatusText(machineName) {
         var statusText = "Unreachable";
         $.ajax({
@@ -60,6 +79,7 @@
                     <th>Status</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
                 @foreach (var agent in Model.AgentConfigurations)
                 {
@@ -99,6 +119,7 @@
                                     @class = "btn btn-small btn-default"
                                 })
                         </td>
+                        <td><a href="#" class="enableJobLink" data-machinename="@(agent.MachineName)">Enable Job</a></td>
                     </tr>
                 }
             </table>
@@ -114,3 +135,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $(".enableJobLink").each(function () {
+            $(this).on("click", function (e) {
+                var $item = $(e.target);
+                var machineName = $item.attr("data-machinename");
+                EnableJob(machineName);
+
+                return false;
+            });
+        });
+    });
+</script>
