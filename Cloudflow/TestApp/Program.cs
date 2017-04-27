@@ -10,6 +10,11 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
+            Cloudflow.Core.Job testJob = Cloudflow.Core.Job.CreateTestJob();
+            testJob.Enable();
+
+            Console.WriteLine("The job has been enabled and its trigger has been initialized.");
+            Console.ReadLine();
         }
     }
 }
