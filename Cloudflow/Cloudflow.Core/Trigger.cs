@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Cloudflow.Core
 {
@@ -25,22 +26,16 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Initialize()
         {
-            //Setup a watch folder and fire the trigger whenever files are created in the watch folder
-            if (!Directory.Exists("WatchFolder"))
-            {
-                Directory.CreateDirectory("WatchFolder");
-            }
-            FileSystemWatcher fileSystemWatcher = new FileSystemWatcher("WatchFolder");
-            fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite |
-                NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            fileSystemWatcher.Created += FileSystemWatcher_Created;
-            fileSystemWatcher.EnableRaisingEvents = true;
+            Timer timer = new Timer(3000);
+            timer.Elapsed += Timer_Elapsed;
+            timer.Enabled = true;
         }
 
-        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            Console.WriteLine(string.Format("{0} [Trigger] - trigger timer elapsed.",
+                DateTime.Now.TimeOfDay.ToString()));
             Dictionary<string, object> triggerData = new Dictionary<string, object>();
-            triggerData.Add("FileName", e.FullPath);
             OnFired(triggerData);
         }
         #endregion

@@ -12,19 +12,12 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Execute(Dictionary<string, object> triggerData)
         {
-            //Move the file to another folder
-            if (!Directory.Exists("DropFolder"))
+            using (StreamWriter sw = new StreamWriter(@"JobOutput\Outputfile.txt", true))
             {
-                Directory.CreateDirectory("DropFolder");
+                string output = string.Format("{0}[Step] Hello World", DateTime.Now.ToString());
+                Console.WriteLine("Writing output - " + output);
+                sw.WriteLine(output);
             }
-
-            var targetFile = Path.Combine("DropFolder", Path.GetFileName(triggerData["FileName"].ToString()));
-            if (File.Exists(targetFile))
-            {
-                File.Delete(targetFile);
-            }
-
-            File.Copy(triggerData["FileName"].ToString(), targetFile);
         }
         #endregion
     }

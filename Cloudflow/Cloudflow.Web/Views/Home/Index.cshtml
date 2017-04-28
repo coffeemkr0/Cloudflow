@@ -36,8 +36,10 @@
                 switch (result.Status) {
                     case 1:
                         statusText = "Idle";
+                        break;
                     case 2:
                         statusText = "Processing";
+                        break;
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
