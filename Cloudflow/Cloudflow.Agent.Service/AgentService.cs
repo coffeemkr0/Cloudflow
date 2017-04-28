@@ -11,6 +11,9 @@ namespace Cloudflow.WcfServiceLibrary
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class AgentService : IAgentService
     {
+        private static readonly log4net.ILog _logger =
+               log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private Job _job;
 
         public AgentStatus GetAgentStatus()
@@ -37,9 +40,10 @@ namespace Cloudflow.WcfServiceLibrary
         {
             if(_job == null)
             {
+                _logger.Debug("Enabling the job");
                 _job = Job.CreateTestJob();
                 _job.Enable();
-                Console.WriteLine("Job enabled");
+                _logger.Info("Job enabled");
             }
         }
 

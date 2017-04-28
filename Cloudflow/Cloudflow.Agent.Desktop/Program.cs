@@ -25,6 +25,11 @@ namespace Cloudflow.ServiceHost.Desktop
                 host.Open();
 
                 log.Info("Agent host started and ready to use.");
+                log.Debug("This is a debug line");
+                log.Warn("This is a warning line");
+                log.Error("This is an error line");
+                log.Fatal("This is a fatal exception line");
+
                 Console.WriteLine("Press any key to stop the service.");
                 Console.ReadKey();
 
