@@ -9,6 +9,9 @@ namespace Cloudflow.ServiceHost.Desktop
 {
     class Program
     {
+        private static readonly log4net.ILog log = 
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
             //Requires this admin level command on the PC that will host the service:
@@ -21,6 +24,7 @@ namespace Cloudflow.ServiceHost.Desktop
                 // Start listening for messages
                 host.Open();
 
+                log.Info("Agent host started and ready to use.");
                 Console.WriteLine("Press any key to stop the service.");
                 Console.ReadKey();
 
