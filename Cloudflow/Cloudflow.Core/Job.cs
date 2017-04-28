@@ -8,6 +8,9 @@ namespace Cloudflow.Core
 {
     public class Job
     {
+        private static readonly log4net.ILog _logger =
+               log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         #region Properties
         public Trigger Trigger { get; set; }
 
@@ -25,11 +28,13 @@ namespace Cloudflow.Core
         #region Private Methods
         private void Trigger_Fired(object sender, Dictionary<string, object> triggerData)
         {
+            _logger.Info("Trigger event fired");
             ExecuteSteps(triggerData);
         }
 
         private void ExecuteSteps(Dictionary<string, object> triggerData)
         {
+            _logger.Info("Executing steps");
             foreach (var step in this.Steps)
             {
                 step.Execute(triggerData);
@@ -43,6 +48,8 @@ namespace Cloudflow.Core
         /// </summary>
         public void Enable()
         {
+            _logger.Info("Enabling the job");
+            _logger.Debug("Initializing the trigger");
             this.Trigger.Fired += Trigger_Fired;
             this.Trigger.Initialize();
         }
