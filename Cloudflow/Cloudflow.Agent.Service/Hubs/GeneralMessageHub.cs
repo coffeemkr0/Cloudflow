@@ -21,6 +21,11 @@ namespace Cloudflow.Agent.Service.Hubs
         {
             Clients.All.sendMessage(message);
         }
+
+        public void GetAgentStatus()
+        {
+            Clients.All.sendMessage("Get agent status response from SignalR for "  + Environment.MachineName);
+        }
         #endregion
     }
 }

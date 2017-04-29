@@ -6,18 +6,41 @@
 
 @section headScripts {
     @Scripts.Render("~/bundles/signalr")
+    @foreach (var agent in Model.AgentConfigurations)
+    {
+        <script src="http://@agent.MachineName:80/CloudflowMessaging/signalr/hubs"></script>
+    }
+}
+
+
+@foreach (var agent in Model.AgentConfigurations)
+{
+    <script>
+    $(function() {
+        //Set the hubs URL for the connection
+        $.connection.hub.url = "http://@agent.MachineName:80/CloudflowMessaging/signalr";
+
+        // Declare a proxy to reference the hub.
+        var messenger = $.connection.generalMessageHub;
+
+        // Create a function that the hub can call to broadcast messages.
+        messenger.client.sendMessage = function(message) {
+            console.log("Message from agent @agent.MachineName - " + message);
+        };
+    });
+    </script>
 }
 
 <script>
     function EnableJob(machineName) {
         $.ajax({
-            url: "http://" + machineName + "/CloudflowAgentService/EnableJob",
+        url: "http://" + machineName + "/CloudflowAgentService/EnableJob",
             type: "GET",
             crossDomain: true,
             data: "",
             dataType: "json",
             success: function () {
-                
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
 
@@ -30,28 +53,13 @@
 
     function SetStatusText(machineName) {
         var statusText = "Unreachable";
-        $.ajax({
-            url: "http://" + machineName + "/CloudflowAgentService/GetAgentStatus",
-            type: "GET",
-            crossDomain: true,
-            data: "",
-            dataType: "json",
-            success: function (result) {
-                switch (result.Status) {
-                    case 1:
-                        statusText = "Idle";
-                        break;
-                    case 2:
-                        statusText = "Processing";
-                        break;
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
 
-            },
-            complete: function () {
-                $("#agentStatus-" + machineName).text(statusText);
-            }
+        $.connection.hub.url = "http://" + machineName + ":80/CloudflowMessaging/signalr";
+        var messenger = $.connection.generalMessageHub;
+
+        $.connection.hub.start().done(function () {
+            // Call the GetAgentStatus method on the hub.
+            messenger.server.getAgentStatus();
         });
     }
 </script>
@@ -159,22 +167,5 @@
 </script>
 
 @section Scripts {
-    @foreach (var agent in Model.AgentConfigurations)
-    {
-        <script src="http://@agent.MachineName:80/CloudflowMessaging/signalr/hubs"></script>
-        <script>
-            $(function () {
-                //Set the hubs URL for the connection
-                $.connection.hub.url = "http://@agent.MachineName:80/CloudflowMessaging/signalr";
 
-                // Declare a proxy to reference the hub.
-                var messenger = $.connection.generalMessageHub;
-
-                // Create a function that the hub can call to broadcast messages.
-                messenger.client.sendMessage = function (message) {
-                    console.log("Message from agent " + @agent.MachineName + " - " + message);
-                };
-            });
-        </script>
-    }
 }

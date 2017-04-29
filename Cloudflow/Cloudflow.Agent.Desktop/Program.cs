@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Agent.Service;
 using Cloudflow.Agent.Service.Hubs;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
