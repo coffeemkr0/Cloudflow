@@ -1,4 +1,6 @@
 ﻿using Cloudflow.Agent.Service;
+using Cloudflow.Agent.Service.Hubs;
+using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.ServiceHost.Desktop
+namespace Cloudflow.Agent.Desktop
 {
     class Program
     {
@@ -15,6 +17,17 @@ namespace Cloudflow.ServiceHost.Desktop
 
         static void Main(string[] args)
         {
+            //Load hubs from the Agent.Service assembly so that SignalR will pick them up
+            AppDomain.CurrentDomain.Load(typeof(GeneralMessageHub).Assembly.FullName);
+
+            //Setup the SignalR messaging service first so that we can let clients know what is going on
+            string url = "http://+:80/CloudflowMessaging/";
+            using (WebApp.Start<SignalRStartup>(url))
+            {
+                log.Info(string.Format("Cloudflow messaging service started and running on {0}", url));
+            }
+
+            //Setup the WCF service that does all the real work
             //Requires this admin level command on the PC that will host the service:
             //"netsh http add urlacl url=http://+:80/ServiceName user=domain\user"
             var epAddress = "http://localhost/CloudflowAgentService";
@@ -25,16 +38,16 @@ namespace Cloudflow.ServiceHost.Desktop
                 // Start listening for messages
                 host.Open();
 
-                log.Info("Agent host started and ready to use.");
-                log.Debug("This is a debug line");
-                log.Warn("This is a warning line");
-                log.Error("This is an error line");
-                log.Fatal("This is a fatal exception line");
+                log.Info(string.Format("Agent service started and running on {0}", epAddress));
 
-                Console.WriteLine("Press any key to stop the service.");
-                Console.ReadKey();
+                Console.WriteLine("Press Ctrl+C or close this window to stop the services.");
+                var result = Console.ReadKey();
+                while(result.Modifiers != ConsoleModifiers.Control && result.Key != ConsoleKey.C)
+                {
+                    result = Console.ReadKey();
+                }
 
-                // Close the service
+                // Close the Wcf host
                 host.Close();
             }
         }
