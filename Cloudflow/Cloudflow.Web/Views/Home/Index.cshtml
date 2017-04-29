@@ -6,11 +6,6 @@
 
 @section headScripts {
     @Scripts.Render("~/bundles/signalr")
-    @*Include the SignalR scripts for reach agent*@
-    @foreach (var agent in Model.AgentConfigurations)
-    {
-        <script src="http://@agent.MachineName:80/CloudflowMessaging/signalr/hubs"></script>
-    }
 }
 
 <script>
@@ -164,5 +159,22 @@
 </script>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/signalr")
+    @foreach (var agent in Model.AgentConfigurations)
+    {
+        <script src="http://@agent.MachineName:80/CloudflowMessaging/signalr/hubs"></script>
+        <script>
+            $(function () {
+                //Set the hubs URL for the connection
+                $.connection.hub.url = "http://@agent.MachineName:80/CloudflowMessaging/signalr";
+
+                // Declare a proxy to reference the hub.
+                var messenger = $.connection.generalMessageHub;
+
+                // Create a function that the hub can call to broadcast messages.
+                messenger.client.sendMessage = function (message) {
+                    console.log("Message from agent " + @agent.MachineName + " - " + message);
+                };
+            });
+        </script>
+    }
 }
