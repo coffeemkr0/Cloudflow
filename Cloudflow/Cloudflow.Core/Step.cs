@@ -16,6 +16,10 @@ namespace Cloudflow.Core
         public void Execute(Dictionary<string, object> triggerData)
         {
             _logger.Info("Executing the step");
+            if (!Directory.Exists("JobOutput"))
+            {
+                Directory.CreateDirectory("JobOutput");
+            }
             using (StreamWriter sw = new StreamWriter(@"JobOutput\Outputfile.txt", true))
             {
                 string output = string.Format("{0}[Step] Hello World", DateTime.Now.ToString());
