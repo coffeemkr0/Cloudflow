@@ -25,9 +25,11 @@ namespace Cloudflow.Agent.Setup
             try
             {
                 string output = ExecuteNetshCommand("http delete urlacl http://+:80/CloudflowAgentService/");
+                output += ExecuteNetshCommand("http delete urlacl http://+:80/CloudflowMessaging/");
 
                 //Register the url with the correct user or group
                 output += ExecuteNetshCommand("http add urlacl http://+:80/CloudflowAgentService/ user=" + GetUser());
+                output += ExecuteNetshCommand("http add urlacl http://+:80/CloudflowMessaging/ user=" + GetUser());
 
                 if (output.Contains("Error"))
                 {
