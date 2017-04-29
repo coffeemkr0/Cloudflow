@@ -24,28 +24,11 @@ namespace Cloudflow.Agent.Setup
         {
             try
             {
-                Process deleteCommand = new Process();
-                deleteCommand.StartInfo = new ProcessStartInfo("netsh");
-                deleteCommand.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                deleteCommand.StartInfo.CreateNoWindow = true;
-                deleteCommand.StartInfo.UseShellExecute = false;
-                deleteCommand.StartInfo.RedirectStandardOutput = true;
-                deleteCommand.StartInfo.Arguments = "http delete urlacl http://+:80/CloudflowAgentService";
-                deleteCommand.Start();
-                string output = deleteCommand.StandardOutput.ReadToEnd();
-                deleteCommand.WaitForExit();
+                string output = ExecuteNetshCommand("http delete urlacl http://+:80/CloudflowAgentService/");
 
                 //Register the url with the correct user or group
-                Process registerCommand = new Process();
-                registerCommand.StartInfo = new ProcessStartInfo("netsh");
-                registerCommand.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                registerCommand.StartInfo.CreateNoWindow = true;
-                registerCommand.StartInfo.UseShellExecute = false;
-                registerCommand.StartInfo.RedirectStandardOutput = true;
-                registerCommand.StartInfo.Arguments = "http add urlacl http://+:80/CloudflowAgentService user=" + GetUser();
-                registerCommand.Start();
-                output = registerCommand.StandardOutput.ReadToEnd();
-                registerCommand.WaitForExit();
+                output += ExecuteNetshCommand("http add urlacl http://+:80/CloudflowAgentService/ user=" + GetUser());
+
                 if (output.Contains("Error"))
                 {
                     MessageBox.Show(string.Format("Could not register the agent for the specified user {0}. {1}",GetUser(), output),
@@ -68,6 +51,21 @@ namespace Cloudflow.Agent.Setup
             {
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private string ExecuteNetshCommand(string commandText)
+        {
+            Process command = new Process();
+            command.StartInfo = new ProcessStartInfo("netsh");
+            command.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            command.StartInfo.CreateNoWindow = true;
+            command.StartInfo.UseShellExecute = false;
+            command.StartInfo.RedirectStandardOutput = true;
+            command.StartInfo.Arguments = commandText;
+            command.Start();
+            string output = command.StandardOutput.ReadToEnd();
+            command.WaitForExit();
+            return output;
         }
 
         private string GetUser()
