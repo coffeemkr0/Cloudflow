@@ -88,6 +88,7 @@
     <Compile Include="CorsEnabledMessageInspector.cs" />
     <Compile Include="CorsEnabledServiceHostFactory.cs" />
     <Compile Include="EnableCorsEndpointBehavior.cs" />
+    <Compile Include="Hubs\GeneralMessageHub.cs" />
     <Compile Include="IAgentService.cs" />
     <Compile Include="PreflightOperationInvoker.cs" />
     <Compile Include="PreflightOperatorBehavior.cs" />
