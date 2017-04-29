@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.WcfServiceLibrary
+namespace Cloudflow.Agent.Service
 {
     class CorsConstants
     {

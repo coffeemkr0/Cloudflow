@@ -8,7 +8,7 @@ using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.WcfServiceLibrary
+namespace Cloudflow.Agent.Service
 {
     class CorsEnabledMessageInspector : IDispatchMessageInspector
     {

@@ -7,7 +7,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 
-namespace Cloudflow.WcfServiceLibrary
+namespace Cloudflow.Agent.Service
 {
     [ServiceContract]
     public interface IAgentService

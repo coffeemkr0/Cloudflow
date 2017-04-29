@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloudflow.Agent.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Web;
@@ -18,7 +19,7 @@ namespace Cloudflow.ServiceHost.Desktop
             //"netsh http add urlacl url=http://+:80/ServiceName user=domain\user"
             var epAddress = "http://localhost/CloudflowAgentService";
             Uri[] baseAddresses = new Uri[] { new Uri(epAddress) };
-            using (var host = new Cloudflow.WcfServiceLibrary.CorsEnabledServiceHost(typeof(Cloudflow.WcfServiceLibrary.AgentService), 
+            using (var host = new CorsEnabledServiceHost(typeof(AgentService), 
                 baseAddresses))
             {
                 // Start listening for messages

@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Cloudflow.Core;
 
-namespace Cloudflow.WcfServiceLibrary
+namespace Cloudflow.Agent.Service
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class AgentService : IAgentService

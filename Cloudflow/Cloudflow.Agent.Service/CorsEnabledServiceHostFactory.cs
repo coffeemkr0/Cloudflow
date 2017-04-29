@@ -9,7 +9,7 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.WcfServiceLibrary
+namespace Cloudflow.Agent.Service
 {
     public  class CorsEnabledServiceHostFactory : ServiceHostFactory
     {
