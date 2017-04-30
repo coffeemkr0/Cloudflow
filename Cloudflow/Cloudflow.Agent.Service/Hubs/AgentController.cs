@@ -13,7 +13,7 @@ namespace Cloudflow.Agent.Service.Hubs
         private static readonly log4net.ILog _logger =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Job _job;
+        private static Job _job;
 
         #region Public Methods
         public AgentStatus GetAgentStatus()
