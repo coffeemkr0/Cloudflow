@@ -108,17 +108,13 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cloudflow.Agent.Control\Cloudflow.Agent.Control.csproj">
-      <Project>{7b4645f9-70f6-48c4-8802-2d73d3d11038}</Project>
-      <Name>Cloudflow.Agent.Control</Name>
-    </ProjectReference>
+    <Content Include="119.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Cloudflow.Agent.Service\Cloudflow.Agent.Service.csproj">
       <Project>{59e67648-8b6c-43c7-b7f9-0ff853a4d893}</Project>
       <Name>Cloudflow.Agent.Service</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="119.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
