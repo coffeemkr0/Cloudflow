@@ -6,59 +6,65 @@
 
 @section headScripts {
     @Scripts.Render("~/bundles/signalr")
-@foreach (var agent in Model.AgentConfigurations)
-    {
-    <script src="http://@agent.MachineName:80/CloudflowAgent/signalr/hubs"></script>
-}
 }
 
 <script>
-    $(function () {
-        InitializeAgentControllers();
-    });
-
     var _agentControllerProxies = [];
-    function InitializeAgentControllers() {
+    $(function () {
         @foreach (var agent in Model.AgentConfigurations)
         {
-        <text>
-        $.connection.hub.url = "http://@agent.MachineName:80/CloudflowAgent/signalr";
-        var agentControllerProxy = $.connection.agentController;
-        agentControllerProxy.client.addMessage = function (message) {
-            AddMessage("@agent.MachineName", message);
-        };
-        $.connection.hub.start().done(function(){
-            _agentControllerProxies.push({ agentName: "@agent.MachineName", agentControllerProxy: agentControllerProxy });
-            SetStatusText("@agent.MachineName");
-        });
-        </text>
+            <text>ConnectToAgent("@agent.MachineName");</text>
         }
-    }
+    });
 
-    function EnableJob(machineName) {
-        var agentControllerProxyEntry = _agentControllerProxies.find(function (item) {
-            return item.agentName === machineName;
+    function ConnectToAgent(machineName) {
+        //Create a connetion to the agent
+        var connection = $.hubConnection("http://" + machineName + ":80/CloudflowAgent/signalr");
+
+        //For each hub we care about, create a proxy and sign up for the methods that the server will call to the client
+        var agentControllerProxy = connection.createHubProxy("agentController");
+        agentControllerProxy.on('addMessage', function (message) {
+            console.log("Message from " + machinName + " - " + message);
         });
 
-        if (typeof agentControllerProxyEntry !== "undefined") {
-            agentControllerProxyEntry.agentControllerProxy.server.enableJob();
-        }
-    }
+        //Open the connection
+        connection.start()
+            .done(function () {
+                //If the connection was successful, store the proxy so we can reuse it
+                _agentControllerProxies.push({ machineName: machineName, proxy: agentControllerProxy });
 
-    function AddMessage(machineName, message) {
-        console.log("Message received from " + machineName + " - " + message);
+                //Update the status text for the agent now that we are connected to it
+                SetStatusText(machineName);
+            })
+            .fail(function () { console.log("Could not connect to " + machineName); });
     }
 
     function SetStatusText(machineName) {
         $("#agentStatus-" + machineName).text("");
 
         var agentControllerProxyEntry = _agentControllerProxies.find(function (item) {
-            return item.agentName === machineName;
+            return item.machineName === machineName;
         });
 
         if (typeof agentControllerProxyEntry !== "undefined") {
-            agentControllerProxyEntry.agentControllerProxy.server.getAgentStatus().done(function (status) {
+            agentControllerProxyEntry.proxy.invoke("getAgentStatus").done(function (status) {
                 $("#agentStatus-" + machineName).text(status.StatusDisplayText);
+            }).fail(function (error) {
+                console.log("Error: GetAgentStatus " + error);
+            });
+        }
+    }
+
+    function EnableJob(machineName) {
+        var agentControllerProxyEntry = _agentControllerProxies.find(function (item) {
+            return item.machineName === machineName;
+        });
+
+        if (typeof agentControllerProxyEntry !== "undefined") {
+            agentControllerProxyEntry.proxy.invoke("enableJob").done(function () {
+                
+            }).fail(function (error) {
+                console.log("Error: EnableJob " + error);
             });
         }
     }
