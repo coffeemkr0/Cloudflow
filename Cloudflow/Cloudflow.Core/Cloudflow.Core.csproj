@@ -58,6 +58,7 @@
     <Compile Include="Data\CoreDbContext.cs" />
     <Compile Include="Data\Models\AgentConfiguration.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="MessageEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Trigger.cs" />

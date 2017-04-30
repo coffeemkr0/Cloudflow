@@ -14,6 +14,16 @@ namespace Cloudflow.Core
                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Events
+        public event MessageEventHandler Message;
+        protected virtual void OnMessage(string message)
+        {
+            MessageEventHandler temp = Message;
+            if (temp != null)
+            {
+                temp(message);
+            }
+        }
+
         public delegate void TriggerFiredEventHandler(object sender, Dictionary<string, object> triggerData);
         public event TriggerFiredEventHandler Fired;
         protected virtual void OnFired(Dictionary<string, object> triggerData)
@@ -30,6 +40,8 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Initialize()
         {
+            OnMessage("Initializing the trigger");
+
             _logger.Debug("Initializing the trigger");
             Timer timer = new Timer(3000);
             timer.Elapsed += Timer_Elapsed;
@@ -39,6 +51,8 @@ namespace Cloudflow.Core
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            OnMessage("Timer elapsed, firing trigger");
+
             _logger.Debug("Trigger time has elapsed");
             Dictionary<string, object> triggerData = new Dictionary<string, object>();
             OnFired(triggerData);

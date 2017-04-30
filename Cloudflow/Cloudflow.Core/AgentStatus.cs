@@ -22,6 +22,9 @@ namespace Cloudflow.Core
         public AgentStatuses Status { get; set; }
 
         [DataMember]
+        public string StatusDisplayText { get; set; }
+
+        [DataMember]
         public string Message { get; set; }
         #endregion
     }

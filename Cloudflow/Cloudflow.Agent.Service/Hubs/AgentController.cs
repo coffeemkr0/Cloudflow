@@ -16,9 +16,14 @@ namespace Cloudflow.Agent.Service.Hubs
         private Job _job;
 
         #region Public Methods
-        public void GetAgentStatus()
+        public AgentStatus GetAgentStatus()
         {
-            Clients.All.sendMessage("Get agent status response from SignalR for " + Environment.MachineName);
+            _logger.Debug("GetAgentStatus called.");
+            return new AgentStatus
+            {
+                Status = AgentStatus.AgentStatuses.Idle,
+                StatusDisplayText = "Idle"
+            };
         }
 
         public void EnableJob()
@@ -27,11 +32,17 @@ namespace Cloudflow.Agent.Service.Hubs
             {
                 _logger.Debug("Enabling the job");
                 _job = Job.CreateTestJob();
+                _job.Message += _job_Message;
                 _job.Enable();
                 _logger.Info("Job enabled");
 
-                Clients.All.sendMessage("Job enabled on " + Environment.MachineName);
+                Clients.All.addMessage("Job enabled on " + Environment.MachineName);
             }
+        }
+
+        private void _job_Message(string message)
+        {
+            Clients.All.addMessage(message);
         }
         #endregion
     }

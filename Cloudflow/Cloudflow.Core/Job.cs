@@ -11,6 +11,18 @@ namespace Cloudflow.Core
         private static readonly log4net.ILog _logger =
                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        #region Events
+        public event MessageEventHandler Message;
+        protected virtual void OnMessage(string message)
+        {
+            MessageEventHandler temp = Message;
+            if (temp != null)
+            {
+                temp(message);
+            }
+        }
+        #endregion
+
         #region Properties
         public Trigger Trigger { get; set; }
 
@@ -22,6 +34,7 @@ namespace Cloudflow.Core
         {
             this.Steps = new List<Step>();
             this.Trigger = new Trigger();
+            this.Trigger.Message += Trigger_Message;
         }
         #endregion
 
@@ -30,6 +43,16 @@ namespace Cloudflow.Core
         {
             _logger.Info("Trigger event fired");
             ExecuteSteps(triggerData);
+        }
+
+        private void Trigger_Message(string message)
+        {
+            OnMessage(message);
+        }
+
+        private void Step_Message(string message)
+        {
+            OnMessage(message);
         }
 
         private void ExecuteSteps(Dictionary<string, object> triggerData)
@@ -54,11 +77,17 @@ namespace Cloudflow.Core
             this.Trigger.Initialize();
         }
 
+        public void AddStep(Step step)
+        {
+            step.Message += Step_Message;
+            this.Steps.Add(step);
+        }
+
         public static Job CreateTestJob()
         {
             Job job = new Job();
 
-            job.Steps.Add(new Core.Step());
+            job.AddStep(new Core.Step());
 
             return job;
         }

@@ -6,58 +6,61 @@
 
 @section headScripts {
     @Scripts.Render("~/bundles/signalr")
-    @foreach (var agent in Model.AgentConfigurations)
+@foreach (var agent in Model.AgentConfigurations)
     {
-        <script src="http://@agent.MachineName:80/CloudflowAgent/signalr/hubs"></script>
-    }
+    <script src="http://@agent.MachineName:80/CloudflowAgent/signalr/hubs"></script>
+}
 }
 
 <script>
     $(function () {
-        @foreach (var agent in Model.AgentConfigurations)
-        {
-            <text>RegisterAgentControllerCallbacks("@agent.MachineName");</text>
-        }
+        InitializeAgentControllers();
     });
 
-    function RegisterAgentControllerCallbacks(agentName) {
-        //Set the hubs URL for the connection
-        $.connection.hub.url = "http://" + agentName + ":80/CloudflowAgent/signalr";
-
-        // Declare a proxy to reference the hub.
-        var agentController = $.connection.agentController;
-
-        // Create a function that the hub can call to broadcast messages.
-        agentController.client.sendMessage = function (message) {
-            AgentController_SendMessage(agentName, message);
+    var _agentControllerProxies = [];
+    function InitializeAgentControllers() {
+        @foreach (var agent in Model.AgentConfigurations)
+        {
+        <text>
+        $.connection.hub.url = "http://@agent.MachineName:80/CloudflowAgent/signalr";
+        var agentControllerProxy = $.connection.agentController;
+        agentControllerProxy.client.addMessage = function (message) {
+            AddMessage("@agent.MachineName", message);
         };
-    }
-
-    function AgentController_SendMessage(agentName, message) {
-        console.log("Message callback received from agent " + agentName + " - " + message);
+        $.connection.hub.start().done(function(){
+            _agentControllerProxies.push({ agentName: "@agent.MachineName", agentControllerProxy: agentControllerProxy });
+            SetStatusText("@agent.MachineName");
+        });
+        </text>
+        }
     }
 
     function EnableJob(machineName) {
-        $.connection.hub.url = "http://" + machineName + ":80/CloudflowAgent/signalr";
-        var agentController = $.connection.agentController;
-
-        $.connection.hub.start().done(function () {
-            agentController.server.enableJob();
+        var agentControllerProxyEntry = _agentControllerProxies.find(function (item) {
+            return item.agentName === machineName;
         });
 
-        SetStatusText(machineName);
+        if (typeof agentControllerProxyEntry !== "undefined") {
+            agentControllerProxyEntry.agentControllerProxy.server.enableJob();
+        }
+    }
+
+    function AddMessage(machineName, message) {
+        console.log("Message received from " + machineName + " - " + message);
     }
 
     function SetStatusText(machineName) {
-        var statusText = "Unreachable";
+        $("#agentStatus-" + machineName).text("");
 
-        $.connection.hub.url = "http://" + machineName + ":80/CloudflowAgent/signalr";
-        var agentController = $.connection.agentController;
-
-        $.connection.hub.start().done(function () {
-            // Call the GetAgentStatus method on the hub.
-            agentController.server.getAgentStatus();
+        var agentControllerProxyEntry = _agentControllerProxies.find(function (item) {
+            return item.agentName === machineName;
         });
+
+        if (typeof agentControllerProxyEntry !== "undefined") {
+            agentControllerProxyEntry.agentControllerProxy.server.getAgentStatus().done(function (status) {
+                $("#agentStatus-" + machineName).text(status.StatusDisplayText);
+            });
+        }
     }
 </script>
 
@@ -104,9 +107,7 @@
                                 if (@agent.Enabled)
                                 {
                                     <a href="#" id="agentStatus-@agent.MachineName">
-                                        <script>
-                                            SetStatusText("@agent.MachineName");
-                                        </script>
+
                                     </a>
                                 }
                                 else
