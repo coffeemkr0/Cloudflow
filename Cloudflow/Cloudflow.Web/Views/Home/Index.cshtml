@@ -8,7 +8,7 @@
     @Scripts.Render("~/bundles/signalr")
     @foreach (var agent in Model.AgentConfigurations)
     {
-        <script src="http://@agent.MachineName:80/CloudflowMessaging/signalr/hubs"></script>
+        <script src="http://@agent.MachineName:80/CloudflowAgentControl/signalr/hubs"></script>
     }
 }
 
@@ -18,7 +18,7 @@
     <script>
     $(function() {
         //Set the hubs URL for the connection
-        $.connection.hub.url = "http://@agent.MachineName:80/CloudflowMessaging/signalr";
+        $.connection.hub.url = "http://@agent.MachineName:80/CloudflowAgentControl/signalr";
 
         // Declare a proxy to reference the hub.
         var messenger = $.connection.generalMessageHub;
@@ -54,7 +54,7 @@
     function SetStatusText(machineName) {
         var statusText = "Unreachable";
 
-        $.connection.hub.url = "http://" + machineName + ":80/CloudflowMessaging/signalr";
+        $.connection.hub.url = "http://" + machineName + ":80/CloudflowAgentControl/signalr";
         var messenger = $.connection.generalMessageHub;
 
         $.connection.hub.start().done(function () {

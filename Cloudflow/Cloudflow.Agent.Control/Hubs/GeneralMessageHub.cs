@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Agent.Service.Hubs
+namespace Cloudflow.Agent.Control.Hubs
 {
     /// <summary>
     /// A SignalR hub for sending simple string messages.

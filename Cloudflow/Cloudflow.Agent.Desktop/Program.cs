@@ -1,5 +1,5 @@
-﻿using Cloudflow.Agent.Service;
-using Cloudflow.Agent.Service.Hubs;
+﻿using Cloudflow.Agent.Control.Hubs;
+using Cloudflow.Agent.Service;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 using System;
@@ -24,9 +24,9 @@ namespace Cloudflow.Agent.Desktop
             try
             {
                 //Setup the SignalR messaging service first so that we can let clients know what is going on
-                string url = "http://+:80/CloudflowMessaging/";
+                string url = "http://+:80/CloudflowAgentControl/";
                 var signalRHost = WebApp.Start<SignalRStartup>(url);
-                log.Info(string.Format("Cloudflow messaging service started and running on {0}", url));
+                log.Info(string.Format("Cloudflow agent control service started and running on {0}", url));
 
                 //Setup the WCF service that does all the real work
                 //Requires this admin level command on the PC that will host the service:

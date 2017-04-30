@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{72A60B3D-9172-42C1-94BA-6EBFA4906931}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.Control", "Cloudflow.Agent.Control\Cloudflow.Agent.Control.csproj", "{7B4645F9-70F6-48C4-8802-2D73D3D11038}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{72A60B3D-9172-42C1-94BA-6EBFA4906931}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72A60B3D-9172-42C1-94BA-6EBFA4906931}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72A60B3D-9172-42C1-94BA-6EBFA4906931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B4645F9-70F6-48C4-8802-2D73D3D11038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4645F9-70F6-48C4-8802-2D73D3D11038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4645F9-70F6-48C4-8802-2D73D3D11038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4645F9-70F6-48C4-8802-2D73D3D11038}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
