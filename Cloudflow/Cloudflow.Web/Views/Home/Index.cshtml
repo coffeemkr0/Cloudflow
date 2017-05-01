@@ -24,7 +24,7 @@
         //For each hub we care about, create a proxy and sign up for the methods that the server will call to the client
         var agentControllerProxy = connection.createHubProxy("agentController");
         agentControllerProxy.on('addMessage', function (message) {
-            console.log("Message from " + machinName + " - " + message);
+            AgentController_AddMessage(machineName, message);
         });
 
         //Open the connection
@@ -37,6 +37,10 @@
                 SetStatusText(machineName);
             })
             .fail(function () { console.log("Could not connect to " + machineName); });
+    }
+
+    function AgentController_AddMessage(machineName, message) {
+        console.log("Message from " + machineName + message);
     }
 
     function SetStatusText(machineName) {
