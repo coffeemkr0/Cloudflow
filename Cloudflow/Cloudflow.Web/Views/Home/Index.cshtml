@@ -55,28 +55,20 @@
                 {
                     <tr>
                         <td>@agent.MachineName</td>
-                        <td>
-                            @{
-                                if (@agent.Enabled)
-                                {
-                                    <a href="#" id="agentStatus-@agent.MachineName">
-
-                                    </a>
-                                }
-                                else
-                                {
-                                    <text>Disabled</text>
-                                }
+                        <td id="agentStatus-@agent.MachineName">
+                            @if (!agent.Enabled)
+                            {
+                                <text>Disabled</text>
                             }
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", "AgentConfigurations", new { id = @agent.Id }, new
-                       {
-                           data_modal = "",
-                           data_modalcontainer = "modalAgent",
-                           data_modalcontent = "modalAgentContent",
-                           @class = "btn btn-small btn-default"
-                       })
+                               {
+                                   data_modal = "",
+                                   data_modalcontainer = "modalAgent",
+                                   data_modalcontent = "modalAgentContent",
+                                   @class = "btn btn-small btn-default"
+                               })
                         </td>
                         <td>
                             @Html.ActionLink("Delete", "Delete", "AgentConfigurations", new { id = @agent.Id }, new
@@ -87,7 +79,7 @@
                                     @class = "btn btn-small btn-default"
                                 })
                         </td>
-                        <td><a href="#" class="startAgentLink" data-machinename="@(agent.MachineName)">Start Agent</a></td>
+                        <td><a href="#" class="agentControlLink" id="agentControl-@agent.MachineName" data-machinename="@(agent.MachineName)"></a></td>
                     </tr>
                 }
             </table>

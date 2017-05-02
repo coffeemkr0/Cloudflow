@@ -66,9 +66,9 @@ AgentControllerClient.GetAgentStatus = function (machineName, callback) {
 
     if (typeof agentControllerProxyEntry !== "undefined") {
         agentControllerProxyEntry.proxy.invoke("getAgentStatus").done(function (status) {
-            callback(status.StatusDisplayText);
+            callback(status);
         }).fail(function (error) {
-            callback("Get Agent Status Failed");
+            callback(null);
         });
     }
 };

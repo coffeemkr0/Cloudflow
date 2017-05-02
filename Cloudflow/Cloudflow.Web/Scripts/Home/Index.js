@@ -9,20 +9,34 @@ $(function () {
 
     AgentControllerClient.ConnectToAgents(HomeIndex.MachineNames);
 
-    $(".startAgentLink").each(function () {
+    $(".agentControlLink").each(function () {
         $(this).on("click", function (e) {
-            var $item = $(e.target);
-            var machineName = $item.attr("data-machinename");
-            AgentControllerClient.StartAgent(machineName, function () {
-                SetStatusText(machineName);
-            });
-            return false;
+            AgentControlClicked(e);
         });
     });
 });
 
 function AgentConnected(machineName) {
     SetStatusText(machineName);
+}
+
+function AgentControlClicked(e) {
+    var $item = $(e.target);
+    var machineName = $item.attr("data-machinename");
+    if ($item.text() == "Start") {
+        AgentControllerClient.StartAgent(machineName, function () {
+            SetStatusText(machineName);
+            $item.text("Stop");
+        });
+    }
+    else {
+        AgentControllerClient.StopAgent(machineName, function () {
+            SetStatusText(machineName);
+            $item.text("Start");
+        });
+    }
+    
+    return false;
 }
 
 function AgentMessageReceived(machinName, message) {
@@ -37,6 +51,19 @@ function StartAgent(machineName) {
 
 function SetStatusText(machineName) {
     AgentControllerClient.GetAgentStatus(machineName, function (status) {
-        $("#agentStatus-" + machineName).text(status);
+        if (status !== null) {
+            $("#agentStatus-" + machineName).text(status.StatusDisplayText);
+            switch (status.Status) {
+                case 0:
+                    $("#agentControl-" + machineName).text("Start");
+                    break;
+                default:
+                    $("#agentControl-" + machineName).text("Stop");
+                    break;
+            }
+        }
+        else {
+            $("#agentStatus-" + machineName).text("Unreachable");
+        }
     });
 }
