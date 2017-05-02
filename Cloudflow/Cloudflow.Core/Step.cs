@@ -20,7 +20,7 @@ namespace Cloudflow.Core
         #region Constructors
         public Step(string name)
         {
-            this.StepLogger = log4net.LogManager.GetLogger("StepLogger." + name);
+            this.StepLogger = log4net.LogManager.GetLogger("Step." + name);
 
             this.Id = Guid.NewGuid();
             this.Name = name;

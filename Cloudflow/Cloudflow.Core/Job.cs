@@ -37,7 +37,7 @@ namespace Cloudflow.Core
         #region Constructors
         public Job(string name)
         {
-            this.JobLogger = log4net.LogManager.GetLogger("JobLogger." + name);
+            this.JobLogger = log4net.LogManager.GetLogger("Job." + name);
 
             this.Id = Guid.NewGuid();
             this.Name = name;

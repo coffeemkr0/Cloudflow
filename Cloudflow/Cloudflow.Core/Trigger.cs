@@ -38,7 +38,7 @@ namespace Cloudflow.Core
         #region Constructors
         public Trigger(string name)
         {
-            this.TriggerLogger = log4net.LogManager.GetLogger("TriggerLogger." + name);
+            this.TriggerLogger = log4net.LogManager.GetLogger("Trigger." + name);
 
             this.Id = Guid.NewGuid();
             this.Name = name;

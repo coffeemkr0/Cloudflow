@@ -26,7 +26,7 @@ namespace Cloudflow.Core
         #region Constructors
         public Run(string name, Job job, Dictionary<string, object> triggerData)
         {
-            this.RunLogger = log4net.LogManager.GetLogger("RunLogger." + name);
+            this.RunLogger = log4net.LogManager.GetLogger("Run." + name);
 
             this.Id = Guid.NewGuid();
             this.Name = name;
