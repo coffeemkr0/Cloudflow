@@ -1,3 +1,28 @@
+Create a Run class that represents what happens when a trigger is fired
+	Runs should be on their own thread and have their own logger
+
+Make ports configurable and/or dynamic.
+
+Triggers starting other triggers:
+	For example, a trigger that watches for folders being created in a watch folder
+	This trigger being fired Starts another trigger that watches for files that are created in the new folder
+	This file watcher trigger getting fired starts a run
+	This sounds like having dynamically created triggers
+
+Trigger examples:
+	Watch folder
+	Monitor an email account
+	A WCF or SignalR service that listens for Http requests
+	Poll a database
+	Fire an event from Sql Server that fires the trigger (not polling)
+
+	
+
+start making methods extensible
+
+
+
+
 Authenitcaiton - create a user account and only access "my stuff"
 Ability to add, edit and remove Agents
 Download the job and an agent to a "worker PC"
