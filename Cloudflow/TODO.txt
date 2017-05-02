@@ -1,5 +1,4 @@
-Create a Run class that represents what happens when a trigger is fired
-	Runs should be on their own thread and have their own logger
+Use the Task library to manage Runs so that they are on separate threads that can be limited, monitored and stopped
 
 Let the agent handle a queue of Runs from all of its jobs
 	Stopping the agent should wait for any runs that have been started to finish and it should clear any that have not started
