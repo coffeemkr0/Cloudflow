@@ -1,5 +1,4 @@
 Use the Task library to manage Runs so that they are on separate threads that can be limited, monitored and stopped
-
 Let the agent handle a queue of Runs from all of its jobs
 	Stopping the agent should wait for any runs that have been started to finish and it should clear any that have not started
 
@@ -20,7 +19,8 @@ Trigger examples:
 	Poll a database
 	Fire an event from Sql Server that fires the trigger (not polling)
 
-	
+Add an option to steps for continuing after errors
+Keep a history of runs and their logs and status etc.
 
 start making methods extensible
 

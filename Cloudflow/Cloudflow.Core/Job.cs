@@ -8,8 +8,17 @@ namespace Cloudflow.Core
 {
     public class Job
     {
-        #region Private Members
-        private int _runCounter = 1;
+        #region Events
+        public delegate void JobTriggerFiredEventHandler(Job job, Trigger trigger, Dictionary<string, object> triggerData);
+        public event JobTriggerFiredEventHandler JobTriggerFired;
+        protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
+        {
+            JobTriggerFiredEventHandler temp = JobTriggerFired;
+            if (temp != null)
+            {
+                temp(this, trigger, triggerData);
+            }
+        }
         #endregion
 
         #region Properties
@@ -49,10 +58,7 @@ namespace Cloudflow.Core
         private void _trigger_Fired(Trigger sender, Dictionary<string, object> triggerData)
         {
             this.JobLogger.Info(string.Format("A trigger has fired - {0}", sender.Name));
-
-            Run run = new Run(string.Format("{0} Run {1}", this.Name, _runCounter++),
-                this, triggerData);
-            run.Start();
+            OnTriggerFired(sender, triggerData);
         }
         #endregion
 
