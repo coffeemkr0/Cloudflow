@@ -14,6 +14,7 @@ namespace Cloudflow.Core
                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         Timer _timer;
+        static Random _rand = new Random();
 
         #region Events
         public event MessageEventHandler Message;
@@ -70,7 +71,9 @@ namespace Cloudflow.Core
 
             if(_timer == null)
             {
-                _timer = new Timer(3000);
+                var interval = _rand.Next(1, 10);
+                this.Job.JobLogger.Debug(string.Format("Setting timer interval to {0} seconds", interval));
+                _timer = new Timer(interval * 1000);
                 _timer.Elapsed += _timer_Elapsed;
             }
             
