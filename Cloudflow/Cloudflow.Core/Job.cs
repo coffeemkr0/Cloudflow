@@ -8,19 +8,8 @@ namespace Cloudflow.Core
 {
     public class Job
     {
-        private static readonly log4net.ILog _classLogger =
-               log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        #region Events
-        public event MessageEventHandler Message;
-        protected virtual void OnMessage(string message)
-        {
-            MessageEventHandler temp = Message;
-            if (temp != null)
-            {
-                temp(message);
-            }
-        }
+        #region Private Members
+        private int _runCounter = 1;
         #endregion
 
         #region Properties
@@ -37,7 +26,6 @@ namespace Cloudflow.Core
             {
                 _trigger = value;
                 _trigger.Fired += _trigger_Fired;
-                _trigger.Message += _trigger_Message;
             }
         }
 
@@ -49,73 +37,46 @@ namespace Cloudflow.Core
         #region Constructors
         public Job(string name)
         {
-            this.Id = Guid.NewGuid();
-            this.Name = name;
             this.JobLogger = log4net.LogManager.GetLogger("JobLogger." + name);
 
+            this.Id = Guid.NewGuid();
+            this.Name = name;
             this.Steps = new List<Step>();
         }
         #endregion
 
         #region Private Methods
-        private void _trigger_Fired(object sender, Dictionary<string, object> triggerData)
+        private void _trigger_Fired(Trigger sender, Dictionary<string, object> triggerData)
         {
-            this.JobLogger.Info("Trigger fired");
-            ExecuteSteps(triggerData);
-        }
+            this.JobLogger.Info(string.Format("A trigger has fired - {0}", sender.Name));
 
-        private void _trigger_Message(string message)
-        {
-            this.JobLogger.Info("Trigger message - " + message);
-            OnMessage(message);
-        }
-
-        private void Step_Message(string message)
-        {
-            this.JobLogger.Info("Step message - " + message);
-            OnMessage(message);
-        }
-
-        private void ExecuteSteps(Dictionary<string, object> triggerData)
-        {
-            foreach (var step in this.Steps)
-            {
-                this.JobLogger.Info(string.Format("Executing step {0}", step.Name));
-                try
-                {
-                    step.Execute(triggerData);
-                }
-                catch (Exception ex)
-                {
-                    this.JobLogger.Error(ex);
-                }
-            }
+            Run run = new Run(string.Format("{0} Run {1}", this.Name, _runCounter++),
+                this, triggerData);
+            run.Start();
         }
         #endregion
 
         #region Public Methods
         public void Start()
         {
+            this.JobLogger.Info("Starting the job");
             this.Trigger.Start();
+            this.JobLogger.Info("Job started");
         }
 
         public void Stop()
         {
+            this.JobLogger.Info("Stopping the job");
             this.Trigger.Stop();
-        }
-
-        public void AddStep(Step step)
-        {
-            step.Message += Step_Message;
-            this.Steps.Add(step);
+            this.JobLogger.Info("Job stopped");
         }
 
         public static Job CreateTestJob(string name)
         {
             var job = new Job(name);
 
-            job.AddStep(Step.CreateTestStep(name = "-TestStep"));
-            job.Trigger = Trigger.CreateTestTrigger(job, name + "-TestTrigger");
+            job.Steps.Add(new Step("WriteToFileStep"));
+            job.Trigger = new Trigger("RandomTimeIntervalTrigger");
 
             return job;
         }

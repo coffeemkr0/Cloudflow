@@ -10,49 +10,38 @@ namespace Cloudflow.Core
 {
     public class Trigger
     {
-        private static readonly log4net.ILog _logger =
-               log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         Timer _timer;
         static Random _rand = new Random();
 
         #region Events
-        public event MessageEventHandler Message;
-        protected virtual void OnMessage(string message)
-        {
-            MessageEventHandler temp = Message;
-            if (temp != null)
-            {
-                temp(message);
-            }
-        }
-
-        public delegate void TriggerFiredEventHandler(object sender, Dictionary<string, object> triggerData);
+        public delegate void TriggerFiredEventHandler(Trigger sender, Dictionary<string, object> triggerData);
         public event TriggerFiredEventHandler Fired;
         protected virtual void OnFired(Dictionary<string, object> triggerData)
         {
             TriggerFiredEventHandler temp = Fired;
             if (temp != null)
             {
-                this.Job.JobLogger.Info("Trigger firing");
+                this.TriggerLogger.Info("Trigger fired");
                 temp(this, triggerData);
             }
         }
         #endregion
 
         #region Properties
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public Job Job { get; }
+        public log4net.ILog TriggerLogger { get; }
         #endregion
 
         #region Constructors
-        public Trigger(Job job)
+        public Trigger(string name)
         {
+            this.TriggerLogger = log4net.LogManager.GetLogger("TriggerLogger." + name);
+
             this.Id = Guid.NewGuid();
-            this.Job = job;
+            this.Name = name;
         }
         #endregion
 
@@ -67,12 +56,12 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Start()
         {
-            this.Job.JobLogger.Info("Starting the trigger");
+            this.TriggerLogger.Info("Starting the trigger");
 
             if(_timer == null)
             {
                 var interval = _rand.Next(1, 10);
-                this.Job.JobLogger.Debug(string.Format("Setting timer interval to {0} seconds", interval));
+                this.TriggerLogger.Info(string.Format("Setting timer interval to {0} seconds", interval));
                 _timer = new Timer(interval * 1000);
                 _timer.Elapsed += _timer_Elapsed;
             }
@@ -82,17 +71,8 @@ namespace Cloudflow.Core
 
         public void Stop()
         {
-            this.Job.JobLogger.Info("Stopping the trigger");
+            this.TriggerLogger.Info("Stopping the trigger");
             _timer.Enabled = false;
-        }
-
-        public static Trigger CreateTestTrigger(Job job, string name)
-        {
-            Trigger trigger = new Trigger(job)
-            {
-                Name = name
-            };
-            return trigger;
         }
         #endregion
     }

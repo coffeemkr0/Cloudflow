@@ -9,38 +9,28 @@ namespace Cloudflow.Core
 {
     public class Step
     {
-        private static readonly log4net.ILog _logger =
-               log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        #region Events
-        public event MessageEventHandler Message;
-        protected virtual void OnMessage(string message)
-        {
-            MessageEventHandler temp = Message;
-            if (temp != null)
-            {
-                temp(message);
-            }
-        }
-        #endregion
-
         #region Properties
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
+
+        public log4net.ILog StepLogger { get; }
         #endregion
 
         #region Constructors
-        public Step()
+        public Step(string name)
         {
+            this.StepLogger = log4net.LogManager.GetLogger("StepLogger." + name);
+
             this.Id = Guid.NewGuid();
+            this.Name = name;
         }
         #endregion
 
         #region Public Methods
         public void Execute(Dictionary<string, object> triggerData)
         {
-            _logger.Info("Executing the step");
+            this.StepLogger.Info("Executing the step");
             if (!Directory.Exists("JobOutput"))
             {
                 Directory.CreateDirectory("JobOutput");
@@ -48,18 +38,9 @@ namespace Cloudflow.Core
             using (StreamWriter sw = new StreamWriter(@"JobOutput\Outputfile.txt", true))
             {
                 string output = string.Format("{0}[Step] Hello World", DateTime.Now.ToString());
-                OnMessage(string.Format("Writing output to file - {0}", output));
-                _logger.Debug(string.Format("Writing output to file - {0}", output));
+                this.StepLogger.Debug(string.Format("Writing output to file - {0}", output));
                 sw.WriteLine(output);
             }
-        }
-
-        public static Step CreateTestStep(string name)
-        {
-            return new Step
-            {
-                Name = name
-            };
         }
         #endregion
     }

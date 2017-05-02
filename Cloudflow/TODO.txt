@@ -1,7 +1,12 @@
 Create a Run class that represents what happens when a trigger is fired
 	Runs should be on their own thread and have their own logger
 
+Let the agent handle a queue of Runs from all of its jobs
+	Stopping the agent should wait for any runs that have been started to finish and it should clear any that have not started
+
+Allow a list of triggers instead of a single trigger per job
 Make ports configurable and/or dynamic.
+Make it so that runs have a configurable name format that is generated when the run starts (similar to Tfs builds)
 
 Triggers starting other triggers:
 	For example, a trigger that watches for folders being created in a watch folder
