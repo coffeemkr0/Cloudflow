@@ -289,6 +289,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -306,6 +307,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Shared\AgentControllerClient.js" />
     <Content Include="Scripts\Shared\DialogHelper.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
