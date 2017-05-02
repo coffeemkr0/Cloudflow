@@ -13,36 +13,65 @@ namespace Cloudflow.Agent.Service.Hubs
         private static readonly log4net.ILog _logger =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static Job _job;
+        private static Agent _agent;
 
         #region Public Methods
         public AgentStatus GetAgentStatus()
         {
-            _logger.Debug("GetAgentStatus called.");
-            return new AgentStatus
+            try
             {
-                Status = AgentStatus.AgentStatuses.Idle,
-                StatusDisplayText = "Idle"
-            };
+                if(_agent == null)
+                {
+                    return new AgentStatus
+                    {
+                        Status = AgentStatus.AgentStatuses.NotRunning,
+                        StatusDisplayText = "Not Running"
+                    };
+                }
+
+                //TODO:Get a real status of what the agent is doing here
+                return new AgentStatus
+                {
+                    Status = AgentStatus.AgentStatuses.Idle,
+                    StatusDisplayText = "Idle"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex);
+            }
+
+            return null;
         }
 
-        public void EnableJob()
+        public void StartAgent()
         {
-            if (_job == null)
+            try
             {
-                _logger.Debug("Enabling the job");
-                _job = Job.CreateTestJob();
-                _job.Message += _job_Message;
-                _job.Enable();
-                _logger.Info("Job enabled");
-
-                Clients.All.addMessage("Job enabled on " + Environment.MachineName);
+                if(_agent == null)
+                {
+                    _agent = new Agent();
+                }
+                
+                _agent.Start();
+            }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex);
             }
         }
 
-        private void _job_Message(string message)
+        public void StopAgent()
         {
-            Clients.All.addMessage(message);
+            try
+            {
+                _agent.Stop();
+                _agent = null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex);
+            }
         }
         #endregion
     }

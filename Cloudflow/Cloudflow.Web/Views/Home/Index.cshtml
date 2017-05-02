@@ -35,13 +35,13 @@
         }
     }
 
-    function EnableJob(machineName) {
+    function StartAgent(machineName) {
         var agentControllerProxyEntry = _agentControllerProxies.find(function (item) {
             return item.agentName === machineName;
         });
 
         if (typeof agentControllerProxyEntry !== "undefined") {
-            agentControllerProxyEntry.agentControllerProxy.server.enableJob();
+            agentControllerProxyEntry.agentControllerProxy.server.startAgent();
         }
     }
 
@@ -134,7 +134,7 @@
                                     @class = "btn btn-small btn-default"
                                 })
                         </td>
-                        <td><a href="#" class="enableJobLink" data-machinename="@(agent.MachineName)">Enable Job</a></td>
+                        <td><a href="#" class="startAgentLink" data-machinename="@(agent.MachineName)">Start Agent</a></td>
                     </tr>
                 }
             </table>
@@ -152,11 +152,11 @@
 
 <script>
     $(function () {
-        $(".enableJobLink").each(function () {
+        $(".startAgentLink").each(function () {
             $(this).on("click", function (e) {
                 var $item = $(e.target);
                 var machineName = $item.attr("data-machinename");
-                EnableJob(machineName);
+                StartAgent(machineName);
 
                 return false;
             });

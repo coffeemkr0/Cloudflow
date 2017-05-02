@@ -13,6 +13,8 @@ namespace Cloudflow.Core
         private static readonly log4net.ILog _logger =
                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        Timer _timer;
+
         #region Events
         public event MessageEventHandler Message;
         protected virtual void OnMessage(string message)
@@ -31,31 +33,63 @@ namespace Cloudflow.Core
             TriggerFiredEventHandler temp = Fired;
             if (temp != null)
             {
-                _logger.Debug("Firing the OnFired event for the trigger");
+                this.Job.JobLogger.Info("Trigger firing");
                 temp(this, triggerData);
             }
         }
         #endregion
 
-        #region Public Methods
-        public void Initialize()
-        {
-            OnMessage("Initializing the trigger");
+        #region Properties
+        public Guid Id { get; set; }
 
-            _logger.Debug("Initializing the trigger");
-            Timer timer = new Timer(3000);
-            timer.Elapsed += Timer_Elapsed;
-            timer.Enabled = true;
-            _logger.Debug("Trigger timer initialized");
+        public string Name { get; set; }
+
+        public Job Job { get; }
+        #endregion
+
+        #region Constructors
+        public Trigger(Job job)
+        {
+            this.Id = Guid.NewGuid();
+            this.Job = job;
         }
+        #endregion
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        #region Private Methods
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            OnMessage("Timer elapsed, firing trigger");
-
-            _logger.Debug("Trigger time has elapsed");
             Dictionary<string, object> triggerData = new Dictionary<string, object>();
             OnFired(triggerData);
+        }
+        #endregion
+
+        #region Public Methods
+        public void Start()
+        {
+            this.Job.JobLogger.Info("Starting the trigger");
+
+            if(_timer == null)
+            {
+                _timer = new Timer(3000);
+                _timer.Elapsed += _timer_Elapsed;
+            }
+            
+            _timer.Enabled = true;
+        }
+
+        public void Stop()
+        {
+            this.Job.JobLogger.Info("Stopping the trigger");
+            _timer.Enabled = false;
+        }
+
+        public static Trigger CreateTestTrigger(Job job, string name)
+        {
+            Trigger trigger = new Trigger(job)
+            {
+                Name = name
+            };
+            return trigger;
         }
         #endregion
     }

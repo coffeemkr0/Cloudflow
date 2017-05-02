@@ -8,7 +8,7 @@ namespace Cloudflow.Core
 {
     public class Job
     {
-        private static readonly log4net.ILog _logger =
+        private static readonly log4net.ILog _classLogger =
                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Events
@@ -24,57 +24,84 @@ namespace Cloudflow.Core
         #endregion
 
         #region Properties
-        public Trigger Trigger { get; set; }
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+
+        private Trigger _trigger;
+
+        public Trigger Trigger
+        {
+            get { return _trigger; }
+            set
+            {
+                _trigger = value;
+                _trigger.Fired += _trigger_Fired;
+                _trigger.Message += _trigger_Message;
+            }
+        }
 
         public List<Step> Steps { get; set; }
+
+        public log4net.ILog JobLogger { get; }
         #endregion
 
         #region Constructors
-        public Job()
+        public Job(string name)
         {
+            this.Id = Guid.NewGuid();
+            this.Name = name;
+            this.JobLogger = log4net.LogManager.GetLogger("JobLogger." + name);
+
             this.Steps = new List<Step>();
-            this.Trigger = new Trigger();
-            this.Trigger.Message += Trigger_Message;
         }
         #endregion
 
         #region Private Methods
-        private void Trigger_Fired(object sender, Dictionary<string, object> triggerData)
+        private void _trigger_Fired(object sender, Dictionary<string, object> triggerData)
         {
-            _logger.Info("Trigger event fired");
+            this.JobLogger.Info("Trigger fired");
             ExecuteSteps(triggerData);
         }
 
-        private void Trigger_Message(string message)
+        private void _trigger_Message(string message)
         {
+            this.JobLogger.Info("Trigger message - " + message);
             OnMessage(message);
         }
 
         private void Step_Message(string message)
         {
+            this.JobLogger.Info("Step message - " + message);
             OnMessage(message);
         }
 
         private void ExecuteSteps(Dictionary<string, object> triggerData)
         {
-            _logger.Info("Executing steps");
             foreach (var step in this.Steps)
             {
-                step.Execute(triggerData);
+                this.JobLogger.Info(string.Format("Executing step {0}", step.Name));
+                try
+                {
+                    step.Execute(triggerData);
+                }
+                catch (Exception ex)
+                {
+                    this.JobLogger.Error(ex);
+                }
             }
         }
         #endregion
 
         #region Public Methods
-        /// <summary>
-        /// Enables the job and initializes its trigger
-        /// </summary>
-        public void Enable()
+        public void Start()
         {
-            _logger.Info("Enabling the job");
-            _logger.Debug("Initializing the trigger");
-            this.Trigger.Fired += Trigger_Fired;
-            this.Trigger.Initialize();
+            this.Trigger.Start();
+        }
+
+        public void Stop()
+        {
+            this.Trigger.Stop();
         }
 
         public void AddStep(Step step)
@@ -83,11 +110,12 @@ namespace Cloudflow.Core
             this.Steps.Add(step);
         }
 
-        public static Job CreateTestJob()
+        public static Job CreateTestJob(string name)
         {
-            Job job = new Job();
+            var job = new Job(name);
 
-            job.AddStep(new Core.Step());
+            job.AddStep(Step.CreateTestStep(name = "-TestStep"));
+            job.Trigger = Trigger.CreateTestTrigger(job, name + "-TestTrigger");
 
             return job;
         }

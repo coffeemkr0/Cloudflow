@@ -24,6 +24,19 @@ namespace Cloudflow.Core
         }
         #endregion
 
+        #region Properties
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+        #endregion
+
+        #region Constructors
+        public Step()
+        {
+            this.Id = Guid.NewGuid();
+        }
+        #endregion
+
         #region Public Methods
         public void Execute(Dictionary<string, object> triggerData)
         {
@@ -39,6 +52,14 @@ namespace Cloudflow.Core
                 _logger.Debug(string.Format("Writing output to file - {0}", output));
                 sw.WriteLine(output);
             }
+        }
+
+        public static Step CreateTestStep(string name)
+        {
+            return new Step
+            {
+                Name = name
+            };
         }
         #endregion
     }
