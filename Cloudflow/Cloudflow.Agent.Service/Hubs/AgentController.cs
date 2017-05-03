@@ -29,7 +29,6 @@ namespace Cloudflow.Agent.Service.Hubs
                     };
                 }
 
-                //TODO:Get a real status of what the agent is doing here
                 return new AgentStatus
                 {
                     Status = AgentStatus.AgentStatuses.Idle,
@@ -50,7 +49,8 @@ namespace Cloudflow.Agent.Service.Hubs
             {
                 if(_agent == null)
                 {
-                    _agent = new Agent();
+                    _logger.Info("Creating a test agent");
+                    _agent = Agent.CreateTestAgent();
                 }
                 
                 _agent.Start();
