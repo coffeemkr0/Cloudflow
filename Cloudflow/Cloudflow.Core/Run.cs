@@ -48,6 +48,7 @@ namespace Cloudflow.Core
                 catch (Exception ex)
                 {
                     this.RunLogger.Error(ex);
+                    throw;
                 }
             }
         }
@@ -57,7 +58,14 @@ namespace Cloudflow.Core
         public void Start()
         {
             this.RunLogger.Info(string.Format("Starting run {0} - {1}", this.Name, this.Id));
-            ExecuteSteps();
+            try
+            {
+                ExecuteSteps();
+            }
+            catch (Exception ex)
+            {
+                this.RunLogger.Error(ex);
+            }
         }
         #endregion
     }

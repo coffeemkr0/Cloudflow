@@ -74,7 +74,6 @@ namespace Cloudflow.Core
         {
             this.JobLogger.Info("Stopping the job");
             this.Trigger.Stop();
-            this.JobLogger.Info("Job stopped");
         }
 
         public static Job CreateTestJob(string name)
