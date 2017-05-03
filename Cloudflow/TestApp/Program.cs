@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloudflow.Agent.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,25 @@ namespace TestApp
 {
     class Program
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
-            Cloudflow.Core.Job testJob = Cloudflow.Core.Job.CreateTestJob();
-            testJob.Enable();
+            try
+            {
+                var agent = Agent.CreateTestAgent();
+                agent.Start();
+                Console.ReadLine();
 
-            Console.WriteLine("The job has been enabled and its trigger has been initialized.");
-            Console.ReadLine();
+                agent.Stop();
+                Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                log.Fatal(ex);
+                Console.ReadLine();
+            }
         }
     }
 }

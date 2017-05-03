@@ -14,7 +14,7 @@ namespace Cloudflow.Core
         static Random _rand = new Random();
 
         #region Events
-        public delegate void TriggerFiredEventHandler(Trigger sender, Dictionary<string, object> triggerData);
+        public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);
         public event TriggerFiredEventHandler Fired;
         protected virtual void OnFired(Dictionary<string, object> triggerData)
         {

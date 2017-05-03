@@ -33,20 +33,6 @@ namespace Cloudflow.Agent.Service
         #endregion
 
         #region Private Methods
-        private void LoadJobs()
-        {
-            this.AgentLogger.Info("Loading jobs");
-
-            this.Jobs.Clear();
-            var job = Job.CreateTestJob("Test Job 1");
-            job.JobTriggerFired += Job_JobTriggerFired;
-            this.Jobs.Add(job);
-
-            job = Job.CreateTestJob("Test Job 2");
-            job.JobTriggerFired += Job_JobTriggerFired;
-            this.Jobs.Add(job);
-        }
-
         private void Job_JobTriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
         {
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
@@ -67,11 +53,16 @@ namespace Cloudflow.Agent.Service
         #endregion
 
         #region Public Methods
+        public void AddJob(Job job)
+        {
+            job.JobTriggerFired += Job_JobTriggerFired;
+            this.Jobs.Add(job);
+        }
+
         public void Start()
         {
+            this.AgentLogger.Info("Starting agent");
             _runTasks = new List<Task>();
-
-            LoadJobs();
             foreach (var job in this.Jobs)
             {
                 job.Start();
@@ -91,6 +82,16 @@ namespace Cloudflow.Agent.Service
             Task.WaitAll(_runTasks.ToArray());
 
             this.AgentLogger.Info("Agent stopped");
+        }
+
+        public static Agent CreateTestAgent()
+        {
+            Agent agent = new Agent();
+
+            agent.AddJob(Job.CreateTestJob("Test Job 1"));
+            agent.AddJob(Job.CreateTestJob("Test Job 2"));
+
+            return agent;
         }
         #endregion
     }

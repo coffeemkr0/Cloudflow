@@ -52,12 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
-      <Project>{ad7be488-acf7-4664-b6f5-73171f8ba8a7}</Project>
-      <Name>Cloudflow.Core</Name>
+    <ProjectReference Include="..\Cloudflow.Agent.Service\Cloudflow.Agent.Service.csproj">
+      <Project>{59e67648-8b6c-43c7-b7f9-0ff853a4d893}</Project>
+      <Name>Cloudflow.Agent.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

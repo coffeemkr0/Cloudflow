@@ -26,15 +26,18 @@ namespace Cloudflow.Core
 
         public string Name { get; set; }
 
-        private Trigger _trigger;
+        private List<Trigger> _triggers;
 
-        public Trigger Trigger
+        public List<Trigger> Triggers
         {
-            get { return _trigger; }
+            get { return _triggers; }
             set
             {
-                _trigger = value;
-                _trigger.Fired += _trigger_Fired;
+                _triggers = value;
+                foreach (var trigger in value)
+                {
+                    trigger.Fired += Trigger_Fired;
+                }
             }
         }
 
@@ -51,29 +54,55 @@ namespace Cloudflow.Core
             this.Id = Guid.NewGuid();
             this.Name = name;
             this.Steps = new List<Step>();
+            this.Triggers = new List<Trigger>();
         }
         #endregion
 
         #region Private Methods
-        private void _trigger_Fired(Trigger sender, Dictionary<string, object> triggerData)
+        private void Trigger_Fired(Trigger trigger, Dictionary<string, object> triggerData)
         {
-            this.JobLogger.Info(string.Format("A trigger has fired - {0}", sender.Name));
-            OnTriggerFired(sender, triggerData);
+            this.JobLogger.Info(string.Format("A trigger has fired - {0}", trigger.Name));
+            OnTriggerFired(trigger, triggerData);
         }
         #endregion
 
         #region Public Methods
+        public void AddTrigger(Trigger trigger)
+        {
+            trigger.Fired += Trigger_Fired;
+            this.Triggers.Add(trigger);
+        }
+
         public void Start()
         {
             this.JobLogger.Info("Starting the job");
-            this.Trigger.Start();
-            this.JobLogger.Info("Job started");
+            try
+            {
+                foreach (var trigger in this.Triggers)
+                {
+                    trigger.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.JobLogger.Error(ex);
+            }
         }
 
         public void Stop()
         {
             this.JobLogger.Info("Stopping the job");
-            this.Trigger.Stop();
+            try
+            {
+                foreach (var trigger in this.Triggers)
+                {
+                    trigger.Stop();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.JobLogger.Error(ex);
+            }
         }
 
         public static Job CreateTestJob(string name)
@@ -81,7 +110,7 @@ namespace Cloudflow.Core
             var job = new Job(name);
 
             job.Steps.Add(new Step("WriteToFileStep"));
-            job.Trigger = new Trigger("RandomTimeIntervalTrigger");
+            job.AddTrigger(new Trigger("RandomTimeIntervalTrigger"));
 
             return job;
         }
