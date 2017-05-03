@@ -1,13 +1,13 @@
 ﻿
 function HomeIndex() {
-    this.MachineNames = null;
+    this.Agents = null;
 }
 
 $(function () {
     AgentControllerClient.AgentConnected = AgentConnected;
     AgentControllerClient.AgentMessageReceived = AgentMessageReceived;
 
-    AgentControllerClient.ConnectToAgents(HomeIndex.MachineNames);
+    AgentControllerClient.ConnectToAgents(HomeIndex.Agents);
 
     $(".agentControlLink").each(function () {
         $(this).on("click", function (e) {

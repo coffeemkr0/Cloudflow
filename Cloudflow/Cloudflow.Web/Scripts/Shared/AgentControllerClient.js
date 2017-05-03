@@ -5,28 +5,28 @@ function AgentControllerClient() {
     this.AgentConnected = null;
 }
 
-AgentControllerClient.ConnectToAgents = function (machineNames) {
+AgentControllerClient.ConnectToAgents = function (agents) {
 
     AgentControllerClient.AgentControllerProxies = [];
 
-    machineNames.forEach(function (machineName) {
+    agents.forEach(function (agent) {
         //Create a connetion to the agent
-        var connection = $.hubConnection("http://" + machineName + ":80/CloudflowAgent/signalr");
+        var connection = $.hubConnection("http://" + agent.machineName + ":" + agent.port + "/CloudflowAgent/signalr");
 
         //For each hub we care about, create a proxy and sign up for the methods that the server will call to the client
         var agentControllerProxy = connection.createHubProxy("agentController");
         agentControllerProxy.on('addMessage', function (message) {
-            console.log("Message from " + machinName + " - " + message);
+            console.log("Message from " + agent.machineName + " - " + message);
         });
 
         //Open the connection
         connection.start().done(function () {
             //If the connection was successful, store the proxy so we can reuse it
-            AgentControllerClient.AgentControllerProxies.push({ machineName: machineName, proxy: agentControllerProxy });
+            AgentControllerClient.AgentControllerProxies.push({ machineName: agent.machineName, proxy: agentControllerProxy });
             //Let subscribers know that the agent is now connected
-            AgentControllerClient.AgentConnected(machineName);
+            AgentControllerClient.AgentConnected(agent.machineName);
         }).fail(function () {
-            console.log("Could not connect to " + machineName); 
+            console.log("Could not connect to " + agent.machineName);
         });
     });
 };
