@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -56,6 +57,7 @@
   <ItemGroup>
     <Compile Include="AgentStatus.cs" />
     <Compile Include="Communication\TcpIp.cs" />
+    <Compile Include="ConfigurationManagement\AgentLocalConfiguration.cs" />
     <Compile Include="Data\CoreDbContext.cs" />
     <Compile Include="Data\Models\AgentConfiguration.cs" />
     <Compile Include="Job.cs" />

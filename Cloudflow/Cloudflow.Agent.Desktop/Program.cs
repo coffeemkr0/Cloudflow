@@ -4,6 +4,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.ServiceModel.Web;
 using System.Text;
@@ -15,20 +16,28 @@ namespace Cloudflow.Agent.Desktop
     {
         private static readonly log4net.ILog log = 
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static Configuration _agentLocalConfiguration;
 
         static void Main(string[] args)
         {
-            //Load hubs from the Agent.Service assembly so that SignalR will pick them up
-            AppDomain.CurrentDomain.Load(typeof(AgentController).Assembly.FullName);
-
             try
             {
-                //Setup the SignalR messaging service first so that we can let clients know what is going on
-                string url = "http://+:80/CloudflowAgent/";
-                var signalRHost = WebApp.Start<SignalRStartup>(url);
-                log.Info(string.Format("Cloudflow agent started and running at {0}", url));
+                //Load the local agent configuration
+                _agentLocalConfiguration = Core.ConfigurationManagement.AgentLocalConfiguration.GetConfiguration();
 
-                Console.WriteLine("Press Ctrl+C or close this window to stop the services.");
+                //Load hubs from the Agent.Service assembly so that SignalR will pick them up
+                AppDomain.CurrentDomain.Load(typeof(AgentController).Assembly.FullName);
+
+                //Setup the SignalR messaging service first so that we can let clients know what is going on
+                string url = "http://+:" + _agentLocalConfiguration.AppSettings.Settings["Port"].Value +
+                    "/CloudflowAgent/";
+
+                log.Info(string.Format("Starting agent host at {0}", url));
+
+                var signalRHost = WebApp.Start<SignalRStartup>(url);
+                log.Info(string.Format("The agent is hosted and ready to start", url));
+
+                Console.WriteLine("Press Ctrl+C or close this window to stop the agent host.");
                 var result = Console.ReadKey();
                 while (result.Modifiers != ConsoleModifiers.Control && result.Key != ConsoleKey.C)
                 {
@@ -39,7 +48,7 @@ namespace Cloudflow.Agent.Desktop
             }
             catch (System.Reflection.TargetInvocationException targetInvocationEx)
             {
-                log.Warn("Could not start the agent. Make sure that the Cloudflow.Agent.Setup program has been used to register the needed urls.");
+                log.Warn("Could not start the agent host. Make sure that the Cloudflow.Agent.Setup program has been used to setup the agent.");
                 log.Error(targetInvocationEx);
                 Console.ReadKey();
             }

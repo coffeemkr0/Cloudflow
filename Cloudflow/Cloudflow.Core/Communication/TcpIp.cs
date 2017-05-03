@@ -30,6 +30,26 @@ namespace Cloudflow.Core.Communication
                 listener.Stop();
             }
         }
+
+        public static IPAddress GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
+        }
+
+        public static TcpListener GetListener(int port)
+        {
+            TcpListener listener = new TcpListener(GetLocalIPAddress(), port);
+            listener.Start();
+            return listener;
+        }
         #endregion
     }
 }

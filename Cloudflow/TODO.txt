@@ -1,4 +1,3 @@
-Make ports configurable and/or dynamic.
 Make it so that runs have a configurable name format that is generated when the run starts (similar to Tfs builds)
 
 Use a ViewModel for agent configurations instead of using the model directly from the Core assembly
@@ -21,7 +20,7 @@ Keep a history of runs and their logs and status etc.
 
 start making methods extensible
 
-
+Enable the agent to run as a windows server
 
 
 Authenitcaiton - create a user account and only access "my stuff"
