@@ -14,6 +14,8 @@ namespace Cloudflow.Core.Data.Models
         public bool Enabled { get; set; }
 
         public string MachineName { get; set; }
+
+        public int Port { get; set; }
         #endregion
 
         #region Public Methods
@@ -22,7 +24,8 @@ namespace Cloudflow.Core.Data.Models
             return new AgentConfiguration()
             {
                 Enabled = true,
-                MachineName = Environment.MachineName
+                MachineName = Environment.MachineName,
+                Port = Communication.TcpIp.GetLocalAvailablePort()
             };
         }
         #endregion

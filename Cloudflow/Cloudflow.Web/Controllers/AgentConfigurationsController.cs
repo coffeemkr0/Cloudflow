@@ -24,7 +24,7 @@ namespace Cloudflow.Web.Controllers
         // POST: AgentConfigurations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Enabled,MachineName")] AgentConfiguration agentConfiguration)
+        public ActionResult Create([Bind(Include = "Enabled,MachineName,Port")] AgentConfiguration agentConfiguration)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace Cloudflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Enabled,MachineName")] AgentConfiguration agentConfiguration)
+        public ActionResult Edit([Bind(Include = "Id,Enabled,MachineName,Port")] AgentConfiguration agentConfiguration)
         {
             if (ModelState.IsValid)
             {

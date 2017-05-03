@@ -46,6 +46,7 @@
             <table class="table table-striped table-bordered">
                 <tr>
                     <th>Machine Name</th>
+                    <th>Port</th>
                     <th>Status</th>
                     <th></th>
                     <th></th>
@@ -55,6 +56,7 @@
                 {
                     <tr>
                         <td>@agent.MachineName</td>
+                        <td>@agent.Port</td>
                         <td id="agentStatus-@agent.MachineName">
                             @if (!agent.Enabled)
                             {

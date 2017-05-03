@@ -1,6 +1,8 @@
 Make ports configurable and/or dynamic.
 Make it so that runs have a configurable name format that is generated when the run starts (similar to Tfs builds)
 
+Use a ViewModel for agent configurations instead of using the model directly from the Core assembly
+
 Triggers starting other triggers:
 	For example, a trigger that watches for folders being created in a watch folder
 	This trigger being fired Starts another trigger that watches for files that are created in the new folder
