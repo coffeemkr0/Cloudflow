@@ -1,4 +1,3 @@
-Allow a list of triggers instead of a single trigger per job
 Make ports configurable and/or dynamic.
 Make it so that runs have a configurable name format that is generated when the run starts (similar to Tfs builds)
 
