@@ -27,16 +27,14 @@ function AgentStatusUpdated(machineName, status) {
 function AgentControlClicked(e) {
     var $item = $(e.target);
     var machineName = $item.attr("data-machinename");
-    if ($item.text() == "Start") {
+    if ($item.text() === "Start") {
         AgentControllerClient.StartAgent(machineName, function () {
-            SetAgentStatusText(machineName, status);
-            SetAgentControlText(machineName, status);
+            UpdateAgentStatus(machineName);
         });
     }
     else {
         AgentControllerClient.StopAgent(machineName, function () {
-            SetAgentStatusText(machineName, status);
-            SetAgentControlText(machineName, status);
+            UpdateAgentStatus(machineName);
         });
     }
     
@@ -62,12 +60,9 @@ function SetAgentStatusText(machineName, status) {
                 $element.text("Starting");
                 break;
             case 2:
-                $element.text("Idle");
+                $element.text("Running");
                 break;
             case 3:
-                $element.text("Processing " + status.Runs);
-                break;
-            case 4:
                 $element.text("Stopping");
                 break;
         }
@@ -79,32 +74,19 @@ function SetAgentStatusText(machineName, status) {
 
 function SetAgentControlText(machineName, status) {
     var $element = $("#agentControl-" + machineName);
-    var currentText = $element.text();
 
     if (status !== null) {
         switch (status.Status) {
             case 0:
-                if (currentText !== "Start") {
-                    $element.text("Start");
-                }
-                break;
-            case 2:
-            case 3:
-                if (currentText !== "Stop") {
-                    $element.text("Stop");
-                }
+                $element.text("Start");
                 break;
             default:
-                if (currentText !== "Stop") {
-                    $element.text("");
-                }
+                $element.text("Stop");
                 break;
         }
     }
     else {
-        if (currentText !== "Stop") {
-            $element.text("");
-        }
+        $element.text("");
     }
 }
 

@@ -14,6 +14,7 @@ namespace Cloudflow.Agent.Service.Hubs
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Agent _agent;
+        private static object _agentSynch = new object();
 
         #region Private Methods
         private void _agent_StatusChanged(AgentStatus status)
@@ -35,7 +36,7 @@ namespace Cloudflow.Agent.Service.Hubs
                     };
                 }
 
-                return _agent.GetStatus();
+                return _agent.AgentStatus;
             }
             catch (Exception ex)
             {
@@ -49,14 +50,16 @@ namespace Cloudflow.Agent.Service.Hubs
         {
             try
             {
-                if(_agent == null)
+                lock (_agentSynch)
                 {
-                    _logger.Info("Creating a test agent");
-                    _agent = Agent.CreateTestAgent();
-                    _agent.StatusChanged += _agent_StatusChanged;
+                    if (_agent == null)
+                    {
+                        _logger.Info("Creating a test agent");
+                        _agent = Agent.CreateTestAgent();
+                        _agent.StatusChanged += _agent_StatusChanged;
+                        _agent.Start();
+                    }
                 }
-                
-                _agent.Start();
             }
             catch (Exception ex)
             {
@@ -68,8 +71,14 @@ namespace Cloudflow.Agent.Service.Hubs
         {
             try
             {
-                _agent.Stop();
-                _agent = null;
+                lock (_agentSynch)
+                {
+                    if (_agent != null)
+                    {
+                        _agent.Stop();
+                        _agent = null;
+                    }
+                }
             }
             catch (Exception ex)
             {

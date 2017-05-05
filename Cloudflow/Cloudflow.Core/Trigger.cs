@@ -60,9 +60,7 @@ namespace Cloudflow.Core
 
             if(_timer == null)
             {
-                var interval = _rand.Next(1, 10);
-                this.TriggerLogger.Info(string.Format("Setting timer interval to {0} seconds", interval));
-                _timer = new Timer(interval * 1000);
+                _timer = new Timer(5000);
                 _timer.Elapsed += _timer_Elapsed;
             }
             

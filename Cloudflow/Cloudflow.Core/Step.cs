@@ -9,6 +9,8 @@ namespace Cloudflow.Core
 {
     public class Step
     {
+        private static Random _rand = new Random();
+
         #region Properties
         public Guid Id { get; }
 
@@ -30,19 +32,9 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Execute(Dictionary<string, object> triggerData)
         {
-            this.StepLogger.Info("Executing the step");
-            if (!Directory.Exists("JobOutput"))
-            {
-                Directory.CreateDirectory("JobOutput");
-            }
-            using (StreamWriter sw = new StreamWriter(@"JobOutput\Outputfile.txt", true))
-            {
-                string output = string.Format("{0}[Step] Hello World", DateTime.Now.ToString());
-                this.StepLogger.Debug(string.Format("Writing output to file - {0}", output));
-                sw.WriteLine(output);
-            }
+            this.StepLogger.Info("Executing a test step");
 
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(_rand.Next(1, 3) * 1000);
         }
         #endregion
     }

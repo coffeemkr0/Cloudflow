@@ -14,17 +14,13 @@ namespace Cloudflow.Core
         {
             NotRunning,
             Starting,
-            Idle,
-            Processing,
+            Running,
             Stopping
         }
 
         #region Properties
         [DataMember]
         public AgentStatuses Status { get; set; }
-
-        [DataMember]
-        public string Runs { get; set; }
         #endregion
 
         #region Constructors

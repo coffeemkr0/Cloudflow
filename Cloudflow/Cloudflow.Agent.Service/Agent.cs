@@ -19,12 +19,12 @@ namespace Cloudflow.Agent.Service
         #region Events
         public delegate void StatusChangedEventHandler(AgentStatus status);
         public event StatusChangedEventHandler StatusChanged;
-        protected virtual void OnStatusChanged(AgentStatus status)
+        protected virtual void OnStatusChanged()
         {
             StatusChangedEventHandler temp = StatusChanged;
             if (temp != null)
             {
-                temp(status);
+                temp(this.AgentStatus);
             }
         }
         #endregion
@@ -35,6 +35,21 @@ namespace Cloudflow.Agent.Service
         public TaskScheduler TaskScheduler { get; }
 
         public log4net.ILog AgentLogger { get; }
+
+        private AgentStatus _agentStatus;
+
+        public AgentStatus AgentStatus
+        {
+            get { return _agentStatus; }
+            set
+            {
+                if (_agentStatus != value)
+                {
+                    _agentStatus = value;
+                    OnStatusChanged();
+                }
+            }
+        }
         #endregion
 
         #region Constructors
@@ -45,6 +60,7 @@ namespace Cloudflow.Agent.Service
             this.Jobs = new List<Job>();
             _runTasks = new List<Task>();
             _runs = new List<Run>();
+            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
         #endregion
 
@@ -68,14 +84,12 @@ namespace Cloudflow.Agent.Service
 
             _runTasks.Add(task);
             _runs.Add(run);
-            OnStatusChanged(GetStatus());
 
             Task.Run(() =>
             {
                 task.Wait();
                 _runTasks.Remove(task);
                 _runs.Remove(run);
-                OnStatusChanged(GetStatus());
             });
         }
         #endregion
@@ -91,19 +105,22 @@ namespace Cloudflow.Agent.Service
         {
             this.AgentLogger.Info("Starting agent");
 
-            OnStatusChanged(new AgentStatus { Status = AgentStatus.AgentStatuses.Starting });
+            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Starting };
 
             foreach (var job in this.Jobs)
             {
                 job.Start();
             }
 
-            OnStatusChanged(GetStatus());
+
+            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Running };
         }
 
         public void Stop()
         {
             this.AgentLogger.Info("Stopping agent");
+
+            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Stopping };
 
             foreach (var job in this.Jobs)
             {
@@ -114,8 +131,7 @@ namespace Cloudflow.Agent.Service
             Task.WaitAll(_runTasks.ToArray());
 
             this.AgentLogger.Info("Agent stopped");
-
-            OnStatusChanged(new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning });
+            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
 
         public static Agent CreateTestAgent()
@@ -126,26 +142,6 @@ namespace Cloudflow.Agent.Service
             agent.AddJob(Job.CreateTestJob("Test Job 2"));
 
             return agent;
-        }
-
-        public AgentStatus GetStatus()
-        {
-            if (_runTasks.Count == 0)
-            {
-                return new AgentStatus
-                {
-                    Status = AgentStatus.AgentStatuses.Idle
-                };
-            }
-            else
-            {
-                var status = new AgentStatus
-                {
-                    Status = AgentStatus.AgentStatuses.Processing,
-                    Runs = string.Join(",", _runs.Select(i => i.Name).ToArray())
-                };
-                return status;
-            }
         }
         #endregion
     }
