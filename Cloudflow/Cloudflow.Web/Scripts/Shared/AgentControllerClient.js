@@ -1,8 +1,8 @@
 ﻿
 function AgentControllerClient() {
     this.AgentControllerProxies = null;
-    this.AgentMessageReceived = null
     this.AgentConnected = null;
+    this.AgentStatusUpdated = null;
 }
 
 AgentControllerClient.ConnectToAgents = function (agents) {
@@ -15,8 +15,8 @@ AgentControllerClient.ConnectToAgents = function (agents) {
 
         //For each hub we care about, create a proxy and sign up for the methods that the server will call to the client
         var agentControllerProxy = connection.createHubProxy("agentController");
-        agentControllerProxy.on('addMessage', function (message) {
-            console.log("Message from " + agent.machineName + " - " + message);
+        agentControllerProxy.on('updateStatus', function (status) {
+            AgentControllerClient.AgentStatusUpdated(agent.machineName, status);
         });
 
         //Open the connection
@@ -26,7 +26,7 @@ AgentControllerClient.ConnectToAgents = function (agents) {
             //Let subscribers know that the agent is now connected
             AgentControllerClient.AgentConnected(agent.machineName);
         }).fail(function () {
-            console.log("Could not connect to " + agent.machineName);
+            AgentControllerClient.AgentStatusUpdated(agent.machineName, null);
         });
     });
 };
@@ -71,8 +71,4 @@ AgentControllerClient.GetAgentStatus = function (machineName, callback) {
             callback(null);
         });
     }
-};
-
-AgentControllerClient.AddMessage = function (machineName, message) {
-    this.AgentMessageReceived(machineName, message);
 };

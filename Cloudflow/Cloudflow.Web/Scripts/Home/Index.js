@@ -5,9 +5,8 @@ function HomeIndex() {
 
 $(function () {
     AgentControllerClient.AgentConnected = AgentConnected;
-    AgentControllerClient.AgentMessageReceived = AgentMessageReceived;
-
     AgentControllerClient.ConnectToAgents(HomeIndex.Agents);
+    AgentControllerClient.AgentStatusUpdated = AgentStatusUpdated;
 
     $(".agentControlLink").each(function () {
         $(this).on("click", function (e) {
@@ -17,7 +16,12 @@ $(function () {
 });
 
 function AgentConnected(machineName) {
-    SetStatusText(machineName);
+    UpdateAgentStatus(machineName);
+}
+
+function AgentStatusUpdated(machineName, status) {
+    SetAgentStatusText(machineName, status);
+    SetAgentControlText(machineName, status);
 }
 
 function AgentControlClicked(e) {
@@ -25,45 +29,88 @@ function AgentControlClicked(e) {
     var machineName = $item.attr("data-machinename");
     if ($item.text() == "Start") {
         AgentControllerClient.StartAgent(machineName, function () {
-            SetStatusText(machineName);
-            $item.text("Stop");
+            SetAgentStatusText(machineName, status);
+            SetAgentControlText(machineName, status);
         });
     }
     else {
         AgentControllerClient.StopAgent(machineName, function () {
-            SetStatusText(machineName);
-            $item.text("Start");
+            SetAgentStatusText(machineName, status);
+            SetAgentControlText(machineName, status);
         });
     }
     
     return false;
 }
 
-function AgentMessageReceived(machinName, message) {
-    console.log("Message received from " + machineName + " - " + message);
-}
-
 function StartAgent(machineName) {
     AgentControllerClient.StartAgent(machineName, function () {
-        SetStatusText(machineName);
+        SetAgentStatusText(machineName, status);
+        SetAgentControlText(machineName, status);
     });
 }
 
-function SetStatusText(machineName) {
+function SetAgentStatusText(machineName, status) {
+    var $element = $("#agentStatus-" + machineName);
+
+    if (status !== null) {
+        switch (status.Status) {
+            case 0:
+                $element.text("Not Running");
+                break;
+            case 1:
+                $element.text("Starting");
+                break;
+            case 2:
+                $element.text("Idle");
+                break;
+            case 3:
+                $element.text("Processing " + status.Runs);
+                break;
+            case 4:
+                $element.text("Stopping");
+                break;
+        }
+    }
+    else {
+        $element.text("Unreachable");
+    }
+}
+
+function SetAgentControlText(machineName, status) {
+    var $element = $("#agentControl-" + machineName);
+    var currentText = $element.text();
+
+    if (status !== null) {
+        switch (status.Status) {
+            case 0:
+                if (currentText !== "Start") {
+                    $element.text("Start");
+                }
+                break;
+            case 2:
+            case 3:
+                if (currentText !== "Stop") {
+                    $element.text("Stop");
+                }
+                break;
+            default:
+                if (currentText !== "Stop") {
+                    $element.text("");
+                }
+                break;
+        }
+    }
+    else {
+        if (currentText !== "Stop") {
+            $element.text("");
+        }
+    }
+}
+
+function UpdateAgentStatus(machineName) {
     AgentControllerClient.GetAgentStatus(machineName, function (status) {
-        if (status !== null) {
-            $("#agentStatus-" + machineName).text(status.StatusDisplayText);
-            switch (status.Status) {
-                case 0:
-                    $("#agentControl-" + machineName).text("Start");
-                    break;
-                default:
-                    $("#agentControl-" + machineName).text("Stop");
-                    break;
-            }
-        }
-        else {
-            $("#agentStatus-" + machineName).text("Unreachable");
-        }
+        SetAgentStatusText(machineName, status);
+        SetAgentControlText(machineName, status);
     });
 }

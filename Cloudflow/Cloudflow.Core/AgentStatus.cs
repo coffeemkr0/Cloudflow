@@ -13,8 +13,10 @@ namespace Cloudflow.Core
         public enum AgentStatuses
         {
             NotRunning,
+            Starting,
             Idle,
-            Processing
+            Processing,
+            Stopping
         }
 
         #region Properties
@@ -22,10 +24,14 @@ namespace Cloudflow.Core
         public AgentStatuses Status { get; set; }
 
         [DataMember]
-        public string StatusDisplayText { get; set; }
+        public string Runs { get; set; }
+        #endregion
 
-        [DataMember]
-        public string Message { get; set; }
+        #region Constructors
+        public AgentStatus()
+        {
+
+        }
         #endregion
     }
 }

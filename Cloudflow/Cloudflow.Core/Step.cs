@@ -41,6 +41,8 @@ namespace Cloudflow.Core
                 this.StepLogger.Debug(string.Format("Writing output to file - {0}", output));
                 sw.WriteLine(output);
             }
+
+            System.Threading.Thread.Sleep(2000);
         }
         #endregion
     }

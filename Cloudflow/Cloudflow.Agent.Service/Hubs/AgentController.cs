@@ -15,6 +15,13 @@ namespace Cloudflow.Agent.Service.Hubs
 
         private static Agent _agent;
 
+        #region Private Methods
+        private void _agent_StatusChanged(AgentStatus status)
+        {
+            Clients.All.updateStatus(status);
+        }
+        #endregion
+
         #region Public Methods
         public AgentStatus GetAgentStatus()
         {
@@ -24,16 +31,11 @@ namespace Cloudflow.Agent.Service.Hubs
                 {
                     return new AgentStatus
                     {
-                        Status = AgentStatus.AgentStatuses.NotRunning,
-                        StatusDisplayText = "Not Running"
+                        Status = AgentStatus.AgentStatuses.NotRunning
                     };
                 }
 
-                return new AgentStatus
-                {
-                    Status = AgentStatus.AgentStatuses.Idle,
-                    StatusDisplayText = "Idle"
-                };
+                return _agent.GetStatus();
             }
             catch (Exception ex)
             {
@@ -51,6 +53,7 @@ namespace Cloudflow.Agent.Service.Hubs
                 {
                     _logger.Info("Creating a test agent");
                     _agent = Agent.CreateTestAgent();
+                    _agent.StatusChanged += _agent_StatusChanged;
                 }
                 
                 _agent.Start();
