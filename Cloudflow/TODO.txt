@@ -1,5 +1,5 @@
-Get a real status of what an agent is doing
-Mimich a console view for an agent on the web page
+Create a view of what the agent is actually doing to expand on the Running status.
+
 Add the ability to download an agent - the setup program actually has to be ran first
 	before you can add an agent to the web app so that you can know what port to enter
 Add the ability to test the connection to an agent while adding it to the web app
