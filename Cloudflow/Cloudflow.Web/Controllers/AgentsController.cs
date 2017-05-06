@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Data;
+using Cloudflow.Core.Data.Server;
 using Cloudflow.Web.ViewModels.Agents;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Cloudflow.Web.Controllers
     public class AgentsController : Controller
     {
         #region Module Level Declarations
-        CoreDbContext _databaseContext;
+        ServerDbContext _serverDbContext;
         #endregion
 
         #region Actions
@@ -19,14 +20,14 @@ namespace Cloudflow.Web.Controllers
         public ActionResult Index()
         {
 #if DEBUG
-            _databaseContext = new CoreDbContext(true);
+            _serverDbContext = new ServerDbContext(true);
 #else
-            _databaseContext = new CoreDbContext();
+            _databaseContext = new ServerDbContext();
 #endif
 
             IndexViewModel model = new IndexViewModel();
 
-            model.AgentConfigurations.AddRange(_databaseContext.AgentConfigurations.ToList());
+            model.AgentConfigurations.AddRange(_serverDbContext.AgentConfigurations.ToList());
 
             return View(model);
         }

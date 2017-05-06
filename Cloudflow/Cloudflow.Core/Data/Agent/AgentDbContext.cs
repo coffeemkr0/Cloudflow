@@ -1,4 +1,4 @@
-﻿using Cloudflow.Agent.Service.Data.Models;
+﻿using Cloudflow.Core.Data.Agent.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Agent.Service.Data
+namespace Cloudflow.Core.Data.Agent
 {
     public class AgentDbContext : DbContext
     {

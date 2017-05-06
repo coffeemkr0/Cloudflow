@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Cloudflow.Core.Data.Models;
+using Cloudflow.Core.Data.Server.Models;
 
-namespace Cloudflow.Core.Data
+namespace Cloudflow.Core.Data.Server
 {
-    public class CoreDbContext : DbContext
+    public class ServerDbContext : DbContext
     {
         #region Models
         public DbSet<AgentConfiguration> AgentConfigurations { get; set; }
         #endregion
 
         #region Constructors
-        public CoreDbContext()
+        public ServerDbContext()
         {
 
         }
 
-        public CoreDbContext(bool createTestData) : this()
+        public ServerDbContext(bool createTestData) : this()
         {
             if (createTestData)
             {

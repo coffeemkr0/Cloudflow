@@ -1,4 +1,4 @@
-﻿using Cloudflow.Core.Data.Models;
+﻿using Cloudflow.Core.Data.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

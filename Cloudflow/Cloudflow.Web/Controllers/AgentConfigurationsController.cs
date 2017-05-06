@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cloudflow.Core.Data.Server;
+using Cloudflow.Core.Data.Server.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,14 +8,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Cloudflow.Core.Data;
-using Cloudflow.Core.Data.Models;
 
 namespace Cloudflow.Web.Controllers
 {
     public class AgentConfigurationsController : Controller
     {
-        private CoreDbContext db = new CoreDbContext();
+        private ServerDbContext _serverDbContext = new ServerDbContext();
 
         // GET: AgentConfigurations/Create
         public ActionResult Create()
@@ -28,8 +28,8 @@ namespace Cloudflow.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.AgentConfigurations.Add(agentConfiguration);
-                db.SaveChanges();
+                _serverDbContext.AgentConfigurations.Add(agentConfiguration);
+                _serverDbContext.SaveChanges();
                 return Json(new { success = true });
             }
 
@@ -43,7 +43,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AgentConfiguration agentConfiguration = db.AgentConfigurations.Find(id);
+            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
             if (agentConfiguration == null)
             {
                 return HttpNotFound();
@@ -60,8 +60,8 @@ namespace Cloudflow.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(agentConfiguration).State = EntityState.Modified;
-                db.SaveChanges();
+                _serverDbContext.Entry(agentConfiguration).State = EntityState.Modified;
+                _serverDbContext.SaveChanges();
                 return Json(new { success = true });
             }
             return PartialView("_Edit", agentConfiguration);
@@ -74,7 +74,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AgentConfiguration agentConfiguration = db.AgentConfigurations.Find(id);
+            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
             if (agentConfiguration == null)
             {
                 return HttpNotFound();
@@ -87,9 +87,9 @@ namespace Cloudflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AgentConfiguration agentConfiguration = db.AgentConfigurations.Find(id);
-            db.AgentConfigurations.Remove(agentConfiguration);
-            db.SaveChanges();
+            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
+            _serverDbContext.AgentConfigurations.Remove(agentConfiguration);
+            _serverDbContext.SaveChanges();
             return Json(new { success = true });
         }
 
@@ -97,7 +97,7 @@ namespace Cloudflow.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _serverDbContext.Dispose();
             }
             base.Dispose(disposing);
         }

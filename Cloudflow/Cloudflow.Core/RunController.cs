@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cloudflow.Core.Data.Agent;
+using Cloudflow.Core.Data.Agent.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core
 {
-    /// <summary>
-    /// Represents what happens when a Job's trigger is fired and its steps are executed.
-    /// </summary>
-    public class Run
+    public class RunController
     {
         #region Properties
-        public Guid Id { get; }
-
         public string Name { get; }
 
         public Job Job { get; }
@@ -21,17 +18,22 @@ namespace Cloudflow.Core
         public Dictionary<string, object> Triggerdata { get; }
 
         public log4net.ILog RunLogger { get; }
+
+        public Run Run { get; set; }
+
+        public AgentDbContext AgentDbContext { get; set; }
         #endregion
 
         #region Constructors
-        public Run(string name, Job job, Dictionary<string, object> triggerData)
+        public RunController(string name, Job job, Dictionary<string, object> triggerData)
         {
-            this.RunLogger = log4net.LogManager.GetLogger("Run." + name);
+            this.RunLogger = log4net.LogManager.GetLogger("RunController." + name);
 
-            this.Id = Guid.NewGuid();
             this.Name = name;
             this.Job = job;
             this.Triggerdata = triggerData;
+
+            this.AgentDbContext = new AgentDbContext();
         }
         #endregion
 
@@ -58,10 +60,20 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Start()
         {
-            this.RunLogger.Info(string.Format("Starting run {0} - {1}", this.Name, this.Id));
+            this.RunLogger.Info(string.Format("Starting run {0}", this.Name));
+
             try
             {
                 ExecuteSteps();
+
+                this.Run = new Run
+                {
+                    Name = this.Name,
+                    JobName = this.Job.Name,
+                    DateStarted = DateTime.Now
+                };
+                this.AgentDbContext.Runs.Add(this.Run);
+                this.AgentDbContext.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Cloudflow.Core.Data.Models
+namespace Cloudflow.Core.Data.Server.Models
 {
     public class AgentConfiguration
     {

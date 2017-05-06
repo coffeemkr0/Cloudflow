@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Agent.Service.Data.Models
+namespace Cloudflow.Core.Data.Agent.Models
 {
     public class Run
     {
         #region Properties
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
@@ -18,6 +18,13 @@ namespace Cloudflow.Agent.Service.Data.Models
         public DateTime DateStarted { get; set; }
 
         public DateTime? DateCompleted { get; set; }
+        #endregion
+
+        #region Constructors
+        public Run()
+        {
+            this.Id = Guid.NewGuid();
+        }
         #endregion
     }
 }

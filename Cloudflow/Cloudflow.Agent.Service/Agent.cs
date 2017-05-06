@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using Cloudflow.Agent.Service.Data;
+using Cloudflow.Core.Data.Agent;
 
 namespace Cloudflow.Agent.Service
 {
@@ -14,7 +14,7 @@ namespace Cloudflow.Agent.Service
         #region Private Members
         private int _runCounter = 1;
         private List<Task> _runTasks;
-        private List<Run> _runs;
+        private List<RunController> _runs;
         #endregion
 
         #region Events
@@ -60,7 +60,7 @@ namespace Cloudflow.Agent.Service
 
             this.Jobs = new List<Job>();
             _runTasks = new List<Task>();
-            _runs = new List<Run>();
+            _runs = new List<RunController>();
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
         #endregion
@@ -70,17 +70,7 @@ namespace Cloudflow.Agent.Service
         {
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
 
-            Run run = new Run(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
-
-            //Add the run to the local database
-            AgentDbContext dbContext = new AgentDbContext();
-            dbContext.Runs.Add(new Data.Models.Run
-            {
-                Name = run.Name,
-                JobName = job.Name,
-                DateStarted = DateTime.Now
-            });
-            dbContext.SaveChanges();
+            RunController run = new RunController(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
 
             var task = Task.Run(() =>
             {
