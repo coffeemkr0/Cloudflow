@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Cloudflow.Agent.Service.Data;
 
 namespace Cloudflow.Agent.Service
 {
@@ -70,6 +71,17 @@ namespace Cloudflow.Agent.Service
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
 
             Run run = new Run(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
+
+            //Add the run to the local database
+            AgentDbContext dbContext = new AgentDbContext();
+            dbContext.Runs.Add(new Data.Models.Run
+            {
+                Name = run.Name,
+                JobName = job.Name,
+                DateStarted = DateTime.Now
+            });
+            dbContext.SaveChanges();
+
             var task = Task.Run(() =>
             {
                 try
