@@ -15,7 +15,7 @@
 </header>
 
 <section id="AgentsIndex">
-    <section class="col-sm-4">
+    <section class="col-sm-3">
         <ul class="nav nav-list">
             <li class="nav-header">Agents</li>
             <li class="divider"></li>
@@ -29,50 +29,54 @@
     </section>
     
 
-    <section class="col-sm-8">
+    <section class="col-sm-9">
         <ul class="nav nav-tabs">
             <li>
-                <a href="#">Queued</a>
-                <setion>
-                    <table class="table table-striped table-bordered">
-                        <tr>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>Started</th>
-                        </tr>
-                        @for (int i = 0; i < 10; i++)
-                        {
-                            <tr>
-                                <td>Example of a run Name @i</td>
-                                <td>Test Job</td>
-                                <td>@DateTime.Now.ToString()</td>
-                            </tr>
-                        }
-                    </table>
-                </setion>
+                <a href="#queued" data-toggle="tab">Queued</a>
             </li>
-            <li>
-                <a href="#">Completed</a>
-                <section>
-                    <table class="table table-striped table-bordered">
-                        <tr>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>Sarted</th>
-                            <th>Completed</th>
-                        </tr>
-                        @for (int i = 0; i < 10; i++)
-                        {
-                            <tr>
-                                <td>Example of a run Name @i</td>
-                                <td>Test Job</td>
-                                <td>@((DateTime.Now - TimeSpan.FromMinutes(5)).ToString())</td>
-                                <td>@DateTime.Now.ToString()</td>
-                            </tr>
-                        }
-                    </table>
-                </section>
+            <li class="active">
+                <a href="#completed" data-toggle="tab">Completed</a>
             </li>
         </ul>
+
+        <section class="tab-content clearfix">
+            <setion id="queued" class="tab-pane">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Name</th>
+                        <th>Job</th>
+                        <th>Started</th>
+                    </tr>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <tr>
+                            <td>Example of a run Name @i</td>
+                            <td>Test Job</td>
+                            <td>@DateTime.Now.ToString()</td>
+                        </tr>
+                    }
+                </table>
+            </setion>
+
+            <section id="completed" class="tab-pane active">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Name</th>
+                        <th>Job</th>
+                        <th>Sarted</th>
+                        <th>Completed</th>
+                    </tr>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        <tr>
+                            <td>Example of a run Name @i</td>
+                            <td>Test Job</td>
+                            <td>@((DateTime.Now - TimeSpan.FromMinutes(5)).ToString())</td>
+                            <td>@DateTime.Now.ToString()</td>
+                        </tr>
+                    }
+                </table>
+            </section>
+        </section>
     </section>
 </section>
