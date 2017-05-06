@@ -1,0 +1,26 @@
+﻿@model Cloudflow.Web.ViewModels.Agents.IndexViewModel
+
+@{
+    ViewBag.Title = "Agents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section headScripts {
+    @Scripts.Render("~/bundles/signalr")
+    <script src="~/Scripts/Agents/Index.js"></script>
+}
+
+<h2>Agents</h2>
+
+<section id="AgentsIndex">
+    <ul class="nav nav-list">
+        <li class="nav-header">Agents</li>
+        <li class="divider"></li>
+        <li><a href="#">All</a></li>
+        <li class="divider"></li>
+        @foreach (var agent in Model.AgentConfigurations)
+            {
+            <li><a href="#">@agent.MachineName</a></li>
+        }
+    </ul>
+</section>
