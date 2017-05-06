@@ -58,27 +58,31 @@ namespace Cloudflow.Core
         #endregion
 
         #region Public Methods
-        public void Start()
+        public void ExecuteRun()
         {
             this.RunLogger.Info(string.Format("Starting run {0}", this.Name));
+
+            this.Run = new Run
+            {
+                Name = this.Name,
+                JobName = this.Job.Name,
+                DateStarted = DateTime.Now
+            };
+            this.AgentDbContext.Runs.Add(this.Run);
+            this.AgentDbContext.SaveChanges();
 
             try
             {
                 ExecuteSteps();
-
-                this.Run = new Run
-                {
-                    Name = this.Name,
-                    JobName = this.Job.Name,
-                    DateStarted = DateTime.Now
-                };
-                this.AgentDbContext.Runs.Add(this.Run);
-                this.AgentDbContext.SaveChanges();
             }
             catch (Exception ex)
             {
                 this.RunLogger.Error(ex);
             }
+
+            this.Run.DateCompleted = DateTime.Now;
+            this.AgentDbContext.SaveChanges();
+            this.AgentDbContext.Dispose();
         }
         #endregion
     }

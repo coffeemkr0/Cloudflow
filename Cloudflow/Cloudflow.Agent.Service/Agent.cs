@@ -14,7 +14,7 @@ namespace Cloudflow.Agent.Service
         #region Private Members
         private int _runCounter = 1;
         private List<Task> _runTasks;
-        private List<RunController> _runs;
+        private List<RunController> _runControllers;
         #endregion
 
         #region Events
@@ -60,7 +60,7 @@ namespace Cloudflow.Agent.Service
 
             this.Jobs = new List<Job>();
             _runTasks = new List<Task>();
-            _runs = new List<RunController>();
+            _runControllers = new List<RunController>();
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
         #endregion
@@ -70,13 +70,13 @@ namespace Cloudflow.Agent.Service
         {
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
 
-            RunController run = new RunController(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
+            RunController runController = new RunController(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
 
             var task = Task.Run(() =>
             {
                 try
                 {
-                    run.Start();
+                    runController.ExecuteRun();
                 }
                 catch (Exception ex)
                 {
@@ -85,13 +85,13 @@ namespace Cloudflow.Agent.Service
             });
 
             _runTasks.Add(task);
-            _runs.Add(run);
+            _runControllers.Add(runController);
 
             Task.Run(() =>
             {
                 task.Wait();
                 _runTasks.Remove(task);
-                _runs.Remove(run);
+                _runControllers.Remove(runController);
             });
         }
         #endregion
