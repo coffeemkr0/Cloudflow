@@ -109,8 +109,8 @@ namespace Cloudflow.Core
         {
             var job = new Job(name);
 
-            job.Steps.Add(new Step("WriteToFileStep"));
-            job.AddTrigger(new Trigger("RandomTimeIntervalTrigger"));
+            job.Steps.Add(new Step("TestStep"));
+            job.AddTrigger(new Trigger("TimerTrigger"));
 
             return job;
         }

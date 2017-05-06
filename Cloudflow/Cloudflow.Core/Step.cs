@@ -32,7 +32,7 @@ namespace Cloudflow.Core
         #region Public Methods
         public void Execute(Dictionary<string, object> triggerData)
         {
-            this.StepLogger.Info("Executing a test step");
+            this.StepLogger.Info("Hello World from inside the test step's code!");
 
             System.Threading.Thread.Sleep(_rand.Next(1, 3) * 1000);
         }

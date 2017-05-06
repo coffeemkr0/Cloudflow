@@ -40,10 +40,11 @@ namespace Cloudflow.Core
         {
             foreach (var step in this.Job.Steps)
             {
-                this.RunLogger.Info(string.Format("Executing step {0}", step.Name));
+                this.RunLogger.Info(string.Format("Begin step {0}", step.Name));
                 try
                 {
                     step.Execute(this.Triggerdata);
+                    this.RunLogger.Info(string.Format("End step {0}", step.Name));
                 }
                 catch (Exception ex)
                 {
