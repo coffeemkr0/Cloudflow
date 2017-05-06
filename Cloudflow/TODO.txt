@@ -1,3 +1,6 @@
+Change the Run Id in the agent Run model to a Guid that matches the Id that gets generated when a run is created
+Update the existing run record when a run ends (complete or fail)
+
 Create a view of what the agent is actually doing to expand on the Running status.
 
 Add the ability to download an agent - the setup program actually has to be ran first
