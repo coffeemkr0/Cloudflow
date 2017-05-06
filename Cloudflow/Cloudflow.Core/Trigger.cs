@@ -60,7 +60,7 @@ namespace Cloudflow.Core
 
             if(_timer == null)
             {
-                _timer = new Timer(5000);
+                _timer = new Timer(500);
                 _timer.Elapsed += _timer_Elapsed;
             }
             
