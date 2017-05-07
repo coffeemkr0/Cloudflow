@@ -93,13 +93,13 @@ AgentControllerClient.GetQueuedRuns = function (machineName, callback) {
     }
 };
 
-AgentControllerClient.GetCompletedRuns = function (machineName, callback) {
+AgentControllerClient.GetCompletedRuns = function (machineName, startIndex, pageSize, callback) {
     var agentControllerProxyEntry = AgentControllerClient.AgentControllerProxies.find(function (item) {
         return item.machineName === machineName;
     });
 
     if (typeof agentControllerProxyEntry !== "undefined") {
-        agentControllerProxyEntry.proxy.invoke("getCompletedRuns").done(function (runs) {
+        agentControllerProxyEntry.proxy.invoke("getCompletedRuns", startIndex, pageSize).done(function (runs) {
             callback(runs);
         }).fail(function (error) {
             callback(null);

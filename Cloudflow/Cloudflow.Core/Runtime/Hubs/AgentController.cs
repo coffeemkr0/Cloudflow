@@ -88,13 +88,14 @@ namespace Cloudflow.Core.Runtime.Hubs
             }
         }
 
-        public List<Run> GetCompletedRuns()
+        public List<Run> GetCompletedRuns(int startIndex, int pageSize)
         {
             using (AgentDbContext agentDbContext = new AgentDbContext())
             {
                 return agentDbContext.Runs.Where(i => i.Status == Run.RunStatuses.Completed ||
                     i.Status == Run.RunStatuses.Completed || i.Status == Run.RunStatuses.Failed ||
-                    i.Status == Run.RunStatuses.Canceled).ToList();
+                    i.Status == Run.RunStatuses.Canceled).OrderByDescending(i => i.DateEnded)
+                    .Skip(startIndex).Take(pageSize).ToList();
             }
         }
 
