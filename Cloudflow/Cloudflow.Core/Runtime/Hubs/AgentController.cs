@@ -92,7 +92,18 @@ namespace Cloudflow.Core.Runtime.Hubs
         {
             using (AgentDbContext agentDbContext = new AgentDbContext())
             {
-                return agentDbContext.Runs.ToList();
+                return agentDbContext.Runs.Where(i => i.Status == Run.RunStatuses.Completed ||
+                    i.Status == Run.RunStatuses.Completed || i.Status == Run.RunStatuses.Failed ||
+                    i.Status == Run.RunStatuses.Canceled).ToList();
+            }
+        }
+
+        public List<Run> GetQueuedRuns()
+        {
+            using (AgentDbContext agentDbContext = new AgentDbContext())
+            {
+                return agentDbContext.Runs.Where(i => i.Status == Run.RunStatuses.Queued ||
+                    i.Status == Run.RunStatuses.Running).ToList();
             }
         }
         #endregion

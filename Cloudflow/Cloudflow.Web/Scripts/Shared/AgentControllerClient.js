@@ -79,6 +79,20 @@ AgentControllerClient.GetAgentStatus = function (machineName, callback) {
     }
 };
 
+AgentControllerClient.GetQueuedRuns = function (machineName, callback) {
+    var agentControllerProxyEntry = AgentControllerClient.AgentControllerProxies.find(function (item) {
+        return item.machineName === machineName;
+    });
+
+    if (typeof agentControllerProxyEntry !== "undefined") {
+        agentControllerProxyEntry.proxy.invoke("getQueuedRuns").done(function (runs) {
+            callback(runs);
+        }).fail(function (error) {
+            callback(null);
+        });
+    }
+};
+
 AgentControllerClient.GetCompletedRuns = function (machineName, callback) {
     var agentControllerProxyEntry = AgentControllerClient.AgentControllerProxies.find(function (item) {
         return item.machineName === machineName;
