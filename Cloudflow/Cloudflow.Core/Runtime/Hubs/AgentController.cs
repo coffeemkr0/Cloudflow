@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Agent.Service.Hubs
+namespace Cloudflow.Core.Runtime.Hubs
 {
     public class AgentController : Hub
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Cloudflow.Core.Data.Agent;
 
-namespace Cloudflow.Agent.Service
+namespace Cloudflow.Core.Runtime
 {
     public class Agent
     {

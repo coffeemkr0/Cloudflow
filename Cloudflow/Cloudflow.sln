@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.Setup", "Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.Desktop", "Cloudflow.Agent.Desktop\Cloudflow.Agent.Desktop.csproj", "{58160A70-66A4-475E-8B6C-EA64E0168A0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.Service", "Cloudflow.Agent.Service\Cloudflow.Agent.Service.csproj", "{59E67648-8B6C-43C7-B7F9-0FF853A4D893}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.WindowsService", "Cloudflow.Agent.WindowsService\Cloudflow.Agent.WindowsService.csproj", "{5EB8C218-86B0-4592-8A21-92996953C71B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4B44D5C6-EBF6-4F6E-8BDA-A36198C71AC6}"
@@ -44,10 +42,6 @@ Global
 		{58160A70-66A4-475E-8B6C-EA64E0168A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58160A70-66A4-475E-8B6C-EA64E0168A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58160A70-66A4-475E-8B6C-EA64E0168A0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59E67648-8B6C-43C7-B7F9-0FF853A4D893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59E67648-8B6C-43C7-B7F9-0FF853A4D893}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59E67648-8B6C-43C7-B7F9-0FF853A4D893}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59E67648-8B6C-43C7-B7F9-0FF853A4D893}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5EB8C218-86B0-4592-8A21-92996953C71B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EB8C218-86B0-4592-8A21-92996953C71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB8C218-86B0-4592-8A21-92996953C71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
