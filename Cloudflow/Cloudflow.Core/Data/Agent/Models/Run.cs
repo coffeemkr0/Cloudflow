@@ -8,6 +8,18 @@ namespace Cloudflow.Core.Data.Agent.Models
 {
     public class Run
     {
+        #region Enums
+        public enum RunStatuses
+        {
+            Queued,
+            Running,
+            Completed,
+            CompletedWithWarnings,
+            Canceled,
+            Failed
+        }
+        #endregion
+
         #region Properties
         public Guid Id { get; set; }
 
@@ -15,9 +27,13 @@ namespace Cloudflow.Core.Data.Agent.Models
 
         public string JobName { get; set; }
 
-        public DateTime DateStarted { get; set; }
+        public DateTime DateQueued { get; set; }
 
-        public DateTime? DateCompleted { get; set; }
+        public DateTime? DateStarted { get; set; }
+
+        public DateTime? DateEnded { get; set; }
+
+        public RunStatuses Status { get; set; }
         #endregion
 
         #region Constructors

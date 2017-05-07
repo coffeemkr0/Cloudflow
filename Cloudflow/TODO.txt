@@ -1,8 +1,8 @@
 Get list of queued runs from agents
-Add a run status field - Queued, Running, Canceled, Completed, Failed, Completed With Warnings
 Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
 Select a run in progress and view the console output
-
+Add the ability to cancel a run
+Make the run controller queue runs so that we can implement a max count for runs in progress
 Cleanup namespaces and class names in projects to make them more clear what they are for.
 
 

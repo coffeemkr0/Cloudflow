@@ -34,6 +34,16 @@ namespace Cloudflow.Core
             this.Triggerdata = triggerData;
 
             this.AgentDbContext = new AgentDbContext();
+
+            this.Run = new Run
+            {
+                Name = this.Name,
+                JobName = this.Job.Name,
+                DateQueued = DateTime.Now,
+                Status = Run.RunStatuses.Queued
+            };
+            this.AgentDbContext.Runs.Add(this.Run);
+            this.AgentDbContext.SaveChanges();
         }
         #endregion
 
@@ -62,25 +72,22 @@ namespace Cloudflow.Core
         {
             this.RunLogger.Info(string.Format("Starting run {0}", this.Name));
 
-            this.Run = new Run
-            {
-                Name = this.Name,
-                JobName = this.Job.Name,
-                DateStarted = DateTime.Now
-            };
-            this.AgentDbContext.Runs.Add(this.Run);
+            this.Run.DateStarted = DateTime.Now;
+            this.Run.Status = Run.RunStatuses.Running;
             this.AgentDbContext.SaveChanges();
 
             try
             {
                 ExecuteSteps();
+                this.Run.Status = Run.RunStatuses.Completed;
             }
             catch (Exception ex)
             {
+                this.Run.Status = Run.RunStatuses.Failed;
                 this.RunLogger.Error(ex);
             }
 
-            this.Run.DateCompleted = DateTime.Now;
+            this.Run.DateEnded = DateTime.Now;
             this.AgentDbContext.SaveChanges();
             this.AgentDbContext.Dispose();
         }
