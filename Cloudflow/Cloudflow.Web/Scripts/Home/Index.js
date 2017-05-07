@@ -1,11 +1,7 @@
 ﻿
-function HomeIndex() {
-    this.Agents = null;
-}
-
 $(function () {
     AgentControllerClient.AgentConnected = AgentConnected;
-    AgentControllerClient.ConnectToAgents(HomeIndex.Agents);
+    AgentControllerClient.ConnectToAgents();
     AgentControllerClient.AgentStatusUpdated = AgentStatusUpdated;
 
     $(".agentControlLink").each(function () {

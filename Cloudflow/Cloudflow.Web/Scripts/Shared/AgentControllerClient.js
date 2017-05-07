@@ -3,13 +3,14 @@ function AgentControllerClient() {
     this.AgentControllerProxies = null;
     this.AgentConnected = null;
     this.AgentStatusUpdated = null;
+    this.Agents = null;
 }
 
-AgentControllerClient.ConnectToAgents = function (agents) {
+AgentControllerClient.ConnectToAgents = function () {
 
     AgentControllerClient.AgentControllerProxies = [];
 
-    agents.forEach(function (agent) {
+    AgentControllerClient.Agents.forEach(function (agent) {
         //Create a connetion to the agent
         var connection = $.hubConnection("http://" + agent.machineName + ":" + agent.port + "/CloudflowAgent/signalr");
 
@@ -23,10 +24,15 @@ AgentControllerClient.ConnectToAgents = function (agents) {
         connection.start().done(function () {
             //If the connection was successful, store the proxy so we can reuse it
             AgentControllerClient.AgentControllerProxies.push({ machineName: agent.machineName, proxy: agentControllerProxy });
+
             //Let subscribers know that the agent is now connected
-            AgentControllerClient.AgentConnected(agent.machineName);
+            if (AgentControllerClient.AgentConnected) {
+                AgentControllerClient.AgentConnected(agent.machineName);
+            }
         }).fail(function () {
-            AgentControllerClient.AgentStatusUpdated(agent.machineName, null);
+            if (AgentControllerClient.AgentStatusUpdated !== null) {
+                AgentControllerClient.AgentStatusUpdated(agent.machineName, null);
+            }
         });
     });
 };
@@ -67,6 +73,20 @@ AgentControllerClient.GetAgentStatus = function (machineName, callback) {
     if (typeof agentControllerProxyEntry !== "undefined") {
         agentControllerProxyEntry.proxy.invoke("getAgentStatus").done(function (status) {
             callback(status);
+        }).fail(function (error) {
+            callback(null);
+        });
+    }
+};
+
+AgentControllerClient.GetCompletedRuns = function (machineName, callback) {
+    var agentControllerProxyEntry = AgentControllerClient.AgentControllerProxies.find(function (item) {
+        return item.machineName === machineName;
+    });
+
+    if (typeof agentControllerProxyEntry !== "undefined") {
+        agentControllerProxyEntry.proxy.invoke("getCompletedRuns").done(function (runs) {
+            callback(runs);
         }).fail(function (error) {
             callback(null);
         });

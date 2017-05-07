@@ -1,4 +1,6 @@
 ﻿using Cloudflow.Core;
+using Cloudflow.Core.Data.Agent;
+using Cloudflow.Core.Data.Agent.Models;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -83,6 +85,14 @@ namespace Cloudflow.Agent.Service.Hubs
             catch (Exception ex)
             {
                 _logger.Fatal(ex);
+            }
+        }
+
+        public List<Run> GetCompletedRuns()
+        {
+            using (AgentDbContext agentDbContext = new AgentDbContext())
+            {
+                return agentDbContext.Runs.ToList();
             }
         }
         #endregion

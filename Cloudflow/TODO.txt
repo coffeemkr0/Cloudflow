@@ -1,3 +1,5 @@
+Cleanup projects and make consistent naming conventions on classes in the different layers
+
 Change the Run Id in the agent Run model to a Guid that matches the Id that gets generated when a run is created
 Update the existing run record when a run ends (complete or fail)
 

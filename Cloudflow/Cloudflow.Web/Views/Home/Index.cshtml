@@ -10,11 +10,11 @@
 }
 
 <script>
-    HomeIndex.Agents = [];
+    AgentControllerClient.Agents = [];
     @foreach (var agent in Model.AgentConfigurations)
     {
     <text>
-    HomeIndex.Agents.push({ machineName: "@agent.MachineName", port: @agent.Port });
+    AgentControllerClient.Agents.push({ machineName: "@agent.MachineName", port: @agent.Port });
     </text>
     }
 </script>
