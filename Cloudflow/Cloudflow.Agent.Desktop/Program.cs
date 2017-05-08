@@ -1,4 +1,5 @@
-﻿using Cloudflow.Core.Runtime.Hubs;
+﻿using Cloudflow.Core.ConfigurationManagement;
+using Cloudflow.Core.Runtime.Hubs;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 using System;

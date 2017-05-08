@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Agent.Desktop
+namespace Cloudflow.Core.ConfigurationManagement
 {
     public class SignalRStartup
     {
