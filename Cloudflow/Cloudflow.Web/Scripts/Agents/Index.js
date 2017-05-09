@@ -17,7 +17,7 @@ function AgentConnected(machineName) {
 
     AgentControllerClient.GetCompletedRuns(machineName, 0, 100, function (runs) {
         runs.forEach(function (run) {
-            AddCompletedRun(run);
+            AppendCompletedRun(run);
         });
     });
 }
@@ -53,7 +53,7 @@ function AddOrUpdateRunInProgress(run) {
         $element.find(".runGrid__statusColumn").text(GetStatusText(run));
     }
     else{
-        $('#queuedGrid > tbody:last-child').append('<tr data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
+        $('#queuedGrid > tbody:last-child').append('<tr class="runGrid__runEntry" data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
             '</td><td>' + run.Name + '</td><td>' + run.JobName + '</td><td>' +
             run.DateStarted + '</td></tr>');
     }
@@ -64,10 +64,27 @@ function RemoveRunInProgress(run) {
     $element.remove();
 }
 
-function AddCompletedRun(run) {
-    $('#completedGrid > tbody:last-child').append('<tr data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
+function AppendCompletedRun(run) {
+    $('#completedGrid > tbody:last-child').append('<tr class="runGrid__runEntry" data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
         '</td><td>' + run.Name + '</td><td>' + run.JobName + '</td><td>' +
         run.DateStarted + '</td><td>' + run.DateEnded + '</td></tr>');
+}
+
+function InsertCompletedRun(run, maxPageCount) {
+    var $runEntries = $('#completedGrid').find(".runGrid__runEntry");
+
+    if ($runEntries.length === 0) {
+        AppendCompletedRun(run);
+    }
+    else {
+        $('<tr class="runGrid__runEntry" data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
+            '</td><td>' + run.Name + '</td><td>' + run.JobName + '</td><td>' +
+            run.DateStarted + '</td><td>' + run.DateEnded + '</td></tr>').insertBefore($runEntries.first());
+
+        if ($runEntries.length >= maxPageCount) {
+            $runEntries.last().remove();
+        }
+    }
 }
 
 function RunStatusChanged(machineName, run){
@@ -78,7 +95,7 @@ function RunStatusChanged(machineName, run){
             break;
         default:
             RemoveRunInProgress(run);
-            AddCompletedRun(run);
+            InsertCompletedRun(run, 100);
             break;
     }
 }
