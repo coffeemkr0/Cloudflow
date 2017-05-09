@@ -23,6 +23,11 @@ namespace Cloudflow.Core.Runtime.Hubs
         {
             Clients.All.updateStatus(status);
         }
+
+        private void _agent_RunStatusChanged(Run run)
+        {
+            Clients.All.runStatusChanged(run);
+        }
         #endregion
 
         #region Public Methods
@@ -56,9 +61,14 @@ namespace Cloudflow.Core.Runtime.Hubs
                 {
                     if (_agent == null)
                     {
-                        _logger.Info("Creating a test agent");
+                        _logger.Info("Starting agent");
+
+                        //TODO:This eventually needs to load jobs
                         _agent = Agent.CreateTestAgent();
+
                         _agent.StatusChanged += _agent_StatusChanged;
+                        _agent.RunStatusChanged += _agent_RunStatusChanged;
+
                         _agent.Start();
                     }
                 }

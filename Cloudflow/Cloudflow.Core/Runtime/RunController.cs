@@ -6,10 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core
+namespace Cloudflow.Core.Runtime
 {
     public class RunController
     {
+        #region Events
+        public event RunStatusChangedEventHandler RunStatusChanged;
+        protected virtual void OnRunStatusChanged()
+        {
+            RunStatusChangedEventHandler temp = RunStatusChanged;
+            if (temp != null)
+            {
+                temp(this.Run);
+            }
+        }
+        #endregion
+
         #region Properties
         public string Name { get; }
 
@@ -44,6 +56,8 @@ namespace Cloudflow.Core
             };
             this.AgentDbContext.Runs.Add(this.Run);
             this.AgentDbContext.SaveChanges();
+
+            OnRunStatusChanged();
         }
         #endregion
 
@@ -75,6 +89,7 @@ namespace Cloudflow.Core
             this.Run.DateStarted = DateTime.Now;
             this.Run.Status = Run.RunStatuses.Running;
             this.AgentDbContext.SaveChanges();
+            OnRunStatusChanged();
 
             try
             {
@@ -90,6 +105,7 @@ namespace Cloudflow.Core
             this.Run.DateEnded = DateTime.Now;
             this.AgentDbContext.SaveChanges();
             this.AgentDbContext.Dispose();
+            OnRunStatusChanged();
         }
         #endregion
     }

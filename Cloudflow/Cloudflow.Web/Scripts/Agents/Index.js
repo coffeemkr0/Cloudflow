@@ -1,13 +1,17 @@
 ﻿
 $(function () {
+    //Sign up for events from the agent controller client
     AgentControllerClient.AgentConnected = AgentConnected;
+    AgentControllerClient.RunStatusChanged = RunStatusChanged;
+
+    //Connect to the agents
     AgentControllerClient.ConnectToAgents();
 });
 
 function AgentConnected(machineName) {
     AgentControllerClient.GetQueuedRuns(machineName, function (runs) {
         runs.forEach(function (run) {
-            AddQueuedRun(run);
+            AddOrUpdateRunInProgress(run);
         });
     });
 
@@ -43,14 +47,38 @@ function GetStatusText(run) {
     return "";
 }
 
-function AddQueuedRun(run) {
-    $("#queuedGrid > tbody:last-child").append("<tr><td>" + GetStatusText(run) + "</td><td>" +
-        run.Name + "</td><td>" + run.JobName + "</td><td>" +
-        run.DateStarted + "</td></tr>");
+function AddOrUpdateRunInProgress(run) {
+    var $element = $('#queuedGrid > tr[data-id="' + run.Id + '"]');
+    if ($element.length !== 0) {
+        $element.find(".runGrid__statusColumn").text(GetStatusText(run));
+    }
+    else{
+        $('#queuedGrid > tbody:last-child').append('<tr data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
+            '</td><td>' + run.Name + '</td><td>' + run.JobName + '</td><td>' +
+            run.DateStarted + '</td></tr>');
+    }
+}
+
+function RemoveRunInProgress(run) {
+    var $element = $('#queuedGrid').find('tr[data-id="' + run.Id + '"]');
+    $element.remove();
 }
 
 function AddCompletedRun(run) {
-    $("#completedGrid > tbody:last-child").append("<tr><td>" + GetStatusText(run) + "</td><td>" +
-        run.Name + "</td><td>" + run.JobName + "</td><td>" +
-        run.DateStarted + "</td><td>" + run.DateEnded + "</td></tr>");
+    $('#completedGrid > tbody:last-child').append('<tr data-id="' + run.Id + '"><td class="runGrid__statusColumn">' + GetStatusText(run) +
+        '</td><td>' + run.Name + '</td><td>' + run.JobName + '</td><td>' +
+        run.DateStarted + '</td><td>' + run.DateEnded + '</td></tr>');
+}
+
+function RunStatusChanged(machineName, run){
+    switch (run.Status) {
+        case 0:
+        case 1:
+            AddOrUpdateRunInProgress(run);
+            break;
+        default:
+            RemoveRunInProgress(run);
+            AddCompletedRun(run);
+            break;
+    }
 }

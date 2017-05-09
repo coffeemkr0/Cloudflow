@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Cloudflow.Core.Data.Agent;
+using Cloudflow.Core.Data.Agent.Models;
 
 namespace Cloudflow.Core.Runtime
 {
@@ -26,6 +27,16 @@ namespace Cloudflow.Core.Runtime
             if (temp != null)
             {
                 temp(this.AgentStatus);
+            }
+        }
+
+        public event RunStatusChangedEventHandler RunStatusChanged;
+        protected virtual void OnRunStatusChanged(Run run)
+        {
+            RunStatusChangedEventHandler temp = RunStatusChanged;
+            if (temp != null)
+            {
+                temp(run);
             }
         }
         #endregion
@@ -71,6 +82,7 @@ namespace Cloudflow.Core.Runtime
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
 
             RunController runController = new RunController(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
+            runController.RunStatusChanged += RunController_RunStatusChanged;
 
             var task = Task.Run(() =>
             {
@@ -93,6 +105,11 @@ namespace Cloudflow.Core.Runtime
                 _runTasks.Remove(task);
                 _runControllers.Remove(runController);
             });
+        }
+
+        private void RunController_RunStatusChanged(Run run)
+        {
+            OnRunStatusChanged(run);
         }
         #endregion
 

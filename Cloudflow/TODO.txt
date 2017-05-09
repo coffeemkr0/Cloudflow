@@ -1,9 +1,9 @@
 Add live updates on the Queued and Completed runs list
 Select a run in progress and view the console output
 Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
+Add the ability for runs to be queued instead of starting immediately
 Add the ability to cancel a run
 
-Make the run controller queue runs so that we can implement a max count for runs in progress
 Cleanup namespaces and class names in projects to make them more clear what they are for.
 
 

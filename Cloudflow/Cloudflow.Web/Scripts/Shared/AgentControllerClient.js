@@ -1,9 +1,13 @@
 ﻿
 function AgentControllerClient() {
+    //Properties
+    this.Agents = null;
     this.AgentControllerProxies = null;
+
+    //Events
     this.AgentConnected = null;
     this.AgentStatusUpdated = null;
-    this.Agents = null;
+    this.RunStatusChanged = null;
 }
 
 AgentControllerClient.ConnectToAgents = function () {
@@ -14,10 +18,15 @@ AgentControllerClient.ConnectToAgents = function () {
         //Create a connetion to the agent
         var connection = $.hubConnection("http://" + agent.machineName + ":" + agent.port + "/CloudflowAgent/signalr");
 
-        //For each hub we care about, create a proxy and sign up for the methods that the server will call to the client
+        //Get the hub proxy object from the connection
         var agentControllerProxy = connection.createHubProxy("agentController");
+
+        //Create methods that the server can call on the client
         agentControllerProxy.on('updateStatus', function (status) {
-            AgentControllerClient.AgentStatusUpdated(agent.machineName, status);
+            AgentControllerClient.OnAgentStatusUpdated(agent.machineName, status);
+        });
+        agentControllerProxy.on('runStatusChanged', function (run) {
+            AgentControllerClient.OnRunStatusChanged(agent.machineName, run);
         });
 
         //Open the connection
@@ -26,13 +35,9 @@ AgentControllerClient.ConnectToAgents = function () {
             AgentControllerClient.AgentControllerProxies.push({ machineName: agent.machineName, proxy: agentControllerProxy });
 
             //Let subscribers know that the agent is now connected
-            if (AgentControllerClient.AgentConnected) {
-                AgentControllerClient.AgentConnected(agent.machineName);
-            }
+            AgentControllerClient.OnAgentConnected(agent.machineName);
         }).fail(function () {
-            if (AgentControllerClient.AgentStatusUpdated !== null) {
-                AgentControllerClient.AgentStatusUpdated(agent.machineName, null);
-            }
+            AgentControllerClient.OnAgentStatusUpdated(agent.machineName, null);
         });
     });
 };
@@ -106,3 +111,21 @@ AgentControllerClient.GetCompletedRuns = function (machineName, startIndex, page
         });
     }
 };
+
+AgentControllerClient.OnAgentConnected = function (machineName) {
+    if (AgentControllerClient.AgentConnected !== null) {
+        AgentControllerClient.AgentConnected(machineName);
+    }
+}
+
+AgentControllerClient.OnAgentStatusUpdated = function (machineName, status) {
+    if (AgentControllerClient.AgentStatusUpdated !== null) {
+        AgentControllerClient.AgentStatusUpdated(machineName, status);
+    }
+}
+
+AgentControllerClient.OnRunStatusChanged = function (machineName, run) {
+    if (AgentControllerClient.RunStatusChanged !== null) {
+        AgentControllerClient.RunStatusChanged(machineName, run);
+    }
+}

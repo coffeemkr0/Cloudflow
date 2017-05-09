@@ -106,9 +106,10 @@
     <Compile Include="Job.cs" />
     <Compile Include="MessageEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RunController.cs" />
+    <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
+    <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Trigger.cs" />
   </ItemGroup>
