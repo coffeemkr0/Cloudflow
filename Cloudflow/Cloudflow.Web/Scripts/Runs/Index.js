@@ -6,7 +6,15 @@ $(function () {
 
     //Connect to the agents
     AgentControllerClient.ConnectToAgents();
+
+    $("#runGrids").on("click", ".runGrid__runEntry", function () {
+        RunGridRowClicked($(this));
+    });
 });
+
+function RunGridRowClicked(e){
+    e.addClass('active').siblings().removeClass('active');
+}
 
 function AgentConnected(machineName) {
     AgentControllerClient.GetQueuedRuns(machineName, function (runs) {
