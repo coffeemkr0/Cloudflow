@@ -111,10 +111,13 @@ namespace Cloudflow.Core.Runtime.Hubs
 
         public List<Run> GetQueuedRuns()
         {
-            using (AgentDbContext agentDbContext = new AgentDbContext())
+            if(_agent == null)
             {
-                return agentDbContext.Runs.Where(i => i.Status == Run.RunStatuses.Queued ||
-                    i.Status == Run.RunStatuses.Running).ToList();
+                return new List<Run>();
+            }
+            else
+            {
+                return _agent.GetQueuedRuns();
             }
         }
         #endregion

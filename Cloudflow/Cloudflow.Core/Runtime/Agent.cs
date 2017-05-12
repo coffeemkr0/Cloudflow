@@ -153,6 +153,14 @@ namespace Cloudflow.Core.Runtime
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
 
+        public List<Run> GetQueuedRuns()
+        {
+            lock (_runControllers)
+            {
+                return _runControllers.Select(i => i.Run).ToList();
+            }
+        }
+
         public static Agent CreateTestAgent()
         {
             Agent agent = new Agent();
