@@ -1,6 +1,6 @@
 ﻿using Cloudflow.Core.Data;
 using Cloudflow.Core.Data.Server;
-using Cloudflow.Web.ViewModels.Agents;
+using Cloudflow.Web.ViewModels.Runs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +9,14 @@ using System.Web.Mvc;
 
 namespace Cloudflow.Web.Controllers
 {
-    public class AgentsController : Controller
+    public class RunsController : Controller
     {
         #region Module Level Declarations
         ServerDbContext _serverDbContext;
         #endregion
 
         #region Actions
-        // GET: Agents
+        // GET: Runs
         public ActionResult Index()
         {
 #if DEBUG

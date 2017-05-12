@@ -1,13 +1,13 @@
-﻿@model Cloudflow.Web.ViewModels.Agents.IndexViewModel
+﻿@model Cloudflow.Web.ViewModels.Runs.IndexViewModel
 
 @{
-    ViewBag.Title = "Agent Explorer";
+    ViewBag.Title = "Runs Explorer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section headScripts {
     @Scripts.Render("~/bundles/signalr")
-    <script src="~/Scripts/Agents/Index.js"></script>
+    <script src="~/Scripts/Runs/Index.js"></script>
 }
 
 <script>

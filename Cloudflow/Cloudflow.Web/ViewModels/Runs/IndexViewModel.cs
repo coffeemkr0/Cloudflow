@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Cloudflow.Web.ViewModels.Agents
+namespace Cloudflow.Web.ViewModels.Runs
 {
     public class IndexViewModel
     {
