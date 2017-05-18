@@ -20,6 +20,26 @@ namespace Cloudflow.Core.Runtime
                 temp(this.Run);
             }
         }
+
+        public event RunOutputEventHandler RunOutput;
+        protected virtual void OnRunOutput(OutputEventLevels level, string message)
+        {
+            RunOutputEventHandler temp = RunOutput;
+            if (temp != null)
+            {
+                temp(this.Run, level, message);
+            }
+        }
+
+        public event StepOutputEventHandler StepOutput;
+        protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(step, level, message);
+            }
+        }
         #endregion
 
         #region Properties
@@ -67,17 +87,28 @@ namespace Cloudflow.Core.Runtime
             foreach (var step in this.Job.Steps)
             {
                 this.RunLogger.Info(string.Format("Begin step {0}", step.Name));
+
                 try
                 {
-                    step.Execute(this.Triggerdata);
+                    OnRunOutput(OutputEventLevels.Info, $"Execute step {step.Name}");
+
+                    StepController stepController = new StepController(step, this.Triggerdata);
+                    stepController.StepOutput += StepController_StepOutput;
+                    stepController.ExecuteStep();
+
                     this.RunLogger.Info(string.Format("End step {0}", step.Name));
                 }
                 catch (Exception ex)
                 {
                     this.RunLogger.Error(ex);
-                    throw;
+                    OnRunOutput(OutputEventLevels.Error, ex.ToString());
                 }
             }
+        }
+
+        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
+        {
+            OnStepOutput(step, level, message);
         }
         #endregion
 

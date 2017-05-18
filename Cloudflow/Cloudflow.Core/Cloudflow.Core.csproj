@@ -106,10 +106,14 @@
     <Compile Include="Job.cs" />
     <Compile Include="MessageEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\OutputEventLevels.cs" />
     <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
+    <Compile Include="Runtime\RunOutputEventHandler.cs" />
     <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
+    <Compile Include="Runtime\StepController.cs" />
+    <Compile Include="Runtime\StepOutputEventHandler.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Trigger.cs" />
   </ItemGroup>
