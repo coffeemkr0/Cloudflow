@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core
+namespace Cloudflow.Core.Framework
 {
     public class Job
     {
