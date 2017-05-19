@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\IJob.cs" />
+    <Compile Include="Framework\ITrigger.cs" />
     <Compile Include="Runtime\AgentStatus.cs" />
     <Compile Include="Communication\TcpIp.cs" />
     <Compile Include="ConfigurationManagement\AgentLocalConfiguration.cs" />
@@ -115,7 +116,7 @@
     <Compile Include="Runtime\StepController.cs" />
     <Compile Include="Runtime\StepOutputEventHandler.cs" />
     <Compile Include="Framework\Step.cs" />
-    <Compile Include="Framework\Trigger.cs" />
+    <Compile Include="Framework\TestTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

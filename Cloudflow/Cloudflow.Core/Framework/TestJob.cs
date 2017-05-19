@@ -10,7 +10,7 @@ namespace Cloudflow.Core.Framework
     {
         #region Events
         public event JobTriggerFiredEventHandler JobTriggerFired;
-        protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
+        protected virtual void OnTriggerFired(ITrigger trigger, Dictionary<string, object> triggerData)
         {
             JobTriggerFiredEventHandler temp = JobTriggerFired;
             if (temp != null)
@@ -25,9 +25,9 @@ namespace Cloudflow.Core.Framework
 
         public string Name { get; set; }
 
-        private List<Trigger> _triggers;
+        private List<ITrigger> _triggers;
 
-        public List<Trigger> Triggers
+        public List<ITrigger> Triggers
         {
             get { return _triggers; }
             set
@@ -53,18 +53,18 @@ namespace Cloudflow.Core.Framework
             this.Id = Guid.NewGuid();
             this.Name = name;
             this.Steps = new List<Step>();
-            this.Triggers = new List<Trigger>();
+            this.Triggers = new List<ITrigger>();
 
             this.Steps.Add(new Step("TestStep"));
 
-            var trigger = new Trigger("TimerTrigger");
+            var trigger = new TestTrigger("TimerTrigger");
             trigger.Fired += Trigger_Fired;
             this.Triggers.Add(trigger);
         }
         #endregion
 
         #region Private Methods
-        private void Trigger_Fired(Trigger trigger, Dictionary<string, object> triggerData)
+        private void Trigger_Fired(ITrigger trigger, Dictionary<string, object> triggerData)
         {
             this.JobLogger.Info(string.Format("A trigger has fired - {0}", trigger.Name));
             OnTriggerFired(trigger, triggerData);

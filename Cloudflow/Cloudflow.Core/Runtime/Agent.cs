@@ -78,7 +78,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-        private void Job_JobTriggerFired(IJob job, Trigger trigger, Dictionary<string, object> triggerData)
+        private void Job_JobTriggerFired(IJob job, ITrigger trigger, Dictionary<string, object> triggerData)
         {
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
 

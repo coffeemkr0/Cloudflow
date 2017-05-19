@@ -7,21 +7,18 @@ using System.Threading.Tasks;
 namespace Cloudflow.Core.Framework
 {
     #region Event Handlers
-    public delegate void JobTriggerFiredEventHandler(IJob job, ITrigger trigger, Dictionary<string, object> triggerData);
+    public delegate void TriggerFiredEventHandler(ITrigger trigger, Dictionary<string, object> triggerData);
     #endregion
-
-    public interface IJob
+    public interface ITrigger
     {
         #region Events
-        event JobTriggerFiredEventHandler JobTriggerFired;
+        event TriggerFiredEventHandler Fired;
         #endregion
 
         #region Properties
-        Guid Id { get; set; }
+        Guid Id { get; }
 
-        string Name { get; set; }
-
-        List<Step> Steps { get; set; }
+        string Name { get; }
         #endregion
 
         #region Methods

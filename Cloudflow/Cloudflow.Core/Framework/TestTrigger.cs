@@ -6,15 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Cloudflow.Core
+namespace Cloudflow.Core.Framework
 {
-    public class Trigger
+    public class TestTrigger : ITrigger
     {
         Timer _timer;
         static Random _rand = new Random();
 
         #region Events
-        public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);
         public event TriggerFiredEventHandler Fired;
         protected virtual void OnFired(Dictionary<string, object> triggerData)
         {
@@ -36,7 +35,7 @@ namespace Cloudflow.Core
         #endregion
 
         #region Constructors
-        public Trigger(string name)
+        public TestTrigger(string name)
         {
             this.TriggerLogger = log4net.LogManager.GetLogger("Trigger." + name);
 
