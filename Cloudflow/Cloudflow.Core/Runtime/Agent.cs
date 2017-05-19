@@ -43,7 +43,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        public List<Job> Jobs { get; }
+        public List<IJob> Jobs { get; }
 
         public TaskScheduler TaskScheduler { get; }
 
@@ -70,7 +70,7 @@ namespace Cloudflow.Core.Runtime
         {
             this.AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
 
-            this.Jobs = new List<Job>();
+            this.Jobs = new List<IJob>();
             _runTasks = new List<Task>();
             _runControllers = new List<RunController>();
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
@@ -78,7 +78,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-        private void Job_JobTriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
+        private void Job_JobTriggerFired(IJob job, Trigger trigger, Dictionary<string, object> triggerData)
         {
             this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
 
@@ -115,7 +115,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Public Methods
-        public void AddJob(Job job)
+        public void AddJob(IJob job)
         {
             job.JobTriggerFired += Job_JobTriggerFired;
             this.Jobs.Add(job);
@@ -166,8 +166,8 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            agent.AddJob(Job.CreateTestJob("Test Job 1"));
-            agent.AddJob(Job.CreateTestJob("Test Job 2"));
+            agent.AddJob(new TestJob("Test Job 1"));
+            agent.AddJob(new TestJob("Test Job 2"));
 
             return agent;
         }

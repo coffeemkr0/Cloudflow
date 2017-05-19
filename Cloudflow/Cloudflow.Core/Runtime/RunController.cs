@@ -46,7 +46,7 @@ namespace Cloudflow.Core.Runtime
         #region Properties
         public string Name { get; }
 
-        public Job Job { get; }
+        public IJob Job { get; }
 
         public Dictionary<string, object> Triggerdata { get; }
 
@@ -58,7 +58,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Constructors
-        public RunController(string name, Job job, Dictionary<string, object> triggerData)
+        public RunController(string name, IJob job, Dictionary<string, object> triggerData)
         {
             this.RunLogger = log4net.LogManager.GetLogger("RunController." + name);
 

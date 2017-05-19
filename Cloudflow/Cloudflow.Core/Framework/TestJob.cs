@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Framework
 {
-    public class Job
+    public class TestJob : IJob
     {
         #region Events
-        public delegate void JobTriggerFiredEventHandler(Job job, Trigger trigger, Dictionary<string, object> triggerData);
         public event JobTriggerFiredEventHandler JobTriggerFired;
         protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
         {
@@ -47,7 +46,7 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Constructors
-        public Job(string name)
+        public TestJob(string name)
         {
             this.JobLogger = log4net.LogManager.GetLogger("Job." + name);
 
@@ -55,6 +54,12 @@ namespace Cloudflow.Core.Framework
             this.Name = name;
             this.Steps = new List<Step>();
             this.Triggers = new List<Trigger>();
+
+            this.Steps.Add(new Step("TestStep"));
+
+            var trigger = new Trigger("TimerTrigger");
+            trigger.Fired += Trigger_Fired;
+            this.Triggers.Add(trigger);
         }
         #endregion
 
@@ -67,12 +72,6 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Public Methods
-        public void AddTrigger(Trigger trigger)
-        {
-            trigger.Fired += Trigger_Fired;
-            this.Triggers.Add(trigger);
-        }
-
         public void Start()
         {
             this.JobLogger.Info("Starting the job");
@@ -103,16 +102,6 @@ namespace Cloudflow.Core.Framework
             {
                 this.JobLogger.Error(ex);
             }
-        }
-
-        public static Job CreateTestJob(string name)
-        {
-            var job = new Job(name);
-
-            job.Steps.Add(new Step("TestStep"));
-            job.AddTrigger(new Trigger("TimerTrigger"));
-
-            return job;
         }
         #endregion
     }
