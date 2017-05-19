@@ -12,6 +12,7 @@ namespace Cloudflow.Core.Runtime
     public class RunController
     {
         #region Events
+        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged()
         {
@@ -33,7 +34,7 @@ namespace Cloudflow.Core.Runtime
         }
 
         public event StepOutputEventHandler StepOutput;
-        protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
+        protected virtual void OnStepOutput(IStep step, OutputEventLevels level, string message)
         {
             StepOutputEventHandler temp = StepOutput;
             if (temp != null)
@@ -93,9 +94,7 @@ namespace Cloudflow.Core.Runtime
                 {
                     OnRunOutput(OutputEventLevels.Info, $"Execute step {step.Name}");
 
-                    StepController stepController = new StepController(step, this.Triggerdata);
-                    stepController.StepOutput += StepController_StepOutput;
-                    stepController.ExecuteStep();
+                    step.Execute();
 
                     this.RunLogger.Info(string.Format("End step {0}", step.Name));
                 }
@@ -107,7 +106,7 @@ namespace Cloudflow.Core.Runtime
             }
         }
 
-        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
+        private void StepController_StepOutput(IStep step, OutputEventLevels level, string message)
         {
             OnStepOutput(step, level, message);
         }

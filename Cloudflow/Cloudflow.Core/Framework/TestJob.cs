@@ -21,9 +21,9 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Properties
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
         private List<ITrigger> _triggers;
 
@@ -40,7 +40,7 @@ namespace Cloudflow.Core.Framework
             }
         }
 
-        public List<Step> Steps { get; set; }
+        public List<IStep> Steps { get; set; }
 
         public log4net.ILog JobLogger { get; }
         #endregion
@@ -52,10 +52,10 @@ namespace Cloudflow.Core.Framework
 
             this.Id = Guid.NewGuid();
             this.Name = name;
-            this.Steps = new List<Step>();
+            this.Steps = new List<IStep>();
             this.Triggers = new List<ITrigger>();
 
-            this.Steps.Add(new Step("TestStep"));
+            this.Steps.Add(new TestStep("TestStep"));
 
             var trigger = new TestTrigger("TimerTrigger");
             trigger.Fired += Trigger_Fired;

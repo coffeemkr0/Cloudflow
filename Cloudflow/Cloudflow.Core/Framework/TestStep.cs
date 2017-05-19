@@ -1,48 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Framework
 {
-    public class StepController
+    public class TestStep : IStep
     {
+        private static Random _rand = new Random();
+
         #region Events
         public event StepOutputEventHandler StepOutput;
-        protected virtual void OnStepOutput(OutputEventLevels level, string message)
-        {
-            StepOutputEventHandler temp = StepOutput;
-            if (temp != null)
-            {
-                temp(this.Step, level, message);
-            }
-        }
-        #endregion
-
-        #region Private Members
-        private static Random _rand = new Random();
         #endregion
 
         #region Properties
-        public Step Step { get; }
+        public Guid Id { get; }
 
-        public Dictionary<string, object> TriggerData { get; }
+        public string Name { get; }
 
         public log4net.ILog StepLogger { get; }
         #endregion
 
         #region Constructors
-        public StepController(Step step, Dictionary<string, object> triggerData)
+        public TestStep(string name)
         {
-            this.Step = step;
-            this.TriggerData = triggerData;
-            this.StepLogger = log4net.LogManager.GetLogger("StepController." + this.Step.Name);
+            this.Id = Guid.NewGuid();
+            this.Name = name;
+            this.StepLogger = log4net.LogManager.GetLogger("StepController." + this.Name);
+        }
+        #endregion
+
+        #region  Private Methods
+        protected virtual void OnStepOutput(OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(this, level, message);
+            }
         }
         #endregion
 
         #region Public Methods
-        public void ExecuteStep()
+        public void Execute()
         {
             try
             {

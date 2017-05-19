@@ -7,27 +7,23 @@ using System.Threading.Tasks;
 namespace Cloudflow.Core.Framework
 {
     #region Event Handlers
-    public delegate void JobTriggerFiredEventHandler(IJob job, ITrigger trigger, Dictionary<string, object> triggerData);
+    public delegate void StepOutputEventHandler(IStep step, OutputEventLevels level, string message);
     #endregion
 
-    public interface IJob
+    public interface IStep
     {
         #region Events
-        event JobTriggerFiredEventHandler JobTriggerFired;
+        event StepOutputEventHandler StepOutput;
         #endregion
 
         #region Properties
         Guid Id { get; }
 
         string Name { get; }
-
-        List<IStep> Steps { get; set; }
         #endregion
 
         #region Methods
-        void Start();
-
-        void Stop();
+        void Execute();
         #endregion
     }
 }
