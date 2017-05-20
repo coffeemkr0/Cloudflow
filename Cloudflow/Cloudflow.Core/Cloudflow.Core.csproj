@@ -96,7 +96,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgentStatus.cs" />
+    <Compile Include="Framework\IJob.cs" />
+    <Compile Include="Framework\IStep.cs" />
+    <Compile Include="Framework\ITrigger.cs" />
+    <Compile Include="Runtime\AgentStatus.cs" />
     <Compile Include="Communication\TcpIp.cs" />
     <Compile Include="ConfigurationManagement\AgentLocalConfiguration.cs" />
     <Compile Include="ConfigurationManagement\SignalRStartup.cs" />
@@ -104,15 +107,15 @@
     <Compile Include="Data\Agent\Models\Run.cs" />
     <Compile Include="Data\Server\ServerDbContext.cs" />
     <Compile Include="Data\Server\Models\AgentConfiguration.cs" />
-    <Compile Include="Job.cs" />
-    <Compile Include="MessageEventHandler.cs" />
+    <Compile Include="Framework\TestJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Framework\OutputEventLevels.cs" />
     <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
     <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
-    <Compile Include="Step.cs" />
-    <Compile Include="Trigger.cs" />
+    <Compile Include="Framework\TestStep.cs" />
+    <Compile Include="Framework\TestTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

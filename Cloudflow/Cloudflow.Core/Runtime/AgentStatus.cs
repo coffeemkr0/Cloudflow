@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core
+namespace Cloudflow.Core.Runtime
 {
     [DataContract]
     public class AgentStatus

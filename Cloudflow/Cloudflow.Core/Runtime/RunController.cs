@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
+using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Cloudflow.Core.Runtime
     public class RunController
     {
         #region Events
+        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged()
         {
@@ -20,12 +22,32 @@ namespace Cloudflow.Core.Runtime
                 temp(this.Run);
             }
         }
+
+        public event RunOutputEventHandler RunOutput;
+        protected virtual void OnRunOutput(OutputEventLevels level, string message)
+        {
+            RunOutputEventHandler temp = RunOutput;
+            if (temp != null)
+            {
+                temp(this.Run, level, message);
+            }
+        }
+
+        public event StepOutputEventHandler StepOutput;
+        protected virtual void OnStepOutput(IStep step, OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(step, level, message);
+            }
+        }
         #endregion
 
         #region Properties
         public string Name { get; }
 
-        public Job Job { get; }
+        public IJob Job { get; }
 
         public Dictionary<string, object> Triggerdata { get; }
 
@@ -37,7 +59,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Constructors
-        public RunController(string name, Job job, Dictionary<string, object> triggerData)
+        public RunController(string name, IJob job, Dictionary<string, object> triggerData)
         {
             this.RunLogger = log4net.LogManager.GetLogger("RunController." + name);
 
@@ -67,17 +89,26 @@ namespace Cloudflow.Core.Runtime
             foreach (var step in this.Job.Steps)
             {
                 this.RunLogger.Info(string.Format("Begin step {0}", step.Name));
+
                 try
                 {
-                    step.Execute(this.Triggerdata);
+                    OnRunOutput(OutputEventLevels.Info, $"Execute step {step.Name}");
+
+                    step.Execute();
+
                     this.RunLogger.Info(string.Format("End step {0}", step.Name));
                 }
                 catch (Exception ex)
                 {
                     this.RunLogger.Error(ex);
-                    throw;
+                    OnRunOutput(OutputEventLevels.Error, ex.ToString());
                 }
             }
+        }
+
+        private void StepController_StepOutput(IStep step, OutputEventLevels level, string message)
+        {
+            OnStepOutput(step, level, message);
         }
         #endregion
 
