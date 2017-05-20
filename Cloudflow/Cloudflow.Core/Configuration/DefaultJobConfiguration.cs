@@ -17,7 +17,8 @@ namespace Cloudflow.Core.Configuration
             };
 
             configuration.TriggerConfigurations.Add(DefaultTriggerConfiguration.CreateTestTriggerConfigurtion("Test Trigger"));
-            configuration.StepConfigurations.Add(DefaultStepConfiguration.CreateTestStepConfiguration("Test Step"));
+            configuration.StepConfigurations.Add(DefaultStepConfiguration.CreateTestStepConfiguration("Test Step 1"));
+            configuration.StepConfigurations.Add(DefaultStepConfiguration.CreateTestStepConfiguration("Test Step 2"));
 
             return configuration;
         }

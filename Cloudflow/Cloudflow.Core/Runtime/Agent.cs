@@ -170,8 +170,8 @@ namespace Cloudflow.Core.Runtime
             var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 1");
             agent.AddJob(new TestJob(jobConfiguration));
 
-            var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
-            agent.AddJob(new TestJob(jobConfiguration2));
+            //var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
+            //agent.AddJob(new TestJob(jobConfiguration2));
 
             return agent;
         }
