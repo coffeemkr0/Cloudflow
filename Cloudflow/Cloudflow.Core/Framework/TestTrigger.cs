@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloudflow.Core.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,39 +9,19 @@ using System.Timers;
 
 namespace Cloudflow.Core.Framework
 {
-    public class TestTrigger : ITrigger
+    public class TestTrigger : Trigger
     {
         Timer _timer;
         static Random _rand = new Random();
 
-        #region Events
-        public event TriggerFiredEventHandler Fired;
-        protected virtual void OnFired(Dictionary<string, object> triggerData)
-        {
-            TriggerFiredEventHandler temp = Fired;
-            if (temp != null)
-            {
-                this.TriggerLogger.Info("Trigger fired");
-                temp(this, triggerData);
-            }
-        }
-        #endregion
-
         #region Properties
-        public Guid Id { get; }
 
-        public string Name { get; }
-
-        public log4net.ILog TriggerLogger { get; }
         #endregion
 
         #region Constructors
-        public TestTrigger(string name)
+        public TestTrigger(TriggerConfiguration triggerConfiguration) : base(triggerConfiguration)
         {
-            this.TriggerLogger = log4net.LogManager.GetLogger("Trigger." + name);
 
-            this.Id = Guid.NewGuid();
-            this.Name = name;
         }
         #endregion
 
@@ -48,27 +29,27 @@ namespace Cloudflow.Core.Framework
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Dictionary<string, object> triggerData = new Dictionary<string, object>();
-            OnFired(triggerData);
+            OnTriggerFired(triggerData);
         }
         #endregion
 
         #region Public Methods
-        public void Start()
+        public override void Start()
         {
-            this.TriggerLogger.Info("Starting the trigger");
+            this.TriggerLogger.Info("Starting the timer");
 
             if(_timer == null)
             {
-                _timer = new Timer(500);
+                _timer = new Timer(3000);
                 _timer.Elapsed += _timer_Elapsed;
             }
             
             _timer.Enabled = true;
         }
 
-        public void Stop()
+        public override void Stop()
         {
-            this.TriggerLogger.Info("Stopping the trigger");
+            this.TriggerLogger.Info("Stopping the timer");
             _timer.Enabled = false;
         }
         #endregion

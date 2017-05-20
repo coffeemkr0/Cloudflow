@@ -34,7 +34,7 @@ namespace Cloudflow.Agent.Setup
         {
             try
             {
-                _agentLocalConfiguration = Core.ConfigurationManagement.AgentLocalConfiguration.GetConfiguration();
+                _agentLocalConfiguration = Core.Configuration.AgentLocalConfiguration.GetConfiguration();
 
                 //Check to see if the agent has been configured previously and set the port
                 _portSetting = _agentLocalConfiguration.AppSettings.Settings["Port"];

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloudflow.Core.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,44 +8,23 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Framework
 {
-    public class TestStep : IStep
+    public class TestStep : Step
     {
         private static Random _rand = new Random();
 
-        #region Events
-        public event StepOutputEventHandler StepOutput;
-        #endregion
-
-        #region Properties
-        public Guid Id { get; }
-
-        public string Name { get; }
-
-        public log4net.ILog StepLogger { get; }
-        #endregion
-
         #region Constructors
-        public TestStep(string name)
+        public TestStep(StepConfiguration stepConfiguration) : base(stepConfiguration)
         {
-            this.Id = Guid.NewGuid();
-            this.Name = name;
-            this.StepLogger = log4net.LogManager.GetLogger("StepController." + this.Name);
+
         }
         #endregion
 
         #region  Private Methods
-        protected virtual void OnStepOutput(OutputEventLevels level, string message)
-        {
-            StepOutputEventHandler temp = StepOutput;
-            if (temp != null)
-            {
-                temp(this, level, message);
-            }
-        }
+
         #endregion
 
         #region Public Methods
-        public void Execute()
+        public override void Execute()
         {
             try
             {

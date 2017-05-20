@@ -34,7 +34,7 @@ namespace Cloudflow.Core.Runtime
         }
 
         public event StepOutputEventHandler StepOutput;
-        protected virtual void OnStepOutput(IStep step, OutputEventLevels level, string message)
+        protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
         {
             StepOutputEventHandler temp = StepOutput;
             if (temp != null)
@@ -47,7 +47,7 @@ namespace Cloudflow.Core.Runtime
         #region Properties
         public string Name { get; }
 
-        public IJob Job { get; }
+        public Job Job { get; }
 
         public Dictionary<string, object> Triggerdata { get; }
 
@@ -59,7 +59,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Constructors
-        public RunController(string name, IJob job, Dictionary<string, object> triggerData)
+        public RunController(string name, Job job, Dictionary<string, object> triggerData)
         {
             this.RunLogger = log4net.LogManager.GetLogger("RunController." + name);
 
@@ -72,7 +72,7 @@ namespace Cloudflow.Core.Runtime
             this.Run = new Run
             {
                 Name = this.Name,
-                JobName = this.Job.Name,
+                JobName = this.Job.JobConfiguration.Name,
                 DateQueued = DateTime.Now,
                 Status = Run.RunStatuses.Queued
             };
@@ -88,15 +88,15 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (var step in this.Job.Steps)
             {
-                this.RunLogger.Info(string.Format("Begin step {0}", step.Name));
+                this.RunLogger.Info(string.Format("Begin step {0}", step.StepConfiguration.Name));
 
                 try
                 {
-                    OnRunOutput(OutputEventLevels.Info, $"Execute step {step.Name}");
+                    OnRunOutput(OutputEventLevels.Info, $"Execute step {step.StepConfiguration.Name}");
 
                     step.Execute();
 
-                    this.RunLogger.Info(string.Format("End step {0}", step.Name));
+                    this.RunLogger.Info(string.Format("End step {0}", step.StepConfiguration.Name));
                 }
                 catch (Exception ex)
                 {
@@ -106,7 +106,7 @@ namespace Cloudflow.Core.Runtime
             }
         }
 
-        private void StepController_StepOutput(IStep step, OutputEventLevels level, string message)
+        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
         {
             OnStepOutput(step, level, message);
         }

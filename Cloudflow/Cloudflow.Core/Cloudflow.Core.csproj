@@ -96,13 +96,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\IJob.cs" />
-    <Compile Include="Framework\IStep.cs" />
-    <Compile Include="Framework\ITrigger.cs" />
+    <Compile Include="Configuration\DefaultJobConfiguration.cs" />
+    <Compile Include="Configuration\DefaultStepConfiguration.cs" />
+    <Compile Include="Configuration\DefaultTriggerConfiguration.cs" />
+    <Compile Include="Configuration\JobConfiguration.cs" />
+    <Compile Include="Configuration\StepConfiguration.cs" />
+    <Compile Include="Configuration\TriggerConfiguration.cs" />
+    <Compile Include="Framework\Job.cs" />
+    <Compile Include="Framework\Step.cs" />
+    <Compile Include="Framework\Trigger.cs" />
     <Compile Include="Runtime\AgentStatus.cs" />
     <Compile Include="Communication\TcpIp.cs" />
-    <Compile Include="ConfigurationManagement\AgentLocalConfiguration.cs" />
-    <Compile Include="ConfigurationManagement\SignalRStartup.cs" />
+    <Compile Include="Configuration\AgentLocalConfiguration.cs" />
+    <Compile Include="Configuration\SignalRStartup.cs" />
     <Compile Include="Data\Agent\AgentDbContext.cs" />
     <Compile Include="Data\Agent\Models\Run.cs" />
     <Compile Include="Data\Server\ServerDbContext.cs" />

@@ -1,4 +1,4 @@
-﻿using Cloudflow.Core.ConfigurationManagement;
+﻿using Cloudflow.Core.Configuration;
 using Cloudflow.Core.Runtime.Hubs;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
@@ -23,7 +23,7 @@ namespace Cloudflow.Agent.Desktop
             try
             {
                 //Load the local agent configuration
-                _agentLocalConfiguration = Core.ConfigurationManagement.AgentLocalConfiguration.GetConfiguration();
+                _agentLocalConfiguration = Core.Configuration.AgentLocalConfiguration.GetConfiguration();
 
                 //Load hubs from the Agent.Service assembly so that SignalR will pick them up
                 AppDomain.CurrentDomain.Load(typeof(AgentController).Assembly.FullName);

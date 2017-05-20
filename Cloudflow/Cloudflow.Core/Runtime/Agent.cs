@@ -8,6 +8,7 @@ using System.Threading;
 using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Framework;
+using Cloudflow.Core.Configuration;
 
 namespace Cloudflow.Core.Runtime
 {
@@ -43,7 +44,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        public List<IJob> Jobs { get; }
+        public List<Job> Jobs { get; }
 
         public TaskScheduler TaskScheduler { get; }
 
@@ -70,7 +71,7 @@ namespace Cloudflow.Core.Runtime
         {
             this.AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
 
-            this.Jobs = new List<IJob>();
+            this.Jobs = new List<Job>();
             _runTasks = new List<Task>();
             _runControllers = new List<RunController>();
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
@@ -78,11 +79,11 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-        private void Job_JobTriggerFired(IJob job, ITrigger trigger, Dictionary<string, object> triggerData)
+        private void Job_JobTriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
         {
-            this.AgentLogger.Info(string.Format("Job trigger fired - Job:{0} Trigger{1}", job.Name, trigger.Name));
+            this.AgentLogger.Info(string.Format("Trigger fired - Job:{0} Trigger:{1}", job.JobConfiguration.Name, trigger.TriggerConfiguration.Name));
 
-            RunController runController = new RunController(string.Format("{0} Run {1}", job.Name, _runCounter++), job, triggerData);
+            RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.Name, _runCounter++), job, triggerData);
             runController.RunStatusChanged += RunController_RunStatusChanged;
 
             var task = Task.Run(() =>
@@ -115,9 +116,9 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Public Methods
-        public void AddJob(IJob job)
+        public void AddJob(Job job)
         {
-            job.JobTriggerFired += Job_JobTriggerFired;
+            job.TriggerFired += Job_JobTriggerFired;
             this.Jobs.Add(job);
         }
 
@@ -166,8 +167,11 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            agent.AddJob(new TestJob("Test Job 1"));
-            agent.AddJob(new TestJob("Test Job 2"));
+            var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 1");
+            agent.AddJob(new TestJob(jobConfiguration));
+
+            var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
+            agent.AddJob(new TestJob(jobConfiguration2));
 
             return agent;
         }

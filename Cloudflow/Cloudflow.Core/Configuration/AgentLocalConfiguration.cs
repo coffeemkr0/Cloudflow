@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.ConfigurationManagement
+namespace Cloudflow.Core.Configuration
 {
     public static class AgentLocalConfiguration
     {
         #region Public Methods
-        public static Configuration GetConfiguration()
+        public static System.Configuration.Configuration GetConfiguration()
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                             "Cloudflow", "Agent", "Agent.config");
 
-            Configuration agentConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
-                new ExeConfigurationFileMap { ExeConfigFilename = path }, ConfigurationUserLevel.None);
+            System.Configuration.Configuration agentConfiguration = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(
+                new System.Configuration.ExeConfigurationFileMap { ExeConfigFilename = path },
+                System.Configuration.ConfigurationUserLevel.None);
 
             return agentConfiguration;
         }
