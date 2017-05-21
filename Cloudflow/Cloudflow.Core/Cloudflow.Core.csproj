@@ -102,7 +102,9 @@
     <Compile Include="Configuration\JobConfiguration.cs" />
     <Compile Include="Configuration\StepConfiguration.cs" />
     <Compile Include="Configuration\TriggerConfiguration.cs" />
+    <Compile Include="Framework\IJobMetaData.cs" />
     <Compile Include="Framework\Job.cs" />
+    <Compile Include="Runtime\JobController.cs" />
     <Compile Include="Framework\Step.cs" />
     <Compile Include="Framework\Trigger.cs" />
     <Compile Include="Runtime\AgentStatus.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
     <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
+    <Compile Include="Runtime\TriggerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

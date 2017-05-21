@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions
 {
     [Export(typeof(Job))]
+    [ExportMetadata("Name","TestJob")]
     public class TestJob : Job
     {
         #region Properties
@@ -17,7 +18,8 @@ namespace Cloudflow.Extensions
         #endregion
 
         #region Constructors
-        public TestJob(JobConfiguration jobConfiguration) : base(jobConfiguration)
+        [ImportingConstructor]
+        public TestJob([Import("JobConfiguration")]JobConfiguration jobConfiguration) : base(jobConfiguration)
         {
 
         }

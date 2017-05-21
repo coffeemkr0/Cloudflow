@@ -19,8 +19,8 @@ namespace Cloudflow.Core.Runtime
         #region Private Members
         private int _runCounter = 1;
         private List<Task> _runTasks;
+
         private List<RunController> _runControllers;
-        private CompositionContainer _container;
         #endregion
 
         #region Events
@@ -47,13 +47,11 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        [Import(typeof(Job))]
-        public List<Job> Jobs { get; }
+        public List<JobController> JobControllers { get; }
 
         public log4net.ILog AgentLogger { get; }
 
         private AgentStatus _agentStatus;
-
         public AgentStatus AgentStatus
         {
             get { return _agentStatus; }
@@ -72,8 +70,7 @@ namespace Cloudflow.Core.Runtime
         public Agent()
         {
             this.AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
-
-            this.Jobs = new List<Job>();
+            this.JobControllers = new List<JobController>();
             _runTasks = new List<Task>();
             _runControllers = new List<RunController>();
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
@@ -118,23 +115,16 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Public Methods
-        public void AddJob(Job job)
-        {
-            job.TriggerFired += Job_JobTriggerFired;
-            this.Jobs.Add(job);
-        }
-
         public void Start()
         {
             this.AgentLogger.Info("Starting agent");
 
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Starting };
 
-            foreach (var job in this.Jobs)
+            foreach (var jobController in this.JobControllers)
             {
-                job.Start();
+                jobController.Start();
             }
-
 
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Running };
         }
@@ -145,9 +135,9 @@ namespace Cloudflow.Core.Runtime
 
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Stopping };
 
-            foreach (var job in this.Jobs)
+            foreach (var jobController in this.JobControllers)
             {
-                job.Stop();
+                jobController.Stop();
             }
 
             this.AgentLogger.Info("Waiting for any runs in progress");
@@ -169,8 +159,9 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            //var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 1");
-            //agent.AddJob(new TestJob(jobConfiguration));
+            var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration();
+            var jobController = new JobController(jobConfiguration);
+            agent.JobControllers.Add(jobController);
 
             //var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
             //agent.AddJob(new TestJob(jobConfiguration2));

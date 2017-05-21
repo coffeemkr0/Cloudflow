@@ -17,14 +17,11 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Private Members
-        private CompositionContainer _container;
+        
         #endregion
 
         #region Properties
         public JobConfiguration JobConfiguration { get; }
-
-        [Import(typeof(Trigger))]
-        public List<Trigger> Triggers { get; set; }
 
         [Import(typeof(Step))]
         public List<Step> Steps { get; set; }

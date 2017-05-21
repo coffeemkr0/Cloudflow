@@ -9,11 +9,11 @@ namespace Cloudflow.Core.Configuration
     public class DefaultJobConfiguration : JobConfiguration
     {
         #region Public Methods
-        public static DefaultJobConfiguration CreateTestJobConfiguration(string name)
+        public static DefaultJobConfiguration CreateTestJobConfiguration()
         {
             DefaultJobConfiguration configuration = new DefaultJobConfiguration
             {
-                Name = name
+                Name = "TestJob"
             };
 
             configuration.TriggerConfigurations.Add(DefaultTriggerConfiguration.CreateTestTriggerConfigurtion("Test Trigger"));

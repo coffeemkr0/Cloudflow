@@ -22,7 +22,8 @@ namespace Cloudflow.Extensions
         #endregion
 
         #region Constructors
-        public TestTrigger(TriggerConfiguration triggerConfiguration) : base(triggerConfiguration)
+        [ImportingConstructor]
+        public TestTrigger([Import("TriggerConfiguration")]TriggerConfiguration triggerConfiguration) : base(triggerConfiguration)
         {
 
         }
