@@ -9,6 +9,8 @@ using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Framework;
 using Cloudflow.Core.Configuration;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 
 namespace Cloudflow.Core.Runtime
 {
@@ -18,6 +20,7 @@ namespace Cloudflow.Core.Runtime
         private int _runCounter = 1;
         private List<Task> _runTasks;
         private List<RunController> _runControllers;
+        private CompositionContainer _container;
         #endregion
 
         #region Events
@@ -44,9 +47,8 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
+        [Import(typeof(Job))]
         public List<Job> Jobs { get; }
-
-        public TaskScheduler TaskScheduler { get; }
 
         public log4net.ILog AgentLogger { get; }
 
@@ -167,8 +169,8 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 1");
-            agent.AddJob(new TestJob(jobConfiguration));
+            //var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 1");
+            //agent.AddJob(new TestJob(jobConfiguration));
 
             //var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
             //agent.AddJob(new TestJob(jobConfiguration2));

@@ -1,14 +1,17 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Extensions
 {
+    [Export(typeof(Trigger))]
     public class TestTrigger : Trigger
     {
         Timer _timer;

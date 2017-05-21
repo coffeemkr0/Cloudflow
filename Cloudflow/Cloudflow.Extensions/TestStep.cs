@@ -1,13 +1,16 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Extensions
 {
+    [Export(typeof(Step))]
     public class TestStep : Step
     {
         private static Random _rand = new Random();

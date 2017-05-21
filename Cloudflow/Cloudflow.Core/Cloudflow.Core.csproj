@@ -113,15 +113,12 @@
     <Compile Include="Data\Agent\Models\Run.cs" />
     <Compile Include="Data\Server\ServerDbContext.cs" />
     <Compile Include="Data\Server\Models\AgentConfiguration.cs" />
-    <Compile Include="Framework\TestJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework\OutputEventLevels.cs" />
     <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
     <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
-    <Compile Include="Framework\TestStep.cs" />
-    <Compile Include="Framework\TestTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

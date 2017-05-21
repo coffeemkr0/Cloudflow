@@ -1,12 +1,15 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Extensions
 {
+    [Export(typeof(Job))]
     public class TestJob : Job
     {
         #region Properties
