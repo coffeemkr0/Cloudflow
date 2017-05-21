@@ -14,7 +14,7 @@ namespace Extensions
     {
         public override void Execute()
         {
-            Console.WriteLine("Execute custom step");
+            Console.WriteLine("Execute custom step - name=" + this.Name);
         }
     }
 }

@@ -44,6 +44,7 @@ namespace MainApplication
             {
                 if (i.Metadata.Name == stepName)
                 {
+                    i.Value.Name = stepName;
                     i.Value.Execute();
                 }
             }
