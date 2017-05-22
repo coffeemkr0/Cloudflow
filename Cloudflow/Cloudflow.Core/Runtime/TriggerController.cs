@@ -14,13 +14,12 @@ namespace Cloudflow.Core.Runtime
     {
         #region Private Members
         private CompositionContainer _triggersContainer;
+        [ImportMany]
+        IEnumerable<Lazy<Trigger, ITriggerMetaData>> _triggers;
         #endregion
 
         #region Properties
         public TriggerConfiguration TriggerConfiguration { get; }
-
-        [Import(typeof(Trigger))]
-        public List<Trigger> Triggers { get; set; }
 
         public log4net.ILog TriggerControllerLoger { get; }
         #endregion
@@ -52,7 +51,27 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Public Methods
+        public void Start()
+        {
+            foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
+            {
+                if (i.Metadata.Name == this.TriggerConfiguration.Name)
+                {
+                    i.Value.Start();
+                }
+            }
+        }
 
+        public void Stop()
+        {
+            foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
+            {
+                if (i.Metadata.Name == this.TriggerConfiguration.Name)
+                {
+                    i.Value.Start();
+                }
+            }
+        }
         #endregion
     }
 }

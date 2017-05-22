@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -23,6 +24,8 @@ namespace Cloudflow.Core.Framework
         #region Properties
         public JobConfiguration JobConfiguration { get; }
 
+        public List<TriggerController> TriggerControllers { get; set; }
+
         [Import(typeof(Step))]
         public List<Step> Steps { get; set; }
 
@@ -35,7 +38,7 @@ namespace Cloudflow.Core.Framework
             this.JobConfiguration = jobConfiguration;
             this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
 
-            this.Triggers = new List<Trigger>();
+            this.TriggerControllers = new List<TriggerController>();
             this.Steps = new List<Step>();
 
             LoadConfiguration();
@@ -45,39 +48,15 @@ namespace Cloudflow.Core.Framework
         #region Private Methods
         private void LoadConfiguration()
         {
-            //An aggregate catalog that combines multiple catalogs  
-            var catalog = new AggregateCatalog();
-
-            //Adds all the parts found in the Extensions assembly
-            catalog.Catalogs.Add(new AssemblyCatalog(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll"));
-
-            //Create the CompositionContainer with the parts in the catalog  
-            _container = new CompositionContainer(catalog);
-
-            //Fill the imports of this object  
-            try
-            {
-                _container.ComposeParts(this);
-            }
-            catch (CompositionException compositionException)
-            {
-                this.JobLogger.Error(compositionException);
-            }
-
-            //Convert configurations to actual objects
             foreach (var triggerConfiguration in this.JobConfiguration.TriggerConfigurations)
             {
-                //For now just use a test trigger - later on, convert the trigger configuration to a trigger object using MEF
-                //var trigger = new TestTrigger(triggerConfiguration);
-                //trigger.Fired += Trigger_Fired;
-                //this.Triggers.Add(trigger);
+                var triggerController = new TriggerController(triggerConfiguration);
+                this.TriggerControllers.Add(triggerController);
             }
 
             foreach (var stepConfiguration in this.JobConfiguration.StepConfigurations)
             {
-                //For now just use a test step - later on, convert the step configuration to a step object using MEF
-                //var step = new TestStep(stepConfiguration);
-                //this.Steps.Add(step);
+                
             }
         }
 
@@ -102,9 +81,9 @@ namespace Cloudflow.Core.Framework
             this.JobLogger.Info("Starting the job");
             try
             {
-                foreach (var trigger in this.Triggers)
+                foreach (var triggerController in this.TriggerControllers)
                 {
-                    trigger.Start();
+                    triggerController.Start();
                 }
             }
             catch (Exception ex)
@@ -118,9 +97,9 @@ namespace Cloudflow.Core.Framework
             this.JobLogger.Info("Stopping the job");
             try
             {
-                foreach (var trigger in this.Triggers)
+                foreach (var triggerController in this.TriggerControllers)
                 {
-                    trigger.Stop();
+                    triggerController.Stop();
                 }
             }
             catch (Exception ex)

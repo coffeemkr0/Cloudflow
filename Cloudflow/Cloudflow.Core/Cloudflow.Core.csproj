@@ -104,6 +104,7 @@
     <Compile Include="Configuration\TriggerConfiguration.cs" />
     <Compile Include="Framework\IJobMetaData.cs" />
     <Compile Include="Framework\Job.cs" />
+    <Compile Include="Framework\TriggerMetaData.cs" />
     <Compile Include="Runtime\JobController.cs" />
     <Compile Include="Framework\Step.cs" />
     <Compile Include="Framework\Trigger.cs" />
