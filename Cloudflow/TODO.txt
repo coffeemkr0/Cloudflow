@@ -1,3 +1,8 @@
+Make configurations extensible and move them to the Extensions library
+Look at not creating a run controller every time a trigger is fired. A dedicated thread for working on runs in a queue might be better. 
+This could still allow jobs to trigger multiple runs asynchronously but would give the ability to limit the numer of runs in progress.
+Make sure that controllers are not re-created but Jobs, Triggers and Steps can be?
+
 Select a run in progress and view the console output
 Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
 Add the ability for runs to be queued instead of starting immediately
