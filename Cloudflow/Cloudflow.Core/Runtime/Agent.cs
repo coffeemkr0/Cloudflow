@@ -32,6 +32,7 @@ namespace Cloudflow.Core.Runtime
             }
         }
 
+        public delegate void RunStatusChangedEventHandler(Run run);
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged(Run run)
         {

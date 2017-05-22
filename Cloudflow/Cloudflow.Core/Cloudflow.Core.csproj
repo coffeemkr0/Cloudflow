@@ -122,7 +122,6 @@
     <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
-    <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
     <Compile Include="Runtime\StepController.cs" />
     <Compile Include="Runtime\TriggerController.cs" />
   </ItemGroup>

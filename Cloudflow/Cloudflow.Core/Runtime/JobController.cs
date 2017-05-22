@@ -14,6 +14,7 @@ namespace Cloudflow.Core.Runtime
     public class JobController
     {
         #region Events
+        public delegate void RunStatusChangedEventHandler(Run run);
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged(Run run)
         {

@@ -12,7 +12,7 @@ namespace Cloudflow.Core.Runtime
     public class RunController
     {
         #region Events
-        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
+        public delegate void RunStatusChangedEventHandler(Run run);
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged()
         {
@@ -23,6 +23,7 @@ namespace Cloudflow.Core.Runtime
             }
         }
 
+        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
         public event RunOutputEventHandler RunOutput;
         protected virtual void OnRunOutput(OutputEventLevels level, string message)
         {
