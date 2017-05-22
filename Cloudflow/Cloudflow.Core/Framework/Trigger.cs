@@ -24,7 +24,7 @@ namespace Cloudflow.Core.Framework
         public Trigger(TriggerConfiguration triggerConfiguration)
         {
             this.TriggerConfiguration = triggerConfiguration;
-            this.TriggerLogger = log4net.LogManager.GetLogger($"Job.{triggerConfiguration.Name}");
+            this.TriggerLogger = log4net.LogManager.GetLogger($"Trigger.{triggerConfiguration.Name}");
         }
         #endregion
 

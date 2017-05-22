@@ -12,6 +12,19 @@ namespace Cloudflow.Core.Runtime
 {
     public class TriggerController
     {
+        #region Events
+        public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);
+        public event TriggerFiredEventHandler TriggerFired;
+        protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
+        {
+            TriggerFiredEventHandler temp = TriggerFired;
+            if (temp != null)
+            {
+                temp(trigger, triggerData);
+            }
+        }
+        #endregion
+
         #region Private Members
         private CompositionContainer _triggersContainer;
         [ImportMany]
@@ -47,7 +60,10 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-
+        private void Trigger_Fired(Trigger trigger, Dictionary<string, object> triggerData)
+        {
+            OnTriggerFired(trigger, triggerData);
+        }
         #endregion
 
         #region Public Methods
@@ -57,6 +73,7 @@ namespace Cloudflow.Core.Runtime
             {
                 if (i.Metadata.Name == this.TriggerConfiguration.Name)
                 {
+                    i.Value.Fired += Trigger_Fired;
                     i.Value.Start();
                 }
             }
@@ -68,7 +85,8 @@ namespace Cloudflow.Core.Runtime
             {
                 if (i.Metadata.Name == this.TriggerConfiguration.Name)
                 {
-                    i.Value.Start();
+                    i.Value.Fired -= Trigger_Fired;
+                    i.Value.Stop();
                 }
             }
         }

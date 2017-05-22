@@ -73,10 +73,20 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-
+        private void JobController_RunStatusChanged(Run run)
+        {
+            OnRunStatusChanged(run);
+        }
         #endregion
 
         #region Public Methods
+        public void AddJob(JobConfiguration jobConfiguration)
+        {
+            var jobController = new JobController(jobConfiguration);
+            jobController.RunStatusChanged += JobController_RunStatusChanged;
+            this.JobControllers.Add(jobController);
+        }
+
         public void Start()
         {
             this.AgentLogger.Info("Starting agent");
@@ -128,9 +138,8 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            var jobConfiguration = DefaultJobConfiguration.CreateTestJobConfiguration();
-            var jobController = new JobController(jobConfiguration);
-            agent.JobControllers.Add(jobController);
+            var jobConfiguration = new TestJobConfiguration();
+            agent.AddJob(jobConfiguration);
 
             //var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
             //agent.AddJob(new TestJob(jobConfiguration2));

@@ -15,10 +15,18 @@ namespace Cloudflow.Core.Framework
         #region Events
         public delegate void TriggerFiredEventHandler(Job job, Trigger trigger, Dictionary<string, object> triggerData);
         public event TriggerFiredEventHandler TriggerFired;
+        protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
+        {
+            TriggerFiredEventHandler temp = TriggerFired;
+            if (temp != null)
+            {
+                temp(this, trigger, triggerData);
+            }
+        }
         #endregion
 
         #region Private Members
-        
+
         #endregion
 
         #region Properties
@@ -50,6 +58,7 @@ namespace Cloudflow.Core.Framework
             foreach (var triggerConfiguration in this.JobConfiguration.TriggerConfigurations)
             {
                 var triggerController = new TriggerController(triggerConfiguration);
+                triggerController.TriggerFired += TriggerController_TriggerFired;
                 this.TriggerControllers.Add(triggerController);
             }
 
@@ -60,18 +69,9 @@ namespace Cloudflow.Core.Framework
             }
         }
 
-        private void Trigger_Fired(Trigger trigger, Dictionary<string, object> triggerData)
+        private void TriggerController_TriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
         {
             OnTriggerFired(trigger, triggerData);
-        }
-
-        protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
-        {
-            TriggerFiredEventHandler temp = TriggerFired;
-            if (temp != null)
-            {
-                temp(this, trigger, triggerData);
-            }
         }
         #endregion
 

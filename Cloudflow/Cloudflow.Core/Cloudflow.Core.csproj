@@ -96,9 +96,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\DefaultJobConfiguration.cs" />
-    <Compile Include="Configuration\DefaultStepConfiguration.cs" />
-    <Compile Include="Configuration\DefaultTriggerConfiguration.cs" />
+    <Compile Include="Configuration\TestJobConfiguration.cs" />
+    <Compile Include="Configuration\TestStepConfiguration.cs" />
+    <Compile Include="Configuration\TestTriggerConfiguration.cs" />
     <Compile Include="Configuration\JobConfiguration.cs" />
     <Compile Include="Configuration\StepConfiguration.cs" />
     <Compile Include="Configuration\TriggerConfiguration.cs" />
