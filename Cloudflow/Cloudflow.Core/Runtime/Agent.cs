@@ -17,10 +17,7 @@ namespace Cloudflow.Core.Runtime
     public class Agent
     {
         #region Private Members
-        private int _runCounter = 1;
-        private List<Task> _runTasks;
-
-        private List<RunController> _runControllers;
+        
         #endregion
 
         #region Events
@@ -71,47 +68,12 @@ namespace Cloudflow.Core.Runtime
         {
             this.AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
             this.JobControllers = new List<JobController>();
-            _runTasks = new List<Task>();
-            _runControllers = new List<RunController>();
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
         #endregion
 
         #region Private Methods
-        private void Job_JobTriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
-        {
-            this.AgentLogger.Info(string.Format("Trigger fired - Job:{0} Trigger:{1}", job.JobConfiguration.Name, trigger.TriggerConfiguration.Name));
 
-            RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.Name, _runCounter++), job, triggerData);
-            runController.RunStatusChanged += RunController_RunStatusChanged;
-
-            var task = Task.Run(() =>
-            {
-                try
-                {
-                    runController.ExecuteRun();
-                }
-                catch (Exception ex)
-                {
-                    this.AgentLogger.Error(ex);
-                }
-            });
-
-            _runTasks.Add(task);
-            _runControllers.Add(runController);
-
-            Task.Run(() =>
-            {
-                task.Wait();
-                _runTasks.Remove(task);
-                _runControllers.Remove(runController);
-            });
-        }
-
-        private void RunController_RunStatusChanged(Run run)
-        {
-            OnRunStatusChanged(run);
-        }
         #endregion
 
         #region Public Methods
@@ -141,7 +103,10 @@ namespace Cloudflow.Core.Runtime
             }
 
             this.AgentLogger.Info("Waiting for any runs in progress");
-            Task.WaitAll(_runTasks.ToArray());
+            foreach (var jobController in this.JobControllers)
+            {
+                jobController.Wait();
+            }
 
             this.AgentLogger.Info("Agent stopped");
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
@@ -149,10 +114,14 @@ namespace Cloudflow.Core.Runtime
 
         public List<Run> GetQueuedRuns()
         {
-            lock (_runControllers)
+            List<Run> runs = new List<Run>();
+
+            foreach (var jobController in this.JobControllers)
             {
-                return _runControllers.Select(i => i.Run).ToList();
+                runs.AddRange(jobController.GetQueuedRuns());
             }
+
+            return runs;
         }
 
         public static Agent CreateTestAgent()

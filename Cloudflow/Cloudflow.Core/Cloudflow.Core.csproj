@@ -103,8 +103,9 @@
     <Compile Include="Configuration\StepConfiguration.cs" />
     <Compile Include="Configuration\TriggerConfiguration.cs" />
     <Compile Include="Framework\IJobMetaData.cs" />
+    <Compile Include="Framework\IStepMetaData.cs" />
     <Compile Include="Framework\Job.cs" />
-    <Compile Include="Framework\TriggerMetaData.cs" />
+    <Compile Include="Framework\ITriggerMetaData.cs" />
     <Compile Include="Runtime\JobController.cs" />
     <Compile Include="Framework\Step.cs" />
     <Compile Include="Framework\Trigger.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
     <Compile Include="Runtime\RunStatusChangedEventHandler.cs" />
+    <Compile Include="Runtime\StepController.cs" />
     <Compile Include="Runtime\TriggerController.cs" />
   </ItemGroup>
   <ItemGroup>

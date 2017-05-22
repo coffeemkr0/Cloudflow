@@ -86,17 +86,17 @@ namespace Cloudflow.Core.Runtime
         #region Private Methods
         private void ExecuteSteps()
         {
-            foreach (var step in this.Job.Steps)
+            foreach (var stepController in this.Job.StepControllers)
             {
-                this.RunLogger.Info(string.Format("Begin step {0}", step.StepConfiguration.Name));
+                this.RunLogger.Info(string.Format("Begin step {0}", stepController.StepConfiguration.Name));
 
                 try
                 {
-                    OnRunOutput(OutputEventLevels.Info, $"Execute step {step.StepConfiguration.Name}");
+                    OnRunOutput(OutputEventLevels.Info, $"Execute step {stepController.StepConfiguration.Name}");
 
-                    step.Execute();
+                    stepController.Execute();
 
-                    this.RunLogger.Info(string.Format("End step {0}", step.StepConfiguration.Name));
+                    this.RunLogger.Info(string.Format("End step {0}", stepController.StepConfiguration.Name));
                 }
                 catch (Exception ex)
                 {

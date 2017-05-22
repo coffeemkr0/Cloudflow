@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,26 @@ namespace Cloudflow.Core.Runtime
 {
     public class JobController
     {
+        #region Events
+        public event RunStatusChangedEventHandler RunStatusChanged;
+        protected virtual void OnRunStatusChanged(Run run)
+        {
+            RunStatusChangedEventHandler temp = RunStatusChanged;
+            if (temp != null)
+            {
+                temp(run);
+            }
+        }
+        #endregion
+
         #region Private Members
         [ImportMany]
         IEnumerable<Lazy<Job, IJobMetaData>> _jobs;
         private CompositionContainer _jobsContainer;
+
+        private int _runCounter = 1;
+        private List<RunController> _runControllers;
+        private List<Task> _runTasks;
         #endregion
 
         #region Properties
@@ -29,6 +46,9 @@ namespace Cloudflow.Core.Runtime
         {
             this.JobConfiguration = jobConfiguration;
             this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{jobConfiguration.Name}");
+
+            _runControllers = new List<RunController>();
+            _runTasks = new List<Task>();
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll"));
@@ -46,6 +66,41 @@ namespace Cloudflow.Core.Runtime
         }
         #endregion
 
+        #region Private Methods
+        private void Job_TriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
+        {
+            RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.Name, _runCounter++), job, triggerData);
+            runController.RunStatusChanged += RunController_RunStatusChanged;
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    runController.ExecuteRun();
+                }
+                catch (Exception ex)
+                {
+                    this.JobControllerLoger.Error(ex);
+                }
+            });
+
+            _runTasks.Add(task);
+            _runControllers.Add(runController);
+
+            Task.Run(() =>
+            {
+                task.Wait();
+                _runTasks.Remove(task);
+                _runControllers.Remove(runController);
+            });
+        }
+
+        private void RunController_RunStatusChanged(Run run)
+        {
+            OnRunStatusChanged(run);
+        }
+        #endregion
+
         #region Public Methods
         public void Start()
         {
@@ -53,6 +108,7 @@ namespace Cloudflow.Core.Runtime
             {
                 if (i.Metadata.Name == this.JobConfiguration.Name)
                 {
+                    i.Value.TriggerFired += Job_TriggerFired;
                     i.Value.Start();
                 }
             }
@@ -64,8 +120,22 @@ namespace Cloudflow.Core.Runtime
             {
                 if (i.Metadata.Name == this.JobConfiguration.Name)
                 {
+                    i.Value.TriggerFired -= Job_TriggerFired;
                     i.Value.Stop();
                 }
+            }
+        }
+
+        public void Wait()
+        {
+            Task.WaitAll(_runTasks.ToArray());
+        }
+
+        public List<Run> GetQueuedRuns()
+        {
+            lock (_runControllers)
+            {
+                return _runControllers.Select(i => i.Run).ToList();
             }
         }
         #endregion

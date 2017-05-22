@@ -24,10 +24,9 @@ namespace Cloudflow.Core.Framework
         #region Properties
         public JobConfiguration JobConfiguration { get; }
 
-        public List<TriggerController> TriggerControllers { get; set; }
+        public List<TriggerController> TriggerControllers { get; }
 
-        [Import(typeof(Step))]
-        public List<Step> Steps { get; set; }
+        public List<StepController> StepControllers { get; }
 
         public log4net.ILog JobLogger { get; }
         #endregion
@@ -39,7 +38,7 @@ namespace Cloudflow.Core.Framework
             this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
 
             this.TriggerControllers = new List<TriggerController>();
-            this.Steps = new List<Step>();
+            this.StepControllers = new List<StepController>();
 
             LoadConfiguration();
         }
@@ -56,7 +55,8 @@ namespace Cloudflow.Core.Framework
 
             foreach (var stepConfiguration in this.JobConfiguration.StepConfigurations)
             {
-                
+                var stepController = new StepController(stepConfiguration);
+                this.StepControllers.Add(stepController);
             }
         }
 
