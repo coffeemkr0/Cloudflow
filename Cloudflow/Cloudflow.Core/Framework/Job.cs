@@ -23,6 +23,17 @@ namespace Cloudflow.Core.Framework
                 temp(this, trigger, triggerData);
             }
         }
+
+        public delegate void StepOutputEventHandler(Job job, Step step, OutputEventLevels level, string message);
+        public event StepOutputEventHandler StepOutput;
+        protected virtual void OnStepOutput(Job job, Step step, OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(job, step, level, message);
+            }
+        }
         #endregion
 
         #region Private Members
@@ -65,8 +76,14 @@ namespace Cloudflow.Core.Framework
             foreach (var stepConfiguration in this.JobConfiguration.StepConfigurations)
             {
                 var stepController = new StepController(stepConfiguration);
+                stepController.StepOutput += StepController_StepOutput;
                 this.StepControllers.Add(stepController);
             }
+        }
+
+        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
+        {
+            OnStepOutput(this, step, level, message);
         }
 
         private void TriggerController_TriggerFired(Trigger trigger, Dictionary<string, object> triggerData)

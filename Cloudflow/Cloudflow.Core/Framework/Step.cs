@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Framework
 {
-    #region Event Handlers
-    public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
-    #endregion
-
     public abstract class Step
     {
         #region Events
-        event StepOutputEventHandler StepOutput;
+        public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
+        public event StepOutputEventHandler StepOutput;
+        protected virtual void OnStepOutput(OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(this, level, message);
+            }
+        }
         #endregion
 
         #region Properties
@@ -32,14 +37,7 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Private Methods
-        protected virtual void OnStepOutput(OutputEventLevels level, string message)
-        {
-            StepOutputEventHandler temp = StepOutput;
-            if (temp != null)
-            {
-                temp(this, level, message);
-            }
-        }
+
         #endregion
 
         #region Public Methods

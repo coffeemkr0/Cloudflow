@@ -12,6 +12,19 @@ namespace Cloudflow.Core.Runtime
 {
     public class StepController
     {
+        #region Events
+        public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
+        public event StepOutputEventHandler StepOutput;
+        protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(step, level, message);
+            }
+        }
+        #endregion
+
         #region Private Members
         private CompositionContainer _stepsContainer;
         [ImportMany]
@@ -47,7 +60,10 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-
+        private void Value_StepOutput(Step step, OutputEventLevels level, string message)
+        {
+            OnStepOutput(step, level, message);
+        }
         #endregion
 
         #region Public Methods
@@ -57,7 +73,19 @@ namespace Cloudflow.Core.Runtime
             {
                 if (i.Metadata.Name == this.StepConfiguration.Name)
                 {
-                    i.Value.Execute();
+                    i.Value.StepOutput += Value_StepOutput;
+                    try
+                    {
+                        i.Value.Execute();
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        i.Value.StepOutput -= Value_StepOutput;
+                    }
                 }
             }
         }

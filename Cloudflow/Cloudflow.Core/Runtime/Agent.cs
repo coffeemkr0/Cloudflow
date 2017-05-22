@@ -77,6 +77,30 @@ namespace Cloudflow.Core.Runtime
         {
             OnRunStatusChanged(run);
         }
+
+        private void JobController_StepOutput(Job job, Step step, OutputEventLevels level, string message)
+        {
+            switch (level)
+            {
+                case OutputEventLevels.Debug:
+                    this.AgentLogger.Debug($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Info:
+                    this.AgentLogger.Info($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Warning:
+                    this.AgentLogger.Warn($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Error:
+                    this.AgentLogger.Error($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Fatal:
+                    this.AgentLogger.Fatal($"[Step Output] {message}");
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -84,6 +108,7 @@ namespace Cloudflow.Core.Runtime
         {
             var jobController = new JobController(jobConfiguration);
             jobController.RunStatusChanged += JobController_RunStatusChanged;
+            jobController.StepOutput += JobController_StepOutput;
             this.JobControllers.Add(jobController);
         }
 

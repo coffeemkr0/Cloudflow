@@ -23,6 +23,17 @@ namespace Cloudflow.Core.Runtime
                 temp(run);
             }
         }
+
+        public delegate void StepOutputEventHandler(Job job, Step step, OutputEventLevels level, string message);
+        public event StepOutputEventHandler StepOutput;
+        protected virtual void OnStepOutput(Job job, Step step, OutputEventLevels level, string message)
+        {
+            StepOutputEventHandler temp = StepOutput;
+            if (temp != null)
+            {
+                temp(job, step, level, message);
+            }
+        }
         #endregion
 
         #region Private Members
@@ -95,6 +106,11 @@ namespace Cloudflow.Core.Runtime
             });
         }
 
+        private void Job_StepOutput(Job job, Step step, OutputEventLevels level, string message)
+        {
+            OnStepOutput(job, step, level, message);
+        }
+
         private void RunController_RunStatusChanged(Run run)
         {
             OnRunStatusChanged(run);
@@ -109,6 +125,7 @@ namespace Cloudflow.Core.Runtime
                 if (i.Metadata.Name == this.JobConfiguration.Name)
                 {
                     i.Value.TriggerFired += Job_TriggerFired;
+                    i.Value.StepOutput += Job_StepOutput;
                     i.Value.Start();
                 }
             }
@@ -121,6 +138,7 @@ namespace Cloudflow.Core.Runtime
                 if (i.Metadata.Name == this.JobConfiguration.Name)
                 {
                     i.Value.TriggerFired -= Job_TriggerFired;
+                    i.Value.StepOutput -= Job_StepOutput;
                     i.Value.Stop();
                 }
             }

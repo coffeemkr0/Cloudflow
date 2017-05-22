@@ -14,8 +14,6 @@ namespace Cloudflow.Extensions
     [ExportMetadata("Name", "TestStep")]
     public class TestStep : Step
     {
-        private static Random _rand = new Random();
-
         #region Constructors
         [ImportingConstructor]
         public TestStep([Import("StepConfiguration")]StepConfiguration stepConfiguration) : base(stepConfiguration)
@@ -33,14 +31,11 @@ namespace Cloudflow.Extensions
         {
             try
             {
-                OnStepOutput(OutputEventLevels.Info, "Executing step");
+                OnStepOutput(OutputEventLevels.Info, "Executing the test step - waiting for 2 seconds.");
 
-                this.StepLogger.Info("Hello World from inside a test step's code!");
-                OnStepOutput(OutputEventLevels.Info, "Hello World from inside a test step's code!");
+                System.Threading.Thread.Sleep(2000);
 
-                System.Threading.Thread.Sleep(3000);
-
-                OnStepOutput(OutputEventLevels.Info, "Step execution complete");
+                OnStepOutput(OutputEventLevels.Info, "Test step execution complete.");
             }
             catch (Exception ex)
             {

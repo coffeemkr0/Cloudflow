@@ -32,16 +32,6 @@ namespace Cloudflow.Core.Runtime
                 temp(this.Run, level, message);
             }
         }
-
-        public event StepOutputEventHandler StepOutput;
-        protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
-        {
-            StepOutputEventHandler temp = StepOutput;
-            if (temp != null)
-            {
-                temp(step, level, message);
-            }
-        }
         #endregion
 
         #region Properties
@@ -104,11 +94,6 @@ namespace Cloudflow.Core.Runtime
                     OnRunOutput(OutputEventLevels.Error, ex.ToString());
                 }
             }
-        }
-
-        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
-        {
-            OnStepOutput(step, level, message);
         }
         #endregion
 
