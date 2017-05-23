@@ -12,9 +12,15 @@ namespace Extensions
     [ExportMetadata("Name","CustomStep2")]
     public class CustomStep2 : Step
     {
+        [ImportingConstructor]
+        public CustomStep2([Import("StepConfiguration")]StepConfiguration customStep2Configuration) : base(customStep2Configuration)
+        {
+
+        }
+
         public override void Execute()
         {
-            Console.WriteLine("Execute custom step 2 - name=" + this.Name);
+            Console.WriteLine($"Execute custom step 2 - property value={((CustomStep2Configuration)this.StepConfiguration).CustomStep2ConfigurationProperty}");
         }
     }
 }

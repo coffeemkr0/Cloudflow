@@ -9,15 +9,21 @@ using System.Threading.Tasks;
 
 namespace MainApplication
 {
-    class MainApp
+    public class StepController
     {
         [ImportMany]
         IEnumerable<Lazy<Step, IStepData>> _steps;
 
         private CompositionContainer _container;
 
-        public void Start()
+        public Step Step { get; }
+
+        public StepConfiguration StepConfiguration { get; }
+
+        public StepController(StepConfiguration stepConfiguration)
         {
+            this.StepConfiguration = stepConfiguration;
+
             //An aggregate catalog that combines multiple catalogs  
             var catalog = new AggregateCatalog();
 
@@ -26,6 +32,9 @@ namespace MainApplication
 
             //Create the CompositionContainer with the parts in the catalog  
             _container = new CompositionContainer(catalog);
+
+            //Set the parameter value of the constructor for the step
+            _container.ComposeExportedValue<StepConfiguration>("StepConfiguration", this.StepConfiguration);
 
             //Fill the imports of this object  
             try
@@ -36,16 +45,12 @@ namespace MainApplication
             {
                 Console.WriteLine(compositionException.ToString());
             }
-        }
 
-        public void ExecuteStep(string stepName)
-        {
             foreach (Lazy<Step, IStepData> i in _steps)
             {
-                if (i.Metadata.Name == stepName)
+                if (i.Metadata.Name == this.StepConfiguration.StepName)
                 {
-                    i.Value.Name = stepName;
-                    i.Value.Execute();
+                    this.Step = i.Value;
                 }
             }
         }

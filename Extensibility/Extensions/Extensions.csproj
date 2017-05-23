@@ -43,7 +43,8 @@
   <ItemGroup>
     <Compile Include="CustomStep2.cs" />
     <Compile Include="CustomStep.cs" />
-    <Compile Include="MySimpleDoSomethinger.cs" />
+    <Compile Include="CustomStep2Configuration.cs" />
+    <Compile Include="CustomStepConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

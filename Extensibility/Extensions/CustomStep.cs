@@ -9,12 +9,18 @@ using System.Threading.Tasks;
 namespace Extensions
 {
     [Export(typeof(Step))]
-    [ExportMetadata("Name","CustomStep")]
+    [ExportMetadata("Name", "CustomStep")]
     public class CustomStep : Step
     {
+        [ImportingConstructor]
+        public CustomStep([Import("StepConfiguration")]StepConfiguration customStepConfiguration) : base(customStepConfiguration)
+        {
+
+        }
+
         public override void Execute()
         {
-            Console.WriteLine("Execute custom step - name=" + this.Name);
+            Console.WriteLine($"Execute custom step - property value={((CustomStepConfiguration)this.StepConfiguration).CustomStepConfigurationProperty}");
         }
     }
 }

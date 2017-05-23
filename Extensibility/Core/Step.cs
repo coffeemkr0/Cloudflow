@@ -9,7 +9,12 @@ namespace Core
 {
     public abstract class Step
     {
-        public string Name { get; set; }
+        public StepConfiguration StepConfiguration { get; }
+
+        public Step(StepConfiguration stepConfiguration)
+        {
+            this.StepConfiguration = stepConfiguration;
+        }
 
         public abstract void Execute();
     }

@@ -12,10 +12,14 @@ namespace MainApplication
     {
         static void Main(string[] args)
         {
-            MainApp app = new MainApp();
-            app.Start();
-            app.ExecuteStep("CustomStep");
-            app.ExecuteStep("CustomStep2");
+            var configController = new StepConfigurationController();
+            var customStepConfiguration = configController.GetStepConfiguration("CustomStep");
+            var stepController = new StepController(customStepConfiguration);
+            stepController.Step.Execute();
+
+            customStepConfiguration = configController.GetStepConfiguration("CustomStep2");
+            stepController = new StepController(customStepConfiguration);
+            stepController.Step.Execute();
 
             Console.ReadLine();
         }
