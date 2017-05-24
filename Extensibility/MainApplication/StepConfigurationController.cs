@@ -16,8 +16,12 @@ namespace MainApplication
 
         private CompositionContainer _container;
 
-        public StepConfiguration GetStepConfiguration(string stepName)
+        public string StepName { get; }
+
+        public StepConfigurationController(string stepName)
         {
+            this.StepName = stepName;
+
             //An aggregate catalog that combines multiple catalogs  
             var catalog = new AggregateCatalog();
 
@@ -36,16 +40,39 @@ namespace MainApplication
             {
                 Console.WriteLine(compositionException.ToString());
             }
+        }
 
+        private Type GetConfigurationType()
+        {
             foreach (Lazy<StepConfiguration, IStepConfigurationData> i in _stepConfigurations)
             {
-                if (i.Metadata.Name == stepName)
+                if (i.Metadata.Name == this.StepName)
+                {
+                    return i.Metadata.Type;
+                }
+            }
+
+            return null;
+        }
+
+        public StepConfiguration CreateNewConfiguration()
+        {
+            foreach (Lazy<StepConfiguration, IStepConfigurationData> i in _stepConfigurations)
+            {
+                if (i.Metadata.Name == this.StepName)
                 {
                     return i.Value;
                 }
             }
 
             return null;
+        }
+
+        public StepConfiguration LoadFromFile(string fileName)
+        {
+            var configurationType = this.GetConfigurationType();
+            var configurationObject = StepConfiguration.LoadFromFile(configurationType, fileName);
+            return (StepConfiguration)configurationObject;
         }
     }
 }

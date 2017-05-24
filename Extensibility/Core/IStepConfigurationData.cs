@@ -9,5 +9,7 @@ namespace Core
     public interface IStepConfigurationData
     {
         string Name { get; }
+
+        Type Type { get; }
     }
 }

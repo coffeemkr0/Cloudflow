@@ -10,6 +10,7 @@ namespace Extensions
 {
     [Export(typeof(StepConfiguration))]
     [ExportMetadata("Name", "CustomStep")]
+    [ExportMetadata("Type", typeof(CustomStepConfiguration))]
     public class CustomStepConfiguration : StepConfiguration
     {
         public string CustomStepConfigurationProperty { get; set; }
