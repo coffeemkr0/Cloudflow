@@ -96,9 +96,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ITriggerConfigurationMetaData.cs" />
     <Compile Include="Configuration\IStepConfigurationMetaData.cs" />
     <Compile Include="Configuration\TestJobConfiguration.cs" />
-    <Compile Include="Configuration\TestTriggerConfiguration.cs" />
     <Compile Include="Configuration\JobConfiguration.cs" />
     <Compile Include="Configuration\StepConfiguration.cs" />
     <Compile Include="Configuration\TriggerConfiguration.cs" />
@@ -122,6 +122,7 @@
     <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
+    <Compile Include="Runtime\TriggerConfigurationController.cs" />
     <Compile Include="Runtime\StepConfigurationController.cs" />
     <Compile Include="Runtime\StepController.cs" />
     <Compile Include="Runtime\TriggerController.cs" />

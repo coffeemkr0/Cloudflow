@@ -35,13 +35,15 @@ namespace Cloudflow.Core.Runtime
         public TriggerConfiguration TriggerConfiguration { get; }
 
         public log4net.ILog TriggerControllerLoger { get; }
+
+        public Trigger Trigger { get; }
         #endregion
 
         #region Constructors
         public TriggerController(TriggerConfiguration triggerConfiguration)
         {
             this.TriggerConfiguration = triggerConfiguration;
-            this.TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerConfiguration.Name}");
+            this.TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerConfiguration.TriggerName}");
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll"));
@@ -51,10 +53,18 @@ namespace Cloudflow.Core.Runtime
             try
             {
                 _triggersContainer.ComposeParts(this);
+
+                foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
+                {
+                    if (i.Metadata.TriggerName == this.TriggerConfiguration.TriggerName)
+                    {
+                        this.Trigger = i.Value;
+                    }
+                }
             }
-            catch (CompositionException compositionException)
+            catch (Exception ex)
             {
-                this.TriggerControllerLoger.Error(compositionException);
+                this.TriggerControllerLoger.Error(ex);
             }
         }
         #endregion
@@ -69,26 +79,14 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void Start()
         {
-            foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
-            {
-                if (i.Metadata.Name == this.TriggerConfiguration.Name)
-                {
-                    i.Value.Fired += Trigger_Fired;
-                    i.Value.Start();
-                }
-            }
+            this.Trigger.Fired += Trigger_Fired;
+            this.Trigger.Start();
         }
 
         public void Stop()
         {
-            foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
-            {
-                if (i.Metadata.Name == this.TriggerConfiguration.Name)
-                {
-                    i.Value.Fired -= Trigger_Fired;
-                    i.Value.Stop();
-                }
-            }
+            this.Trigger.Fired -= Trigger_Fired;
+            this.Trigger.Stop();
         }
         #endregion
     }

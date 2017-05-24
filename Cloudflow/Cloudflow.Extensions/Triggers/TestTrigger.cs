@@ -12,7 +12,7 @@ using System.Timers;
 namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(Trigger))]
-    [ExportMetadata("Name", "TestTrigger")]
+    [ExportMetadata("TriggerName", "TestTrigger")]
     public class TestTrigger : Trigger
     {
         Timer _timer;

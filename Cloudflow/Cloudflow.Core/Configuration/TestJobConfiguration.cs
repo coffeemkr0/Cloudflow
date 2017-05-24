@@ -13,7 +13,9 @@ namespace Cloudflow.Core.Configuration
         public TestJobConfiguration()
         {
             this.Name = "TestJob";
-            this.TriggerConfigurations.Add(new TestTriggerConfiguration());
+
+            var triggerConfigurationController = new TriggerConfigurationController("TestTrigger", @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            this.TriggerConfigurations.Add(triggerConfigurationController.CreateNewConfiguration());
 
             var stepConfigurationController = new StepConfigurationController("TestStep", @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
             this.StepConfigurations.Add(stepConfigurationController.CreateNewConfiguration());

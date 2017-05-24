@@ -50,6 +50,7 @@
     <Compile Include="Steps\TestStep.cs" />
     <Compile Include="Steps\TestStepConfiguration.cs" />
     <Compile Include="Triggers\TestTrigger.cs" />
+    <Compile Include="Triggers\TestTriggerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
