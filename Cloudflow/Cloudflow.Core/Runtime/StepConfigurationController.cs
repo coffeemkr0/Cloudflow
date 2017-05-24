@@ -13,7 +13,7 @@ namespace Cloudflow.Core.Runtime
     {
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<StepConfiguration, IStepConfigurationMetaData>> _stepConfigurations;
+        IEnumerable<Lazy<StepConfiguration, IStepConfigurationMetaData>> _stepConfigurations = null;
 
         private CompositionContainer _container;
         #endregion

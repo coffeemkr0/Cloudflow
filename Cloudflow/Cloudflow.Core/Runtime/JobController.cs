@@ -39,7 +39,7 @@ namespace Cloudflow.Core.Runtime
 
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<Job, IJobMetaData>> _jobs;
+        IEnumerable<Lazy<Job, IJobMetaData>> _jobs = null;
         private CompositionContainer _jobsContainer;
 
         private int _runCounter = 1;
@@ -49,6 +49,8 @@ namespace Cloudflow.Core.Runtime
 
         #region Properties
         public JobConfiguration JobConfiguration { get; }
+
+        public Job Job { get; }
 
         public log4net.ILog JobControllerLoger { get; }
         #endregion
@@ -70,10 +72,20 @@ namespace Cloudflow.Core.Runtime
             try
             {
                 _jobsContainer.ComposeParts(this);
+
+                foreach (Lazy<Job, IJobMetaData> i in _jobs)
+                {
+                    if (i.Metadata.JobName == this.JobConfiguration.JobName)
+                    {
+                        i.Value.TriggerFired += Job_TriggerFired;
+                        i.Value.StepOutput += Job_StepOutput;
+                        this.Job = i.Value;
+                    }
+                }
             }
-            catch (CompositionException compositionException)
+            catch (Exception ex)
             {
-                this.JobControllerLoger.Error(compositionException);
+                this.JobControllerLoger.Error(ex);
             }
         }
         #endregion
@@ -121,28 +133,12 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void Start()
         {
-            foreach (Lazy<Job, IJobMetaData> i in _jobs)
-            {
-                if (i.Metadata.JobName == this.JobConfiguration.JobName)
-                {
-                    i.Value.TriggerFired += Job_TriggerFired;
-                    i.Value.StepOutput += Job_StepOutput;
-                    i.Value.Start();
-                }
-            }
+            this.Job.Start();
         }
 
         public void Stop()
         {
-            foreach (Lazy<Job, IJobMetaData> i in _jobs)
-            {
-                if (i.Metadata.JobName == this.JobConfiguration.JobName)
-                {
-                    i.Value.TriggerFired -= Job_TriggerFired;
-                    i.Value.StepOutput -= Job_StepOutput;
-                    i.Value.Stop();
-                }
-            }
+            this.Job.Stop();
         }
 
         public void Wait()

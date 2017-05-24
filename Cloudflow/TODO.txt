@@ -1,4 +1,6 @@
-Make configurations extensible and move them to the Extensions library
+Make sure the CreateNewConfiguration methods actually create a new configuration instance
+Replace hardcoded paths to the extension assembly.
+
 Look at not creating a run controller every time a trigger is fired. A dedicated thread for working on runs in a queue might be better. 
 This could still allow jobs to trigger multiple runs asynchronously but would give the ability to limit the numer of runs in progress.
 Make sure that controllers are not re-created but Jobs, Triggers and Steps can be?

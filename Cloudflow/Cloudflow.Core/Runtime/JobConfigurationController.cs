@@ -13,7 +13,7 @@ namespace Cloudflow.Core.Runtime
     {
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<JobConfiguration, IJobConfigurationMetaData>> _jobConfigurations;
+        IEnumerable<Lazy<JobConfiguration, IJobConfigurationMetaData>> _jobConfigurations = null;
 
         private CompositionContainer _container;
         #endregion

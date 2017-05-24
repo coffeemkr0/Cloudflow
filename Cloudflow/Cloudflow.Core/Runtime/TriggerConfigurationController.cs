@@ -13,7 +13,7 @@ namespace Cloudflow.Core.Runtime
     {
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<TriggerConfiguration, ITriggerConfigurationMetaData>> _triggerConfigurations;
+        IEnumerable<Lazy<TriggerConfiguration, ITriggerConfigurationMetaData>> _triggerConfigurations = null;
 
         private CompositionContainer _container;
         #endregion

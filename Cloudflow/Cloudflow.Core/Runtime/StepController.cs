@@ -28,11 +28,13 @@ namespace Cloudflow.Core.Runtime
         #region Private Members
         private CompositionContainer _stepsContainer;
         [ImportMany]
-        IEnumerable<Lazy<Step, IStepMetaData>> _steps;
+        IEnumerable<Lazy<Step, IStepMetaData>> _steps = null;
         #endregion
 
         #region Properties
         public StepConfiguration StepConfiguration { get; }
+
+        public Step Step { get; }
 
         public log4net.ILog StepControllerLogger { get; }
         #endregion
@@ -51,10 +53,19 @@ namespace Cloudflow.Core.Runtime
             try
             {
                 _stepsContainer.ComposeParts(this);
+
+                foreach (Lazy<Step, IStepMetaData> i in _steps)
+                {
+                    if (i.Metadata.StepName == this.StepConfiguration.StepName)
+                    {
+                        i.Value.StepOutput += Value_StepOutput;
+                        this.Step = i.Value;
+                    }
+                }
             }
-            catch (CompositionException compositionException)
+            catch (Exception ex)
             {
-                this.StepControllerLogger.Error(compositionException);
+                this.StepControllerLogger.Error(ex);
             }
         }
         #endregion
@@ -69,24 +80,13 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void Execute()
         {
-            foreach (Lazy<Step, IStepMetaData> i in _steps)
+            try
             {
-                if (i.Metadata.StepName == this.StepConfiguration.StepName)
-                {
-                    i.Value.StepOutput += Value_StepOutput;
-                    try
-                    {
-                        i.Value.Execute();
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                    finally
-                    {
-                        i.Value.StepOutput -= Value_StepOutput;
-                    }
-                }
+                this.Step.Execute();
+            }
+            catch (Exception ex)
+            {
+                this.StepControllerLogger.Error(ex);
             }
         }
         #endregion
