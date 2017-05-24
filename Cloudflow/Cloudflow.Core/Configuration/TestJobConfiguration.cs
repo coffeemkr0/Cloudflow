@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloudflow.Core.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,9 @@ namespace Cloudflow.Core.Configuration
         {
             this.Name = "TestJob";
             this.TriggerConfigurations.Add(new TestTriggerConfiguration());
-            this.StepConfigurations.Add(new TestStepConfiguration());
-            this.StepConfigurations.Add(new TestStepConfiguration());
+
+            var stepConfigurationController = new StepConfigurationController("TestStep", @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            this.StepConfigurations.Add(stepConfigurationController.CreateNewConfiguration());
         }
         #endregion
 

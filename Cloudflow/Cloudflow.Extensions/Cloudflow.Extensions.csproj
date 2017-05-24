@@ -46,9 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestJob.cs" />
-    <Compile Include="TestStep.cs" />
-    <Compile Include="TestTrigger.cs" />
+    <Compile Include="Jobs\TestJob.cs" />
+    <Compile Include="Steps\TestStep.cs" />
+    <Compile Include="Steps\TestStepConfiguration.cs" />
+    <Compile Include="Triggers\TestTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">

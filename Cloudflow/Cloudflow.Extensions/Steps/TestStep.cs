@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Extensions
+namespace Cloudflow.Extensions.Steps
 {
     [Export(typeof(Step))]
-    [ExportMetadata("Name", "TestStep")]
+    [ExportMetadata("StepName", "TestStep")]
     public class TestStep : Step
     {
         #region Constructors

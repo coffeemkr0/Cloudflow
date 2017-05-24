@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Core.Configuration
 {
-    public interface IStepMetaData
+    public interface IStepConfigurationMetaData
     {
         #region Properties
         string StepName { get; }
+
+        Type Type { get; }
         #endregion
     }
 }

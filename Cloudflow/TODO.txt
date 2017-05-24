@@ -11,7 +11,6 @@ Add the ability to cancel a run
 Cleanup namespaces and class names in projects to make them more clear what they are for.
 
 
-
 Change the Run Id in the agent Run model to a Guid that matches the Id that gets generated when a run is created
 Update the existing run record when a run ends (complete or fail)
 

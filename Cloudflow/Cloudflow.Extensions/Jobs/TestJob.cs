@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Extensions
+namespace Cloudflow.Extensions.Jobs
 {
     [Export(typeof(Job))]
     [ExportMetadata("Name","TestJob")]

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Cloudflow.Extensions
+namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(Trigger))]
     [ExportMetadata("Name", "TestTrigger")]

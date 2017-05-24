@@ -32,12 +32,8 @@ namespace Cloudflow.Core.Framework
         public Step(StepConfiguration stepConfiguration)
         {
             this.StepConfiguration = stepConfiguration;
-            this.StepLogger = log4net.LogManager.GetLogger("Step." + this.StepConfiguration.Name);
+            this.StepLogger = log4net.LogManager.GetLogger($"Step.{this.StepConfiguration.StepName}");
         }
-        #endregion
-
-        #region Private Methods
-
         #endregion
 
         #region Public Methods

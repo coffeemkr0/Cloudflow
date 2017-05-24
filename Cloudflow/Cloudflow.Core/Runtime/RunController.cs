@@ -79,15 +79,15 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (var stepController in this.Job.StepControllers)
             {
-                this.RunLogger.Info(string.Format("Begin step {0}", stepController.StepConfiguration.Name));
+                this.RunLogger.Info(string.Format("Begin step {0}", stepController.StepConfiguration.StepName));
 
                 try
                 {
-                    OnRunOutput(OutputEventLevels.Info, $"Execute step {stepController.StepConfiguration.Name}");
+                    OnRunOutput(OutputEventLevels.Info, $"Execute step {stepController.StepConfiguration.StepName}");
 
                     stepController.Execute();
 
-                    this.RunLogger.Info(string.Format("End step {0}", stepController.StepConfiguration.Name));
+                    this.RunLogger.Info(string.Format("End step {0}", stepController.StepConfiguration.StepName));
                 }
                 catch (Exception ex)
                 {
