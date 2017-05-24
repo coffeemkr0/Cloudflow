@@ -57,7 +57,7 @@ namespace Cloudflow.Core.Runtime
         public JobController(JobConfiguration jobConfiguration)
         {
             this.JobConfiguration = jobConfiguration;
-            this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{jobConfiguration.Name}");
+            this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{jobConfiguration.JobName}");
 
             _runControllers = new List<RunController>();
             _runTasks = new List<Task>();
@@ -81,7 +81,7 @@ namespace Cloudflow.Core.Runtime
         #region Private Methods
         private void Job_TriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
         {
-            RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.Name, _runCounter++), job, triggerData);
+            RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.JobName, _runCounter++), job, triggerData);
             runController.RunStatusChanged += RunController_RunStatusChanged;
 
             var task = Task.Run(() =>
@@ -123,7 +123,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<Job, IJobMetaData> i in _jobs)
             {
-                if (i.Metadata.Name == this.JobConfiguration.Name)
+                if (i.Metadata.JobName == this.JobConfiguration.JobName)
                 {
                     i.Value.TriggerFired += Job_TriggerFired;
                     i.Value.StepOutput += Job_StepOutput;
@@ -136,7 +136,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<Job, IJobMetaData> i in _jobs)
             {
-                if (i.Metadata.Name == this.JobConfiguration.Name)
+                if (i.Metadata.JobName == this.JobConfiguration.JobName)
                 {
                     i.Value.TriggerFired -= Job_TriggerFired;
                     i.Value.StepOutput -= Job_StepOutput;

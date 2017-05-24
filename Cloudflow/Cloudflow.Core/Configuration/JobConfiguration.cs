@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +11,7 @@ namespace Cloudflow.Core.Configuration
     public abstract class JobConfiguration
     {
         #region Properties
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
+        public string JobName { get; }
 
         public List<StepConfiguration> StepConfigurations { get; set; }
 
@@ -19,11 +19,31 @@ namespace Cloudflow.Core.Configuration
         #endregion
 
         #region Constructors
-        public JobConfiguration()
+        public JobConfiguration(string jobName)
         {
-            this.Id = Guid.NewGuid();
+            this.JobName = jobName;
+
             this.StepConfigurations = new List<StepConfiguration>();
             this.TriggerConfigurations = new List<TriggerConfiguration>();
+        }
+        #endregion
+
+        #region Public Methods
+        public void SaveToFile(string fileName)
+        {
+            using (StreamWriter sw = new StreamWriter(fileName, false))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(this));
+            }
+        }
+
+        public static object LoadFromFile(Type type, string fileName)
+        {
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string content = sr.ReadToEnd();
+                return JsonConvert.DeserializeObject(content, type);
+            }
         }
         #endregion
     }

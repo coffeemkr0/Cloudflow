@@ -63,7 +63,7 @@ namespace Cloudflow.Core.Runtime
             this.Run = new Run
             {
                 Name = this.Name,
-                JobName = this.Job.JobConfiguration.Name,
+                JobName = this.Job.JobConfiguration.JobName,
                 DateQueued = DateTime.Now,
                 Status = Run.RunStatuses.Queued
             };

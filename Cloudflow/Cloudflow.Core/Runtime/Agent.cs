@@ -164,11 +164,8 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            var jobConfiguration = new TestJobConfiguration();
-            agent.AddJob(jobConfiguration);
-
-            //var jobConfiguration2 = DefaultJobConfiguration.CreateTestJobConfiguration("Test Job 2");
-            //agent.AddJob(new TestJob(jobConfiguration2));
+            var jobConfigurationController = new JobConfigurationController("TestJob", @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            agent.AddJob(jobConfigurationController.CreateNewConfiguration());
 
             return agent;
         }

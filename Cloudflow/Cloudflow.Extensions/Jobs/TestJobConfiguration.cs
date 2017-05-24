@@ -1,19 +1,22 @@
-﻿using Cloudflow.Core.Runtime;
+﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Configuration
+namespace Cloudflow.Extensions.Jobs
 {
+    [Export(typeof(JobConfiguration))]
+    [ExportMetadata("JobName", "TestJob")]
+    [ExportMetadata("Type", typeof(TestJobConfiguration))]
     public class TestJobConfiguration : JobConfiguration
     {
         #region Constructors
-        public TestJobConfiguration()
+        public TestJobConfiguration() : base("TestJob")
         {
-            this.Name = "TestJob";
-
             var triggerConfigurationController = new TriggerConfigurationController("TestTrigger", @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
             this.TriggerConfigurations.Add(triggerConfigurationController.CreateNewConfiguration());
 

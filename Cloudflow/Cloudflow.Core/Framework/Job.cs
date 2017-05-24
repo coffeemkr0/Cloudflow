@@ -54,7 +54,7 @@ namespace Cloudflow.Core.Framework
         public Job(JobConfiguration jobConfiguration)
         {
             this.JobConfiguration = jobConfiguration;
-            this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
+            this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.JobName}");
 
             this.TriggerControllers = new List<TriggerController>();
             this.StepControllers = new List<StepController>();
