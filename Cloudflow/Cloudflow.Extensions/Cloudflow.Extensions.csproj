@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Jobs\DefaultJob.cs" />
+    <Compile Include="Jobs\DefaultJobConfiguration.cs" />
     <Compile Include="Jobs\TestJobConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Jobs\TestJob.cs" />

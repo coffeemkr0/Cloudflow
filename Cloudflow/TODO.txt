@@ -1,5 +1,12 @@
-Create, save and then load the TestJob, its triggers and steps from the database. After that, start using what is loaded from the database only.
+Create a default job and job configuration extension that has no triggers or steps, just initialized containers for them. This is what a user would typically use
+to setup a job if they are not trying to extend the job itself.
 
+Create, save and then load the TestJob, its triggers and steps from the database. After that, start using what is loaded from the database only.
+See if this method might cleanup the code for an extension - https://stackoverflow.com/questions/4237532/mef-metadata-from-the-exported-parts
+Might be able to use an attribute to specify the configuration type for a job and not have to specify the JobExtensionId so many times.
+
+It's taking a few extra seconds the first time a RunController is created - probably from instantiating a DbContext for the first time and initializing the
+connection pool.
 
 Make sure the CreateNewConfiguration methods actually create a new configuration instance
 Replace hardcoded paths to the extension assembly.

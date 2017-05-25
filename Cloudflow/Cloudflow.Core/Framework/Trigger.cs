@@ -34,6 +34,7 @@ namespace Cloudflow.Core.Framework
             TriggerFiredEventHandler temp = Fired;
             if (temp != null)
             {
+                this.TriggerLogger.Info("Trigger fired");
                 temp(this, triggerData);
             }
         }

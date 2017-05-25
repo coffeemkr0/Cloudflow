@@ -93,6 +93,7 @@ namespace Cloudflow.Core.Runtime
         #region Private Methods
         private void Job_TriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
         {
+            this.JobControllerLoger.Info("Trigger event accepted - creating a run controller");
             RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.JobName, _runCounter++), job, triggerData);
             runController.RunStatusChanged += RunController_RunStatusChanged;
 
@@ -100,6 +101,7 @@ namespace Cloudflow.Core.Runtime
             {
                 try
                 {
+                    this.JobControllerLoger.Info("Executing run");
                     runController.ExecuteRun();
                 }
                 catch (Exception ex)
