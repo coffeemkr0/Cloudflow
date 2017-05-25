@@ -9,7 +9,7 @@ namespace Cloudflow.Core.Framework
     public interface IJobMetaData
     {
         #region Properties
-        string JobName { get; }
+        string JobExtensionId { get; }
         #endregion
     }
 }

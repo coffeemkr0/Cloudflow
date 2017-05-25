@@ -11,7 +11,9 @@ namespace Cloudflow.Core.Configuration
     public abstract class JobConfiguration
     {
         #region Properties
-        public string JobName { get; }
+        public Guid JobExtensionId { get; }
+
+        public string JobName { get; set; }
 
         public List<StepConfiguration> StepConfigurations { get; set; }
 
@@ -19,9 +21,9 @@ namespace Cloudflow.Core.Configuration
         #endregion
 
         #region Constructors
-        public JobConfiguration(string jobName)
+        public JobConfiguration(Guid jobExtensionId)
         {
-            this.JobName = jobName;
+            this.JobExtensionId = jobExtensionId;
 
             this.StepConfigurations = new List<StepConfiguration>();
             this.TriggerConfigurations = new List<TriggerConfiguration>();

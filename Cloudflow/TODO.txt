@@ -1,3 +1,6 @@
+Create, save and then load the TestJob, its triggers and steps from the database. After that, start using what is loaded from the database only.
+
+
 Make sure the CreateNewConfiguration methods actually create a new configuration instance
 Replace hardcoded paths to the extension assembly.
 

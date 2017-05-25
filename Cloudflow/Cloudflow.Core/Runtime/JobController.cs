@@ -75,7 +75,7 @@ namespace Cloudflow.Core.Runtime
 
                 foreach (Lazy<Job, IJobMetaData> i in _jobs)
                 {
-                    if (i.Metadata.JobName == this.JobConfiguration.JobName)
+                    if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobConfiguration.JobExtensionId)
                     {
                         i.Value.TriggerFired += Job_TriggerFired;
                         i.Value.StepOutput += Job_StepOutput;

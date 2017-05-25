@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions.Jobs
 {
     [Export(typeof(Job))]
-    [ExportMetadata("JobName", "TestJob")]
+    [ExportMetadata("JobExtensionId", "F4A842C9-AB25-4B3F-90A9-DDC7A0C72430")]
     public class TestJob : Job
     {
         #region Properties

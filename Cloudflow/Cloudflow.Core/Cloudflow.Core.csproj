@@ -102,6 +102,7 @@
     <Compile Include="Configuration\JobConfiguration.cs" />
     <Compile Include="Configuration\StepConfiguration.cs" />
     <Compile Include="Configuration\TriggerConfiguration.cs" />
+    <Compile Include="Data\Server\Models\JobDefinition.cs" />
     <Compile Include="Framework\IJobMetaData.cs" />
     <Compile Include="Framework\IStepMetaData.cs" />
     <Compile Include="Framework\Job.cs" />

@@ -19,28 +19,32 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        public string JobName { get; }
+        public Guid JobExtensionId { get; }
+
+        public string JobExtensionAssemlbyPath { get; }
 
         public log4net.ILog JobConfigurationControllerLogger { get; }
         #endregion
 
         #region Constructors
-        public JobConfigurationController(string jobName, string assemblyPath)
+        public JobConfigurationController(Guid jobExtensionId, string jobExtensionAssemblyPath)
         {
-            this.JobName = jobName;
-            this.JobConfigurationControllerLogger = log4net.LogManager.GetLogger($"JobConfigurationController.{this.JobName}");
+            this.JobExtensionId = jobExtensionId;
+            this.JobExtensionAssemlbyPath = jobExtensionAssemblyPath;
+
+            this.JobConfigurationControllerLogger = log4net.LogManager.GetLogger($"JobConfigurationController.{jobExtensionId}");
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(assemblyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(this.JobExtensionAssemlbyPath));
             _container = new CompositionContainer(catalog);
 
             try
             {
                 _container.ComposeParts(this);
             }
-            catch (CompositionException compositionException)
+            catch (Exception ex)
             {
-                this.JobConfigurationControllerLogger.Error(compositionException);
+                this.JobConfigurationControllerLogger.Error(ex);
             }
         }
         #endregion
@@ -50,7 +54,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<JobConfiguration, IJobConfigurationMetaData> i in _jobConfigurations)
             {
-                if (i.Metadata.JobName == this.JobName)
+                if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobExtensionId)
                 {
                     return i.Metadata.Type;
                 }
@@ -65,7 +69,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<JobConfiguration, IJobConfigurationMetaData> i in _jobConfigurations)
             {
-                if (i.Metadata.JobName == this.JobName)
+                if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobExtensionId)
                 {
                     return i.Value;
                 }
