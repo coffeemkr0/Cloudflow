@@ -38,7 +38,7 @@ namespace Cloudflow.Core.Runtime
         #region Properties
         public string Name { get; }
 
-        public Job Job { get; }
+        public JobController JobController { get; }
 
         public Dictionary<string, object> Triggerdata { get; }
 
@@ -50,12 +50,12 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Constructors
-        public RunController(string name, Job job, Dictionary<string, object> triggerData)
+        public RunController(string name, JobController jobController, Dictionary<string, object> triggerData)
         {
             this.RunLogger = log4net.LogManager.GetLogger("RunController." + name);
 
             this.Name = name;
-            this.Job = job;
+            this.JobController = jobController;
             this.Triggerdata = triggerData;
 
             this.AgentDbContext = new AgentDbContext();
@@ -63,7 +63,7 @@ namespace Cloudflow.Core.Runtime
             this.Run = new Run
             {
                 Name = this.Name,
-                JobName = this.Job.JobConfiguration.JobName,
+                JobName = this.JobController.JobConfiguration.JobName,
                 DateQueued = DateTime.Now,
                 Status = Run.RunStatuses.Queued
             };
@@ -77,7 +77,7 @@ namespace Cloudflow.Core.Runtime
         #region Private Methods
         private void ExecuteSteps()
         {
-            foreach (var stepController in this.Job.StepControllers)
+            foreach (var stepController in this.JobController.StepControllers)
             {
                 this.RunLogger.Info(string.Format("Begin step {0}", stepController.StepConfiguration.StepName));
 

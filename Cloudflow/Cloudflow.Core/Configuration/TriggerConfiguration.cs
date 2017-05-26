@@ -26,21 +26,14 @@ namespace Cloudflow.Core.Configuration
         #endregion
 
         #region Public Methods
-        public void SaveToFile(string fileName)
+        public string ToJson()
         {
-            using (StreamWriter sw = new StreamWriter(fileName, false))
-            {
-                sw.WriteLine(JsonConvert.SerializeObject(this));
-            }
+            return JsonConvert.SerializeObject(this);
         }
 
-        public static object LoadFromFile(Type type, string fileName)
+        public static object Load(Type type, string json)
         {
-            using (StreamReader sr = new StreamReader(fileName))
-            {
-                string content = sr.ReadToEnd();
-                return JsonConvert.DeserializeObject(content, type);
-            }
+            return JsonConvert.DeserializeObject(json, type);
         }
         #endregion
     }

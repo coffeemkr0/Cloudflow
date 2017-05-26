@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Configuration;
 using Cloudflow.Core.Data.Agent.Models;
+using Cloudflow.Core.Data.Server.Models;
 using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
@@ -52,22 +53,57 @@ namespace Cloudflow.Core.Runtime
 
         public Job Job { get; }
 
+        public List<TriggerController> TriggerControllers { get; }
+
+        public List<StepController> StepControllers { get; }
+
         public log4net.ILog JobControllerLoger { get; }
         #endregion
 
         #region Constructors
-        public JobController(JobConfiguration jobConfiguration)
+        public JobController(JobDefinition jobDefinition)
         {
-            this.JobConfiguration = jobConfiguration;
-            this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{jobConfiguration.JobName}");
-
             _runControllers = new List<RunController>();
             _runTasks = new List<Task>();
 
+            //Load the job configuration
+            var jobConfigurationController = new JobConfigurationController(jobDefinition.JobConfigurationExtensionId,
+                jobDefinition.JobConfigurationExtensionAssemblyPath);
+            this.JobConfiguration = jobConfigurationController.Load(jobDefinition.Configuration);
+
+            //Create the logger for the controller
+            this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{this.JobConfiguration.JobName}");
+
+            //Load the triggers
+            this.TriggerControllers = new List<TriggerController>();
+            foreach (var triggerDefinition in jobDefinition.TriggerDefinitions)
+            {
+                var triggerConfigurationController = new TriggerConfigurationController(triggerDefinition.TriggerConfigurationExtensionId,
+                    triggerDefinition.TriggerConfigurationExtensionAssemblyPath);
+                var triggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
+
+                var triggerController = new TriggerController(triggerConfiguration);
+                triggerController.TriggerFired += TriggerController_TriggerFired;
+                this.TriggerControllers.Add(triggerController);
+            }
+
+            //Load the steps
+            this.StepControllers = new List<StepController>();
+            foreach (var stepDefinition in jobDefinition.StepDefinitions)
+            {
+                var stepConfigurationController = new StepConfigurationController(stepDefinition.StepConfigurationExtensionId,
+                    stepDefinition.StepConfigurationExtensionAssemblyPath);
+                var stepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
+
+                var stepController = new StepController(stepConfiguration);
+                stepController.StepOutput += StepController_StepOutput;
+                this.StepControllers.Add(stepController);
+            }
+
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(jobConfiguration.ExtensionAssemblyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(this.JobConfiguration.ExtensionAssemblyPath));
             _jobsContainer = new CompositionContainer(catalog);
-            _jobsContainer.ComposeExportedValue<JobConfiguration>("JobConfiguration", jobConfiguration);
+            _jobsContainer.ComposeExportedValue<JobConfiguration>("JobConfiguration", this.JobConfiguration);
 
             try
             {
@@ -77,8 +113,6 @@ namespace Cloudflow.Core.Runtime
                 {
                     if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobConfiguration.JobExtensionId)
                     {
-                        i.Value.TriggerFired += Job_TriggerFired;
-                        i.Value.StepOutput += Job_StepOutput;
                         this.Job = i.Value;
                     }
                 }
@@ -91,10 +125,11 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Private Methods
-        private void Job_TriggerFired(Job job, Trigger trigger, Dictionary<string, object> triggerData)
+        private void TriggerController_TriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
         {
             this.JobControllerLoger.Info("Trigger event accepted - creating a run controller");
-            RunController runController = new RunController(string.Format("{0} Run {1}", job.JobConfiguration.JobName, _runCounter++), job, triggerData);
+            RunController runController = new RunController(string.Format("{0} Run {1}",
+                this.JobConfiguration.JobName, _runCounter++), this, triggerData);
             runController.RunStatusChanged += RunController_RunStatusChanged;
 
             var task = Task.Run(() =>
@@ -121,9 +156,9 @@ namespace Cloudflow.Core.Runtime
             });
         }
 
-        private void Job_StepOutput(Job job, Step step, OutputEventLevels level, string message)
+        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
         {
-            OnStepOutput(job, step, level, message);
+            OnStepOutput(this.Job, step, level, message);
         }
 
         private void RunController_RunStatusChanged(Run run)
@@ -135,12 +170,39 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void Start()
         {
-            this.Job.Start();
+            this.JobControllerLoger.Info("Starting the job");
+            try
+            {
+                this.Job.Start();
+
+                foreach (var triggerController in this.TriggerControllers)
+                {
+                    triggerController.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.JobControllerLoger.Error(ex);
+            }
         }
 
         public void Stop()
         {
-            this.Job.Stop();
+            this.JobControllerLoger.Info("Stopping the job");
+
+            try
+            {
+                foreach (var triggerController in this.TriggerControllers)
+                {
+                    triggerController.Stop();
+                }
+
+                this.Job.Stop();
+            }
+            catch (Exception ex)
+            {
+                this.JobControllerLoger.Error(ex);
+            }
         }
 
         public void Wait()

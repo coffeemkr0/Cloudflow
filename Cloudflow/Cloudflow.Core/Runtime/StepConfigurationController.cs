@@ -74,10 +74,10 @@ namespace Cloudflow.Core.Runtime
             return null;
         }
 
-        public StepConfiguration LoadFromFile(string fileName)
+        public StepConfiguration Load(string configuration)
         {
             var configurationType = this.GetConfigurationType();
-            var configurationObject = StepConfiguration.LoadFromFile(configurationType, fileName);
+            var configurationObject = StepConfiguration.Load(configurationType, configuration);
             return (StepConfiguration)configurationObject;
         }
         #endregion

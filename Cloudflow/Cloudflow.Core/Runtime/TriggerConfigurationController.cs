@@ -74,10 +74,10 @@ namespace Cloudflow.Core.Runtime
             return null;
         }
 
-        public TriggerConfiguration LoadFromFile(string fileName)
+        public TriggerConfiguration Load(string configuration)
         {
             var configurationType = this.GetConfigurationType();
-            var configurationObject = TriggerConfiguration.LoadFromFile(configurationType, fileName);
+            var configurationObject = TriggerConfiguration.Load(configurationType, configuration);
             return (TriggerConfiguration)configurationObject;
         }
         #endregion

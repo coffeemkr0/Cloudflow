@@ -106,9 +106,9 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Public Methods
-        public void AddJob(JobConfiguration jobConfiguration)
+        public void AddJob(JobDefinition jobDefinition)
         {
-            var jobController = new JobController(jobConfiguration);
+            var jobController = new JobController(jobDefinition);
             jobController.RunStatusChanged += JobController_RunStatusChanged;
             jobController.StepOutput += JobController_StepOutput;
             this.JobControllers.Add(jobController);
@@ -170,7 +170,8 @@ namespace Cloudflow.Core.Runtime
 
             var jobConfigurationController = new JobConfigurationController(jobDefinition.JobConfigurationExtensionId,
                 jobDefinition.JobConfigurationExtensionAssemblyPath);
-            agent.AddJob(jobConfigurationController.Load(jobDefinition.Configuration));
+
+            agent.AddJob(jobDefinition);
 
             return agent;
         }

@@ -19,6 +19,16 @@ namespace Cloudflow.Extensions.Jobs
         {
 
         }
+
+        public override void Start()
+        {
+            
+        }
+
+        public override void Stop()
+        {
+            
+        }
         #endregion
     }
 }

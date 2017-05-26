@@ -16,19 +16,12 @@ namespace Cloudflow.Core.Configuration
         public string ExtensionAssemblyPath { get; set; }
 
         public string JobName { get; set; }
-
-        public List<StepConfiguration> StepConfigurations { get; set; }
-
-        public List<TriggerConfiguration> TriggerConfigurations { get; set; }
         #endregion
 
         #region Constructors
         public JobConfiguration(Guid jobExtensionId)
         {
             this.JobExtensionId = jobExtensionId;
-
-            this.StepConfigurations = new List<StepConfiguration>();
-            this.TriggerConfigurations = new List<TriggerConfiguration>();
         }
         #endregion
 
