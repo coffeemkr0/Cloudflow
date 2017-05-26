@@ -164,12 +164,18 @@ namespace Cloudflow.Core.Runtime
         {
             Agent agent = new Agent();
 
-            Guid testJobExtensionId = new Guid("{F4A842C9-AB25-4B3F-90A9-DDC7A0C72430}");
-            var jobConfigurationController = new JobConfigurationController(testJobExtensionId, 
-                @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            var extensionsAssemblyPath = @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll";
+            Guid defaultJobExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
+            var jobConfigurationController = new JobConfigurationController(defaultJobExtensionId, extensionsAssemblyPath);
 
             var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
             jobConfiguration.JobName = "Hard coded test job";
+
+            var triggerConfigurationController = new TriggerConfigurationController("TestTrigger", extensionsAssemblyPath);
+            jobConfiguration.TriggerConfigurations.Add(triggerConfigurationController.CreateNewConfiguration());
+
+            var stepConfigurationController = new StepConfigurationController("TestStep", extensionsAssemblyPath);
+            jobConfiguration.StepConfigurations.Add(stepConfigurationController.CreateNewConfiguration());
 
             agent.AddJob(jobConfiguration);
 

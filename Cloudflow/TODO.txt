@@ -1,5 +1,13 @@
 Create a default job and job configuration extension that has no triggers or steps, just initialized containers for them. This is what a user would typically use
 to setup a job if they are not trying to extend the job itself.
+Create a FolderWatch trigger
+Create a MoveFile step
+Using the default job, create a job that watches a folder and copys files that are placed in it to another folder
+Save the job to the database
+load the job from the database
+Push the job to the agent
+start the agent and run the job
+test the job by placing files into the watch folder
 
 Create, save and then load the TestJob, its triggers and steps from the database. After that, start using what is loaded from the database only.
 See if this method might cleanup the code for an extension - https://stackoverflow.com/questions/4237532/mef-metadata-from-the-exported-parts
