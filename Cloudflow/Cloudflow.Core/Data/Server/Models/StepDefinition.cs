@@ -17,6 +17,18 @@ namespace Cloudflow.Core.Data.Server.Models
         public string StepConfigurationExtensionAssemblyPath { get; set; }
 
         public string Configuration { get; set; }
+
+
+        public Guid JobDefinitionId { get; set; }
+
+        public JobDefinition JobDefinition { get; set; }
+        #endregion
+
+        #region Constructors
+        public StepDefinition()
+        {
+            this.Id = Guid.NewGuid();
+        }
         #endregion
 
         #region Public Methods
@@ -26,7 +38,6 @@ namespace Cloudflow.Core.Data.Server.Models
 
             StepDefinition stepDefinition = new StepDefinition()
             {
-                Id = Guid.NewGuid(),
                 StepConfigurationExtensionId = stepExtensionId,
                 StepConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };

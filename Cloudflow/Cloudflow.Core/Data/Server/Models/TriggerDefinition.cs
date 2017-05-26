@@ -17,6 +17,18 @@ namespace Cloudflow.Core.Data.Server.Models
         public string TriggerConfigurationExtensionAssemblyPath { get; set; }
 
         public string Configuration { get; set; }
+
+
+        public Guid JobDefinitionId { get; set; }
+
+        public JobDefinition JobDefinition { get; set; }
+        #endregion
+
+        #region Constructors
+        public TriggerDefinition()
+        {
+            this.Id = Guid.NewGuid();
+        }
         #endregion
 
         #region Public Methods

@@ -19,9 +19,9 @@ namespace Cloudflow.Core.Data.Server.Models
 
         public string Configuration { get; set; }
 
-        public List<TriggerDefinition> TriggerDefinitions { get; set; }
+        public ICollection<TriggerDefinition> TriggerDefinitions { get; set; }
 
-        public List<StepDefinition> StepDefinitions { get; set; }
+        public ICollection<StepDefinition> StepDefinitions { get; set; }
         #endregion
 
         #region Constructors
