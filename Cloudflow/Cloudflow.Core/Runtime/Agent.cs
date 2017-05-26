@@ -182,10 +182,11 @@ namespace Cloudflow.Core.Runtime
 
             var stepExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970");
             var stepConfigurationController = new StepConfigurationController(stepExtensionId, extensionsAssemblyPath);
-            var stepConfiguration = stepConfigurationController.CreateNewConfiguration();
-            stepConfiguration.StepName = "Hard coded test step";
-            stepConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
-            jobConfiguration.StepConfigurations.Add(stepConfiguration);
+            var logStepConfiguration = stepConfigurationController.CreateNewConfiguration();
+            logStepConfiguration.StepName = "Hard coded log step";
+            logStepConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
+            logStepConfiguration.GetType().GetProperty("LogMessage").SetValue(logStepConfiguration, "Hello World!");
+            jobConfiguration.StepConfigurations.Add(logStepConfiguration);
 
 
             agent.AddJob(jobConfiguration);

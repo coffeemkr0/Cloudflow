@@ -12,11 +12,11 @@ namespace Cloudflow.Extensions.Steps
 {
     [Export(typeof(Step))]
     [ExportMetadata("StepExtensionId", "191A3C1A-FD25-4790-8141-DFC132DA4970")]
-    public class TestStep : Step
+    public class LogStep : Step
     {
         #region Constructors
         [ImportingConstructor]
-        public TestStep([Import("StepConfiguration")]StepConfiguration stepConfiguration) : base(stepConfiguration)
+        public LogStep([Import("StepConfiguration")]StepConfiguration stepConfiguration) : base(stepConfiguration)
         {
 
         }
@@ -31,11 +31,7 @@ namespace Cloudflow.Extensions.Steps
         {
             try
             {
-                OnStepOutput(OutputEventLevels.Info, "Executing the test step - waiting for 2 seconds.");
-
-                System.Threading.Thread.Sleep(2000);
-
-                OnStepOutput(OutputEventLevels.Info, "Test step execution complete.");
+                this.StepLogger.Info(((LogStepConfiguration)this.StepConfiguration).LogMessage);
             }
             catch (Exception ex)
             {

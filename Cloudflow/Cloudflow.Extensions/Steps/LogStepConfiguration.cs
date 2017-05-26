@@ -10,14 +10,14 @@ namespace Cloudflow.Extensions.Steps
 {
     [Export(typeof(StepConfiguration))]
     [ExportMetadata("StepExtensionId", "191A3C1A-FD25-4790-8141-DFC132DA4970")]
-    [ExportMetadata("Type", typeof(TestStepConfiguration))]
-    public class TestStepConfiguration : StepConfiguration
+    [ExportMetadata("Type", typeof(LogStepConfiguration))]
+    public class LogStepConfiguration : StepConfiguration
     {
-        #region Constructors
-        public TestStepConfiguration() : base(Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970"))
+        public string LogMessage { get; set; }
+
+        public LogStepConfiguration() : base(Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970"))
         {
 
         }
-        #endregion
     }
 }
