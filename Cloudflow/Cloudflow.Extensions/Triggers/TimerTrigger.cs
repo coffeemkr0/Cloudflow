@@ -11,7 +11,7 @@ using System.Timers;
 namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(Trigger))]
-    [ExportMetadata("TriggerName", "TimerTrigger")]
+    [ExportMetadata("TriggerExtensionId", "E325CD29-053E-4422-97CF-C1C187760E88")]
     public class TimerTrigger : Trigger
     {
         private Timer _timer;

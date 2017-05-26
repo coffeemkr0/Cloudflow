@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(TriggerConfiguration))]
-    [ExportMetadata("TriggerName", "WatchFolderTrigger")]
+    [ExportMetadata("TriggerExtensionId", "893809A2-C02D-488B-9808-27159BFBB580")]
     [ExportMetadata("Type", typeof(WatchFolderTriggerConfiguration))]
     public class WatchFolderTriggerConfiguration : TriggerConfiguration
     {
@@ -20,7 +20,7 @@ namespace Cloudflow.Extensions.Triggers
         #endregion
 
         #region Constructors
-        public WatchFolderTriggerConfiguration() : base("WatchFolderTrigger")
+        public WatchFolderTriggerConfiguration() : base(Guid.Parse("893809A2-C02D-488B-9808-27159BFBB580"))
         {
             this.FileNameMasks = new List<string>();
         }

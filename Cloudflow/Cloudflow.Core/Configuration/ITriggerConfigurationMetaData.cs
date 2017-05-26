@@ -9,7 +9,7 @@ namespace Cloudflow.Core.Configuration
     public interface ITriggerConfigurationMetaData
     {
         #region Properties
-        string TriggerName { get; }
+        string TriggerExtensionId { get; }
 
         Type Type { get; }
         #endregion

@@ -11,7 +11,7 @@ using System.IO;
 namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(Trigger))]
-    [ExportMetadata("TriggerName", "WatchFolderTrigger")]
+    [ExportMetadata("TriggerExtensionId", "893809A2-C02D-488B-9808-27159BFBB580")]
     public class WatchFolderTrigger : Trigger
     {
         FileSystemWatcher _fileSystemWatcher;

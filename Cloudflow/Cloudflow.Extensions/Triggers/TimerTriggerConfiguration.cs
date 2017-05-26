@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(TriggerConfiguration))]
-    [ExportMetadata("TriggerName", "TimerTrigger")]
+    [ExportMetadata("TriggerExtensionId", "E325CD29-053E-4422-97CF-C1C187760E88")]
     [ExportMetadata("Type", typeof(TimerTriggerConfiguration))]
     public class TimerTriggerConfiguration : TriggerConfiguration
     {
@@ -19,7 +19,7 @@ namespace Cloudflow.Extensions.Triggers
         #endregion
 
         #region Constructors
-        public TimerTriggerConfiguration() : base("TimerTrigger")
+        public TimerTriggerConfiguration() : base(Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88"))
         {
             
         }

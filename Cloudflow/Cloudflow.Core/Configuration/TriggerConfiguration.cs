@@ -11,13 +11,15 @@ namespace Cloudflow.Core.Configuration
     public abstract class TriggerConfiguration
     {
         #region Properties
-        public string TriggerName { get; }
+        public Guid TriggerExtensionId { get; }
+
+        public string TriggerName { get; set; }
         #endregion
 
         #region Constructors
-        public TriggerConfiguration(string triggerName)
+        public TriggerConfiguration(Guid triggerExtensionId)
         {
-            this.TriggerName = triggerName;
+            this.TriggerExtensionId = triggerExtensionId;
         }
         #endregion
 

@@ -1,3 +1,8 @@
+See if this method might cleanup the code for an extension - https://stackoverflow.com/questions/4237532/mef-metadata-from-the-exported-parts
+Marking up the constructors for jobs, triggers or steps is inconvenient - I forgot to do it and did not realize why no extensions were loading.
+Need to at least throw a custom exception when no extension is found - could possibly switch to [Import] instead of [ImportMany] or
+find the attribute value that specifies at least one must be found.
+
 Create a default job and job configuration extension that has no triggers or steps, just initialized containers for them. This is what a user would typically use
 to setup a job if they are not trying to extend the job itself.
 Create a FolderWatch trigger
@@ -10,7 +15,7 @@ start the agent and run the job
 test the job by placing files into the watch folder
 
 Create, save and then load the TestJob, its triggers and steps from the database. After that, start using what is loaded from the database only.
-See if this method might cleanup the code for an extension - https://stackoverflow.com/questions/4237532/mef-metadata-from-the-exported-parts
+
 Might be able to use an attribute to specify the configuration type for a job and not have to specify the JobExtensionId so many times.
 
 It's taking a few extra seconds the first time a RunController is created - probably from instantiating a DbContext for the first time and initializing the

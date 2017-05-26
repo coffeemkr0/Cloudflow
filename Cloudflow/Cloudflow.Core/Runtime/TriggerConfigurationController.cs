@@ -19,16 +19,16 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        public string TriggerName { get; }
+        public Guid TriggerExtensionId { get; }
 
         public log4net.ILog TriggerConfigurationControllerLogger { get; }
         #endregion
 
         #region Constructors
-        public TriggerConfigurationController(string triggerName, string assemblyPath)
+        public TriggerConfigurationController(Guid triggerExtensionId, string assemblyPath)
         {
-            this.TriggerName = triggerName;
-            this.TriggerConfigurationControllerLogger = log4net.LogManager.GetLogger($"TriggerConfigurationController.{this.TriggerName}");
+            this.TriggerExtensionId = triggerExtensionId;
+            this.TriggerConfigurationControllerLogger = log4net.LogManager.GetLogger($"TriggerConfigurationController.{this.TriggerExtensionId}");
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(assemblyPath));
@@ -50,7 +50,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<TriggerConfiguration, ITriggerConfigurationMetaData> i in _triggerConfigurations)
             {
-                if (i.Metadata.TriggerName == this.TriggerName)
+                if (Guid.Parse(i.Metadata.TriggerExtensionId) == this.TriggerExtensionId)
                 {
                     return i.Metadata.Type;
                 }
@@ -65,7 +65,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<TriggerConfiguration, ITriggerConfigurationMetaData> i in _triggerConfigurations)
             {
-                if (i.Metadata.TriggerName == this.TriggerName)
+                if (Guid.Parse(i.Metadata.TriggerExtensionId) == this.TriggerExtensionId)
                 {
                     return i.Value;
                 }

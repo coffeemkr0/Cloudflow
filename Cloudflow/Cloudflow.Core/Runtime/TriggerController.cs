@@ -56,7 +56,7 @@ namespace Cloudflow.Core.Runtime
 
                 foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
                 {
-                    if (i.Metadata.TriggerName == this.TriggerConfiguration.TriggerName)
+                    if (Guid.Parse(i.Metadata.TriggerExtensionId) == this.TriggerConfiguration.TriggerExtensionId)
                     {
                         this.Trigger = i.Value;
                     }
