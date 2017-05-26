@@ -12,6 +12,7 @@ using Cloudflow.Core.Configuration;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using Cloudflow.Core.Data.Server.Models;
+using Cloudflow.Core.Data.Server;
 
 namespace Cloudflow.Core.Runtime
 {
@@ -166,12 +167,10 @@ namespace Cloudflow.Core.Runtime
             Agent agent = new Agent();
 
             var extensionsAssemblyPath = @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll";
-            JobDefinition jobDefinition = JobDefinition.CreateTestItem(extensionsAssemblyPath);
 
-            var jobConfigurationController = new JobConfigurationController(jobDefinition.JobConfigurationExtensionId,
-                jobDefinition.JobConfigurationExtensionAssemblyPath);
+            var serverDbcontext = new ServerDbContext(true, extensionsAssemblyPath);
 
-            agent.AddJob(jobDefinition);
+            agent.AddJob(serverDbcontext.JobDefinitions.FirstOrDefault());
 
             return agent;
         }
