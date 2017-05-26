@@ -11,6 +11,7 @@ using Cloudflow.Core.Framework;
 using Cloudflow.Core.Configuration;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using Cloudflow.Core.Data.Server.Models;
 
 namespace Cloudflow.Core.Runtime
 {
@@ -165,30 +166,11 @@ namespace Cloudflow.Core.Runtime
             Agent agent = new Agent();
 
             var extensionsAssemblyPath = @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll";
+            JobDefinition jobDefinition = JobDefinition.CreateTestItem(extensionsAssemblyPath);
 
-            Guid defaultJobExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
-            var jobConfigurationController = new JobConfigurationController(defaultJobExtensionId, extensionsAssemblyPath);
-            var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
-            jobConfiguration.JobName = "Hard coded test job";
-            jobConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
-
-            var triggerExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88");
-            var triggerConfigurationController = new TriggerConfigurationController(triggerExtensionId, extensionsAssemblyPath);
-            var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
-            timerConfiguration.TriggerName = "Hard coded timer trigger";
-            timerConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
-            timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
-            jobConfiguration.TriggerConfigurations.Add(timerConfiguration);
-
-            var stepExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970");
-            var stepConfigurationController = new StepConfigurationController(stepExtensionId, extensionsAssemblyPath);
-            var logStepConfiguration = stepConfigurationController.CreateNewConfiguration();
-            logStepConfiguration.StepName = "Hard coded log step";
-            logStepConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
-            logStepConfiguration.GetType().GetProperty("LogMessage").SetValue(logStepConfiguration, "Hello World!");
-            jobConfiguration.StepConfigurations.Add(logStepConfiguration);
-
-            agent.AddJob(jobConfiguration);
+            var jobConfigurationController = new JobConfigurationController(jobDefinition.JobConfigurationExtensionId,
+                jobDefinition.JobConfigurationExtensionAssemblyPath);
+            agent.AddJob(jobConfigurationController.Load(jobDefinition.Configuration));
 
             return agent;
         }
