@@ -171,11 +171,14 @@ namespace Cloudflow.Core.Runtime
             var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
             jobConfiguration.JobName = "Hard coded test job";
 
-            var triggerConfigurationController = new TriggerConfigurationController("TestTrigger", extensionsAssemblyPath);
-            jobConfiguration.TriggerConfigurations.Add(triggerConfigurationController.CreateNewConfiguration());
+            var triggerConfigurationController = new TriggerConfigurationController("TimerTrigger", extensionsAssemblyPath);
+            var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
+            timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
+            jobConfiguration.TriggerConfigurations.Add(timerConfiguration);
 
             var stepConfigurationController = new StepConfigurationController("TestStep", extensionsAssemblyPath);
             jobConfiguration.StepConfigurations.Add(stepConfigurationController.CreateNewConfiguration());
+
 
             agent.AddJob(jobConfiguration);
 
