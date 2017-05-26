@@ -10,7 +10,7 @@ namespace Cloudflow.Core.Data.Server.Models
     public class TriggerDefinition
     {
         #region Properties
-        public Guid Id { get; set; }
+        public Guid TriggerDefinitionId { get; set; }
 
         public Guid TriggerConfigurationExtensionId { get; set; }
 
@@ -21,13 +21,13 @@ namespace Cloudflow.Core.Data.Server.Models
 
         public Guid JobDefinitionId { get; set; }
 
-        public JobDefinition JobDefinition { get; set; }
+        public virtual JobDefinition JobDefinition { get; set; }
         #endregion
 
         #region Constructors
         public TriggerDefinition()
         {
-            this.Id = Guid.NewGuid();
+            this.TriggerDefinitionId = Guid.NewGuid();
         }
         #endregion
 
@@ -38,7 +38,6 @@ namespace Cloudflow.Core.Data.Server.Models
 
             TriggerDefinition triggerDefinition = new TriggerDefinition()
             {
-                Id = Guid.NewGuid(),
                 TriggerConfigurationExtensionId = triggerExtensionId,
                 TriggerConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };

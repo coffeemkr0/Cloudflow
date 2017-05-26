@@ -14,6 +14,10 @@ namespace Cloudflow.Core.Data.Server
         public DbSet<AgentConfiguration> AgentConfigurations { get; set; }
 
         public DbSet<JobDefinition> JobDefinitions { get; set; }
+
+        public DbSet<TriggerDefinition> TriggerDefinitions { get; set; }
+
+        public DbSet<StepDefinition> StepDefinitions { get; set; }
         #endregion
 
         #region Constructors

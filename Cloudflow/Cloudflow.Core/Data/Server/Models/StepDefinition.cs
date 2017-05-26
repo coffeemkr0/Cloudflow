@@ -10,7 +10,7 @@ namespace Cloudflow.Core.Data.Server.Models
     public class StepDefinition
     {
         #region Properties
-        public Guid Id { get; set; }
+        public Guid StepDefinitionId { get; set; }
 
         public Guid StepConfigurationExtensionId { get; set; }
 
@@ -21,13 +21,13 @@ namespace Cloudflow.Core.Data.Server.Models
 
         public Guid JobDefinitionId { get; set; }
 
-        public JobDefinition JobDefinition { get; set; }
+        public virtual JobDefinition JobDefinition { get; set; }
         #endregion
 
         #region Constructors
         public StepDefinition()
         {
-            this.Id = Guid.NewGuid();
+            this.StepDefinitionId = Guid.NewGuid();
         }
         #endregion
 

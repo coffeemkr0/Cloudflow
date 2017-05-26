@@ -170,7 +170,7 @@ namespace Cloudflow.Core.Runtime
 
             var serverDbcontext = new ServerDbContext(true, extensionsAssemblyPath);
 
-            agent.AddJob(serverDbcontext.JobDefinitions.FirstOrDefault());
+            agent.AddJob(serverDbcontext.JobDefinitions.ToList().FirstOrDefault());
 
             return agent;
         }

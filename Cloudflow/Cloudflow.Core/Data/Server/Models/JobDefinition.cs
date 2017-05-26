@@ -11,7 +11,7 @@ namespace Cloudflow.Core.Data.Server.Models
     public class JobDefinition
     {
         #region Properties
-        public Guid Id { get; set; }
+        public Guid JobDefinitionId { get; set; }
 
         public Guid JobConfigurationExtensionId { get; set; }
 
@@ -19,14 +19,15 @@ namespace Cloudflow.Core.Data.Server.Models
 
         public string Configuration { get; set; }
 
-        public ICollection<TriggerDefinition> TriggerDefinitions { get; set; }
+        public virtual ICollection<TriggerDefinition> TriggerDefinitions { get; set; }
 
-        public ICollection<StepDefinition> StepDefinitions { get; set; }
+        public virtual ICollection<StepDefinition> StepDefinitions { get; set; }
         #endregion
 
         #region Constructors
         public JobDefinition()
         {
+            this.JobDefinitionId = Guid.NewGuid();
             this.TriggerDefinitions = new List<TriggerDefinition>();
             this.StepDefinitions = new List<StepDefinition>();
         }
@@ -38,7 +39,6 @@ namespace Cloudflow.Core.Data.Server.Models
 
             JobDefinition jobDefinition = new JobDefinition()
             {
-                Id = Guid.NewGuid(),
                 JobConfigurationExtensionId = defaultJobExtensionId,
                 JobConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
