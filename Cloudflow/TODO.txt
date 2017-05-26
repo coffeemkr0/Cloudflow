@@ -1,3 +1,7 @@
+Figure out a way to save a job configuration to a database and reload it. 
+Serializing the entire job configuration into one json string is probably not going to work since it will
+not have the Types for the triggers and steps when it tries to deserialize them. It is using the abstract types.
+
 See if this method might cleanup the code for an extension - https://stackoverflow.com/questions/4237532/mef-metadata-from-the-exported-parts
 Marking up the constructors for jobs, triggers or steps is inconvenient - I forgot to do it and did not realize why no extensions were loading.
 Need to at least throw a custom exception when no extension is found - could possibly switch to [Import] instead of [ImportMany] or
