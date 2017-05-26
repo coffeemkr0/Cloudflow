@@ -2,10 +2,8 @@ See if this method might cleanup the code for an extension - https://stackoverfl
 Marking up the constructors for jobs, triggers or steps is inconvenient - I forgot to do it and did not realize why no extensions were loading.
 Need to at least throw a custom exception when no extension is found - could possibly switch to [Import] instead of [ImportMany] or
 find the attribute value that specifies at least one must be found.
+Might be able to use an attribute to specify the configuration type for a job and not have to specify the JobExtensionId so many times.
 
-Create a default job and job configuration extension that has no triggers or steps, just initialized containers for them. This is what a user would typically use
-to setup a job if they are not trying to extend the job itself.
-Create a FolderWatch trigger
 Create a MoveFile step
 Using the default job, create a job that watches a folder and copys files that are placed in it to another folder
 Save the job to the database
@@ -14,27 +12,18 @@ Push the job to the agent
 start the agent and run the job
 test the job by placing files into the watch folder
 
-Create, save and then load the TestJob, its triggers and steps from the database. After that, start using what is loaded from the database only.
-
-Might be able to use an attribute to specify the configuration type for a job and not have to specify the JobExtensionId so many times.
-
-It's taking a few extra seconds the first time a RunController is created - probably from instantiating a DbContext for the first time and initializing the
-connection pool.
+It's taking a few seconds to create DbContexts the first time, both on the server and agent.
 
 Make sure the CreateNewConfiguration methods actually create a new configuration instance
-Replace hardcoded paths to the extension assembly.
 
-Look at not creating a run controller every time a trigger is fired. A dedicated thread for working on runs in a queue might be better. 
+Look at not creating a run controller every time a trigger is fired. 
+A dedicated thread for working on runs in a queue might be better. 
 This could still allow jobs to trigger multiple runs asynchronously but would give the ability to limit the numer of runs in progress.
-Make sure that controllers are not re-created but Jobs, Triggers and Steps can be?
 
 Select a run in progress and view the console output
 Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
 Add the ability for runs to be queued instead of starting immediately
 Add the ability to cancel a run
-
-Cleanup namespaces and class names in projects to make them more clear what they are for.
-
 
 Change the Run Id in the agent Run model to a Guid that matches the Id that gets generated when a run is created
 Update the existing run record when a run ends (complete or fail)
