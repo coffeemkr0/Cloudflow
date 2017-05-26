@@ -12,6 +12,8 @@ namespace Cloudflow.Core.Data.Server
     {
         #region Models
         public DbSet<AgentConfiguration> AgentConfigurations { get; set; }
+
+        public DbSet<JobDefinition> JobDefinitions { get; set; }
         #endregion
 
         #region Constructors
@@ -20,21 +22,27 @@ namespace Cloudflow.Core.Data.Server
 
         }
 
-        public ServerDbContext(bool createTestData) : this()
+        public ServerDbContext(bool createTestData, string extensionsAssemblyPath) : this()
         {
             if (createTestData)
             {
-                CreateTestData();
+                CreateTestData(extensionsAssemblyPath);
             }
         }
         #endregion
 
         #region Private Methods
-        private void CreateTestData()
+        private void CreateTestData(string extensionsAssemblyPath)
         {
             if (this.AgentConfigurations.ToList().FirstOrDefault() == null)
             {
                 this.AgentConfigurations.Add(AgentConfiguration.CreateTestItem());
+                this.SaveChanges();
+            }
+
+            if (this.JobDefinitions.FirstOrDefault() == null)
+            {
+                this.JobDefinitions.Add(JobDefinition.CreateTestItem(extensionsAssemblyPath));
                 this.SaveChanges();
             }
         }

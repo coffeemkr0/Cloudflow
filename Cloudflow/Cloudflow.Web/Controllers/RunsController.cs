@@ -3,6 +3,7 @@ using Cloudflow.Core.Data.Server;
 using Cloudflow.Web.ViewModels.Runs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,7 +21,10 @@ namespace Cloudflow.Web.Controllers
         public ActionResult Index()
         {
 #if DEBUG
-            _serverDbContext = new ServerDbContext(true);
+            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
+            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
+            extensionsAssemblyPath = Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            _serverDbContext = new ServerDbContext(true, extensionsAssemblyPath);
 #else
             _databaseContext = new ServerDbContext();
 #endif

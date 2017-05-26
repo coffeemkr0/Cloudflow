@@ -188,7 +188,6 @@ namespace Cloudflow.Core.Runtime
             logStepConfiguration.GetType().GetProperty("LogMessage").SetValue(logStepConfiguration, "Hello World!");
             jobConfiguration.StepConfigurations.Add(logStepConfiguration);
 
-
             agent.AddJob(jobConfiguration);
 
             return agent;

@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Data.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -21,21 +22,21 @@ namespace Cloudflow.Core.Runtime
         #region Properties
         public Guid JobExtensionId { get; }
 
-        public string JobExtensionAssemlbyPath { get; }
+        public string JobConfigurationExtensionAssemlbyPath { get; }
 
         public log4net.ILog JobConfigurationControllerLogger { get; }
         #endregion
 
         #region Constructors
-        public JobConfigurationController(Guid jobExtensionId, string jobExtensionAssemblyPath)
+        public JobConfigurationController(Guid jobExtensionId, string jobConfigurationAssemblyPath)
         {
             this.JobExtensionId = jobExtensionId;
-            this.JobExtensionAssemlbyPath = jobExtensionAssemblyPath;
+            this.JobConfigurationExtensionAssemlbyPath = jobConfigurationAssemblyPath;
 
             this.JobConfigurationControllerLogger = log4net.LogManager.GetLogger($"JobConfigurationController.{jobExtensionId}");
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(this.JobExtensionAssemlbyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(this.JobConfigurationExtensionAssemlbyPath));
             _container = new CompositionContainer(catalog);
 
             try
@@ -78,10 +79,10 @@ namespace Cloudflow.Core.Runtime
             return null;
         }
 
-        public JobConfiguration LoadFromFile(string fileName)
+        public JobConfiguration Load(string json)
         {
             var configurationType = this.GetConfigurationType();
-            var configurationObject = JobConfiguration.LoadFromFile(configurationType, fileName);
+            var configurationObject = JobConfiguration.Load(configurationType, json);
             return (JobConfiguration)configurationObject;
         }
         #endregion
