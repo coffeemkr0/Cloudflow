@@ -65,7 +65,7 @@ namespace Cloudflow.Core.Runtime
             _runTasks = new List<Task>();
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll"));
+            catalog.Catalogs.Add(new AssemblyCatalog(jobConfiguration.ExtensionAssemblyPath));
             _jobsContainer = new CompositionContainer(catalog);
             _jobsContainer.ComposeExportedValue<JobConfiguration>("JobConfiguration", jobConfiguration);
 

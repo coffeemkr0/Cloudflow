@@ -13,6 +13,8 @@ namespace Cloudflow.Core.Configuration
         #region Properties
         public Guid StepExtensionId { get; }
 
+        public string ExtensionAssemblyPath { get; set; }
+
         public string StepName { get; set; }
         #endregion
 

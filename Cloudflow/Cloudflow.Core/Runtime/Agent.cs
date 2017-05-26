@@ -165,16 +165,18 @@ namespace Cloudflow.Core.Runtime
             Agent agent = new Agent();
 
             var extensionsAssemblyPath = @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll";
+
             Guid defaultJobExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
             var jobConfigurationController = new JobConfigurationController(defaultJobExtensionId, extensionsAssemblyPath);
-
             var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
             jobConfiguration.JobName = "Hard coded test job";
+            jobConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
 
             var triggerExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88");
             var triggerConfigurationController = new TriggerConfigurationController(triggerExtensionId, extensionsAssemblyPath);
             var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
             timerConfiguration.TriggerName = "Hard coded timer trigger";
+            timerConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
             timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
             jobConfiguration.TriggerConfigurations.Add(timerConfiguration);
 
@@ -182,6 +184,7 @@ namespace Cloudflow.Core.Runtime
             var stepConfigurationController = new StepConfigurationController(stepExtensionId, extensionsAssemblyPath);
             var stepConfiguration = stepConfigurationController.CreateNewConfiguration();
             stepConfiguration.StepName = "Hard coded test step";
+            stepConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
             jobConfiguration.StepConfigurations.Add(stepConfiguration);
 
 

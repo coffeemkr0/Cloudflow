@@ -46,7 +46,7 @@ namespace Cloudflow.Core.Runtime
             this.TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerConfiguration.TriggerName}");
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll"));
+            catalog.Catalogs.Add(new AssemblyCatalog(triggerConfiguration.ExtensionAssemblyPath));
             _triggersContainer = new CompositionContainer(catalog);
             _triggersContainer.ComposeExportedValue<TriggerConfiguration>("TriggerConfiguration", triggerConfiguration);
 

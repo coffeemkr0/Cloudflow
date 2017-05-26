@@ -46,7 +46,7 @@ namespace Cloudflow.Core.Runtime
             this.StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepConfiguration.StepName}");
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll"));
+            catalog.Catalogs.Add(new AssemblyCatalog(stepConfiguration.ExtensionAssemblyPath));
             _stepsContainer = new CompositionContainer(catalog);
             _stepsContainer.ComposeExportedValue<StepConfiguration>("StepConfiguration", stepConfiguration);
 

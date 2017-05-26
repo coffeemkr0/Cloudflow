@@ -13,6 +13,8 @@ namespace Cloudflow.Core.Configuration
         #region Properties
         public Guid TriggerExtensionId { get; }
 
+        public string ExtensionAssemblyPath { get; set; }
+
         public string TriggerName { get; set; }
         #endregion
 

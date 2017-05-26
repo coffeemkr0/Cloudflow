@@ -13,6 +13,8 @@ namespace Cloudflow.Core.Configuration
         #region Properties
         public Guid JobExtensionId { get; }
 
+        public string ExtensionAssemblyPath { get; set; }
+
         public string JobName { get; set; }
 
         public List<StepConfiguration> StepConfigurations { get; set; }
