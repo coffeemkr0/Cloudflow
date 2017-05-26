@@ -11,13 +11,15 @@ namespace Cloudflow.Core.Configuration
     public abstract class StepConfiguration
     {
         #region Properties
-        public string StepName { get; }
+        public Guid StepExtensionId { get; }
+
+        public string StepName { get; set; }
         #endregion
 
         #region Constructors
-        public StepConfiguration(string stepName)
+        public StepConfiguration(Guid stepExtensionId)
         {
-            this.StepName = stepName;
+            this.StepExtensionId = stepExtensionId;
         }
         #endregion
 

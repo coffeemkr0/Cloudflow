@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions.Steps
 {
     [Export(typeof(Step))]
-    [ExportMetadata("StepName", "TestStep")]
+    [ExportMetadata("StepExtensionId", "191A3C1A-FD25-4790-8141-DFC132DA4970")]
     public class TestStep : Step
     {
         #region Constructors

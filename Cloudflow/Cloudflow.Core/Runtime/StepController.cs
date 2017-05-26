@@ -56,7 +56,7 @@ namespace Cloudflow.Core.Runtime
 
                 foreach (Lazy<Step, IStepMetaData> i in _steps)
                 {
-                    if (i.Metadata.StepName == this.StepConfiguration.StepName)
+                    if (Guid.Parse(i.Metadata.StepExtensionId) == this.StepConfiguration.StepExtensionId)
                     {
                         i.Value.StepOutput += Value_StepOutput;
                         this.Step = i.Value;

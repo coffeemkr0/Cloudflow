@@ -9,7 +9,7 @@ namespace Cloudflow.Core.Configuration
     public interface IStepConfigurationMetaData
     {
         #region Properties
-        string StepName { get; }
+        string StepExtensionId { get; }
 
         Type Type { get; }
         #endregion

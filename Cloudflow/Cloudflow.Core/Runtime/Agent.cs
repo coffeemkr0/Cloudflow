@@ -178,8 +178,11 @@ namespace Cloudflow.Core.Runtime
             timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
             jobConfiguration.TriggerConfigurations.Add(timerConfiguration);
 
-            var stepConfigurationController = new StepConfigurationController("TestStep", extensionsAssemblyPath);
-            jobConfiguration.StepConfigurations.Add(stepConfigurationController.CreateNewConfiguration());
+            var stepExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970");
+            var stepConfigurationController = new StepConfigurationController(stepExtensionId, extensionsAssemblyPath);
+            var stepConfiguration = stepConfigurationController.CreateNewConfiguration();
+            stepConfiguration.StepName = "Hard coded test step";
+            jobConfiguration.StepConfigurations.Add(stepConfiguration);
 
 
             agent.AddJob(jobConfiguration);
