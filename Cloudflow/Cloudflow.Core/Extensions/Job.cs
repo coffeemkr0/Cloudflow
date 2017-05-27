@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Core.Extensions
 {
-    public abstract class Job
+    public abstract class Job : Extension
     {
         #region Properties
         public ExtensionConfiguration JobConfiguration { get; }
@@ -19,7 +19,7 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Constructors
-        public Job(ExtensionConfiguration jobConfiguration)
+        public Job(ExtensionConfiguration jobConfiguration) : base()
         {
             this.JobConfiguration = jobConfiguration;
             this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");

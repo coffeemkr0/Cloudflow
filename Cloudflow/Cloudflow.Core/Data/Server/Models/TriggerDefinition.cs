@@ -1,4 +1,5 @@
-﻿using Cloudflow.Core.Runtime;
+﻿using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,6 @@ namespace Cloudflow.Core.Data.Server.Models
         public string TriggerConfigurationExtensionAssemblyPath { get; set; }
 
         public string Configuration { get; set; }
-
 
         public Guid JobDefinitionId { get; set; }
 

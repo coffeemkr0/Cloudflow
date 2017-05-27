@@ -1,5 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Framework;
+using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Jobs
 {
-    [Export(typeof(Job))]
-    [ExportMetadata("JobExtensionId", "3F6F5796-E313-4C53-8064-747C1989DA99")]
+    [ExportExtension("3F6F5796-E313-4C53-8064-747C1989DA99", typeof(DefaultJob))]
     public class DefaultJob : Job
     {
         #region Constructors

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Configuration
+namespace Cloudflow.Core.Extensions
 {
-    public class ExtensionConfiguration : Extension
+    public abstract class ExtensionConfiguration : Extension
     {
         #region Properties
         public Guid ExtensionId { get; set; }

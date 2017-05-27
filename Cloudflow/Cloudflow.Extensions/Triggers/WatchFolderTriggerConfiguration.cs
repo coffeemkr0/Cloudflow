@@ -1,5 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Framework;
+using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;

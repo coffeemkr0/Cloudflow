@@ -1,4 +1,4 @@
-﻿using Cloudflow.Core.Framework;
+﻿using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,7 @@ using System.IO;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [Export(typeof(Trigger))]
-    [ExportMetadata("TriggerExtensionId", "DAD72E34-F229-43B6-8B4E-AEDA64BCCF4E")]
+    [ExportExtension("DAD72E34-F229-43B6-8B4E-AEDA64BCCF4E", typeof(WatchFolderTrigger))]
     public class WatchFolderTrigger : Trigger
     {
         FileSystemWatcher _fileSystemWatcher;

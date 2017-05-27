@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Framework;
+using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -10,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Steps
 {
-    [Export(typeof(Step))]
-    [ExportMetadata("StepExtensionId", "43D6FD16-0344-4204-AEE9-A09B3998C017")]
+    [ExportExtension("43D6FD16-0344-4204-AEE9-A09B3998C017", typeof(LogStep))]
     public class LogStep : Step
     {
         #region Constructors

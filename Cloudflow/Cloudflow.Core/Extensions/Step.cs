@@ -1,13 +1,14 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Core.Extensions
 {
-    public abstract class Step
+    public abstract class Step : Extension
     {
         #region Events
         public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
@@ -29,7 +30,7 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Constructors
-        public Step(ExtensionConfiguration stepConfiguration)
+        public Step(ExtensionConfiguration stepConfiguration) : base()
         {
             this.StepConfiguration = stepConfiguration;
             this.StepLogger = log4net.LogManager.GetLogger($"Step.{this.StepConfiguration.Name}");

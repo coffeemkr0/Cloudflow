@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Configuration
+namespace Cloudflow.Core.Extensions
 {
     public interface IExtensionMetaData
     {

@@ -96,21 +96,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Extension.cs" />
-    <Compile Include="Configuration\ExtensionConfiguration.cs" />
-    <Compile Include="Configuration\IExtension.cs" />
-    <Compile Include="Configuration\IExtensionMetaData.cs" />
+    <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Extensions\ExtensionConfiguration.cs" />
+    <Compile Include="Extensions\IExtension.cs" />
+    <Compile Include="Extensions\IExtensionMetaData.cs" />
     <Compile Include="Data\Server\Models\JobDefinition.cs" />
     <Compile Include="Data\Server\Models\StepDefinition.cs" />
     <Compile Include="Data\Server\Models\TriggerDefinition.cs" />
-    <Compile Include="Framework\ExportExtensionAttribute.cs" />
-    <Compile Include="Framework\IJobMetaData.cs" />
-    <Compile Include="Framework\IStepMetaData.cs" />
-    <Compile Include="Framework\Job.cs" />
-    <Compile Include="Framework\ITriggerMetaData.cs" />
-    <Compile Include="Runtime\JobController.cs" />
-    <Compile Include="Framework\Step.cs" />
-    <Compile Include="Framework\Trigger.cs" />
+    <Compile Include="Extensions\ExportExtensionAttribute.cs" />
+    <Compile Include="Extensions\Job.cs" />
+    <Compile Include="Extensions\Controllers\JobController.cs" />
+    <Compile Include="Extensions\Step.cs" />
+    <Compile Include="Extensions\Trigger.cs" />
     <Compile Include="Runtime\AgentStatus.cs" />
     <Compile Include="Communication\TcpIp.cs" />
     <Compile Include="Configuration\AgentLocalConfiguration.cs" />
@@ -120,13 +117,13 @@
     <Compile Include="Data\Server\ServerDbContext.cs" />
     <Compile Include="Data\Server\Models\AgentConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Framework\OutputEventLevels.cs" />
-    <Compile Include="Runtime\RunController.cs" />
+    <Compile Include="Runtime\OutputEventLevels.cs" />
+    <Compile Include="Extensions\Controllers\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
-    <Compile Include="Runtime\ExtensionConfigurationController.cs" />
-    <Compile Include="Runtime\StepController.cs" />
-    <Compile Include="Runtime\TriggerController.cs" />
+    <Compile Include="Extensions\Controllers\ExtensionConfigurationController.cs" />
+    <Compile Include="Extensions\Controllers\StepController.cs" />
+    <Compile Include="Extensions\Controllers\TriggerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

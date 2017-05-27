@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Framework;
+using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Extensions.Controllers
 {
     public class StepController
     {
@@ -28,7 +29,7 @@ namespace Cloudflow.Core.Runtime
         #region Private Members
         private CompositionContainer _stepsContainer;
         [ImportMany]
-        IEnumerable<Lazy<Step, IStepMetaData>> _steps = null;
+        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
         #endregion
 
         #region Properties
@@ -54,12 +55,13 @@ namespace Cloudflow.Core.Runtime
             {
                 _stepsContainer.ComposeParts(this);
 
-                foreach (Lazy<Step, IStepMetaData> i in _steps)
+                foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
                 {
-                    if (Guid.Parse(i.Metadata.StepExtensionId) == this.StepConfiguration.ExtensionId)
+                    if (Guid.Parse(i.Metadata.Id) == this.StepConfiguration.ExtensionId)
                     {
-                        i.Value.StepOutput += Value_StepOutput;
-                        this.Step = i.Value;
+                        var step = (Step)i.Value;
+                        step.StepOutput += Value_StepOutput;
+                        this.Step = step;
                     }
                 }
             }

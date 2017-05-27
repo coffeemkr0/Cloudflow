@@ -1,7 +1,8 @@
 ﻿using Cloudflow.Core.Configuration;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Data.Server.Models;
-using Cloudflow.Core.Framework;
+using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Extensions.Controllers
 {
     public class JobController
     {
@@ -40,7 +41,7 @@ namespace Cloudflow.Core.Runtime
 
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<Job, IJobMetaData>> _jobs = null;
+        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
         private CompositionContainer _jobsContainer;
 
         private int _runCounter = 1;
@@ -109,11 +110,11 @@ namespace Cloudflow.Core.Runtime
             {
                 _jobsContainer.ComposeParts(this);
 
-                foreach (Lazy<Job, IJobMetaData> i in _jobs)
+                foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
                 {
-                    if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobConfiguration.ExtensionId)
+                    if (Guid.Parse(i.Metadata.Id) == this.JobConfiguration.ExtensionId)
                     {
-                        this.Job = i.Value;
+                        this.Job = (Job)i.Value;
                     }
                 }
             }

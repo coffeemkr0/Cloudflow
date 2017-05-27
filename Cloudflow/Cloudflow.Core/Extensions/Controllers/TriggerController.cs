@@ -1,5 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Framework;
+using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Extensions.Controllers
 {
     public class TriggerController
     {
@@ -28,7 +28,7 @@ namespace Cloudflow.Core.Runtime
         #region Private Members
         private CompositionContainer _triggersContainer;
         [ImportMany]
-        IEnumerable<Lazy<Trigger, ITriggerMetaData>> _triggers = null;
+        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
         #endregion
 
         #region Properties
@@ -54,11 +54,11 @@ namespace Cloudflow.Core.Runtime
             {
                 _triggersContainer.ComposeParts(this);
 
-                foreach (Lazy<Trigger, ITriggerMetaData> i in _triggers)
+                foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
                 {
-                    if (Guid.Parse(i.Metadata.TriggerExtensionId) == this.TriggerConfiguration.ExtensionId)
+                    if (Guid.Parse(i.Metadata.Id) == this.TriggerConfiguration.ExtensionId)
                     {
-                        this.Trigger = i.Value;
+                        this.Trigger = (Trigger)i.Value;
                     }
                 }
             }

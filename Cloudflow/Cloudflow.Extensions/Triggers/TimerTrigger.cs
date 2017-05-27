@@ -1,4 +1,4 @@
-﻿using Cloudflow.Core.Framework;
+﻿using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,7 @@ using System.Timers;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [Export(typeof(Trigger))]
-    [ExportMetadata("TriggerExtensionId", "DABF8963-4B59-448E-BE5A-143EBDF123EF")]
+    [ExportExtension("DABF8963-4B59-448E-BE5A-143EBDF123EF", typeof(TimerTrigger))]
     public class TimerTrigger : Trigger
     {
         private Timer _timer;

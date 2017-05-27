@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Extensions.Controllers
 {
     public class ExtensionConfigurationController
     {

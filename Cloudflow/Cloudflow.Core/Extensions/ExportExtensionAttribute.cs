@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Core.Extensions
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = true), MetadataAttribute]
     public class ExportExtensionAttribute : ExportAttribute, IExtensionMetaData

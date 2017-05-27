@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Framework
+namespace Cloudflow.Core.Extensions
 {
-    public abstract class Trigger
+    public abstract class Trigger : Extension
     {
         #region Events
         public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);
@@ -21,7 +21,7 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Constructors
-        public Trigger(ExtensionConfiguration triggerConfiguration)
+        public Trigger(ExtensionConfiguration triggerConfiguration) : base()
         {
             this.TriggerConfiguration = triggerConfiguration;
             this.TriggerLogger = log4net.LogManager.GetLogger($"Trigger.{triggerConfiguration.Name}");
