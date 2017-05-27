@@ -23,16 +23,16 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Properties
-        public StepConfiguration StepConfiguration { get; }
+        public ExtensionConfiguration StepConfiguration { get; }
 
         public log4net.ILog StepLogger { get; }
         #endregion
 
         #region Constructors
-        public Step(StepConfiguration stepConfiguration)
+        public Step(ExtensionConfiguration stepConfiguration)
         {
             this.StepConfiguration = stepConfiguration;
-            this.StepLogger = log4net.LogManager.GetLogger($"Step.{this.StepConfiguration.StepName}");
+            this.StepLogger = log4net.LogManager.GetLogger($"Step.{this.StepConfiguration.Name}");
         }
         #endregion
 

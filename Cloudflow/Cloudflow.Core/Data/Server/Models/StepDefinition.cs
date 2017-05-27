@@ -34,18 +34,20 @@ namespace Cloudflow.Core.Data.Server.Models
         #region Public Methods
         public static StepDefinition CreateTestItem(string extensionsAssemblyPath)
         {
-            var stepExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970");
+            var stepConfigurationExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970");
 
             StepDefinition stepDefinition = new StepDefinition()
             {
-                StepConfigurationExtensionId = stepExtensionId,
+                StepConfigurationExtensionId = stepConfigurationExtensionId,
                 StepConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
 
-            var stepConfigurationController = new StepConfigurationController(stepExtensionId, extensionsAssemblyPath);
+            var stepConfigurationController = new ExtensionConfigurationController(stepConfigurationExtensionId, extensionsAssemblyPath);
             var logStepConfiguration = stepConfigurationController.CreateNewConfiguration();
-            logStepConfiguration.StepName = "Hard coded log step";
+
+            logStepConfiguration.ExtensionId = Guid.Parse("43D6FD16-0344-4204-AEE9-A09B3998C017");
             logStepConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
+            logStepConfiguration.Name = "Hard coded log step";
             logStepConfiguration.GetType().GetProperty("LogMessage").SetValue(logStepConfiguration, "Hello World!");
 
             stepDefinition.Configuration = logStepConfiguration.ToJson();

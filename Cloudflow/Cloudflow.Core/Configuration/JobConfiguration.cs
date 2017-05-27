@@ -14,7 +14,7 @@ namespace Cloudflow.Core.Configuration
         #region Properties
         public Type Type { get; }
 
-        public string ExtensionId { get; }
+        public string Id { get; }
 
         public Guid JobExtensionId { get; set; }
 
@@ -32,7 +32,7 @@ namespace Cloudflow.Core.Configuration
 
             if(exportExtensionAttribute!= null)
             {
-                this.ExtensionId = exportExtensionAttribute.ExtensionId;
+                this.Id = exportExtensionAttribute.Id;
                 this.Type = exportExtensionAttribute.Type;
             }
         }

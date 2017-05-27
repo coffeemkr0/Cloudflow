@@ -32,7 +32,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        public StepConfiguration StepConfiguration { get; }
+        public ExtensionConfiguration StepConfiguration { get; }
 
         public Step Step { get; }
 
@@ -40,15 +40,15 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Constructors
-        public StepController(StepConfiguration stepConfiguration)
+        public StepController(ExtensionConfiguration stepConfiguration)
         {
             this.StepConfiguration = stepConfiguration;
-            this.StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepConfiguration.StepName}");
+            this.StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepConfiguration.Name}");
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(stepConfiguration.ExtensionAssemblyPath));
             _stepsContainer = new CompositionContainer(catalog);
-            _stepsContainer.ComposeExportedValue<StepConfiguration>("StepConfiguration", stepConfiguration);
+            _stepsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", stepConfiguration);
 
             try
             {
@@ -56,7 +56,7 @@ namespace Cloudflow.Core.Runtime
 
                 foreach (Lazy<Step, IStepMetaData> i in _steps)
                 {
-                    if (Guid.Parse(i.Metadata.StepExtensionId) == this.StepConfiguration.StepExtensionId)
+                    if (Guid.Parse(i.Metadata.StepExtensionId) == this.StepConfiguration.ExtensionId)
                     {
                         i.Value.StepOutput += Value_StepOutput;
                         this.Step = i.Value;

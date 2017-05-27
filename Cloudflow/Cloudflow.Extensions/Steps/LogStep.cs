@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions.Steps
 {
     [Export(typeof(Step))]
-    [ExportMetadata("StepExtensionId", "191A3C1A-FD25-4790-8141-DFC132DA4970")]
+    [ExportMetadata("StepExtensionId", "43D6FD16-0344-4204-AEE9-A09B3998C017")]
     public class LogStep : Step
     {
         #region Constructors
         [ImportingConstructor]
-        public LogStep([Import("StepConfiguration")]StepConfiguration stepConfiguration) : base(stepConfiguration)
+        public LogStep([Import("ExtensionConfiguration")]ExtensionConfiguration stepConfiguration) : base(stepConfiguration)
         {
 
         }

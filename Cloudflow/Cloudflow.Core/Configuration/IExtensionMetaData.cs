@@ -8,7 +8,7 @@ namespace Cloudflow.Core.Configuration
 {
     public interface IExtensionMetaData
     {
-        string ExtensionId { get; }
+        string Id { get; }
 
         Type Type { get; }
     }

@@ -55,7 +55,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<IExtension, IExtensionMetaData> i in _jobConfigurations)
             {
-                if (Guid.Parse(i.Metadata.ExtensionId) == this.ExtensionId)
+                if (Guid.Parse(i.Metadata.Id) == this.ExtensionId)
                 {
                     return i.Metadata.Type;
                 }
@@ -70,7 +70,7 @@ namespace Cloudflow.Core.Runtime
         {
             foreach (Lazy<IExtension, IExtensionMetaData> i in _jobConfigurations)
             {
-                if (Guid.Parse(i.Metadata.ExtensionId) == this.ExtensionId)
+                if (Guid.Parse(i.Metadata.Id) == this.ExtensionId)
                 {
                     return (JobConfiguration)i.Value;
                 }

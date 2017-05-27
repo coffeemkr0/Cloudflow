@@ -1,28 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Configuration
 {
-    public abstract class StepConfiguration
+    public class ExtensionConfiguration : Extension
     {
         #region Properties
-        public Guid StepExtensionId { get; }
+        public Guid ExtensionId { get; set; }
 
         public string ExtensionAssemblyPath { get; set; }
 
-        public string StepName { get; set; }
-        #endregion
-
-        #region Constructors
-        public StepConfiguration(Guid stepExtensionId)
-        {
-            this.StepExtensionId = stepExtensionId;
-        }
+        public string Name { get; set; }
         #endregion
 
         #region Public Methods

@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Runtime
 {
-    public class StepConfigurationController
+    public class ExtensionConfigurationController
     {
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<StepConfiguration, IStepConfigurationMetaData>> _stepConfigurations = null;
+        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
 
         private CompositionContainer _container;
         #endregion
 
         #region Properties
-        public Guid StepExtensionId { get; }
+        public Guid ExtensionId { get; }
 
         public log4net.ILog StepConfigurationControllerLogger { get; }
         #endregion
 
         #region Constructors
-        public StepConfigurationController(Guid stepExtensionId, string assemblyPath)
+        public ExtensionConfigurationController(Guid extensionId, string assemblyPath)
         {
-            this.StepExtensionId = stepExtensionId;
-            this.StepConfigurationControllerLogger = log4net.LogManager.GetLogger($"StepConfigurationController.{this.StepExtensionId}");
+            this.ExtensionId = extensionId;
+            this.StepConfigurationControllerLogger = log4net.LogManager.GetLogger($"ExtensionConfigurationController.{this.ExtensionId}");
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(assemblyPath));
@@ -38,9 +38,9 @@ namespace Cloudflow.Core.Runtime
             {
                 _container.ComposeParts(this);
             }
-            catch (CompositionException compositionException)
+            catch (Exception ex)
             {
-                this.StepConfigurationControllerLogger.Error(compositionException);
+                this.StepConfigurationControllerLogger.Error(ex);
             }
         }
         #endregion
@@ -48,9 +48,9 @@ namespace Cloudflow.Core.Runtime
         #region Private Methods
         private Type GetConfigurationType()
         {
-            foreach (Lazy<StepConfiguration, IStepConfigurationMetaData> i in _stepConfigurations)
+            foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
             {
-                if (Guid.Parse(i.Metadata.StepExtensionId) == this.StepExtensionId)
+                if (Guid.Parse(i.Metadata.Id) == this.ExtensionId)
                 {
                     return i.Metadata.Type;
                 }
@@ -61,24 +61,24 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Public Methods
-        public StepConfiguration CreateNewConfiguration()
+        public ExtensionConfiguration CreateNewConfiguration()
         {
-            foreach (Lazy<StepConfiguration, IStepConfigurationMetaData> i in _stepConfigurations)
+            foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
             {
-                if (Guid.Parse(i.Metadata.StepExtensionId) == this.StepExtensionId)
+                if (Guid.Parse(i.Metadata.Id) == this.ExtensionId)
                 {
-                    return i.Value;
+                    return (ExtensionConfiguration)i.Value;
                 }
             }
 
             return null;
         }
 
-        public StepConfiguration Load(string configuration)
+        public ExtensionConfiguration Load(string configuration)
         {
             var configurationType = this.GetConfigurationType();
-            var configurationObject = StepConfiguration.Load(configurationType, configuration);
-            return (StepConfiguration)configurationObject;
+            var configurationObject = ExtensionConfiguration.Load(this.GetConfigurationType(), configuration);
+            return (ExtensionConfiguration)configurationObject;
         }
         #endregion
     }

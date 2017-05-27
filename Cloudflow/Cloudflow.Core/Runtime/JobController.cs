@@ -91,7 +91,7 @@ namespace Cloudflow.Core.Runtime
             this.StepControllers = new List<StepController>();
             foreach (var stepDefinition in jobDefinition.StepDefinitions)
             {
-                var stepConfigurationController = new StepConfigurationController(stepDefinition.StepConfigurationExtensionId,
+                var stepConfigurationController = new ExtensionConfigurationController(stepDefinition.StepConfigurationExtensionId,
                     stepDefinition.StepConfigurationExtensionAssemblyPath);
                 var stepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
 

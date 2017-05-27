@@ -11,18 +11,18 @@ namespace Cloudflow.Core.Framework
     [AttributeUsage(AttributeTargets.Class, Inherited = true), MetadataAttribute]
     public class ExportExtensionAttribute : ExportAttribute, IExtensionMetaData
     {
-        public string ExtensionId { get; set; }
+        public string Id { get; set; }
 
         public Type Type { get; set; }
 
-        public ExportExtensionAttribute(string extensionId, Type type) : base(typeof(IExtension))
+        public ExportExtensionAttribute(string id, Type type) : base(typeof(IExtension))
         {
-            if (string.IsNullOrEmpty(extensionId))
-                throw new ArgumentException("'extensionId' is required.", "extensionId");
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("'id' is required.", "id");
             if (type == null)
                 throw new ArgumentException("'type' is required.", "type");
 
-            this.ExtensionId = extensionId;
+            this.Id = id;
             this.Type = type;
         }
     }

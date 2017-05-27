@@ -96,12 +96,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Extension.cs" />
+    <Compile Include="Configuration\ExtensionConfiguration.cs" />
     <Compile Include="Configuration\IExtension.cs" />
     <Compile Include="Configuration\IExtensionMetaData.cs" />
     <Compile Include="Configuration\ITriggerConfigurationMetaData.cs" />
-    <Compile Include="Configuration\IStepConfigurationMetaData.cs" />
     <Compile Include="Configuration\JobConfiguration.cs" />
-    <Compile Include="Configuration\StepConfiguration.cs" />
     <Compile Include="Configuration\TriggerConfiguration.cs" />
     <Compile Include="Data\Server\Models\JobDefinition.cs" />
     <Compile Include="Data\Server\Models\StepDefinition.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Runtime\Hubs\AgentController.cs" />
     <Compile Include="Runtime\JobConfigurationController.cs" />
     <Compile Include="Runtime\TriggerConfigurationController.cs" />
-    <Compile Include="Runtime\StepConfigurationController.cs" />
+    <Compile Include="Runtime\ExtensionConfigurationController.cs" />
     <Compile Include="Runtime\StepController.cs" />
     <Compile Include="Runtime\TriggerController.cs" />
   </ItemGroup>
