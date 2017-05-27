@@ -5,19 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Cloudflow.Core.Data.Server.Models;
+using Cloudflow.Core.Data.Shared.Models;
+using Cloudflow.Core.Data.Shared;
 
 namespace Cloudflow.Core.Data.Server
 {
-    public class ServerDbContext : DbContext
+    public class ServerDbContext : SharedDbContext
     {
         #region Models
         public DbSet<AgentConfiguration> AgentConfigurations { get; set; }
-
-        public DbSet<JobDefinition> JobDefinitions { get; set; }
-
-        public DbSet<TriggerDefinition> TriggerDefinitions { get; set; }
-
-        public DbSet<StepDefinition> StepDefinitions { get; set; }
         #endregion
 
         #region Constructors
@@ -35,18 +31,14 @@ namespace Cloudflow.Core.Data.Server
         }
         #endregion
 
-        #region Private Methods
-        private void CreateTestData(string extensionsAssemblyPath)
+        #region Public Methods
+        protected override void CreateTestData(string extensionsAssemblyPath)
         {
+            base.CreateTestData(extensionsAssemblyPath);
+
             if (this.AgentConfigurations.ToList().FirstOrDefault() == null)
             {
                 this.AgentConfigurations.Add(AgentConfiguration.CreateTestItem());
-                this.SaveChanges();
-            }
-
-            if (this.JobDefinitions.FirstOrDefault() == null)
-            {
-                this.JobDefinitions.Add(JobDefinition.CreateTestItem(extensionsAssemblyPath));
                 this.SaveChanges();
             }
         }

@@ -1,12 +1,11 @@
-﻿using Cloudflow.Core;
-using Cloudflow.Core.Data.Agent;
-using Cloudflow.Core.Data.Agent.Models;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Cloudflow.Core.Data.Agent;
+using Cloudflow.Core.Data.Agent.Models;
+using Cloudflow.Core.Data.Shared.Models;
+using System.Data.Entity;
 
 namespace Cloudflow.Core.Runtime.Hubs
 {
@@ -51,6 +50,25 @@ namespace Cloudflow.Core.Runtime.Hubs
             }
 
             return null;
+        }
+
+        public void PushJob(JobDefinition jobDefinition)
+        {
+            using (AgentDbContext agentDbContext = new AgentDbContext())
+            {
+                var existingJobDefinition = agentDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == jobDefinition.JobDefinitionId);
+                if(existingJobDefinition == null)
+                {
+                    agentDbContext.JobDefinitions.Add(jobDefinition);
+                    agentDbContext.SaveChanges();
+                }
+                else
+                {
+                    agentDbContext.JobDefinitions.Attach(jobDefinition);
+                    agentDbContext.Entry(jobDefinition).State = EntityState.Modified;
+                    agentDbContext.SaveChanges();
+                }
+            }
         }
 
         public void StartAgent()

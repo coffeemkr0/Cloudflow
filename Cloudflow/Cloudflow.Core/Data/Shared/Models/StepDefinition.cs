@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Data.Server.Models
+namespace Cloudflow.Core.Data.Shared.Models
 {
     public class StepDefinition
     {

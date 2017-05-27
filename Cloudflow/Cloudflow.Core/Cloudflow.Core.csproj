@@ -96,13 +96,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Shared\SharedDbContext.cs" />
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Extensions\ExtensionConfiguration.cs" />
     <Compile Include="Extensions\IExtension.cs" />
     <Compile Include="Extensions\IExtensionMetaData.cs" />
-    <Compile Include="Data\Server\Models\JobDefinition.cs" />
-    <Compile Include="Data\Server\Models\StepDefinition.cs" />
-    <Compile Include="Data\Server\Models\TriggerDefinition.cs" />
+    <Compile Include="Data\Shared\Models\JobDefinition.cs" />
+    <Compile Include="Data\Shared\Models\StepDefinition.cs" />
+    <Compile Include="Data\Shared\Models\TriggerDefinition.cs" />
     <Compile Include="Extensions\ExportExtensionAttribute.cs" />
     <Compile Include="Extensions\Job.cs" />
     <Compile Include="Extensions\Controllers\JobController.cs" />
