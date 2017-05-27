@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Cloudflow.Core.Data.Server.Models.JobDefinition>
+
+@{
+    ViewBag.Title = "Jobs";
+    ViewBag.ActivePage = "Jobs";
+}
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.JobConfigurationExtensionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobConfigurationExtensionAssemblyPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Configuration)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobConfigurationExtensionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobConfigurationExtensionAssemblyPath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Configuration)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.JobDefinitionId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.JobDefinitionId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.JobDefinitionId })
+            </td>
+        </tr>
+    }
+    
+    </table>

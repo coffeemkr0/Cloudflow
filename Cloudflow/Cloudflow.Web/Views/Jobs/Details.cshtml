@@ -1,0 +1,42 @@
+﻿@model Cloudflow.Core.Data.Server.Models.JobDefinition
+
+@{
+    ViewBag.Title = "Jobs";
+    ViewBag.ActivePage = "Jobs";
+}
+
+
+    <div>
+        <h4>JobDefinition</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.JobConfigurationExtensionId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.JobConfigurationExtensionId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.JobConfigurationExtensionAssemblyPath)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.JobConfigurationExtensionAssemblyPath)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Configuration)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Configuration)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.JobDefinitionId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>

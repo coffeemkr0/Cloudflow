@@ -1,9 +1,11 @@
 ﻿using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Server.Models;
+using Cloudflow.Web.ViewModels.Agents;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -11,17 +13,51 @@ using System.Web.Mvc;
 
 namespace Cloudflow.Web.Controllers
 {
-    public class AgentConfigurationsController : Controller
+    public class AgentsController : Controller
     {
         private ServerDbContext _serverDbContext = new ServerDbContext();
 
-        // GET: AgentConfigurations/Create
+        // GET: Agents
+        public ActionResult Index()
+        {
+#if DEBUG
+            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
+            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
+            extensionsAssemblyPath = Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            _serverDbContext = new ServerDbContext(true, extensionsAssemblyPath);
+#else
+            _databaseContext = new ServerDbContext();
+#endif
+
+            IndexViewModel model = new IndexViewModel();
+
+            model.AgentConfigurations.AddRange(_serverDbContext.AgentConfigurations.ToList());
+
+            return View(model);
+        }
+
+        // GET: Agents/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
+            if (agentConfiguration == null)
+            {
+                return HttpNotFound();
+            }
+            return View(agentConfiguration);
+        }
+
+        // GET: Agents/Create
         public ActionResult Create()
         {
             return PartialView("_Create");
         }
 
-        // POST: AgentConfigurations/Create
+        // POST: Agents/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Enabled,MachineName,Port")] AgentConfiguration agentConfiguration)
@@ -36,7 +72,7 @@ namespace Cloudflow.Web.Controllers
             return PartialView("_Create", agentConfiguration);
         }
 
-        // GET: AgentConfigurations/Edit/5
+        // GET: Agents/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -51,7 +87,7 @@ namespace Cloudflow.Web.Controllers
             return PartialView("_Edit", agentConfiguration);
         }
 
-        // POST: AgentConfigurations/Edit/5
+        // POST: Agents/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -67,7 +103,7 @@ namespace Cloudflow.Web.Controllers
             return PartialView("_Edit", agentConfiguration);
         }
 
-        // GET: AgentConfigurations/Delete/5
+        // GET: Agents/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -82,7 +118,7 @@ namespace Cloudflow.Web.Controllers
             return PartialView("_Delete", agentConfiguration);
         }
 
-        // POST: AgentConfigurations/Delete/5
+        // POST: Agents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

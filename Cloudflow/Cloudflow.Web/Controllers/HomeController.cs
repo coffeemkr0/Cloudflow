@@ -12,35 +12,9 @@ namespace Cloudflow.Web.Controllers
 {
     public class HomeController : Controller
     {
-        #region Module Level Declarations
-        ServerDbContext _serverDbContexxt;
-        #endregion
-
         public ActionResult Index()
         {
-#if DEBUG
-            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
-            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
-            extensionsAssemblyPath = Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
-            _serverDbContexxt = new ServerDbContext(true, extensionsAssemblyPath);
-#else
-            _databaseContext = new ServerDbContext();
-#endif
-            IndexViewModel model = new IndexViewModel();
-
-            model.AgentConfigurations.AddRange(_serverDbContexxt.AgentConfigurations.ToList());
-
-            return View(model);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (_serverDbContexxt != null)
-            {
-                _serverDbContexxt.Dispose();
-            }
-
-            base.Dispose(disposing);
+            return View();
         }
     }
 }

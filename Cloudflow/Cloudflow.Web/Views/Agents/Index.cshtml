@@ -1,0 +1,102 @@
+﻿@model Cloudflow.Web.ViewModels.Agents.IndexViewModel
+
+@{
+    ViewBag.Title = "Agents";
+    ViewBag.ActivePage = "Agents";
+}
+
+@section headScripts {
+    @Scripts.Render("~/bundles/signalr")
+    <script src="~/Scripts/Agents/Index.js"></script>
+}
+
+<script>
+    AgentControllerClient.Agents = [];
+    @foreach (var agent in Model.AgentConfigurations)
+    {
+    <text>
+    AgentControllerClient.Agents.push({ machineName: "@agent.MachineName", port: @agent.Port });
+    </text>
+    }
+</script>
+
+<section>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Agents</h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        Use this section to control your agents.
+                    </p>
+                    @Html.ActionLink("Add", "Create", "Agents", null, new
+           {
+               data_modal = "",
+               data_modalcontainer = "modalAgent",
+               data_modalcontent = "modalAgentContent",
+               id = "btnAdd",
+               @class = "btn btn-small btn-primary"
+           })
+                    @Html.ActionLink("View Runs", "Index", "Runs", null, new
+           {
+               @class = "btn btn-small btn-primary"
+           })
+                </div>
+
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Machine Name</th>
+                        <th>Port</th>
+                        <th>Status</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    @foreach (var agent in Model.AgentConfigurations)
+                    {
+                        <tr>
+                            <td>@agent.MachineName</td>
+                            <td>@agent.Port</td>
+                            <td id="agentStatus-@agent.MachineName">
+                                @if (!agent.Enabled)
+                                {
+                                    <text>Disabled</text>
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Agents", new { id = @agent.Id }, new
+                       {
+                           data_modal = "",
+                           data_modalcontainer = "modalAgent",
+                           data_modalcontent = "modalAgentContent",
+                           @class = "btn btn-small btn-default"
+                       })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "Delete", "Agents", new { id = @agent.Id }, new
+                       {
+                           data_modal = "",
+                           data_modalcontainer = "modalAgent",
+                           data_modalcontent = "modalAgentContent",
+                           @class = "btn btn-small btn-default"
+                       })
+                            </td>
+                            <td><a href="#" class="agentControlLink" id="agentControl-@agent.MachineName" data-machinename="@(agent.MachineName)"></a></td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAgent" tabindex="-1" role="dialog" aria-labelledby="myModal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div id="modalAgentContent"></div>
+            </div>
+        </div>
+    </div>
+</section>
