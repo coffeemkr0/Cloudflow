@@ -43,12 +43,12 @@ namespace Cloudflow.Core.Data.Server.Models
                 JobConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
 
-            var jobConfigurationController = new JobConfigurationController(defaultJobConfigurationExtensionId, extensionsAssemblyPath);
-            var jobConfiguration = jobConfigurationController.GetExtension();
-            jobConfiguration.JobExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99");
-            jobConfiguration.JobName = "Hard coded test job";
-            jobConfiguration.JobExtensionAssemblyPath = extensionsAssemblyPath;
-
+            var jobConfigurationController = new ExtensionConfigurationController(defaultJobConfigurationExtensionId, extensionsAssemblyPath);
+            var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
+            jobConfiguration.ExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99");
+            jobConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
+            jobConfiguration.Name = "Hard coded test job";
+            
             jobDefinition.Configuration = jobConfiguration.ToJson();
 
             jobDefinition.TriggerDefinitions.Add(TriggerDefinition.CreateTestItem(extensionsAssemblyPath));

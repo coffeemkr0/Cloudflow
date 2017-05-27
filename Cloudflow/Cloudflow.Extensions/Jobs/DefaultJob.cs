@@ -15,7 +15,7 @@ namespace Cloudflow.Extensions.Jobs
     {
         #region Constructors
         [ImportingConstructor]
-        public DefaultJob([Import("JobConfiguration")]JobConfiguration jobConfiguration) : base(jobConfiguration)
+        public DefaultJob([Import("ExtensionConfiguration")]ExtensionConfiguration jobConfiguration) : base(jobConfiguration)
         {
 
         }

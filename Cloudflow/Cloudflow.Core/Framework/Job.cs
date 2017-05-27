@@ -13,16 +13,16 @@ namespace Cloudflow.Core.Framework
     public abstract class Job
     {
         #region Properties
-        public JobConfiguration JobConfiguration { get; }
+        public ExtensionConfiguration JobConfiguration { get; }
 
         public log4net.ILog JobLogger { get; }
         #endregion
 
         #region Constructors
-        public Job(JobConfiguration jobConfiguration)
+        public Job(ExtensionConfiguration jobConfiguration)
         {
             this.JobConfiguration = jobConfiguration;
-            this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.JobName}");
+            this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
         }
         #endregion
 

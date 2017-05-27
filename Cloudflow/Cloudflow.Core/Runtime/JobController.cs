@@ -49,7 +49,7 @@ namespace Cloudflow.Core.Runtime
         #endregion
 
         #region Properties
-        public JobConfiguration JobConfiguration { get; }
+        public ExtensionConfiguration JobConfiguration { get; }
 
         public Job Job { get; }
 
@@ -67,18 +67,18 @@ namespace Cloudflow.Core.Runtime
             _runTasks = new List<Task>();
 
             //Load the job configuration
-            var jobConfigurationController = new JobConfigurationController(jobDefinition.JobConfigurationExtensionId,
+            var jobConfigurationController = new ExtensionConfigurationController(jobDefinition.JobConfigurationExtensionId,
                 jobDefinition.JobConfigurationExtensionAssemblyPath);
             this.JobConfiguration = jobConfigurationController.Load(jobDefinition.Configuration);
 
             //Create the logger for the controller
-            this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{this.JobConfiguration.JobName}");
+            this.JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{this.JobConfiguration.Name}");
 
             //Load the triggers
             this.TriggerControllers = new List<TriggerController>();
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions)
             {
-                var triggerConfigurationController = new TriggerConfigurationController(triggerDefinition.TriggerConfigurationExtensionId,
+                var triggerConfigurationController = new ExtensionConfigurationController(triggerDefinition.TriggerConfigurationExtensionId,
                     triggerDefinition.TriggerConfigurationExtensionAssemblyPath);
                 var triggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
 
@@ -101,9 +101,9 @@ namespace Cloudflow.Core.Runtime
             }
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(this.JobConfiguration.JobExtensionAssemblyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(this.JobConfiguration.ExtensionAssemblyPath));
             _jobsContainer = new CompositionContainer(catalog);
-            _jobsContainer.ComposeExportedValue<JobConfiguration>("JobConfiguration", this.JobConfiguration);
+            _jobsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", this.JobConfiguration);
 
             try
             {
@@ -111,7 +111,7 @@ namespace Cloudflow.Core.Runtime
 
                 foreach (Lazy<Job, IJobMetaData> i in _jobs)
                 {
-                    if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobConfiguration.JobExtensionId)
+                    if (Guid.Parse(i.Metadata.JobExtensionId) == this.JobConfiguration.ExtensionId)
                     {
                         this.Job = i.Value;
                     }
@@ -129,7 +129,7 @@ namespace Cloudflow.Core.Runtime
         {
             this.JobControllerLoger.Info("Trigger event accepted - creating a run controller");
             RunController runController = new RunController(string.Format("{0} Run {1}",
-                this.JobConfiguration.JobName, _runCounter++), this, triggerData);
+                this.JobConfiguration.Name, _runCounter++), this, triggerData);
             runController.RunStatusChanged += RunController_RunStatusChanged;
 
             var task = Task.Run(() =>

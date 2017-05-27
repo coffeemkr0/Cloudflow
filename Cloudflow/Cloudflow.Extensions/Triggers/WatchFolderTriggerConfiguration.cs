@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -8,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [Export(typeof(TriggerConfiguration))]
-    [ExportMetadata("TriggerExtensionId", "893809A2-C02D-488B-9808-27159BFBB580")]
-    [ExportMetadata("Type", typeof(WatchFolderTriggerConfiguration))]
-    public class WatchFolderTriggerConfiguration : TriggerConfiguration
+    [ExportExtension("893809A2-C02D-488B-9808-27159BFBB580", typeof(TimerTriggerConfiguration))]
+    public class WatchFolderTriggerConfiguration : ExtensionConfiguration
     {
         #region Properties
         public string WatchFolderPath { get; set; }
@@ -20,7 +19,7 @@ namespace Cloudflow.Extensions.Triggers
         #endregion
 
         #region Constructors
-        public WatchFolderTriggerConfiguration() : base(Guid.Parse("893809A2-C02D-488B-9808-27159BFBB580"))
+        public WatchFolderTriggerConfiguration()
         {
             this.FileNameMasks = new List<string>();
         }

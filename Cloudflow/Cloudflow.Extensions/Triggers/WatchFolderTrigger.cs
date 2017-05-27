@@ -11,13 +11,13 @@ using System.IO;
 namespace Cloudflow.Extensions.Triggers
 {
     [Export(typeof(Trigger))]
-    [ExportMetadata("TriggerExtensionId", "893809A2-C02D-488B-9808-27159BFBB580")]
+    [ExportMetadata("TriggerExtensionId", "DAD72E34-F229-43B6-8B4E-AEDA64BCCF4E")]
     public class WatchFolderTrigger : Trigger
     {
         FileSystemWatcher _fileSystemWatcher;
 
         [ImportingConstructor]
-        public WatchFolderTrigger([Import("TriggerConfiguration")]TriggerConfiguration triggerConfiguration) : base(triggerConfiguration)
+        public WatchFolderTrigger([Import("ExtensionConfiguration")]ExtensionConfiguration triggerConfiguration) : base(triggerConfiguration)
         {
             _fileSystemWatcher = new FileSystemWatcher();
 

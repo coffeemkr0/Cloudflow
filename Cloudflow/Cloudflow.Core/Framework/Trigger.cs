@@ -15,16 +15,16 @@ namespace Cloudflow.Core.Framework
         #endregion
 
         #region Properties
-        public TriggerConfiguration TriggerConfiguration { get; }
+        public ExtensionConfiguration TriggerConfiguration { get; }
 
         public log4net.ILog TriggerLogger { get; }
         #endregion
 
         #region Constructors
-        public Trigger(TriggerConfiguration triggerConfiguration)
+        public Trigger(ExtensionConfiguration triggerConfiguration)
         {
             this.TriggerConfiguration = triggerConfiguration;
-            this.TriggerLogger = log4net.LogManager.GetLogger($"Trigger.{triggerConfiguration.TriggerName}");
+            this.TriggerLogger = log4net.LogManager.GetLogger($"Trigger.{triggerConfiguration.Name}");
         }
         #endregion
 

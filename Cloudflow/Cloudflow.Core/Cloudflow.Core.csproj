@@ -100,9 +100,6 @@
     <Compile Include="Configuration\ExtensionConfiguration.cs" />
     <Compile Include="Configuration\IExtension.cs" />
     <Compile Include="Configuration\IExtensionMetaData.cs" />
-    <Compile Include="Configuration\ITriggerConfigurationMetaData.cs" />
-    <Compile Include="Configuration\JobConfiguration.cs" />
-    <Compile Include="Configuration\TriggerConfiguration.cs" />
     <Compile Include="Data\Server\Models\JobDefinition.cs" />
     <Compile Include="Data\Server\Models\StepDefinition.cs" />
     <Compile Include="Data\Server\Models\TriggerDefinition.cs" />
@@ -127,8 +124,6 @@
     <Compile Include="Runtime\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />
     <Compile Include="Runtime\Hubs\AgentController.cs" />
-    <Compile Include="Runtime\JobConfigurationController.cs" />
-    <Compile Include="Runtime\TriggerConfigurationController.cs" />
     <Compile Include="Runtime\ExtensionConfigurationController.cs" />
     <Compile Include="Runtime\StepController.cs" />
     <Compile Include="Runtime\TriggerController.cs" />

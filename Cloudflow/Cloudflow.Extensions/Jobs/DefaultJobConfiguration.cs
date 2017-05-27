@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Extensions.Jobs
 {
     [ExportExtension("62A56D5B-07E5-41A3-A637-5E7C53FCF399", typeof(DefaultJobConfiguration))]
-    public class DefaultJobConfiguration : JobConfiguration
+    public class DefaultJobConfiguration : ExtensionConfiguration
     {
 
     }

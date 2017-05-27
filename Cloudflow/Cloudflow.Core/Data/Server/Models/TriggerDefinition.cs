@@ -34,17 +34,18 @@ namespace Cloudflow.Core.Data.Server.Models
         #region Public Methods
         public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath)
         {
-            var triggerExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88");
+            var triggerConfigurationExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88");
 
             TriggerDefinition triggerDefinition = new TriggerDefinition()
             {
-                TriggerConfigurationExtensionId = triggerExtensionId,
+                TriggerConfigurationExtensionId = triggerConfigurationExtensionId,
                 TriggerConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
 
-            var triggerConfigurationController = new TriggerConfigurationController(triggerExtensionId, extensionsAssemblyPath);
+            var triggerConfigurationController = new ExtensionConfigurationController(triggerConfigurationExtensionId, extensionsAssemblyPath);
             var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
-            timerConfiguration.TriggerName = "Hard coded timer trigger";
+            timerConfiguration.ExtensionId = Guid.Parse("DABF8963-4B59-448E-BE5A-143EBDF123EF");
+            timerConfiguration.Name = "Hard coded timer trigger";
             timerConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
             timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
 
