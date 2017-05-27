@@ -1,16 +1,8 @@
-See if this method might cleanup the code for an extension - https://stackoverflow.com/questions/4237532/mef-metadata-from-the-exported-parts
-Marking up the constructors for jobs, triggers or steps is inconvenient - I forgot to do it and did not realize why no extensions were loading.
+Setup jobs in the web app
+Need to figure out how to push jobs to agents
+
 Need to at least throw a custom exception when no extension is found - could possibly switch to [Import] instead of [ImportMany] or
 find the attribute value that specifies at least one must be found.
-Might be able to use an attribute to specify the configuration type for a job and not have to specify the JobExtensionId so many times.
-
-Create a MoveFile step
-Using the default job, create a job that watches a folder and copys files that are placed in it to another folder
-Save the job to the database
-load the job from the database
-Push the job to the agent
-start the agent and run the job
-test the job by placing files into the watch folder
 
 It's taking a few seconds to create DbContexts the first time, both on the server and agent.
 
