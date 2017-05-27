@@ -96,7 +96,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\IJobConfigurationMetaData.cs" />
+    <Compile Include="Configuration\IExtension.cs" />
+    <Compile Include="Configuration\IExtensionMetaData.cs" />
     <Compile Include="Configuration\ITriggerConfigurationMetaData.cs" />
     <Compile Include="Configuration\IStepConfigurationMetaData.cs" />
     <Compile Include="Configuration\JobConfiguration.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Data\Server\Models\JobDefinition.cs" />
     <Compile Include="Data\Server\Models\StepDefinition.cs" />
     <Compile Include="Data\Server\Models\TriggerDefinition.cs" />
+    <Compile Include="Framework\ExportExtensionAttribute.cs" />
     <Compile Include="Framework\IJobMetaData.cs" />
     <Compile Include="Framework\IStepMetaData.cs" />
     <Compile Include="Framework\Job.cs" />

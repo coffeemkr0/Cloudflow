@@ -35,18 +35,19 @@ namespace Cloudflow.Core.Data.Server.Models
 
         public static JobDefinition CreateTestItem(string extensionsAssemblyPath)
         {
-            Guid defaultJobExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
+            Guid defaultJobConfigurationExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
 
             JobDefinition jobDefinition = new JobDefinition()
             {
-                JobConfigurationExtensionId = defaultJobExtensionId,
+                JobConfigurationExtensionId = defaultJobConfigurationExtensionId,
                 JobConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
 
-            var jobConfigurationController = new JobConfigurationController(defaultJobExtensionId, extensionsAssemblyPath);
-            var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
+            var jobConfigurationController = new JobConfigurationController(defaultJobConfigurationExtensionId, extensionsAssemblyPath);
+            var jobConfiguration = jobConfigurationController.GetExtension();
+            jobConfiguration.JobExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99");
             jobConfiguration.JobName = "Hard coded test job";
-            jobConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
+            jobConfiguration.JobExtensionAssemblyPath = extensionsAssemblyPath;
 
             jobDefinition.Configuration = jobConfiguration.ToJson();
 

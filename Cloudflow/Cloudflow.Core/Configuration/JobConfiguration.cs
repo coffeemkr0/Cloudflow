@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Cloudflow.Core.Framework;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,20 +9,32 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Configuration
 {
-    public abstract class JobConfiguration
+    public abstract class JobConfiguration : IExtension
     {
         #region Properties
-        public Guid JobExtensionId { get; }
+        public Type Type { get; }
 
-        public string ExtensionAssemblyPath { get; set; }
+        public string ExtensionId { get; }
+
+        public Guid JobExtensionId { get; set; }
+
+        public string JobExtensionAssemblyPath { get; set; }
 
         public string JobName { get; set; }
         #endregion
 
         #region Constructors
-        public JobConfiguration(Guid jobExtensionId)
+        protected JobConfiguration()
         {
-            this.JobExtensionId = jobExtensionId;
+            var exportExtensionAttribute = this.GetType().GetCustomAttributes(typeof(ExportExtensionAttribute), true).
+                Cast<ExportExtensionAttribute>()
+                .SingleOrDefault();
+
+            if(exportExtensionAttribute!= null)
+            {
+                this.ExtensionId = exportExtensionAttribute.ExtensionId;
+                this.Type = exportExtensionAttribute.Type;
+            }
         }
         #endregion
 
