@@ -18,6 +18,17 @@ namespace Cloudflow.Core.Runtime.Hubs
         private static object _agentSynch = new object();
 
         #region Private Methods
+        private void LoadJobs()
+        {
+            using (AgentDbContext agentDbContext = new AgentDbContext())
+            {
+                foreach (var jobDefinition in agentDbContext.JobDefinitions)
+                {
+                    _agent.AddJob(jobDefinition);
+                }
+            }
+        }
+
         private void _agent_StatusChanged(AgentStatus status)
         {
             Clients.All.updateStatus(status);
@@ -81,11 +92,11 @@ namespace Cloudflow.Core.Runtime.Hubs
                     {
                         _logger.Info("Starting agent");
 
-                        //TODO:This eventually needs to load jobs
-                        _agent = Agent.CreateTestAgent();
-
+                        _agent = new Agent();
                         _agent.StatusChanged += _agent_StatusChanged;
                         _agent.RunStatusChanged += _agent_RunStatusChanged;
+
+                        LoadJobs();
 
                         _agent.Start();
                     }

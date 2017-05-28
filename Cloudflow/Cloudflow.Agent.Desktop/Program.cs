@@ -35,7 +35,7 @@ namespace Cloudflow.Agent.Desktop
                 log.Info(string.Format("Starting agent host at {0}", url));
 
                 var signalRHost = WebApp.Start<SignalRStartup>(url);
-                log.Info(string.Format("The agent is hosted and ready to start", url));
+                log.Info(string.Format("The agent is hosted and can now be started", url));
 
                 Console.WriteLine("Press Ctrl+C or close this window to stop the agent host.");
                 var result = Console.ReadKey();

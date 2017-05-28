@@ -102,16 +102,19 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void AddJob(JobDefinition jobDefinition)
         {
+            this.AgentLogger.Info($"Add job {jobDefinition.JobDefinitionId}");
+
             var jobController = new JobController(jobDefinition);
+            this.AgentLogger.Info($"Loading job {jobController.JobConfiguration.Name}");
+
             jobController.RunStatusChanged += JobController_RunStatusChanged;
             jobController.StepOutput += JobController_StepOutput;
+
             this.JobControllers.Add(jobController);
         }
 
         public void Start()
         {
-            this.AgentLogger.Info("Starting agent");
-
             this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Starting };
 
             foreach (var jobController in this.JobControllers)
@@ -153,19 +156,6 @@ namespace Cloudflow.Core.Runtime
             }
 
             return runs;
-        }
-
-        public static Agent CreateTestAgent()
-        {
-            Agent agent = new Agent();
-
-            var extensionsAssemblyPath = @"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll";
-
-            var serverDbcontext = new ServerDbContext(true, extensionsAssemblyPath);
-
-            agent.AddJob(serverDbcontext.JobDefinitions.ToList().FirstOrDefault());
-
-            return agent;
         }
         #endregion
     }

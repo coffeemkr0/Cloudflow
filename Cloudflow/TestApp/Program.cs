@@ -1,4 +1,5 @@
-﻿using Cloudflow.Core.Runtime;
+﻿using Cloudflow.Core.Data.Agent;
+using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,15 @@ namespace TestApp
         {
             try
             {
-                var agent = Agent.CreateTestAgent();
+                var agent = new Agent();
+                using (AgentDbContext agentDbContext = new AgentDbContext())
+                {
+                    foreach (var jobDefinition in agentDbContext.JobDefinitions)
+                    {
+                        agent.AddJob(jobDefinition);
+                    }
+                }
+
                 agent.Start();
                 Console.ReadLine();
 
