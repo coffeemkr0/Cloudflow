@@ -7,18 +7,24 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Cloudflow.Core.Data.Server;
-using Cloudflow.Core.Data.Server.Models;
+using Cloudflow.Core.Data.Shared.Models;
+using Cloudflow.Web.ViewModels.Jobs;
 
 namespace Cloudflow.Web.Controllers
 {
     public class JobsController : Controller
     {
-        private ServerDbContext db = new ServerDbContext();
+        private ServerDbContext _serverDbContext = new ServerDbContext();
 
         // GET: Jobs
         public ActionResult Index()
         {
-            return View(db.JobDefinitions.ToList());
+            var model = new IndexViewModel();
+            foreach (var jobDefinition in _serverDbContext.JobDefinitions)
+            {
+                model.JobDefinitions.Add(new JobDefinitionViewModel(jobDefinition));
+            }
+            return View(model);
         }
 
         // GET: Jobs/Details/5
@@ -28,11 +34,13 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobDefinition jobDefinition = db.JobDefinitions.Find(id);
+
+            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             if (jobDefinition == null)
             {
                 return HttpNotFound();
             }
+
             return View(jobDefinition);
         }
 
@@ -52,8 +60,8 @@ namespace Cloudflow.Web.Controllers
             if (ModelState.IsValid)
             {
                 jobDefinition.JobDefinitionId = Guid.NewGuid();
-                db.JobDefinitions.Add(jobDefinition);
-                db.SaveChanges();
+                _serverDbContext.JobDefinitions.Add(jobDefinition);
+                _serverDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +75,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobDefinition jobDefinition = db.JobDefinitions.Find(id);
+            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             if (jobDefinition == null)
             {
                 return HttpNotFound();
@@ -84,8 +92,8 @@ namespace Cloudflow.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(jobDefinition).State = EntityState.Modified;
-                db.SaveChanges();
+                _serverDbContext.Entry(jobDefinition).State = EntityState.Modified;
+                _serverDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(jobDefinition);
@@ -98,7 +106,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobDefinition jobDefinition = db.JobDefinitions.Find(id);
+            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             if (jobDefinition == null)
             {
                 return HttpNotFound();
@@ -111,17 +119,32 @@ namespace Cloudflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            JobDefinition jobDefinition = db.JobDefinitions.Find(id);
-            db.JobDefinitions.Remove(jobDefinition);
-            db.SaveChanges();
+            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            _serverDbContext.JobDefinitions.Remove(jobDefinition);
+            _serverDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult JobDefinition(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            if (jobDefinition == null)
+            {
+                return HttpNotFound();
+            }
+            return Json(jobDefinition);
+        }
+            
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _serverDbContext.Dispose();
             }
             base.Dispose(disposing);
         }
