@@ -103,7 +103,7 @@ AgentControllerClient.GetCompletedRuns = function (machineName, startIndex, page
         return item.machineName === machineName;
     });
 
-    if (typeof agentControllerProxyEntry !== "undefined") {
+    if (agentControllerProxyEntry !== undefined) {
         agentControllerProxyEntry.proxy.invoke("getCompletedRuns", startIndex, pageSize).done(function (runs) {
             callback(runs);
         }).fail(function (error) {
@@ -113,19 +113,29 @@ AgentControllerClient.GetCompletedRuns = function (machineName, startIndex, page
 };
 
 AgentControllerClient.OnAgentConnected = function (machineName) {
-    if (AgentControllerClient.AgentConnected !== null) {
+    if (AgentControllerClient.AgentConnected !== undefined) {
         AgentControllerClient.AgentConnected(machineName);
     }
 }
 
 AgentControllerClient.OnAgentStatusUpdated = function (machineName, status) {
-    if (AgentControllerClient.AgentStatusUpdated !== null) {
+    if (AgentControllerClient.AgentStatusUpdated !== undefined) {
         AgentControllerClient.AgentStatusUpdated(machineName, status);
     }
 }
 
 AgentControllerClient.OnRunStatusChanged = function (machineName, run) {
-    if (AgentControllerClient.RunStatusChanged !== null) {
+    if (AgentControllerClient.RunStatusChanged !== undefined) {
         AgentControllerClient.RunStatusChanged(machineName, run);
     }
 }
+
+AgentControllerClient.PublishJob = function (jobDefinition, callback) {
+    AgentControllerClient.AgentControllerProxies.forEach(function (agentControllerProxyEntry) {
+        agentControllerProxyEntry.proxy.invoke("publishJob", jobDefinition).done(function () {
+            callback();
+        }).fail(function (error) {
+            console.log("Communication error " + error);
+        });
+    });
+};

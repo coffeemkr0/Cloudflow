@@ -52,7 +52,7 @@ namespace Cloudflow.Core.Runtime.Hubs
             return null;
         }
 
-        public void PushJob(JobDefinition jobDefinition)
+        public void PublishJob(JobDefinition jobDefinition)
         {
             using (AgentDbContext agentDbContext = new AgentDbContext())
             {
@@ -64,8 +64,8 @@ namespace Cloudflow.Core.Runtime.Hubs
                 }
                 else
                 {
-                    agentDbContext.JobDefinitions.Attach(jobDefinition);
-                    agentDbContext.Entry(jobDefinition).State = EntityState.Modified;
+                    agentDbContext.JobDefinitions.Remove(existingJobDefinition);
+                    agentDbContext.JobDefinitions.Add(jobDefinition);
                     agentDbContext.SaveChanges();
                 }
             }

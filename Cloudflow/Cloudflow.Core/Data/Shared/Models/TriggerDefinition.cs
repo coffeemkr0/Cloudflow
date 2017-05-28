@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
@@ -21,6 +22,7 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         public Guid JobDefinitionId { get; set; }
 
+        [ScriptIgnore]
         public virtual JobDefinition JobDefinition { get; set; }
         #endregion
 

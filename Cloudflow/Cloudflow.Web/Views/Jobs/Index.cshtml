@@ -10,6 +10,18 @@
     <script src="~/Scripts/Jobs/Index.js"></script>
 }
 
+<script>
+    AgentControllerClient.Agents = [];
+    @foreach (var agent in Model.AgentConfigurations)
+    {
+    <text>
+    AgentControllerClient.Agents.push({ machineName: "@agent.MachineName", port: @agent.Port });
+    </text>
+    }
+</script>
+
+<input type="hidden" id="getJobDefinitionUrl" value="@Url.Action("JobDefinition")"/>
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -29,11 +41,17 @@
                     <th>Job Name</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
                 @foreach (var job in Model.JobDefinitions)
                 {
                     <tr>
                         <td>@job.JobName</td>
+                        <td>
+                            <a data-jobid="@job.Id" class="jobs__publishButton btn btn-small btn-default" href="#">
+                                Publish
+                            </a>
+                        </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", "Jobs", new { id = @job.Id}, new
                            {

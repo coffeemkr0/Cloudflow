@@ -20,6 +20,7 @@ namespace Cloudflow.Web.Controllers
         public ActionResult Index()
         {
             var model = new IndexViewModel();
+            model.AgentConfigurations.AddRange(_serverDbContext.AgentConfigurations.ToList());
             foreach (var jobDefinition in _serverDbContext.JobDefinitions)
             {
                 model.JobDefinitions.Add(new JobDefinitionViewModel(jobDefinition));
@@ -131,14 +132,19 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
-            if (jobDefinition == null)
+            using (ServerDbContext serverDbContext = new ServerDbContext())
             {
-                return HttpNotFound();
+                serverDbContext.Configuration.ProxyCreationEnabled = false;
+                JobDefinition jobDefinition = serverDbContext.JobDefinitions.Where(i => i.JobDefinitionId == id).
+                    Include(i => i.TriggerDefinitions).Include(i => i.StepDefinitions).FirstOrDefault();
+                if (jobDefinition == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return Json(jobDefinition, JsonRequestBehavior.AllowGet);
             }
-            return Json(jobDefinition);
         }
-            
 
         protected override void Dispose(bool disposing)
         {

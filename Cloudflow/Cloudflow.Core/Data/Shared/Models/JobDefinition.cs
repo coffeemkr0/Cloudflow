@@ -16,6 +16,8 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         public Guid JobConfigurationExtensionId { get; set; }
 
+        public int Version { get; set; }
+
         public string JobConfigurationExtensionAssemblyPath { get; set; }
 
         public string Configuration { get; set; }
@@ -31,6 +33,7 @@ namespace Cloudflow.Core.Data.Shared.Models
             this.JobDefinitionId = Guid.NewGuid();
             this.TriggerDefinitions = new List<TriggerDefinition>();
             this.StepDefinitions = new List<StepDefinition>();
+            this.Version = 1;
         }
         #endregion
 
