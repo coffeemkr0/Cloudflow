@@ -13,7 +13,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Properties
         public Guid Id { get; }
 
-        public string JobName { get; }
+        public ExtensionConfiguration Configuration { get; set; }
         #endregion
 
         #region Constructors
@@ -23,7 +23,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
             var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.JobConfigurationExtensionId,
                 jobDefinition.JobConfigurationExtensionAssemblyPath);
-            this.JobName = extensionConfigurationController.Load(jobDefinition.Configuration).Name;
+            this.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
         }
         #endregion
     }

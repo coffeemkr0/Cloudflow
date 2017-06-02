@@ -81,7 +81,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(jobDefinition);
+            return View(new EditViewModel(jobDefinition));
         }
 
         // POST: Jobs/Edit/5
@@ -97,7 +97,7 @@ namespace Cloudflow.Web.Controllers
                 _serverDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(jobDefinition);
+            return View(new EditViewModel(jobDefinition));
         }
 
         // GET: Jobs/Delete/5

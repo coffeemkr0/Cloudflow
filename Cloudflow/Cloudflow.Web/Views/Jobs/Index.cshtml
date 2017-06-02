@@ -46,7 +46,7 @@
                 @foreach (var job in Model.JobDefinitions)
                 {
                     <tr>
-                        <td>@job.JobName</td>
+                        <td>@job.Configuration.Name</td>
                         <td>
                             <a data-jobid="@job.Id" class="jobs__publishButton btn btn-small btn-default" href="#">
                                 Publish
