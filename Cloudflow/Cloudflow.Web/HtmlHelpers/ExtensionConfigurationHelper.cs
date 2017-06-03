@@ -94,7 +94,7 @@ namespace Cloudflow.Web.HtmlHelpers
                 return PropertyTypes.Complex;
             }
 
-            //Otherwise we don't know what to do with it
+            //Otherwise we don't know what to do with it at this point
             return PropertyTypes.Unknown;
         }
 
@@ -112,12 +112,9 @@ namespace Cloudflow.Web.HtmlHelpers
 
         private static string Input(PropertyInfo propertyInfo, object objectInstance, InputTypes inputType)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
             var tagBuilder = new TagBuilder("input");
             tagBuilder.MergeAttribute("name", propertyInfo.Name);
 
-            //TODO:This is not all of the supported input types
             switch (inputType)
             {
                 case InputTypes.Hidden:
@@ -132,38 +129,37 @@ namespace Cloudflow.Web.HtmlHelpers
             }
             
             tagBuilder.MergeAttribute("value", propertyInfo.GetValue(objectInstance).ToString());
-            htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.SelfClosing));
 
-            return htmlStringBuilder.ToString();
+            tagBuilder.AddCssClass("form-control");
+
+            return tagBuilder.ToString(TagRenderMode.SelfClosing);
         }
 
         private static string HiddenInput(PropertyInfo propertyInfo, object objectInstance)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
-            htmlStringBuilder.AppendLine(Input(propertyInfo, objectInstance, InputTypes.Hidden));
-
-            return htmlStringBuilder.ToString();
+            return Input(propertyInfo, objectInstance, InputTypes.Hidden);
         }
 
         private static string NumericEdit(PropertyInfo propertyInfo, object objectInstance)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var tagBuilder = new TagBuilder("div");
+            tagBuilder.AddCssClass("form-group");
 
-            htmlStringBuilder.AppendLine(Label(propertyInfo));
-            htmlStringBuilder.AppendLine(Input(propertyInfo, objectInstance, InputTypes.Numeric));
+            tagBuilder.InnerHtml = Label(propertyInfo);
+            tagBuilder.InnerHtml += Input(propertyInfo, objectInstance, InputTypes.Numeric);
 
-            return htmlStringBuilder.ToString();
+            return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
         private static string TextEdit(PropertyInfo propertyInfo, object objectInstance)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var tagBuilder = new TagBuilder("div");
+            tagBuilder.AddCssClass("form-group");
 
-            htmlStringBuilder.AppendLine(Label(propertyInfo));
-            htmlStringBuilder.AppendLine(Input(propertyInfo, objectInstance, InputTypes.Text));
+            tagBuilder.InnerHtml = Label(propertyInfo);
+            tagBuilder.InnerHtml += Input(propertyInfo, objectInstance, InputTypes.Text);
 
-            return htmlStringBuilder.ToString();
+            return tagBuilder.ToString(TagRenderMode.Normal);
         }
         #endregion
 
@@ -171,10 +167,6 @@ namespace Cloudflow.Web.HtmlHelpers
         public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfiguration configuration)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var tagBuilder = new TagBuilder("section");
-
-            htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.StartTag));
 
             foreach (var propertyInfo in configuration.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
             {
@@ -197,8 +189,6 @@ namespace Cloudflow.Web.HtmlHelpers
                         break;
                 }
             }
-
-            htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.EndTag));
 
             return MvcHtmlString.Create(htmlStringBuilder.ToString());
         }

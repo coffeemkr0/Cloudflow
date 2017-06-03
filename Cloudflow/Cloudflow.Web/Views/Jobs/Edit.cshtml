@@ -6,34 +6,30 @@
     ViewBag.ActivePage = "Jobs";
 }
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
     
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        
-        <div class="form-horizontal">
-            <h4>JobDefinition</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.JobDefinitionViewModel.Id)
-    
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.ExtensionConfiguration(Model.JobDefinitionViewModel.Configuration)
-                </div>
-            </div>
-    
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">@Model.JobDefinitionViewModel.Configuration.Name</h3>
         </div>
-    }
+        <div class="panel-body">
+            @Html.HiddenFor(model => model.JobDefinitionViewModel.Id)
+
+            @Html.ExtensionConfiguration(Model.JobDefinitionViewModel.Configuration)
+        </div>
+
+        <div class="panel-footer">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
 
    
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
