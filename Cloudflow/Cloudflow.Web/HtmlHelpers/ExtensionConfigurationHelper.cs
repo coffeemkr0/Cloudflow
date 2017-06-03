@@ -31,6 +31,9 @@ namespace Cloudflow.Web.HtmlHelpers
         #endregion
 
         #region Private Members
+        private static readonly log4net.ILog _log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static HashSet<Type> _textTypes = new HashSet<Type>
         {
             typeof(string),
@@ -187,9 +190,10 @@ namespace Cloudflow.Web.HtmlHelpers
                         htmlStringBuilder.AppendLine(NumericEdit(propertyInfo, configuration));
                         break;
                     case PropertyTypes.Complex:
+                        _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");
                         break;
                     case PropertyTypes.Unknown:
-                        //TODO:Log this - need a logger in the web app first
+                        _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");
                         break;
                 }
             }
