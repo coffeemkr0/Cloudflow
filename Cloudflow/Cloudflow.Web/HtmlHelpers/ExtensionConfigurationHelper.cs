@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Extensions.ConfigurationAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,18 @@ namespace Cloudflow.Web.HtmlHelpers
         #region Enums
         private enum PropertyTypes
         {
+            Hidden,
             Text,
             Number,
             Complex,
             Unknown
+        }
+
+        private enum InputTypes
+        {
+            Hidden,
+            Numeric,
+            Text
         }
         #endregion
 
@@ -61,6 +70,11 @@ namespace Cloudflow.Web.HtmlHelpers
 
         private static PropertyTypes GetPropertyType(PropertyInfo propertyInfo)
         {
+            if(Attribute.IsDefined(propertyInfo, typeof(HiddenAttribute)))
+            {
+                return PropertyTypes.Hidden;
+            }
+
             if (IsTextType(propertyInfo.PropertyType))
             {
                 return PropertyTypes.Text;
@@ -81,21 +95,70 @@ namespace Cloudflow.Web.HtmlHelpers
             return PropertyTypes.Unknown;
         }
 
-        private static string TextEdit(PropertyInfo propertyInfo, object objectInstance)
+        private static string Label(PropertyInfo propertyInfo)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
             var tagBuilder = new TagBuilder("label");
-            htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.StartTag));
+            tagBuilder.MergeAttribute("for", propertyInfo.Name);
             tagBuilder.SetInnerText(propertyInfo.Name);
             htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.Normal));
-            htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.EndTag));
 
-            tagBuilder = new TagBuilder("input");
-            tagBuilder.MergeAttribute("name", "Name");
-            tagBuilder.MergeAttribute("type", "text");
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string Input(PropertyInfo propertyInfo, object objectInstance, InputTypes inputType)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var tagBuilder = new TagBuilder("input");
+            tagBuilder.MergeAttribute("name", propertyInfo.Name);
+
+            //TODO:This is not all of the supported input types
+            switch (inputType)
+            {
+                case InputTypes.Hidden:
+                    tagBuilder.MergeAttribute("type", "hidden");
+                    break;
+                case InputTypes.Numeric:
+                    tagBuilder.MergeAttribute("type", "number");
+                    break;
+                case InputTypes.Text:
+                    tagBuilder.MergeAttribute("type", "text");
+                    break;
+            }
+            
             tagBuilder.MergeAttribute("value", propertyInfo.GetValue(objectInstance).ToString());
             htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.SelfClosing));
+
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string HiddenInput(PropertyInfo propertyInfo, object objectInstance)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            htmlStringBuilder.AppendLine(Input(propertyInfo, objectInstance, InputTypes.Hidden));
+
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string NumericEdit(PropertyInfo propertyInfo, object objectInstance)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            htmlStringBuilder.AppendLine(Label(propertyInfo));
+            htmlStringBuilder.AppendLine(Input(propertyInfo, objectInstance, InputTypes.Numeric));
+
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string TextEdit(PropertyInfo propertyInfo, object objectInstance)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            htmlStringBuilder.AppendLine(Label(propertyInfo));
+            htmlStringBuilder.AppendLine(Input(propertyInfo, objectInstance, InputTypes.Text));
 
             return htmlStringBuilder.ToString();
         }
@@ -114,15 +177,19 @@ namespace Cloudflow.Web.HtmlHelpers
             {
                 switch (GetPropertyType(propertyInfo))
                 {
+                    case PropertyTypes.Hidden:
+                        htmlStringBuilder.AppendLine(HiddenInput(propertyInfo, configuration));
+                        break;
                     case PropertyTypes.Text:
                         htmlStringBuilder.AppendLine(TextEdit(propertyInfo, configuration));
                         break;
                     case PropertyTypes.Number:
+                        htmlStringBuilder.AppendLine(NumericEdit(propertyInfo, configuration));
                         break;
                     case PropertyTypes.Complex:
                         break;
                     case PropertyTypes.Unknown:
-
+                        //TODO:Log this - need a logger in the web app first
                         break;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Extensions.ConfigurationAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace Cloudflow.Core.Extensions
 {
     public abstract class Extension : IExtension
     {
+        [Hidden]
         public string Id { get; }
 
+        [Hidden]
         public Type Type { get; }
 
         public Extension()
