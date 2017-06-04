@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class JobDefinitionViewModel
+    public class JobSummaryViewModel
     {
         #region Properties
         public Guid Id { get; }
@@ -17,7 +17,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Constructors
-        public JobDefinitionViewModel(JobDefinition jobDefinition)
+        public JobSummaryViewModel(JobDefinition jobDefinition)
         {
             this.Id = jobDefinition.JobDefinitionId;
 

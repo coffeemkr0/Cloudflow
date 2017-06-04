@@ -12,14 +12,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Properties
         public List<AgentConfiguration> AgentConfigurations { get; set; }
 
-        public List<JobDefinitionViewModel> JobDefinitions { get; set; }
+        public List<JobSummaryViewModel> JobSummaries { get; set; }
         #endregion
 
         #region Constructors
         public IndexViewModel()
         {
             this.AgentConfigurations = new List<AgentConfiguration>();
-            this.JobDefinitions = new List<JobDefinitionViewModel>();
+            this.JobSummaries = new List<JobSummaryViewModel>();
         }
         #endregion
     }

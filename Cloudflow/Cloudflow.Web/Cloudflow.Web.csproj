@@ -199,7 +199,7 @@
     <Compile Include="ViewModels\Agents\IndexViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditViewModel.cs" />
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\JobDefinitionViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\JobSummaryViewModel.cs" />
     <Compile Include="ViewModels\Runs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
   </ItemGroup>

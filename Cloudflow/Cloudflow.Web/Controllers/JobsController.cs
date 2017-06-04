@@ -23,7 +23,7 @@ namespace Cloudflow.Web.Controllers
             model.AgentConfigurations.AddRange(_serverDbContext.AgentConfigurations.ToList());
             foreach (var jobDefinition in _serverDbContext.JobDefinitions)
             {
-                model.JobDefinitions.Add(new JobDefinitionViewModel(jobDefinition));
+                model.JobSummaries.Add(new JobSummaryViewModel(jobDefinition));
             }
             return View(model);
         }
@@ -81,7 +81,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(new EditViewModel(jobDefinition));
+            return View(EditViewModel.FromJobDefinition(jobDefinition));
         }
 
         // POST: Jobs/Edit/5
@@ -89,15 +89,17 @@ namespace Cloudflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "JobDefinitionId,JobConfigurationExtensionId,JobConfigurationExtensionAssemblyPath,Configuration")] JobDefinition jobDefinition)
+        public ActionResult Edit(EditViewModel editViewModel)
         {
+            var jobDefinition = _serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == editViewModel.JobDefinitionId);
             if (ModelState.IsValid)
             {
-                _serverDbContext.Entry(jobDefinition).State = EntityState.Modified;
+                //TODO:Need a custom model binder to bind the configuration
+                jobDefinition.Configuration = editViewModel.Configuration.ToJson();
                 _serverDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(new EditViewModel(jobDefinition));
+            return View(EditViewModel.FromJobDefinition(jobDefinition));
         }
 
         // GET: Jobs/Delete/5
