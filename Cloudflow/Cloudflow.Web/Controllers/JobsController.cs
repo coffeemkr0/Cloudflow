@@ -103,7 +103,7 @@ namespace Cloudflow.Web.Controllers
         {
             var jobDefinition = _serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == editViewModel.JobDefinition.JobDefinitionId);
 
-            jobDefinition.Configuration = editViewModel.Configuration.ToJson();
+            jobDefinition.Configuration = editViewModel.ConfigurationViewModel.Configuration.ToJson();
             _serverDbContext.SaveChanges();
             return RedirectToAction("Index");
         }

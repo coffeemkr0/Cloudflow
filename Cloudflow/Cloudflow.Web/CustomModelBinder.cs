@@ -16,8 +16,8 @@ namespace Cloudflow.Web
             {
                 //TODO:This will need to work for every extension configuration so it needs to know the property names to use to ge the
                 //configuration extension Id and the configuration extension assembly path
-                var jobConfigurationExtensionId = Guid.Parse(bindingContext.ModelState["JobDefinition.JobConfigurationExtensionId"].Value.AttemptedValue.ToString());
-                var extensionConfigurationAssemblyPath = bindingContext.ModelState["JobDefinition.JobConfigurationExtensionAssemblyPath"].Value.AttemptedValue.ToString();
+                var jobConfigurationExtensionId = Guid.Parse(bindingContext.ModelState["ConfigurationViewModel.ExtensionId"].Value.AttemptedValue.ToString());
+                var extensionConfigurationAssemblyPath = bindingContext.ModelState["ConfigurationViewModel.ExtensionAssemblyPath"].Value.AttemptedValue.ToString();
 
                 var configurationController = new ExtensionConfigurationController(jobConfigurationExtensionId, extensionConfigurationAssemblyPath);
                 var configuration = configurationController.CreateNewConfiguration();

@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ConfigurationAttributes;
+using Cloudflow.Web.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,23 +99,28 @@ namespace Cloudflow.Web.HtmlHelpers
             return PropertyTypes.Unknown;
         }
 
-        private static string Label(PropertyInfo propertyInfo)
+        private static string Label(string[] prefixes, string propertyName)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
             var tagBuilder = new TagBuilder("label");
-            tagBuilder.MergeAttribute("for", propertyInfo.Name);
-            tagBuilder.SetInnerText(propertyInfo.Name);
+            var name = string.Join(".", prefixes) + "." + propertyName;
+            tagBuilder.MergeAttribute("for", name);
+            tagBuilder.SetInnerText(propertyName);
             htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.Normal));
 
             return htmlStringBuilder.ToString();
         }
 
-        private static string Input(string prefix, PropertyInfo propertyInfo, object objectInstance, InputTypes inputType)
+        private static string Input(string[] prefixes, string propertyName, string value, InputTypes inputType)
         {
             var tagBuilder = new TagBuilder("input");
-            tagBuilder.MergeAttribute("id", $"{prefix}_{propertyInfo.Name}");
-            tagBuilder.MergeAttribute("name", $"{prefix}.{propertyInfo.Name}");
+
+            var id = string.Join("_", prefixes) + "_" + propertyName;
+            tagBuilder.MergeAttribute("id", id);
+
+            var name = string.Join(".", prefixes) + "." + propertyName;
+            tagBuilder.MergeAttribute("name", name);
 
             switch (inputType)
             {
@@ -129,58 +135,61 @@ namespace Cloudflow.Web.HtmlHelpers
                     break;
             }
             
-            tagBuilder.MergeAttribute("value", propertyInfo.GetValue(objectInstance).ToString());
+            tagBuilder.MergeAttribute("value", value);
 
             tagBuilder.AddCssClass("form-control");
 
             return tagBuilder.ToString(TagRenderMode.SelfClosing);
         }
 
-        private static string HiddenInput(string prefix, PropertyInfo propertyInfo, object objectInstance)
+        private static string HiddenInput(string[] prefixes, PropertyInfo propertyInfo, object objectInstance)
         {
-            return Input(prefix, propertyInfo, objectInstance, InputTypes.Hidden);
+            return Input(prefixes, propertyInfo.Name, propertyInfo.GetValue(objectInstance).ToString(), InputTypes.Hidden);
         }
 
-        private static string NumericEdit(string prefix, PropertyInfo propertyInfo, object objectInstance)
+        private static string NumericEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
 
-            tagBuilder.InnerHtml = Label(propertyInfo);
-            tagBuilder.InnerHtml += Input(prefix, propertyInfo, objectInstance, InputTypes.Numeric);
+            tagBuilder.InnerHtml = Label(prefixes, propertyInfo.Name);
+            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, propertyInfo.GetValue(objectInstance).ToString(), InputTypes.Numeric);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string TextEdit(string prefix, PropertyInfo propertyInfo, object objectInstance)
+        private static string TextEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
 
-            tagBuilder.InnerHtml = Label(propertyInfo);
-            tagBuilder.InnerHtml += Input(prefix, propertyInfo, objectInstance, InputTypes.Text);
+            tagBuilder.InnerHtml = Label(prefixes, propertyInfo.Name);
+            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, propertyInfo.GetValue(objectInstance).ToString(), InputTypes.Text);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
         #endregion
 
 
-        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfiguration configuration, string configurationPropertyName = "Configuration")
+        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, string viewModelPropertyName)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            foreach (var propertyInfo in configuration.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
+            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, "ExtensionId", configurationViewModel.ExtensionId.ToString(), InputTypes.Hidden));
+            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, "ExtensionAssemblyPath", configurationViewModel.ExtensionAssemblyPath, InputTypes.Hidden));
+
+            foreach (var propertyInfo in configurationViewModel.Configuration.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
             {
                 switch (GetPropertyType(propertyInfo))
                 {
                     case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(HiddenInput(configurationPropertyName, propertyInfo, configuration));
+                        htmlStringBuilder.AppendLine(HiddenInput(new string[] { viewModelPropertyName, "Configuration" }, propertyInfo, configurationViewModel.Configuration));
                         break;
                     case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(configurationPropertyName, propertyInfo, configuration));
+                        htmlStringBuilder.AppendLine(TextEdit(new string[] { viewModelPropertyName, "Configuration" }, propertyInfo, configurationViewModel.Configuration));
                         break;
                     case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(configurationPropertyName, propertyInfo, configuration));
+                        htmlStringBuilder.AppendLine(NumericEdit(new string[] { viewModelPropertyName, "Configuration" }, propertyInfo, configurationViewModel.Configuration));
                         break;
                     case PropertyTypes.Complex:
                         _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");
