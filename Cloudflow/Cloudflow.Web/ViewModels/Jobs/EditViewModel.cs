@@ -11,7 +11,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class EditViewModel
     {
         #region Properties
-        public Guid JobDefinitionId { get; set; }
+        public JobDefinition JobDefinition { get; set; }
 
         public ExtensionConfiguration Configuration { get; set; }
         #endregion
@@ -19,7 +19,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public EditViewModel()
         {
-
+            
         }
         #endregion
 
@@ -27,7 +27,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public static EditViewModel FromJobDefinition(JobDefinition jobDefinition)
         {
             var editViewModel = new EditViewModel();
-            editViewModel.JobDefinitionId = jobDefinition.JobDefinitionId;
+            editViewModel.JobDefinition = jobDefinition;
 
             var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.JobConfigurationExtensionId,
                jobDefinition.JobConfigurationExtensionAssemblyPath);

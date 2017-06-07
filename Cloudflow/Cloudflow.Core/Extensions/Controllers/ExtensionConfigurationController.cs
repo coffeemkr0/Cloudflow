@@ -45,8 +45,8 @@ namespace Cloudflow.Core.Extensions.Controllers
         }
         #endregion
 
-        #region Private Methods
-        private Type GetConfigurationType()
+        #region Public Methods
+        public Type GetConfigurationType()
         {
             foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
             {
@@ -58,9 +58,7 @@ namespace Cloudflow.Core.Extensions.Controllers
 
             return null;
         }
-        #endregion
 
-        #region Public Methods
         public ExtensionConfiguration CreateNewConfiguration()
         {
             foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)

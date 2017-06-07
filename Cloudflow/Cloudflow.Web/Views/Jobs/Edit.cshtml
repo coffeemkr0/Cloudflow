@@ -18,7 +18,9 @@
             <h3 class="panel-title">@Model.Configuration.Name</h3>
         </div>
         <div class="panel-body">
-            @Html.HiddenFor(model => model.JobDefinitionId)
+            @Html.HiddenFor(model => model.JobDefinition.JobDefinitionId)
+            @Html.HiddenFor(model => model.JobDefinition.JobConfigurationExtensionId)
+            @Html.HiddenFor(model => model.JobDefinition.JobConfigurationExtensionAssemblyPath)
 
             @Html.ExtensionConfiguration(Model.Configuration)
         </div>

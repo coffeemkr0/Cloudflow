@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Web.ViewModels.Jobs;
+using System.IO;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -19,6 +20,15 @@ namespace Cloudflow.Web.Controllers
         // GET: Jobs
         public ActionResult Index()
         {
+#if DEBUG
+            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
+            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
+            extensionsAssemblyPath = Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            _serverDbContext = new ServerDbContext(true, extensionsAssemblyPath);
+#else
+            _databaseContext = new ServerDbContext();
+#endif
+
             var model = new IndexViewModel();
             model.AgentConfigurations.AddRange(_serverDbContext.AgentConfigurations.ToList());
             foreach (var jobDefinition in _serverDbContext.JobDefinitions)
@@ -91,15 +101,11 @@ namespace Cloudflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditViewModel editViewModel)
         {
-            var jobDefinition = _serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == editViewModel.JobDefinitionId);
-            if (ModelState.IsValid)
-            {
-                //TODO:Need a custom model binder to bind the configuration
-                jobDefinition.Configuration = editViewModel.Configuration.ToJson();
-                _serverDbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(EditViewModel.FromJobDefinition(jobDefinition));
+            var jobDefinition = _serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == editViewModel.JobDefinition.JobDefinitionId);
+
+            jobDefinition.Configuration = editViewModel.Configuration.ToJson();
+            _serverDbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Jobs/Delete/5

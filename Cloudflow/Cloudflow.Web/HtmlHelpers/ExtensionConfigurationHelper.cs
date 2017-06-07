@@ -110,10 +110,11 @@ namespace Cloudflow.Web.HtmlHelpers
             return htmlStringBuilder.ToString();
         }
 
-        private static string Input(PropertyInfo propertyInfo, object objectInstance, InputTypes inputType)
+        private static string Input(string prefix, PropertyInfo propertyInfo, object objectInstance, InputTypes inputType)
         {
             var tagBuilder = new TagBuilder("input");
-            tagBuilder.MergeAttribute("name", propertyInfo.Name);
+            tagBuilder.MergeAttribute("id", $"{prefix}_{propertyInfo.Name}");
+            tagBuilder.MergeAttribute("name", $"{prefix}.{propertyInfo.Name}");
 
             switch (inputType)
             {
@@ -135,36 +136,36 @@ namespace Cloudflow.Web.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.SelfClosing);
         }
 
-        private static string HiddenInput(PropertyInfo propertyInfo, object objectInstance)
+        private static string HiddenInput(string prefix, PropertyInfo propertyInfo, object objectInstance)
         {
-            return Input(propertyInfo, objectInstance, InputTypes.Hidden);
+            return Input(prefix, propertyInfo, objectInstance, InputTypes.Hidden);
         }
 
-        private static string NumericEdit(PropertyInfo propertyInfo, object objectInstance)
+        private static string NumericEdit(string prefix, PropertyInfo propertyInfo, object objectInstance)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
 
             tagBuilder.InnerHtml = Label(propertyInfo);
-            tagBuilder.InnerHtml += Input(propertyInfo, objectInstance, InputTypes.Numeric);
+            tagBuilder.InnerHtml += Input(prefix, propertyInfo, objectInstance, InputTypes.Numeric);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string TextEdit(PropertyInfo propertyInfo, object objectInstance)
+        private static string TextEdit(string prefix, PropertyInfo propertyInfo, object objectInstance)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
 
             tagBuilder.InnerHtml = Label(propertyInfo);
-            tagBuilder.InnerHtml += Input(propertyInfo, objectInstance, InputTypes.Text);
+            tagBuilder.InnerHtml += Input(prefix, propertyInfo, objectInstance, InputTypes.Text);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
         #endregion
 
 
-        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfiguration configuration)
+        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfiguration configuration, string configurationPropertyName = "Configuration")
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
@@ -173,13 +174,13 @@ namespace Cloudflow.Web.HtmlHelpers
                 switch (GetPropertyType(propertyInfo))
                 {
                     case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(HiddenInput(propertyInfo, configuration));
+                        htmlStringBuilder.AppendLine(HiddenInput(configurationPropertyName, propertyInfo, configuration));
                         break;
                     case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(propertyInfo, configuration));
+                        htmlStringBuilder.AppendLine(TextEdit(configurationPropertyName, propertyInfo, configuration));
                         break;
                     case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(propertyInfo, configuration));
+                        htmlStringBuilder.AppendLine(NumericEdit(configurationPropertyName, propertyInfo, configuration));
                         break;
                     case PropertyTypes.Complex:
                         _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");

@@ -16,6 +16,7 @@ namespace Cloudflow.Web
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            ModelBinders.Binders.DefaultBinder = new CustomModelBinder();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
