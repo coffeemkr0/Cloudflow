@@ -18,9 +18,33 @@
             <h3 class="panel-title">@Model.ConfigurationViewModel.Configuration.Name</h3>
         </div>
         <div class="panel-body">
-            @Html.HiddenFor(model => model.JobDefinition.JobDefinitionId)
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a href="#tabGeneral" role="tab" data-toggle="tab">General</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tabTriggers" role="tab" data-toggle="tab">Triggers</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tabSteps" role="tab" data-toggle="tab">Steps</a>
+                </li>
+            </ul>
 
-            @Html.ExtensionConfiguration(Model.ConfigurationViewModel, "ConfigurationViewModel")
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tabGeneral">
+                    @Html.HiddenFor(model => model.JobDefinition.JobDefinitionId)
+
+                    @Html.ExtensionConfiguration(Model.ConfigurationViewModel, "ConfigurationViewModel")
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="tabTriggers">
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="tabSteps">
+
+                </div>
+            </div>
         </div>
 
         <div class="panel-footer">
