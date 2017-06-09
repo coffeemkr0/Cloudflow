@@ -8,6 +8,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 {
     public class ExtensionConfigurationViewModel
     {
+        public Guid Id { get; set; }
+
         public Guid ExtensionId { get; set; }
 
         public string ExtensionAssemblyPath { get; set; }

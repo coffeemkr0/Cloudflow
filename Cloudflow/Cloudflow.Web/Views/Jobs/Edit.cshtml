@@ -15,7 +15,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">@Model.ConfigurationViewModel.Configuration.Name</h3>
+            <h3 class="panel-title">@Model.JobConfigurationViewModel.Configuration.Name</h3>
         </div>
         <div class="panel-body">
             <ul class="nav nav-tabs">
@@ -32,16 +32,91 @@
 
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="tabGeneral">
-                    @Html.HiddenFor(model => model.JobDefinition.JobDefinitionId)
+                    @Html.HiddenFor(model => model.JobConfigurationViewModel.Id)
 
-                    @Html.ExtensionConfiguration(Model.ConfigurationViewModel, "ConfigurationViewModel")
+                    @Html.ExtensionConfiguration(Model.JobConfigurationViewModel, "JobConfigurationViewModel")
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="tabTriggers">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Triggers</h3>
+                        </div>
+                        <div class="panel-body">
+                            @Html.ActionLink("Add", "", "", null, new
+                            {
+                                id = "btnAdd",
+                                @class = "btn btn-small btn-primary"
+                            })
 
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <th>Name</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                @foreach (var trigger in Model.TriggerConfigurationViewModels)
+                                {
+                                    <tr>
+                                        <td>@trigger.Configuration.Name</td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "", "", new { id = trigger.Id }, new
+                                               {
+                                                   @class = "btn btn-small btn-default"
+                                               })
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Delete", "", "", new { id = trigger.Id }, new
+                                               {
+                                                   @class = "btn btn-small btn-default"
+                                               })
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="tabSteps">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Steps</h3>
+                        </div>
+                        <div class="panel-body">
+                            @Html.ActionLink("Add", "", "", null, new
+                            {
+                                id = "btnAdd",
+                                @class = "btn btn-small btn-primary"
+                            })
+
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <th>Name</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                @foreach (var step in Model.StepConfigurationViewModels)
+                                {
+                                    <tr>
+                                        <td>@step.Configuration.Name</td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "", "", new { id = step.Id }, new
+                                       {
+                                           @class = "btn btn-small btn-default"
+                                       })
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Delete", "", "", new { id = step.Id }, new
+                                       {
+                                           @class = "btn btn-small btn-default"
+                                       })
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
 
                 </div>
             </div>
