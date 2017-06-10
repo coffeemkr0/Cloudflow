@@ -12,51 +12,51 @@
 <section>
     <h3>@Model.JobConfigurationViewModel.Configuration.Name</h3>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active">
+            <a href="#tabGeneral" role="tab" data-toggle="tab">General</a>
+        </li>
+        <li role="presentation">
+            <a href="#tabTriggers" role="tab" data-toggle="tab">Triggers</a>
+        </li>
+        <li role="presentation">
+            <a href="#tabSteps" role="tab" data-toggle="tab">Steps</a>
+        </li>
+    </ul>
 
-        <div class="panel panel-default">
+    <section>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-            <div class="panel-body">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active">
-                        <a href="#tabGeneral" role="tab" data-toggle="tab">General</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabTriggers" role="tab" data-toggle="tab">Triggers</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabSteps" role="tab" data-toggle="tab">Steps</a>
-                    </li>
-                </ul>
+            <div class="tab-content">
+                <div class="">
+                    <hr />
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                        Save
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-default">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                        Back to Jobs
+                    </a>
+                    <hr />
+                </div>
 
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tabGeneral">
-                        @Html.HiddenFor(model => model.JobConfigurationViewModel.Id)
+                <div role="tabpanel" class="tab-pane active" id="tabGeneral">
+                    @Html.HiddenFor(model => model.JobConfigurationViewModel.Id)
 
-                        @Html.ExtensionConfiguration(Model.JobConfigurationViewModel, "JobConfigurationViewModel")
-                    </div>
+                    @Html.ExtensionConfiguration(Model.JobConfigurationViewModel, "JobConfigurationViewModel")
+                </div>
 
-                    <div role="tabpanel" class="tab-pane" id="tabTriggers">
-                        @Html.Partial("_Triggers", Model.TriggersViewModel)
-                    </div>
+                <div role="tabpanel" class="tab-pane" id="tabTriggers">
+                    @Html.Partial("_Triggers", Model.TriggersViewModel)
+                </div>
 
-                    <div role="tabpanel" class="tab-pane" id="tabSteps">
-                        @Html.Partial("_Steps", Model.StepsViewModel)
-
-                    </div>
+                <div role="tabpanel" class="tab-pane" id="tabSteps">
+                    @Html.Partial("_Steps", Model.StepsViewModel)
                 </div>
             </div>
-
-            <div class="panel-footer">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    }
-
-
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+        }
+    </section>
 </section>
