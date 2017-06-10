@@ -13,17 +13,17 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Properties
         public ExtensionConfigurationViewModel JobConfigurationViewModel { get; set; }
 
-        public List<ExtensionConfigurationViewModel> TriggerConfigurationViewModels { get; set; }
+        public TriggersViewModel TriggersViewModel { get; set; }
 
-        public List<ExtensionConfigurationViewModel> StepConfigurationViewModels { get; set; }
+        public StepsViewModel StepsViewModel { get; set; }
         #endregion
 
         #region Constructors
         public EditViewModel()
         {
             this.JobConfigurationViewModel = new ExtensionConfigurationViewModel();
-            this.TriggerConfigurationViewModels = new List<ExtensionConfigurationViewModel>();
-            this.StepConfigurationViewModels = new List<ExtensionConfigurationViewModel>();
+            this.TriggersViewModel = new TriggersViewModel();
+            this.StepsViewModel = new StepsViewModel();
         }
         #endregion
 
@@ -51,7 +51,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     triggerDefinition.TriggerConfigurationExtensionAssemblyPath);
                 triggerConfigurationViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
 
-                editViewModel.TriggerConfigurationViewModels.Add(triggerConfigurationViewModel);
+                editViewModel.TriggersViewModel.Triggers.Add(triggerConfigurationViewModel);
             }
 
             foreach (var stepDefinition in jobDefinition.StepDefinitions)
@@ -65,7 +65,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     stepDefinition.StepConfigurationExtensionAssemblyPath);
                 stepConfigurationViewModel.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
 
-                editViewModel.StepConfigurationViewModels.Add(stepConfigurationViewModel);
+                editViewModel.StepsViewModel.Steps.Add(stepConfigurationViewModel);
             }
 
             return editViewModel;

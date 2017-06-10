@@ -202,6 +202,8 @@
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Jobs\JobSummaryViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\StepsViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\TriggersViewModel.cs" />
     <Compile Include="ViewModels\Runs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
   </ItemGroup>
@@ -377,6 +379,8 @@
     <Content Include="Views\Agents\Details.cshtml" />
     <Content Include="Views\Agents\Edit.cshtml" />
     <Content Include="Views\Agents\Index.cshtml" />
+    <Content Include="Views\Jobs\_Triggers.cshtml" />
+    <Content Include="Views\Jobs\_Steps.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

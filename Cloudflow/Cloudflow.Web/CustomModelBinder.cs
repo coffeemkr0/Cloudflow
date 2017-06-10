@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Web.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,8 @@ namespace Cloudflow.Web
         {
             if (modelType.Equals(typeof(ExtensionConfiguration)))
             {
-                //TODO:This will need to work for every extension configuration so it needs to know the property names to use to ge the
-                //configuration extension Id and the configuration extension assembly path
-                var jobConfigurationExtensionId = Guid.Parse(bindingContext.ModelState["ConfigurationViewModel.ExtensionId"].Value.AttemptedValue.ToString());
-                var extensionConfigurationAssemblyPath = bindingContext.ModelState["ConfigurationViewModel.ExtensionAssemblyPath"].Value.AttemptedValue.ToString();
+                var jobConfigurationExtensionId = ((ExtensionConfigurationViewModel)bindingContext.ModelMetadata.Container).ExtensionId;
+                var extensionConfigurationAssemblyPath = ((ExtensionConfigurationViewModel)bindingContext.ModelMetadata.Container).ExtensionAssemblyPath;
 
                 var configurationController = new ExtensionConfigurationController(jobConfigurationExtensionId, extensionConfigurationAssemblyPath);
                 var configuration = configurationController.CreateNewConfiguration();
