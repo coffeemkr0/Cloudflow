@@ -8,53 +8,55 @@
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jqueryval")
-    
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">@Model.JobConfigurationViewModel.Configuration.Name</h3>
-        </div>
-        <div class="panel-body">
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active">
-                    <a href="#tabGeneral" role="tab" data-toggle="tab">General</a>
-                </li>
-                <li role="presentation">
-                    <a href="#tabTriggers" role="tab" data-toggle="tab">Triggers</a>
-                </li>
-                <li role="presentation">
-                    <a href="#tabSteps" role="tab" data-toggle="tab">Steps</a>
-                </li>
-            </ul>
+<section>
+    <h3>@Model.JobConfigurationViewModel.Configuration.Name</h3>
 
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="tabGeneral">
-                    @Html.HiddenFor(model => model.JobConfigurationViewModel.Id)
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-                    @Html.ExtensionConfiguration(Model.JobConfigurationViewModel, "JobConfigurationViewModel")
-                </div>
+        <div class="panel panel-default">
 
-                <div role="tabpanel" class="tab-pane" id="tabTriggers">
-                    @Html.Partial("_Triggers", Model.TriggersViewModel)
-                </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active">
+                        <a href="#tabGeneral" role="tab" data-toggle="tab">General</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#tabTriggers" role="tab" data-toggle="tab">Triggers</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#tabSteps" role="tab" data-toggle="tab">Steps</a>
+                    </li>
+                </ul>
 
-                <div role="tabpanel" class="tab-pane" id="tabSteps">
-                    @Html.Partial("_Steps", Model.StepsViewModel)
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tabGeneral">
+                        @Html.HiddenFor(model => model.JobConfigurationViewModel.Id)
 
+                        @Html.ExtensionConfiguration(Model.JobConfigurationViewModel, "JobConfigurationViewModel")
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="tabTriggers">
+                        @Html.Partial("_Triggers", Model.TriggersViewModel)
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="tabSteps">
+                        @Html.Partial("_Steps", Model.StepsViewModel)
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panel-footer">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <div class="panel-footer">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
+    }
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
     </div>
-}
-
-   
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+</section>
