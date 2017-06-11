@@ -18,6 +18,8 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         public string StepConfigurationExtensionAssemblyPath { get; set; }
 
+        public int Index { get; set; }
+
         public string Configuration { get; set; }
 
 
