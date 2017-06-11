@@ -101,11 +101,9 @@ namespace Cloudflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditViewModel editViewModel)
         {
-            var jobDefinition = _serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == editViewModel.JobConfigurationViewModel.Id);
+            editViewModel.Save(_serverDbContext);
 
-            jobDefinition.Configuration = editViewModel.JobConfigurationViewModel.Configuration.ToJson();
-            _serverDbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { editViewModel.JobConfigurationViewModel.Id });
         }
 
         // GET: Jobs/Delete/5

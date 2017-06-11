@@ -7,7 +7,9 @@ namespace Cloudflow.Web.ViewModels.Jobs
 {
     public class TriggersViewModel
     {
+        #region Properties
         public List<ExtensionConfigurationViewModel> Triggers { get; set; }
+        #endregion
 
         #region Constructors
         public TriggersViewModel()

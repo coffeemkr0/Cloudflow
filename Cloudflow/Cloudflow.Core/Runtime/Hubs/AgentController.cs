@@ -15,7 +15,8 @@ namespace Cloudflow.Core.Runtime.Hubs
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Agent _agent;
-        private static object _agentSynch = new object();
+        private static object _agentControlSynch = new object();
+        private static object _publishJobSynch = new object();
 
         #region Private Methods
         private void LoadJobs()
@@ -65,19 +66,28 @@ namespace Cloudflow.Core.Runtime.Hubs
 
         public void PublishJob(JobDefinition jobDefinition)
         {
-            using (AgentDbContext agentDbContext = new AgentDbContext())
+            lock (_publishJobSynch)
             {
-                var existingJobDefinition = agentDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == jobDefinition.JobDefinitionId);
-                if(existingJobDefinition == null)
+                using (AgentDbContext agentDbContext = new AgentDbContext())
                 {
-                    agentDbContext.JobDefinitions.Add(jobDefinition);
-                    agentDbContext.SaveChanges();
+                    var existingJobDefinition = agentDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == jobDefinition.JobDefinitionId);
+                    if (existingJobDefinition == null)
+                    {
+                        agentDbContext.JobDefinitions.Add(jobDefinition);
+                        agentDbContext.SaveChanges();
+                    }
+                    else
+                    {
+                        agentDbContext.JobDefinitions.Remove(existingJobDefinition);
+                        agentDbContext.JobDefinitions.Add(jobDefinition);
+                        agentDbContext.SaveChanges();
+                    }
                 }
-                else
+
+                if(_agent != null)
                 {
-                    agentDbContext.JobDefinitions.Remove(existingJobDefinition);
-                    agentDbContext.JobDefinitions.Add(jobDefinition);
-                    agentDbContext.SaveChanges();
+                    StopAgent();
+                    StartAgent();
                 }
             }
         }
@@ -86,7 +96,7 @@ namespace Cloudflow.Core.Runtime.Hubs
         {
             try
             {
-                lock (_agentSynch)
+                lock (_agentControlSynch)
                 {
                     if (_agent == null)
                     {
@@ -112,7 +122,7 @@ namespace Cloudflow.Core.Runtime.Hubs
         {
             try
             {
-                lock (_agentSynch)
+                lock (_agentControlSynch)
                 {
                     if (_agent != null)
                     {

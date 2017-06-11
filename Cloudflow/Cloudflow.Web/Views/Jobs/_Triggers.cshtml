@@ -20,10 +20,19 @@
             <div class="panel-body">
                 @foreach (var trigger in Model.Triggers)
                 {
+                    int triggerIndex = Model.Triggers.IndexOf(trigger);
                     <div role="tabpanel" class="tab-pane active" id="tab@(trigger.Id)">
-                        @Html.HiddenFor(model => trigger.Id)
+                        <input type="hidden" name="TriggersViewModel.Triggers[@triggerIndex].Id" 
+                               id="TriggersViewModel.Triggers[@triggerIndex]_Id" 
+                               value="@trigger.Id" />
+                        <input type="hidden" name="TriggersViewModel.Triggers[@triggerIndex].ExtensionId" 
+                               id="TriggersViewModel.Triggers[@triggerIndex]_ExtensionId" 
+                               value="@trigger.ExtensionId" />
+                        <input type="hidden" name="TriggersViewModel.Triggers[@triggerIndex].ExtensionAssemblyPath" 
+                               id="TriggersViewModel.Triggers[@triggerIndex]_ExtensionAssemblyPath" 
+                               value="@trigger.ExtensionAssemblyPath" />
 
-                        @Html.ExtensionConfiguration(trigger, "TriggersViewModel.Triggers[" + Model.Triggers.IndexOf(trigger) + "]")
+                        @Html.ExtensionConfiguration(trigger, "TriggersViewModel.Triggers[" + triggerIndex + "]")
                     </div>
                 }
             </div>

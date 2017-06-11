@@ -2,6 +2,8 @@
 using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +14,17 @@ namespace Cloudflow.Core.Data.Shared.Models
     public class TriggerDefinition
     {
         #region Properties
+        [Key]
+        [Column(Order = 1)]
         public Guid TriggerDefinitionId { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public int Index { get; set; }
 
         public Guid TriggerConfigurationExtensionId { get; set; }
 
         public string TriggerConfigurationExtensionAssemblyPath { get; set; }
-
-        public int Index { get; set; }
 
         public string Configuration { get; set; }
 
