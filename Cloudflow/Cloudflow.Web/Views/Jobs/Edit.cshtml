@@ -9,6 +9,10 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jqueryval")
 
+@section headScripts {
+    <script src="~/Scripts/Jobs/Edit.js"></script>
+}
+
 <section>
     <h3>@Model.JobConfigurationViewModel.Configuration.Name</h3>
 

@@ -4,9 +4,18 @@
 <section class="container-fluid">
     <div class="col-md-3 panel panel-default">
         <div class="panel-body">
+            <div>
+                <a id="btnAddTrigger" class="btn btn-default" href="#">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add Trigger...
+                </a>
+            </div>
+
+            <hr />
+
             <ul class="nav nav-pills nav-stacked">
                 @foreach (var trigger in Model.Triggers)
-            {
+                {
                     <li role="presentation" class="@(Model.Triggers.IndexOf(trigger) == 0 ? "active" : "")">
                         <a href="#tab@(trigger.Id)" role="tab" data-toggle="tab">@trigger.Configuration.Name</a>
                     </li>

@@ -223,6 +223,7 @@
     </None>
     <None Include="Content\Site.less" />
     <Content Include="Scripts\Agents\Index.js" />
+    <Content Include="Scripts\Jobs\Edit.js" />
     <Content Include="Scripts\Jobs\Index.js" />
     <Content Include="Scripts\Runs\Index.js" />
     <Content Include="Scripts\bootstrap.js" />
