@@ -17,7 +17,10 @@
                 @foreach (var step in Model.Steps)
                 {
                     <li role="presentation" class="@(Model.Steps.IndexOf(step) == 0 ? "active" : "")">
-                        <a href="#tab@(step.Id)" role="tab" data-toggle="tab">@step.Configuration.Name</a>
+                        <a href="#tab@(step.Id)" role="tab" data-toggle="tab">
+                            @step.Configuration.Name
+                            <i data-stepid="@step.Id" class="deleteStep glyphicon glyphicon-remove pull-right"></i>
+                        </a>
                     </li>
                 }
             </ul>

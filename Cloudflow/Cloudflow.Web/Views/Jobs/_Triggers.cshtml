@@ -17,7 +17,10 @@
                 @foreach (var trigger in Model.Triggers)
                 {
                     <li role="presentation" class="@(Model.Triggers.IndexOf(trigger) == 0 ? "active" : "")">
-                        <a href="#tab@(trigger.Id)" role="tab" data-toggle="tab">@trigger.Configuration.Name</a>
+                        <a href="#tab@(trigger.Id)" role="tab" data-toggle="tab">
+                            @trigger.Configuration.Name
+                            <i data-triggerid="@trigger.Id" class="deleteTrigger glyphicon glyphicon-remove pull-right"></i>
+                        </a>
                     </li>
                 }
             </ul>
