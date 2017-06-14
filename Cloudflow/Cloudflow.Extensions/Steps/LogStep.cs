@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Steps
 {
-    [ExportExtension("43D6FD16-0344-4204-AEE9-A09B3998C017", typeof(LogStep))]
+    [ExportConfigurableExtension("43D6FD16-0344-4204-AEE9-A09B3998C017", typeof(LogStep), "191A3C1A-FD25-4790-8141-DFC132DA4970")]
     public class LogStep : Step
     {
         #region Constructors

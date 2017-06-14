@@ -132,25 +132,14 @@ namespace Cloudflow.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult JobDefinition(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            using (ServerDbContext serverDbContext = new ServerDbContext())
-            {
-                serverDbContext.Configuration.ProxyCreationEnabled = false;
-                JobDefinition jobDefinition = serverDbContext.JobDefinitions.Where(i => i.JobDefinitionId == id).
-                    Include(i => i.TriggerDefinitions).Include(i => i.StepDefinitions).FirstOrDefault();
-                if (jobDefinition == null)
-                {
-                    return HttpNotFound();
-                }
+        //[HttpPost]
+        //public JsonResult AddTrigger(Guid triggerId)
+        //{
+        //    var totalValuesPartialView = RenderRazorViewToString(this.ControllerContext, "_TotalValues", model.TotalValuesModel);
+        //    var summaryValuesPartialView = RenderRazorViewToString(this.ControllerContext, "_SummaryValues", model.SummaryValuesModel);
 
-                return Json(jobDefinition, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //    return Json(new { totalValuesPartialView, summaryValuesPartialView });
+        //}
 
         protected override void Dispose(bool disposing)
         {

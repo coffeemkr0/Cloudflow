@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions
 {
-    public abstract class Job : Extension
+    public abstract class Job : ConfigurableExtension
     {
         #region Properties
         public ExtensionConfiguration JobConfiguration { get; }

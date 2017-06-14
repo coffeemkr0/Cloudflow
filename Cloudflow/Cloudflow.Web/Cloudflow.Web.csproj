@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="HtmlHelpers\ExtensionConfigurationHelper.cs" />
     <Compile Include="CustomModelBinder.cs" />
+    <Compile Include="HtmlHelpers\Utility.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

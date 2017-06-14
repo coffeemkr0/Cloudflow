@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions
 {
-    public abstract class Trigger : Extension
+    public abstract class Trigger : ConfigurableExtension
     {
         #region Events
         public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);

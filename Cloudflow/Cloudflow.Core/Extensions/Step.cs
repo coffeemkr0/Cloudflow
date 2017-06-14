@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions
 {
-    public abstract class Step : Extension
+    public abstract class Step : ConfigurableExtension
     {
         #region Events
         public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
