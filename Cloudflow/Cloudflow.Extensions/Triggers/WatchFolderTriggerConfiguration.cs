@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [ExportExtension("893809A2-C02D-488B-9808-27159BFBB580", typeof(TimerTriggerConfiguration))]
+    [ExportExtension("893809A2-C02D-488B-9808-27159BFBB580", typeof(WatchFolderTriggerConfiguration))]
     public class WatchFolderTriggerConfiguration : ExtensionConfiguration
     {
         #region Properties
