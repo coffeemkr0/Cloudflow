@@ -104,7 +104,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     triggerDefinition.TriggerConfigurationExtensionAssemblyPath = trigger.ExtensionAssemblyPath;
                     triggerDefinition.Configuration = trigger.Configuration.ToJson();
 
-                    serverDbContext.TriggerDefinitions.Add(triggerDefinition);
+                    jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
                 index += 1;
             }

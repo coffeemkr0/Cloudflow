@@ -38,7 +38,7 @@ namespace Cloudflow.Core.Extensions.Controllers
 
         #region Private Members
         [ImportMany]
-        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
+        IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
         private CompositionContainer _jobsContainer;
 
         private int _runCounter = 1;
@@ -107,7 +107,7 @@ namespace Cloudflow.Core.Extensions.Controllers
             {
                 _jobsContainer.ComposeParts(this);
 
-                foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
+                foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
                 {
                     if (Guid.Parse(i.Metadata.Id) == this.JobConfiguration.ExtensionId)
                     {

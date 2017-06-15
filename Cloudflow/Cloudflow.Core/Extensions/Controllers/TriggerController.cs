@@ -28,7 +28,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Private Members
         private CompositionContainer _triggersContainer;
         [ImportMany]
-        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
+        IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
         #endregion
 
         #region Properties
@@ -54,7 +54,7 @@ namespace Cloudflow.Core.Extensions.Controllers
             {
                 _triggersContainer.ComposeParts(this);
 
-                foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
+                foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
                 {
                     if (Guid.Parse(i.Metadata.Id) == this.TriggerConfiguration.ExtensionId)
                     {

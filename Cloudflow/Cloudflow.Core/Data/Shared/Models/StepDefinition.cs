@@ -14,12 +14,10 @@ namespace Cloudflow.Core.Data.Shared.Models
     public class StepDefinition
     {
         #region Properties
-        [Key]
-        [Column(Order = 1)]
+        [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
         public Guid StepDefinitionId { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
+        [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
         public Guid StepConfigurationExtensionId { get; set; }

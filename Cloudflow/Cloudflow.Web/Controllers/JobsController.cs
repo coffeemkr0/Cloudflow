@@ -169,13 +169,12 @@ namespace Cloudflow.Web.Controllers
             var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
             triggerConfigurationViewModel.Id = Guid.NewGuid();
             triggerConfigurationViewModel.Index = index;
-            triggerConfigurationViewModel.ExtensionId = triggerId;
+            triggerConfigurationViewModel.ExtensionId = Guid.Parse(trigger.ConfigurationId);
             triggerConfigurationViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
 
             var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationId),
                 extensionAssemblyPath);
             triggerConfigurationViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            //TODO:The Id and assembly path should be part of the default constructor maybe?
             triggerConfigurationViewModel.Configuration.ExtensionId = triggerId;
             triggerConfigurationViewModel.Configuration.ExtensionAssemblyPath = extensionAssemblyPath;
             triggerConfigurationViewModel.Configuration.Name = "New Trigger";
