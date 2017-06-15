@@ -383,6 +383,8 @@
     <Content Include="Views\Agents\Index.cshtml" />
     <Content Include="Views\Jobs\_Steps.cshtml" />
     <Content Include="Views\Jobs\_Triggers.cshtml" />
+    <Content Include="Views\Jobs\_TriggerNavigationItem.cshtml" />
+    <Content Include="Views\Jobs\_TriggerConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

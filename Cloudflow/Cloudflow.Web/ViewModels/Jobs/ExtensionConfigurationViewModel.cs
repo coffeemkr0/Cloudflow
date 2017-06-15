@@ -12,6 +12,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public bool Deleted { get; set; }
 
+        public bool Active { get; set; }
+
+        public int Index { get; set; }
+
         public Guid ExtensionId { get; set; }
 
         public string ExtensionAssemblyPath { get; set; }

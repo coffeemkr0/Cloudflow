@@ -144,7 +144,8 @@ namespace Cloudflow.Web.HtmlHelpers
 
         private static string HiddenInput(string[] prefixes, PropertyInfo propertyInfo, object objectInstance)
         {
-            return Input(prefixes, propertyInfo.Name, propertyInfo.GetValue(objectInstance).ToString(), InputTypes.Hidden);
+            var value = propertyInfo.GetValue(objectInstance);
+            return Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Hidden);
         }
 
         private static string NumericEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance)
@@ -153,7 +154,8 @@ namespace Cloudflow.Web.HtmlHelpers
             tagBuilder.AddCssClass("form-group");
 
             tagBuilder.InnerHtml = Label(prefixes, propertyInfo.Name);
-            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, propertyInfo.GetValue(objectInstance).ToString(), InputTypes.Numeric);
+            var value = propertyInfo.GetValue(objectInstance);
+            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Numeric);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
@@ -164,7 +166,8 @@ namespace Cloudflow.Web.HtmlHelpers
             tagBuilder.AddCssClass("form-group");
 
             tagBuilder.InnerHtml = Label(prefixes, propertyInfo.Name);
-            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, propertyInfo.GetValue(objectInstance).ToString(), InputTypes.Text);
+            var value = propertyInfo.GetValue(objectInstance);
+            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Text);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }

@@ -10,6 +10,8 @@ using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Web.ViewModels.Jobs;
 using System.IO;
+using Cloudflow.Web.HtmlHelpers;
+using Cloudflow.Core.Extensions.Controllers;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -17,14 +19,18 @@ namespace Cloudflow.Web.Controllers
     {
         private ServerDbContext _serverDbContext = new ServerDbContext();
 
+        private string GetTestExtensionAssemblyPath()
+        {
+            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
+            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
+            return Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+        }
+
         // GET: Jobs
         public ActionResult Index()
         {
 #if DEBUG
-            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
-            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
-            extensionsAssemblyPath = Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
-            _serverDbContext = new ServerDbContext(true, extensionsAssemblyPath);
+            _serverDbContext = new ServerDbContext(true, GetTestExtensionAssemblyPath());
 #else
             _databaseContext = new ServerDbContext();
 #endif
@@ -132,15 +138,6 @@ namespace Cloudflow.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public JsonResult AddTrigger(Guid triggerId)
-        //{
-        //    var totalValuesPartialView = RenderRazorViewToString(this.ControllerContext, "_TotalValues", model.TotalValuesModel);
-        //    var summaryValuesPartialView = RenderRazorViewToString(this.ControllerContext, "_SummaryValues", model.SummaryValuesModel);
-
-        //    return Json(new { totalValuesPartialView, summaryValuesPartialView });
-        //}
-
         public ActionResult JobDefinition(Guid? id)
         {
             if (id == null)
@@ -159,6 +156,36 @@ namespace Cloudflow.Web.Controllers
 
                 return Json(jobDefinition, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public JsonResult AddTrigger(Guid triggerId, int index)
+        {
+            var extensionAssemblyPath = GetTestExtensionAssemblyPath();
+
+            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
+            var trigger = configurableExtensionBrowser.GetTrigger(triggerId);
+
+            var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
+            triggerConfigurationViewModel.Id = Guid.NewGuid();
+            triggerConfigurationViewModel.Index = index;
+            triggerConfigurationViewModel.ExtensionId = triggerId;
+            triggerConfigurationViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
+
+            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationId),
+                extensionAssemblyPath);
+            triggerConfigurationViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
+            //TODO:The Id and assembly path should be part of the default constructor maybe?
+            triggerConfigurationViewModel.Configuration.ExtensionId = triggerId;
+            triggerConfigurationViewModel.Configuration.ExtensionAssemblyPath = extensionAssemblyPath;
+            triggerConfigurationViewModel.Configuration.Name = "New Trigger";
+
+            var triggerNavigationItemView = Utility.RenderRazorViewToString(this.ControllerContext, 
+                "_TriggerNavigationItem", triggerConfigurationViewModel);
+            var triggerConfigurationView = Utility.RenderRazorViewToString(this.ControllerContext,
+                "_TriggerConfiguration", triggerConfigurationViewModel);
+
+            return Json(new { triggerNavigationItemView, triggerConfigurationView });
         }
 
         protected override void Dispose(bool disposing)

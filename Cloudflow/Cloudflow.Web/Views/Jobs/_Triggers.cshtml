@@ -13,41 +13,19 @@
 
             <hr />
 
-            <ul class="nav nav-pills nav-stacked">
+            <ul id="triggerNavigationItems" class="nav nav-pills nav-stacked">
                 @foreach (var trigger in Model.Triggers)
                 {
-                    <li role="presentation" class="@(Model.Triggers.IndexOf(trigger) == 0 ? "active" : "")">
-                        <a href="#tab@(trigger.Id)" role="tab" data-toggle="tab">
-                            @trigger.Configuration.Name
-                            <i data-triggerid="@trigger.Id" class="deleteTrigger glyphicon glyphicon-remove pull-right"></i>
-                        </a>
-                    </li>
+                    @Html.Partial("_TriggerNavigationItem", trigger)
                 }
             </ul>
         </div>
     </div>
 
-    <div class="tab-content col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                @foreach (var trigger in Model.Triggers)
-                {
-                    int triggerIndex = Model.Triggers.IndexOf(trigger);
-                    <div role="tabpanel" class="tab-pane active" id="tab@(trigger.Id)">
-                        <input type="hidden" name="TriggersViewModel.Triggers[@triggerIndex].Id" 
-                               id="TriggersViewModel.Triggers[@triggerIndex]_Id" 
-                               value="@trigger.Id" />
-                        <input type="hidden" name="TriggersViewModel.Triggers[@triggerIndex].ExtensionId" 
-                               id="TriggersViewModel.Triggers[@triggerIndex]_ExtensionId" 
-                               value="@trigger.ExtensionId" />
-                        <input type="hidden" name="TriggersViewModel.Triggers[@triggerIndex].ExtensionAssemblyPath" 
-                               id="TriggersViewModel.Triggers[@triggerIndex]_ExtensionAssemblyPath" 
-                               value="@trigger.ExtensionAssemblyPath" />
-
-                        @Html.ExtensionConfiguration(trigger, "TriggersViewModel.Triggers[" + triggerIndex + "]")
-                    </div>
-                }
-            </div>
-        </div>
+    <div id="triggerConfigurations" class="tab-content col-md-9">
+        @foreach (var trigger in Model.Triggers)
+        {
+            @Html.Partial("_TriggerConfiguration", trigger)
+        }
     </div>
 </section>

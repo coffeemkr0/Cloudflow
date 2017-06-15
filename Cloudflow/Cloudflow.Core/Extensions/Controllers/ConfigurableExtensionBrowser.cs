@@ -53,6 +53,11 @@ namespace Cloudflow.Core.Extensions.Controllers
             return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Trigger))).Select(i => i.Metadata).ToList();
         }
 
+        public IConfigurableExtensionMetaData GetTrigger(Guid triggerId)
+        {
+            return GetTriggers().FirstOrDefault(i => Guid.Parse(i.Id) == triggerId);
+        }
+
         public List<IConfigurableExtensionMetaData> GetSteps()
         {
             return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Step))).Select(i => i.Metadata).ToList();

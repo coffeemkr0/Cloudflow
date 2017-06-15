@@ -41,10 +41,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
                jobDefinition.JobConfigurationExtensionAssemblyPath);
             editViewModel.JobConfigurationViewModel.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
 
+            int index = 0;
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions)
             {
                 var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
                 triggerConfigurationViewModel.Id = triggerDefinition.TriggerDefinitionId;
+                triggerConfigurationViewModel.Index = index;
+                if (index == 0) triggerConfigurationViewModel.Active = true;
                 triggerConfigurationViewModel.ExtensionId = triggerDefinition.TriggerConfigurationExtensionId;
                 triggerConfigurationViewModel.ExtensionAssemblyPath = triggerDefinition.TriggerConfigurationExtensionAssemblyPath;
 
@@ -53,6 +56,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 triggerConfigurationViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
 
                 editViewModel.TriggersViewModel.Triggers.Add(triggerConfigurationViewModel);
+
+                index += 1;
             }
 
             foreach (var stepDefinition in jobDefinition.StepDefinitions)

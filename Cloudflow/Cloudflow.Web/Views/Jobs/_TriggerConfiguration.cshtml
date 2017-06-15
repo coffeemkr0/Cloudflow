@@ -1,0 +1,16 @@
+﻿@model Cloudflow.Web.ViewModels.Jobs.ExtensionConfigurationViewModel
+@using Cloudflow.Web.HtmlHelpers
+
+<div role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")" id="tab@(Model.Id)">
+    <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Id"
+           id="TriggersViewModel.Triggers[@Model.Index]_Id"
+           value="@Model.Id" />
+    <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].ExtensionId"
+           id="TriggersViewModel.Triggers[@Model.Index]_ExtensionId"
+           value="@Model.ExtensionId" />
+    <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].ExtensionAssemblyPath"
+           id="TriggersViewModel.Triggers[@Model.Index]_ExtensionAssemblyPath"
+           value="@Model.ExtensionAssemblyPath" />
+
+    @Html.ExtensionConfiguration(Model, "TriggersViewModel.Triggers[" + Model.Index + "]")
+</div>
