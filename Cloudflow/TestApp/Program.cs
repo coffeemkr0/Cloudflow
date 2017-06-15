@@ -1,7 +1,9 @@
 ﻿using Cloudflow.Core.Data.Agent;
+using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,26 +19,33 @@ namespace TestApp
         {
             try
             {
-                var agent = new Agent();
-                using (AgentDbContext agentDbContext = new AgentDbContext())
+                var extensionAssemblyPath = Path.GetFullPath(@"..\..\..\Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+                var extensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
+
+                Console.WriteLine("Jobs");
+                foreach (var triggerMetaData in extensionBrowser.GetJobs())
                 {
-                    foreach (var jobDefinition in agentDbContext.JobDefinitions)
-                    {
-                        agent.AddJob(jobDefinition);
-                    }
+                    Console.WriteLine(triggerMetaData.Type);
                 }
 
-                agent.Start();
-                Console.ReadLine();
+                Console.WriteLine("Triggers");
+                foreach (var triggerMetaData in extensionBrowser.GetTriggers())
+                {
+                    Console.WriteLine(triggerMetaData.Type);
+                }
 
-                agent.Stop();
-                Console.ReadLine();
+                Console.WriteLine("Steps");
+                foreach (var triggerMetaData in extensionBrowser.GetSteps())
+                {
+                    Console.WriteLine(triggerMetaData.Type);
+                }
             }
             catch (Exception ex)
             {
                 log.Fatal(ex);
-                Console.ReadLine();
             }
+
+            Console.ReadLine();
         }
     }
 }

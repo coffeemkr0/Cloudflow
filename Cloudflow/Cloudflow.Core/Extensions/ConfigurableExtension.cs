@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions
 {
-    public abstract class ConfigurableExtension : Extension
+    public abstract class ConfigurableExtension : Extension, IConfigurableExtension
     {
         #region Properties
         public string ConfigurationId { get; }

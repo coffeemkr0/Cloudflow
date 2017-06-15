@@ -141,6 +141,26 @@ namespace Cloudflow.Web.Controllers
         //    return Json(new { totalValuesPartialView, summaryValuesPartialView });
         //}
 
+        public ActionResult JobDefinition(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            using (ServerDbContext serverDbContext = new ServerDbContext())
+            {
+                serverDbContext.Configuration.ProxyCreationEnabled = false;
+                JobDefinition jobDefinition = serverDbContext.JobDefinitions.Where(i => i.JobDefinitionId == id).
+                    Include(i => i.TriggerDefinitions).Include(i => i.StepDefinitions).FirstOrDefault();
+                if (jobDefinition == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return Json(jobDefinition, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

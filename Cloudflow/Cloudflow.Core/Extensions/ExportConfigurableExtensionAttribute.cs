@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 namespace Cloudflow.Core.Extensions
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = true), MetadataAttribute]
-    public class ExportConfigurableExtensionAttribute : ExportExtensionAttribute
+    public class ExportConfigurableExtensionAttribute : ExportExtensionAttribute, IConfigurableExtensionMetaData
     {
         public string ConfigurationId { get; set; }
 
-        public ExportConfigurableExtensionAttribute(string id, Type type, string configurationId) : base(id, type)
+        public ExportConfigurableExtensionAttribute(string id, Type type, string configurationId) :
+            base(id, type, typeof(IConfigurableExtension))
         {
             if (string.IsNullOrEmpty(configurationId))
                 throw new ArgumentException("'configurationId' is required.", "configurationId");

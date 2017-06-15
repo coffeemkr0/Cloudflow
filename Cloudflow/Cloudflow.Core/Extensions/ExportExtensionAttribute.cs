@@ -15,7 +15,12 @@ namespace Cloudflow.Core.Extensions
 
         public Type Type { get; set; }
 
-        public ExportExtensionAttribute(string id, Type type) : base(typeof(IExtension))
+        public ExportExtensionAttribute(string id, Type type) : this(id, type, typeof(IExtension))
+        {
+
+        }
+
+        public ExportExtensionAttribute(string id, Type type, Type contractType) : base(contractType)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentException("'id' is required.", "id");
