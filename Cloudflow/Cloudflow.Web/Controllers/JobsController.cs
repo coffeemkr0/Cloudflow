@@ -17,20 +17,33 @@ namespace Cloudflow.Web.Controllers
 {
     public class JobsController : Controller
     {
+        #region Private Members
         private ServerDbContext _serverDbContext = new ServerDbContext();
+        #endregion
 
-        private string GetTestExtensionAssemblyPath()
+        #region Private Methods
+        protected override void Dispose(bool disposing)
         {
-            var serverPath = Server.MapPath("~").TrimEnd(Path.DirectorySeparatorChar);
-            var extensionsAssemblyPath = Directory.GetParent(serverPath).FullName;
-            return Path.Combine(extensionsAssemblyPath, @"Cloudflow.Extensions\bin\debug\Cloudflow.Extensions.dll");
+            if (disposing)
+            {
+                _serverDbContext.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
+        private List<string> GetExtensionLibraries()
+        {
+            var serverPath = Server.MapPath(@"~\ExtensionLibraries");
+            return Directory.GetFiles(serverPath, "*.dll").ToList();
+        }
+        #endregion
+
+        #region Actions
         // GET: Jobs
         public ActionResult Index()
         {
 #if DEBUG
-            _serverDbContext = new ServerDbContext(true, GetTestExtensionAssemblyPath());
+            _serverDbContext = new ServerDbContext(true, GetExtensionLibraries().First());
 #else
             _databaseContext = new ServerDbContext();
 #endif
@@ -161,7 +174,7 @@ namespace Cloudflow.Web.Controllers
         [HttpPost]
         public JsonResult AddTrigger(Guid triggerId, int index)
         {
-            var extensionAssemblyPath = GetTestExtensionAssemblyPath();
+            var extensionAssemblyPath = GetExtensionLibraries().First();
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
             var trigger = configurableExtensionBrowser.GetTrigger(triggerId);
@@ -179,21 +192,13 @@ namespace Cloudflow.Web.Controllers
             triggerConfigurationViewModel.Configuration.ExtensionAssemblyPath = extensionAssemblyPath;
             triggerConfigurationViewModel.Configuration.Name = "New Trigger";
 
-            var triggerNavigationItemView = Utility.RenderRazorViewToString(this.ControllerContext, 
+            var triggerNavigationItemView = Utility.RenderRazorViewToString(this.ControllerContext,
                 "_TriggerNavigationItem", triggerConfigurationViewModel);
             var triggerConfigurationView = Utility.RenderRazorViewToString(this.ControllerContext,
                 "_TriggerConfiguration", triggerConfigurationViewModel);
 
             return Json(new { triggerNavigationItemView, triggerConfigurationView });
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _serverDbContext.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #endregion
     }
 }
