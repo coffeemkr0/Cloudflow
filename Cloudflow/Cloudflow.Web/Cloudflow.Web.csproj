@@ -224,6 +224,8 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Content\Shared\Shared.less" />
+    <Content Include="Content\Shared\ExtensionBrowser.less" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\Agents\Index.js" />
     <Content Include="Scripts\Jobs\Edit.js" />
@@ -331,6 +333,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Shared\AgentControllerClient.js" />
     <Content Include="Scripts\Shared\DialogHelper.js" />
+    <Content Include="Scripts\Shared\ExtensionBrowser.js" />
     <Content Include="Scripts\Shared\Layout.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">

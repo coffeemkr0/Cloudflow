@@ -6721,6 +6721,9 @@ button.close {
     display: none !important;
   }
 }
+.extensionBrowser__extensionList {
+  overflow-y: auto;
+}
 body {
   padding-top: 50px;
   padding-bottom: 20px;
@@ -6741,4 +6744,19 @@ input,
 select,
 textarea {
   max-width: 280px;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
