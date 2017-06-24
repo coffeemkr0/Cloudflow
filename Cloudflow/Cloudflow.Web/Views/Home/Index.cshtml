@@ -15,9 +15,22 @@
 
 <article class="panel panel-default">
     <header class="panel-heading">
-        <h4>Triggers</h4>
+        <h4>Trigger Browser</h4>
     </header>
-    <section class="panel-body">
-        @Html.Partial("ExtensionBrowser", Model.ExtensionBrowserViewModel)
-    </section>
+
+    @Html.ActionLink("Add Trigger", "Triggers", "Home", new { }, new
+    {
+        data_modal = "",
+        data_modalcontainer = "modalExtensionBrowser",
+        data_modalcontent = "modalExtensionBrowserContent",
+        @class = "btn btn-small btn-default"
+    })
 </article>
+
+<div class="modal fade" id="modalExtensionBrowser" tabindex="-1" role="dialog" aria-labelledby="extensionBrowser-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="modalExtensionBrowserContent"></div>
+        </div>
+    </div>
+</div>

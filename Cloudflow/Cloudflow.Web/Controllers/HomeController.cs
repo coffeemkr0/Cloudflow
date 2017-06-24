@@ -15,12 +15,13 @@ namespace Cloudflow.Web.Controllers
     {
         public ActionResult Index()
         {
-            var model = new IndexViewModel
-            {
-                ExtensionBrowserViewModel = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger)
-            };
+            return View();
+        }
 
-            return View(model);
+        public ActionResult Triggers()
+        {
+            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger);
+            return PartialView("ExtensionBrowser", model);
         }
     }
 }

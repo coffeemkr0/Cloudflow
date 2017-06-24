@@ -11,12 +11,33 @@ namespace Cloudflow.Web.ViewModels.Shared
     public class ExtensionBrowserViewModel
     {
         #region Properties
-        public List<ExtensionLibraryViewModel> ExtensionLibraries { get; set; }
+        public List<ExtensionLibraryViewModel> ExtensionLibraries { get; }
+
+        public ConfigurableExtensionTypes ExtensionType { get; }
+
+        public string ExtensionTypeDisplayText
+        {
+            get
+            {
+                switch (this.ExtensionType)
+                {
+                    case ConfigurableExtensionTypes.Job:
+                        return "Jobs";
+                    case ConfigurableExtensionTypes.Trigger:
+                        return "Triggers";
+                    case ConfigurableExtensionTypes.Step:
+                        return "Steps";
+                    default:
+                        throw new ArgumentException($"The extension type {this.ExtensionType} is not supported.", "ExtensionType");
+                }
+            }
+        }
         #endregion
 
         #region Constructors
         public ExtensionBrowserViewModel(string extensionLibraryFolder, ConfigurableExtensionTypes extensionType)
         {
+            this.ExtensionType = extensionType;
             this.ExtensionLibraries = GetConfigurableExtensions(extensionLibraryFolder, extensionType);
         }
         #endregion

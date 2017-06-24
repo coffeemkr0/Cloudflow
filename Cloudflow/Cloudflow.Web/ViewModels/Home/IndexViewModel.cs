@@ -9,7 +9,7 @@ namespace Cloudflow.Web.ViewModels.Home
     public class IndexViewModel
     {
         #region Properties
-        public ExtensionBrowserViewModel ExtensionBrowserViewModel { get; set; }
+        
         #endregion
 
         #region Constructors
