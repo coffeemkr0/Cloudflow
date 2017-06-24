@@ -392,7 +392,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ExtensionLibraries\" />
-    <Folder Include="HtmlHelpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

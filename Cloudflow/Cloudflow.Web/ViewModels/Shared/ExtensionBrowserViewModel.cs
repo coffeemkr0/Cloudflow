@@ -49,6 +49,11 @@ namespace Cloudflow.Web.ViewModels.Shared
                 }
 
                 libraries.Add(extensionLibraryViewModel);
+
+#if DEBUG
+                //Add it twice just for testing having multiple extensions
+                libraries.Add(extensionLibraryViewModel);
+#endif
             }
 
             return libraries;

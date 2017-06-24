@@ -13,4 +13,11 @@
     <script src="~/Scripts/Home/Index.js"></script>
 }
 
-@Html.Partial("ExtensionBrowser", Model.ExtensionBrowserViewModel)
+<article class="panel panel-default">
+    <header class="panel-heading">
+        <h4>Triggers</h4>
+    </header>
+    <section class="panel-body">
+        @Html.Partial("ExtensionBrowser", Model.ExtensionBrowserViewModel)
+    </section>
+</article>

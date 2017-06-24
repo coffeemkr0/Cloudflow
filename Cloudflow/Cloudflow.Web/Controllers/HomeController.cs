@@ -18,7 +18,7 @@ namespace Cloudflow.Web.Controllers
             var model = new IndexViewModel
             {
                 ExtensionBrowserViewModel = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger)
-        };
+            };
 
             return View(model);
         }
