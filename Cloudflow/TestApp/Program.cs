@@ -1,12 +1,9 @@
-﻿using Cloudflow.Core.Data.Agent;
-using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Runtime;
+﻿using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TestApp
 {
@@ -23,19 +20,19 @@ namespace TestApp
                 var extensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
 
                 Console.WriteLine("Jobs");
-                foreach (var triggerMetaData in extensionBrowser.GetJobs())
+                foreach (var triggerMetaData in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Job))
                 {
                     Console.WriteLine(triggerMetaData.Type);
                 }
 
                 Console.WriteLine("Triggers");
-                foreach (var triggerMetaData in extensionBrowser.GetTriggers())
+                foreach (var triggerMetaData in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger))
                 {
                     Console.WriteLine(triggerMetaData.Type);
                 }
 
                 Console.WriteLine("Steps");
-                foreach (var triggerMetaData in extensionBrowser.GetSteps())
+                foreach (var triggerMetaData in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Step))
                 {
                     Console.WriteLine(triggerMetaData.Type);
                 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Cloudflow.Web.HtmlHelpers
+namespace Cloudflow.Web.Utility
 {
-    public static class Utility
+    public static class ViewHelpers
     {
         public static string RenderRazorViewToString(ControllerContext controllerContext, string viewName, object model)
         {

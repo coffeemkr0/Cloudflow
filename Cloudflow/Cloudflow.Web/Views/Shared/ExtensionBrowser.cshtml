@@ -1,0 +1,35 @@
+﻿@model Cloudflow.Web.ViewModels.Shared.ExtensionBrowserViewModel
+
+<section class="container">
+    <div class="col-md-3 panel panel-default">
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked">
+                @foreach (var library in Model.ExtensionLibraries)
+                {
+                    <li role="presentation" class="@(library.Active ? "active" : "")">
+                        <a href="#tab@(library.Name)" role="tab" data-toggle="tab">
+                            @library.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content">
+        @foreach (var library in Model.ExtensionLibraries)
+        {
+            <div role="tabpanel" id="tab@(library.Name)" class="tab-pane active">
+                <ul class="nav nav-pills nav-stacked">
+                    @foreach (var extension in library.Extensions)
+                    {
+                        <li role="presentation" class="active">
+                            <span>@extension.Name</span>
+                            <i data-triggerid="@extension.ExtensionId" class="glyphicon glyphicon-plus-sign pull-right"></i>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</section>

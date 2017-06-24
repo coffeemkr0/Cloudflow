@@ -9,7 +9,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Cloudflow.Web.HtmlHelpers
+namespace Cloudflow.Web.Utility.HtmlHelpers
 {
     public static class ExtensionConfigurationHelper
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Extensions.Controllers
+namespace Cloudflow.Core.Extensions
 {
     public class ConfigurableExtensionBrowser
     {
@@ -43,24 +43,24 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Public Methods
-        public List<IConfigurableExtensionMetaData> GetJobs()
+        public List<IConfigurableExtensionMetaData> GetConfigurableExtensions(ConfigurableExtensionTypes extensionType)
         {
-            return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Job))).Select(i => i.Metadata).ToList();
+            switch (extensionType)
+            {
+                case ConfigurableExtensionTypes.Job:
+                    return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Job))).Select(i => i.Metadata).ToList();
+                case ConfigurableExtensionTypes.Trigger:
+                    return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Trigger))).Select(i => i.Metadata).ToList();
+                case ConfigurableExtensionTypes.Step:
+                    return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Step))).Select(i => i.Metadata).ToList();
+                default:
+                    throw new ArgumentException($"The Extension type {extensionType.ToString()} is not supported", "extensionType");
+            }
         }
 
-        public List<IConfigurableExtensionMetaData> GetTriggers()
+        public IConfigurableExtensionMetaData GetConfigurableExtension(Guid id)
         {
-            return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Trigger))).Select(i => i.Metadata).ToList();
-        }
-
-        public IConfigurableExtensionMetaData GetTrigger(Guid triggerId)
-        {
-            return GetTriggers().FirstOrDefault(i => Guid.Parse(i.Id) == triggerId);
-        }
-
-        public List<IConfigurableExtensionMetaData> GetSteps()
-        {
-            return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Step))).Select(i => i.Metadata).ToList();
+            return GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger).FirstOrDefault(i => Guid.Parse(i.Id) == id);
         }
         #endregion
     }

@@ -10,8 +10,9 @@ using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Web.ViewModels.Jobs;
 using System.IO;
-using Cloudflow.Web.HtmlHelpers;
 using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Extensions;
+using Cloudflow.Web.Utility;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -30,12 +31,6 @@ namespace Cloudflow.Web.Controllers
             }
             base.Dispose(disposing);
         }
-
-        private List<string> GetExtensionLibraries()
-        {
-            var serverPath = Server.MapPath(@"~\ExtensionLibraries");
-            return Directory.GetFiles(serverPath, "*.dll").ToList();
-        }
         #endregion
 
         #region Actions
@@ -43,7 +38,7 @@ namespace Cloudflow.Web.Controllers
         public ActionResult Index()
         {
 #if DEBUG
-            _serverDbContext = new ServerDbContext(true, GetExtensionLibraries().First());
+            _serverDbContext = new ServerDbContext(true, this.GetExtensionLibraries().First());
 #else
             _databaseContext = new ServerDbContext();
 #endif
@@ -174,10 +169,10 @@ namespace Cloudflow.Web.Controllers
         [HttpPost]
         public JsonResult AddTrigger(Guid triggerId, int index)
         {
-            var extensionAssemblyPath = GetExtensionLibraries().First();
+            var extensionAssemblyPath = this.GetExtensionLibraries().First();
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
-            var trigger = configurableExtensionBrowser.GetTrigger(triggerId);
+            var trigger = configurableExtensionBrowser.GetConfigurableExtension(triggerId);
 
             var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
             triggerConfigurationViewModel.Id = Guid.NewGuid();
@@ -192,9 +187,9 @@ namespace Cloudflow.Web.Controllers
             triggerConfigurationViewModel.Configuration.ExtensionAssemblyPath = extensionAssemblyPath;
             triggerConfigurationViewModel.Configuration.Name = "New Trigger";
 
-            var triggerNavigationItemView = Utility.RenderRazorViewToString(this.ControllerContext,
+            var triggerNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
                 "_TriggerNavigationItem", triggerConfigurationViewModel);
-            var triggerConfigurationView = Utility.RenderRazorViewToString(this.ControllerContext,
+            var triggerConfigurationView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
                 "_TriggerConfiguration", triggerConfigurationViewModel);
 
             return Json(new { triggerNavigationItemView, triggerConfigurationView });

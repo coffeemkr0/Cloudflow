@@ -1,12 +1,13 @@
-﻿using Cloudflow.Core.Data;
-using Cloudflow.Core.Data.Server;
-using Cloudflow.Web.ViewModels.Home;
+﻿using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Cloudflow.Web.Utility;
+using Cloudflow.Web.ViewModels.Shared;
+using Cloudflow.Web.ViewModels.Home;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -14,7 +15,12 @@ namespace Cloudflow.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new IndexViewModel
+            {
+                ExtensionBrowserViewModel = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger)
+        };
+
+            return View(model);
         }
     }
 }
