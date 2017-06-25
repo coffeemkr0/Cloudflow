@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Cloudflow.Core.Configuration;
 using System.ComponentModel.Composition;
 using System.IO;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 
 namespace Cloudflow.Extensions.Triggers
 {
+    [DisplayName("Watch Folder")]
+    [Description("A trigger that fires when files are added, changed or deleted in a folder.")]
     [ExportConfigurableExtension("DAD72E34-F229-43B6-8B4E-AEDA64BCCF4E", typeof(WatchFolderTrigger), "893809A2-C02D-488B-9808-27159BFBB580")]
     public class WatchFolderTrigger : Trigger
     {

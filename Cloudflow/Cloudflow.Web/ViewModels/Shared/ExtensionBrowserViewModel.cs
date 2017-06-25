@@ -1,7 +1,9 @@
 ﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -52,19 +54,23 @@ namespace Cloudflow.Web.ViewModels.Shared
             {
                 var extensionLibraryViewModel = new ExtensionLibraryViewModel
                 {
-                    Name = Path.GetFileNameWithoutExtension(extensionLibraryFile)
+                    Name = FileVersionInfo.GetVersionInfo(extensionLibraryFile).ProductName
                 };
 
                 if (index == 0) extensionLibraryViewModel.Active = true;
 
                 var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
-                foreach (var trigger in extensionBrowser.GetConfigurableExtensions(extensionType))
+                foreach (var extension in extensionBrowser.GetConfigurableExtensions(extensionType))
                 {
+                    var displayNameAttribute = (DisplayNameAttribute)extension.GetType().GetCustomAttributes(typeof(DisplayNameAttribute), true).SingleOrDefault();
+                    var descriptionAttribute = (DescriptionAttribute)extension.GetType().GetCustomAttributes(typeof(DescriptionAttribute), true).SingleOrDefault();
+
                     var extensionViewModel = new ExtensionViewModel
                     {
-                        ExtensionId = trigger.Id,
+                        ExtensionId = extension.Id,
                         ExtensionLibrary = extensionLibraryFile,
-                        Name = trigger.Type.ToString()
+                        Name = displayNameAttribute != null ? displayNameAttribute.DisplayName : extension.Type.ToString(),
+                        Description = descriptionAttribute != null ? descriptionAttribute.Description : ""
                     };
                     extensionLibraryViewModel.Extensions.Add(extensionViewModel);
                 }
@@ -107,6 +113,8 @@ namespace Cloudflow.Web.ViewModels.Shared
             public string ExtensionLibrary { get; set; }
 
             public string Name { get; set; }
+
+            public string Description { get; set; }
             #endregion
         }
     }

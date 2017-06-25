@@ -1,5 +1,5 @@
 ﻿using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Extensions.ConfigurationAttributes;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 using Cloudflow.Web.ViewModels.Jobs;
 using System;
 using System.Collections.Generic;

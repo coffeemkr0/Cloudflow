@@ -101,9 +101,11 @@
     <Compile Include="Data\Shared\SharedDbContext.cs" />
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
-    <Compile Include="Extensions\ConfigurationAttributes\HiddenAttribute.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\DescriptionAttribute.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\DisplayNameAttribute.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\HiddenAttribute.cs" />
     <Compile Include="Extensions\ConfigurableExtensionBrowser.cs" />
-    <Compile Include="Extensions\ExportConfigurableExtensionAttribute.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\ExportConfigurableExtensionAttribute.cs" />
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Extensions\ExtensionConfiguration.cs" />
     <Compile Include="Extensions\IConfigurableExtensionMetaData.cs" />

@@ -1,15 +1,12 @@
 ﻿using Cloudflow.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cloudflow.Core.Configuration;
 using System.ComponentModel.Composition;
 using System.Timers;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 
 namespace Cloudflow.Extensions.Triggers
 {
+    [DisplayName("Timer")]
+    [Description("A trigger that fires when a certain amount of time has elapsed.")]
     [ExportConfigurableExtension("DABF8963-4B59-448E-BE5A-143EBDF123EF", typeof(TimerTrigger), "E325CD29-053E-4422-97CF-C1C187760E88")]
     public class TimerTrigger : Trigger
     {

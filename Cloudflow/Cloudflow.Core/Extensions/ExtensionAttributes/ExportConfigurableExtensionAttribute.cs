@@ -1,12 +1,7 @@
-﻿using Cloudflow.Core.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Cloudflow.Core.Extensions
+namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = true), MetadataAttribute]
     public class ExportConfigurableExtensionAttribute : ExportExtensionAttribute, IConfigurableExtensionMetaData

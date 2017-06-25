@@ -7,66 +7,62 @@
 
 <div>
     <section class="modal-body">
-        <nav class="">
-            <h4>Libraries</h4>
+        <div class="row">
+            <nav class="col-lg-4">
+                <h4>Libraries</h4>
 
-            <ul class="nav nav-tabs">
-                @{ var libraryIndex = 0; }
+                <ul class="nav nav-pills nav-stacked">
+                    @{ var libraryIndex = 0; }
+                    @foreach (var library in Model.ExtensionLibraries)
+                    {
+                        <li role="presentation" class="@(libraryIndex == 0 ? "active" : "")">
+                            <a href="#libraryTab@(libraryIndex)" role="tab" data-toggle="tab">@library.Name</a>
+                        </li>
+                        libraryIndex += 1;
+                    }
+                </ul>
+            </nav>
+
+            <div class="col-lg-8 tab-content">
+                @{ libraryIndex = 0; }
                 @foreach (var library in Model.ExtensionLibraries)
                 {
-                    <li role="presentation" class="@(libraryIndex == 0 ? "active" : "")">
-                        <a href="#libraryTab@(libraryIndex)" role="tab" data-toggle="tab">@library.Name</a>
-                    </li>
+                    <div id="libraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
+                        @foreach (var extension in library.Extensions)
+                        {
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <img src="#" alt="Extension icon" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <span>@extension.Name</span>
+                                    <p>@extension.Description</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="#" class="btn btn-xs btn-success">Add</a>
+                                </div>
+                            </div>
+                        }
+                        @foreach (var extension in library.Extensions)
+                        {
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <img src="#" alt="Extension icon" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <span>@extension.Name</span>
+                                    <p>@extension.Description</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="#" class="btn btn-xs btn-success">Add</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
                     libraryIndex += 1;
                 }
-            </ul>
-        </nav>
-
-        <div class="tab-content">
-            @{ libraryIndex = 0; }
-            @foreach (var library in Model.ExtensionLibraries)
-            {
-                <div id="libraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
-                    @foreach (var extension in library.Extensions)
-                    {
-                        <div class="">
-                            <img src="#" alt="Extension icon" />
-                            <h5>@extension.Name</h5>
-                            <p>Extension description goes here</p>
-                            <button>Add</button>
-                        </div>
-                    }
-                    @foreach (var extension in library.Extensions)
-                    {
-                        <div class="">
-                            <img src="#" alt="Extension icon" />
-                            <h5>@extension.Name</h5>
-                            <p>Extension description goes here</p>
-                            <button>Add</button>
-                        </div>
-                    }
-                    @foreach (var extension in library.Extensions)
-                    {
-                        <div class="">
-                            <img src="#" alt="Extension icon" />
-                            <h5>@extension.Name</h5>
-                            <p>Extension description goes here</p>
-                            <button>Add</button>
-                        </div>
-                    }
-                    @foreach (var extension in library.Extensions)
-                    {
-                        <div class="">
-                            <img src="#" alt="Extension icon" />
-                            <h5>@extension.Name</h5>
-                            <p>Extension description goes here</p>
-                            <button>Add</button>
-                        </div>
-                    }
-                </div>
-
-                libraryIndex += 1;
-            }
+            </div>
         </div>
     </section>
 
