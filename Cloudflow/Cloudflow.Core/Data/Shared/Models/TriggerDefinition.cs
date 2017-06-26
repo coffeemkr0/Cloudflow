@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
-    public class TriggerDefinition
+    public class TriggerDefinition : ConfigurableExtensionDefinition
     {
         #region Properties
         [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
@@ -19,10 +19,6 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
-
-        public Guid TriggerConfigurationExtensionId { get; set; }
-
-        public string TriggerConfigurationExtensionAssemblyPath { get; set; }
 
         public string Configuration { get; set; }
 
@@ -42,22 +38,22 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Public Methods
         public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath)
         {
-            var triggerConfigurationExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88");
-
             TriggerDefinition triggerDefinition = new TriggerDefinition()
             {
-                TriggerConfigurationExtensionId = triggerConfigurationExtensionId,
-                TriggerConfigurationExtensionAssemblyPath = extensionsAssemblyPath
+                ExtensionId = Guid.Parse("DABF8963-4B59-448E-BE5A-143EBDF123EF"),
+                ExtensionAssemblyPath = extensionsAssemblyPath,
+                ConfigurationExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88"),
+                ConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
 
-            var triggerConfigurationController = new ExtensionConfigurationController(triggerConfigurationExtensionId, extensionsAssemblyPath);
-            var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
-            timerConfiguration.ExtensionId = Guid.Parse("DABF8963-4B59-448E-BE5A-143EBDF123EF");
-            timerConfiguration.Name = "Hard coded timer trigger";
-            timerConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
-            timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
+            var triggerConfigurationController = new ExtensionConfigurationController(
+                triggerDefinition.ConfigurationExtensionId, extensionsAssemblyPath);
 
+            var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
+            timerConfiguration.Name = "Hard coded timer trigger";
+            timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
             triggerDefinition.Configuration = timerConfiguration.ToJson();
+
             return triggerDefinition;
         }
         #endregion

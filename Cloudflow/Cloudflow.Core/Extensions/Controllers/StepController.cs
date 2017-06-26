@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Runtime;
 using System;
@@ -33,6 +34,8 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Properties
+        public StepDefinition StepDefinition { get; }
+
         public ExtensionConfiguration StepConfiguration { get; }
 
         public Step Step { get; }
@@ -41,15 +44,19 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Constructors
-        public StepController(ExtensionConfiguration stepConfiguration)
+        public StepController(StepDefinition stepDefinition)
         {
-            this.StepConfiguration = stepConfiguration;
-            this.StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepConfiguration.Name}");
+            this.StepDefinition = stepDefinition;
+            this.StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepDefinition.StepDefinitionId}");
+
+            var stepConfigurationController = new ExtensionConfigurationController(stepDefinition.ConfigurationExtensionId,
+                    stepDefinition.ConfigurationExtensionAssemblyPath);
+            this.StepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(stepConfiguration.ExtensionAssemblyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(stepDefinition.ExtensionAssemblyPath));
             _stepsContainer = new CompositionContainer(catalog);
-            _stepsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", stepConfiguration);
+            _stepsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", this.StepConfiguration);
 
             try
             {
@@ -57,7 +64,7 @@ namespace Cloudflow.Core.Extensions.Controllers
 
                 foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
                 {
-                    if (Guid.Parse(i.Metadata.Id) == this.StepConfiguration.ExtensionId)
+                    if (Guid.Parse(i.Metadata.ExtensionId) == stepDefinition.ExtensionId)
                     {
                         var step = (Step)i.Value;
                         step.StepOutput += Value_StepOutput;

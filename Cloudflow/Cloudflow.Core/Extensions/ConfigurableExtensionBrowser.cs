@@ -48,11 +48,11 @@ namespace Cloudflow.Core.Extensions
             switch (extensionType)
             {
                 case ConfigurableExtensionTypes.Job:
-                    return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Job))).Select(i => i.Metadata).ToList();
+                    return _extensions.Where(i => i.Metadata.ExtensionType.IsSubclassOf(typeof(Job))).Select(i => i.Metadata).ToList();
                 case ConfigurableExtensionTypes.Trigger:
-                    return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Trigger))).Select(i => i.Metadata).ToList();
+                    return _extensions.Where(i => i.Metadata.ExtensionType.IsSubclassOf(typeof(Trigger))).Select(i => i.Metadata).ToList();
                 case ConfigurableExtensionTypes.Step:
-                    return _extensions.Where(i => i.Metadata.Type.IsSubclassOf(typeof(Step))).Select(i => i.Metadata).ToList();
+                    return _extensions.Where(i => i.Metadata.ExtensionType.IsSubclassOf(typeof(Step))).Select(i => i.Metadata).ToList();
                 default:
                     throw new ArgumentException($"The Extension type {extensionType.ToString()} is not supported", "extensionType");
             }
@@ -60,7 +60,7 @@ namespace Cloudflow.Core.Extensions
 
         public IConfigurableExtensionMetaData GetConfigurableExtension(Guid id)
         {
-            return GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger).FirstOrDefault(i => Guid.Parse(i.Id) == id);
+            return GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger).FirstOrDefault(i => Guid.Parse(i.ExtensionId) == id);
         }
         #endregion
     }

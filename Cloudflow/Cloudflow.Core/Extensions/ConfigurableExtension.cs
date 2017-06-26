@@ -6,7 +6,11 @@ namespace Cloudflow.Core.Extensions
     public abstract class ConfigurableExtension : Extension, IConfigurableExtension
     {
         #region Properties
-        public string ConfigurationId { get; }
+        public string ExtensionName { get; }
+
+        public string ExtensionDescription { get; }
+
+        public string ConfigurationExtensionId { get; }
         #endregion
 
         #region Constructors
@@ -18,7 +22,9 @@ namespace Cloudflow.Core.Extensions
 
             if (exportConfigurableExtensionAttribute != null)
             {
-                this.ConfigurationId = exportConfigurableExtensionAttribute.ConfigurationId;
+                this.ExtensionName = exportConfigurableExtensionAttribute.ExtensionName;
+                this.ExtensionDescription = exportConfigurableExtensionAttribute.ExtensionDescription;
+                this.ConfigurationExtensionId = exportConfigurableExtensionAttribute.ConfigurationExtensionId;
             }
         }
         #endregion

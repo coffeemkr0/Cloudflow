@@ -22,19 +22,19 @@ namespace TestApp
                 Console.WriteLine("Jobs");
                 foreach (var triggerMetaData in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Job))
                 {
-                    Console.WriteLine(triggerMetaData.Type);
+                    Console.WriteLine(triggerMetaData.ExtensionType);
                 }
 
                 Console.WriteLine("Triggers");
                 foreach (var triggerMetaData in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger))
                 {
-                    Console.WriteLine(triggerMetaData.Type);
+                    Console.WriteLine(triggerMetaData.ExtensionType);
                 }
 
                 Console.WriteLine("Steps");
                 foreach (var triggerMetaData in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Step))
                 {
-                    Console.WriteLine(triggerMetaData.Type);
+                    Console.WriteLine(triggerMetaData.ExtensionType);
                 }
             }
             catch (Exception ex)

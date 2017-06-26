@@ -34,11 +34,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
             var editViewModel = new EditViewModel();
 
             editViewModel.JobConfigurationViewModel.Id = jobDefinition.JobDefinitionId;
-            editViewModel.JobConfigurationViewModel.ExtensionId = jobDefinition.JobConfigurationExtensionId;
-            editViewModel.JobConfigurationViewModel.ExtensionAssemblyPath = jobDefinition.JobConfigurationExtensionAssemblyPath;
+            editViewModel.JobConfigurationViewModel.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
+            editViewModel.JobConfigurationViewModel.ConfigurationExtensionAssemblyPath = jobDefinition.ConfigurationExtensionAssemblyPath;
 
-            var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.JobConfigurationExtensionId,
-               jobDefinition.JobConfigurationExtensionAssemblyPath);
+            var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
+               jobDefinition.ConfigurationExtensionAssemblyPath);
             editViewModel.JobConfigurationViewModel.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
 
             int index = 0;
@@ -48,11 +48,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 triggerConfigurationViewModel.Id = triggerDefinition.TriggerDefinitionId;
                 triggerConfigurationViewModel.Index = index;
                 if (index == 0) triggerConfigurationViewModel.Active = true;
-                triggerConfigurationViewModel.ExtensionId = triggerDefinition.TriggerConfigurationExtensionId;
-                triggerConfigurationViewModel.ExtensionAssemblyPath = triggerDefinition.TriggerConfigurationExtensionAssemblyPath;
+                triggerConfigurationViewModel.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
+                triggerConfigurationViewModel.ConfigurationExtensionAssemblyPath = triggerDefinition.ConfigurationExtensionAssemblyPath;
 
-                extensionConfigurationController = new ExtensionConfigurationController(triggerDefinition.TriggerConfigurationExtensionId,
-                    triggerDefinition.TriggerConfigurationExtensionAssemblyPath);
+                extensionConfigurationController = new ExtensionConfigurationController(triggerDefinition.ConfigurationExtensionId,
+                    triggerDefinition.ConfigurationExtensionAssemblyPath);
                 triggerConfigurationViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
 
                 editViewModel.TriggersViewModel.Triggers.Add(triggerConfigurationViewModel);
@@ -64,11 +64,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
             {
                 var stepConfigurationViewModel = new ExtensionConfigurationViewModel();
                 stepConfigurationViewModel.Id = stepDefinition.StepDefinitionId;
-                stepConfigurationViewModel.ExtensionId = stepDefinition.StepConfigurationExtensionId;
-                stepConfigurationViewModel.ExtensionAssemblyPath = stepDefinition.StepConfigurationExtensionAssemblyPath;
+                stepConfigurationViewModel.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
+                stepConfigurationViewModel.ConfigurationExtensionAssemblyPath = stepDefinition.ConfigurationExtensionAssemblyPath;
 
-                extensionConfigurationController = new ExtensionConfigurationController(stepDefinition.StepConfigurationExtensionId,
-                    stepDefinition.StepConfigurationExtensionAssemblyPath);
+                extensionConfigurationController = new ExtensionConfigurationController(stepDefinition.ConfigurationExtensionId,
+                    stepDefinition.ConfigurationExtensionAssemblyPath);
                 stepConfigurationViewModel.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
 
                 editViewModel.StepsViewModel.Steps.Add(stepConfigurationViewModel);
@@ -100,8 +100,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 {
                     triggerDefinition = new TriggerDefinition();
                     triggerDefinition.Index = index;
-                    triggerDefinition.TriggerConfigurationExtensionId = trigger.ExtensionId;
-                    triggerDefinition.TriggerConfigurationExtensionAssemblyPath = trigger.ExtensionAssemblyPath;
+                    triggerDefinition.ExtensionId = trigger.ExtensionId;
+                    triggerDefinition.ExtensionAssemblyPath = trigger.ExtensionAssemblyPath;
+                    triggerDefinition.ConfigurationExtensionId = trigger.ConfigurationExtensionId;
+                    triggerDefinition.ConfigurationExtensionAssemblyPath = trigger.ConfigurationExtensionAssemblyPath;
                     triggerDefinition.Configuration = trigger.Configuration.ToJson();
 
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
@@ -125,8 +127,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 {
                     stepDefinition = new StepDefinition();
                     stepDefinition.Index = index;
-                    stepDefinition.StepConfigurationExtensionId = step.ExtensionId;
-                    stepDefinition.StepConfigurationExtensionAssemblyPath = step.ExtensionAssemblyPath;
+                    stepDefinition.ExtensionId = step.ExtensionId;
+                    stepDefinition.ExtensionAssemblyPath = step.ExtensionAssemblyPath;
+                    stepDefinition.ConfigurationExtensionId = step.ConfigurationExtensionId;
+                    stepDefinition.ConfigurationExtensionAssemblyPath = step.ConfigurationExtensionAssemblyPath;
                     stepDefinition.Configuration = step.Configuration.ToJson();
 
                     serverDbContext.StepDefinitions.Add(stepDefinition);

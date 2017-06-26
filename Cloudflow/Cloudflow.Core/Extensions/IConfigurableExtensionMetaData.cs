@@ -8,6 +8,10 @@ namespace Cloudflow.Core.Extensions
 {
     public interface IConfigurableExtensionMetaData : IExtensionMetaData
     {
-        string ConfigurationId { get; }
+        string ExtensionName { get; }
+
+        string ExtensionDescription { get; }
+
+        string ConfigurationExtensionId { get; }
     }
 }

@@ -67,9 +67,9 @@ namespace Cloudflow.Web.ViewModels.Shared
 
                     var extensionViewModel = new ExtensionViewModel
                     {
-                        ExtensionId = extension.Id,
+                        ExtensionId = extension.ExtensionId,
                         ExtensionLibrary = extensionLibraryFile,
-                        Name = displayNameAttribute != null ? displayNameAttribute.DisplayName : extension.Type.ToString(),
+                        Name = displayNameAttribute != null ? displayNameAttribute.DisplayName : extension.ExtensionType.ToString(),
                         Description = descriptionAttribute != null ? descriptionAttribute.Description : ""
                     };
                     extensionLibraryViewModel.Extensions.Add(extensionViewModel);

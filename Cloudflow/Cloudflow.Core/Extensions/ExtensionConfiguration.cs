@@ -7,12 +7,6 @@ namespace Cloudflow.Core.Extensions
     public abstract class ExtensionConfiguration : Extension
     {
         #region Properties
-        [Hidden]
-        public Guid ExtensionId { get; set; }
-
-        [Hidden]
-        public string ExtensionAssemblyPath { get; set; }
-
         public string Name { get; set; }
         #endregion
 

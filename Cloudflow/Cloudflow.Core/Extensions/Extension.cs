@@ -7,10 +7,10 @@ namespace Cloudflow.Core.Extensions
     public abstract class Extension : IExtension
     {
         [Hidden]
-        public string Id { get; }
+        public string ExtensionId { get; }
 
         [Hidden]
-        public Type Type { get; }
+        public Type ExtensionType { get; }
 
         public Extension()
         {
@@ -20,8 +20,8 @@ namespace Cloudflow.Core.Extensions
 
             if (exportExtensionAttribute != null)
             {
-                this.Id = exportExtensionAttribute.Id;
-                this.Type = exportExtensionAttribute.Type;
+                this.ExtensionId = exportExtensionAttribute.ExtensionId;
+                this.ExtensionType = exportExtensionAttribute.ExtensionType;
             }
         }
     }

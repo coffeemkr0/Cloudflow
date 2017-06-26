@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Shared\Models\ConfigurableExtensionDefinition.cs" />
     <Compile Include="Data\Shared\SharedDbContext.cs" />
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
@@ -115,7 +116,7 @@
     <Compile Include="Data\Shared\Models\JobDefinition.cs" />
     <Compile Include="Data\Shared\Models\StepDefinition.cs" />
     <Compile Include="Data\Shared\Models\TriggerDefinition.cs" />
-    <Compile Include="Extensions\ExportExtensionAttribute.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\ExportExtensionAttribute.cs" />
     <Compile Include="Extensions\Job.cs" />
     <Compile Include="Extensions\Controllers\JobController.cs" />
     <Compile Include="Extensions\Step.cs" />

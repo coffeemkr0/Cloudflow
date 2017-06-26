@@ -178,8 +178,15 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, "ExtensionId", configurationViewModel.ExtensionId.ToString(), InputTypes.Hidden));
-            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, "ExtensionAssemblyPath", configurationViewModel.ExtensionAssemblyPath, InputTypes.Hidden));
+            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName },
+                "ExtensionId", configurationViewModel.ExtensionId.ToString(), InputTypes.Hidden));
+            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName },
+                "ExtensionAssemblyPath", configurationViewModel.ExtensionAssemblyPath, InputTypes.Hidden));
+
+            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, 
+                "ConfigurationExtensionId", configurationViewModel.ConfigurationExtensionId.ToString(), InputTypes.Hidden));
+            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, 
+                "ConfigurationExtensionAssemblyPath", configurationViewModel.ConfigurationExtensionAssemblyPath, InputTypes.Hidden));
 
             foreach (var propertyInfo in configurationViewModel.Configuration.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
             {

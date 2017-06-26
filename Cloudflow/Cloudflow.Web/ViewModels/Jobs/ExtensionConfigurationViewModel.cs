@@ -20,6 +20,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public string ExtensionAssemblyPath { get; set; }
 
+        public Guid ConfigurationExtensionId { get; set; }
+
+        public string ConfigurationExtensionAssemblyPath { get; set; }
+
         public ExtensionConfiguration Configuration { get; set; }
     }
 }

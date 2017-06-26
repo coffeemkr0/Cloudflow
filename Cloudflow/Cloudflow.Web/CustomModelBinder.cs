@@ -15,8 +15,8 @@ namespace Cloudflow.Web
         {
             if (modelType.Equals(typeof(ExtensionConfiguration)))
             {
-                var jobConfigurationExtensionId = ((ExtensionConfigurationViewModel)bindingContext.ModelMetadata.Container).ExtensionId;
-                var extensionConfigurationAssemblyPath = ((ExtensionConfigurationViewModel)bindingContext.ModelMetadata.Container).ExtensionAssemblyPath;
+                var jobConfigurationExtensionId = ((ExtensionConfigurationViewModel)bindingContext.ModelMetadata.Container).ConfigurationExtensionId;
+                var extensionConfigurationAssemblyPath = ((ExtensionConfigurationViewModel)bindingContext.ModelMetadata.Container).ConfigurationExtensionAssemblyPath;
 
                 var configurationController = new ExtensionConfigurationController(jobConfigurationExtensionId, extensionConfigurationAssemblyPath);
                 var configuration = configurationController.CreateNewConfiguration();

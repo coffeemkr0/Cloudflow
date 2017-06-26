@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
-    public class StepDefinition
+    public class StepDefinition : ConfigurableExtensionDefinition
     {
         #region Properties
         [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
@@ -19,10 +19,6 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
-
-        public Guid StepConfigurationExtensionId { get; set; }
-
-        public string StepConfigurationExtensionAssemblyPath { get; set; }
 
         public string Configuration { get; set; }
 
@@ -43,23 +39,22 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Public Methods
         public static StepDefinition CreateTestItem(string extensionsAssemblyPath)
         {
-            var stepConfigurationExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970");
-
             StepDefinition stepDefinition = new StepDefinition()
             {
-                StepConfigurationExtensionId = stepConfigurationExtensionId,
-                StepConfigurationExtensionAssemblyPath = extensionsAssemblyPath
+                ExtensionId = Guid.Parse("43D6FD16-0344-4204-AEE9-A09B3998C017"),
+                ExtensionAssemblyPath = extensionsAssemblyPath,
+                ConfigurationExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970"),
+                ConfigurationExtensionAssemblyPath = extensionsAssemblyPath
             };
 
-            var stepConfigurationController = new ExtensionConfigurationController(stepConfigurationExtensionId, extensionsAssemblyPath);
-            var logStepConfiguration = stepConfigurationController.CreateNewConfiguration();
+            var stepConfigurationController = new ExtensionConfigurationController(
+                stepDefinition.ConfigurationExtensionId, extensionsAssemblyPath);
 
-            logStepConfiguration.ExtensionId = Guid.Parse("43D6FD16-0344-4204-AEE9-A09B3998C017");
-            logStepConfiguration.ExtensionAssemblyPath = extensionsAssemblyPath;
+            var logStepConfiguration = stepConfigurationController.CreateNewConfiguration();
             logStepConfiguration.Name = "Hard coded log step";
             logStepConfiguration.GetType().GetProperty("LogMessage").SetValue(logStepConfiguration, "Hello World!");
-
             stepDefinition.Configuration = logStepConfiguration.ToJson();
+
             return stepDefinition;
         }
         #endregion

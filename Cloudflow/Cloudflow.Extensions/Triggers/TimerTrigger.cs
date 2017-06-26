@@ -5,9 +5,8 @@ using Cloudflow.Core.Extensions.ExtensionAttributes;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [DisplayName("Timer")]
-    [Description("A trigger that fires when a certain amount of time has elapsed.")]
-    [ExportConfigurableExtension("DABF8963-4B59-448E-BE5A-143EBDF123EF", typeof(TimerTrigger), "E325CD29-053E-4422-97CF-C1C187760E88")]
+    [ExportConfigurableExtension("DABF8963-4B59-448E-BE5A-143EBDF123EF", typeof(TimerTrigger), 
+        "Timer", "E325CD29-053E-4422-97CF-C1C187760E88", "A trigger that fires after a certain amount of time has passed.")]
     public class TimerTrigger : Trigger
     {
         private Timer _timer;

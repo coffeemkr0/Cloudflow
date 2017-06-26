@@ -47,6 +47,8 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Properties
+        public JobDefinition JobDefinition { get; }
+
         public ExtensionConfiguration JobConfiguration { get; }
 
         public Job Job { get; }
@@ -61,12 +63,14 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Constructors
         public JobController(JobDefinition jobDefinition)
         {
+            this.JobDefinition = jobDefinition;
+
             _runControllers = new List<RunController>();
             _runTasks = new List<Task>();
 
             //Load the job configuration
-            var jobConfigurationController = new ExtensionConfigurationController(jobDefinition.JobConfigurationExtensionId,
-                jobDefinition.JobConfigurationExtensionAssemblyPath);
+            var jobConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
+                jobDefinition.ConfigurationExtensionAssemblyPath);
             this.JobConfiguration = jobConfigurationController.Load(jobDefinition.Configuration);
 
             //Create the logger for the controller
@@ -76,11 +80,7 @@ namespace Cloudflow.Core.Extensions.Controllers
             this.TriggerControllers = new List<TriggerController>();
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions)
             {
-                var triggerConfigurationController = new ExtensionConfigurationController(triggerDefinition.TriggerConfigurationExtensionId,
-                    triggerDefinition.TriggerConfigurationExtensionAssemblyPath);
-                var triggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
-
-                var triggerController = new TriggerController(triggerConfiguration);
+                var triggerController = new TriggerController(triggerDefinition);
                 triggerController.TriggerFired += TriggerController_TriggerFired;
                 this.TriggerControllers.Add(triggerController);
             }
@@ -89,17 +89,13 @@ namespace Cloudflow.Core.Extensions.Controllers
             this.StepControllers = new List<StepController>();
             foreach (var stepDefinition in jobDefinition.StepDefinitions)
             {
-                var stepConfigurationController = new ExtensionConfigurationController(stepDefinition.StepConfigurationExtensionId,
-                    stepDefinition.StepConfigurationExtensionAssemblyPath);
-                var stepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
-
-                var stepController = new StepController(stepConfiguration);
+                var stepController = new StepController(stepDefinition);
                 stepController.StepOutput += StepController_StepOutput;
                 this.StepControllers.Add(stepController);
             }
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(this.JobConfiguration.ExtensionAssemblyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(jobDefinition.ExtensionAssemblyPath));
             _jobsContainer = new CompositionContainer(catalog);
             _jobsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", this.JobConfiguration);
 
@@ -109,7 +105,7 @@ namespace Cloudflow.Core.Extensions.Controllers
 
                 foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
                 {
-                    if (Guid.Parse(i.Metadata.Id) == this.JobConfiguration.ExtensionId)
+                    if (Guid.Parse(i.Metadata.ExtensionId) == this.JobDefinition.ExtensionId)
                     {
                         this.Job = (Job)i.Value;
                     }

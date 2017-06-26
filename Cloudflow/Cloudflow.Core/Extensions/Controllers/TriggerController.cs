@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Configuration;
+using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Core.Extensions;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Properties
+        public TriggerDefinition TriggerDefinition { get; }
+
         public ExtensionConfiguration TriggerConfiguration { get; }
 
         public log4net.ILog TriggerControllerLoger { get; }
@@ -40,15 +43,19 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Constructors
-        public TriggerController(ExtensionConfiguration triggerConfiguration)
+        public TriggerController(TriggerDefinition triggerDefinition)
         {
-            this.TriggerConfiguration = triggerConfiguration;
-            this.TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerConfiguration.Name}");
+            this.TriggerDefinition = triggerDefinition;
+            this.TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerDefinition.TriggerDefinitionId}");
+
+            var triggerConfigurationController = new ExtensionConfigurationController(triggerDefinition.ConfigurationExtensionId,
+                triggerDefinition.ConfigurationExtensionAssemblyPath);
+            this.TriggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(triggerConfiguration.ExtensionAssemblyPath));
+            catalog.Catalogs.Add(new AssemblyCatalog(triggerDefinition.ExtensionAssemblyPath));
             _triggersContainer = new CompositionContainer(catalog);
-            _triggersContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", triggerConfiguration);
+            _triggersContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", this.TriggerConfiguration);
 
             try
             {
@@ -56,7 +63,7 @@ namespace Cloudflow.Core.Extensions.Controllers
 
                 foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
                 {
-                    if (Guid.Parse(i.Metadata.Id) == this.TriggerConfiguration.ExtensionId)
+                    if (Guid.Parse(i.Metadata.ExtensionId) == triggerDefinition.ExtensionId)
                     {
                         this.Trigger = (Trigger)i.Value;
                     }

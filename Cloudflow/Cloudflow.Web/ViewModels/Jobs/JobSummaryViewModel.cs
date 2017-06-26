@@ -21,8 +21,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
         {
             this.Id = jobDefinition.JobDefinitionId;
 
-            var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.JobConfigurationExtensionId,
-                jobDefinition.JobConfigurationExtensionAssemblyPath);
+            var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
+                jobDefinition.ConfigurationExtensionAssemblyPath);
             this.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
         }
         #endregion

@@ -173,18 +173,19 @@ namespace Cloudflow.Web.Controllers
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
             var trigger = configurableExtensionBrowser.GetConfigurableExtension(triggerId);
-
+            
             var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
             triggerConfigurationViewModel.Id = Guid.NewGuid();
             triggerConfigurationViewModel.Index = index;
-            triggerConfigurationViewModel.ExtensionId = Guid.Parse(trigger.ConfigurationId);
+            triggerConfigurationViewModel.ExtensionId = Guid.Parse(trigger.ExtensionId);
             triggerConfigurationViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
+            triggerConfigurationViewModel.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
+            triggerConfigurationViewModel.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
 
-            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationId),
+            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationExtensionId),
                 extensionAssemblyPath);
+
             triggerConfigurationViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            triggerConfigurationViewModel.Configuration.ExtensionId = triggerId;
-            triggerConfigurationViewModel.Configuration.ExtensionAssemblyPath = extensionAssemblyPath;
             triggerConfigurationViewModel.Configuration.Name = "New Trigger";
 
             var triggerNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,

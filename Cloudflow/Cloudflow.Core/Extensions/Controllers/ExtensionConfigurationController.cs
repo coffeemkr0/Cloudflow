@@ -50,9 +50,9 @@ namespace Cloudflow.Core.Extensions.Controllers
         {
             foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
             {
-                if (Guid.Parse(i.Metadata.Id) == this.ExtensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == this.ExtensionId)
                 {
-                    return i.Metadata.Type;
+                    return i.Metadata.ExtensionType;
                 }
             }
 
@@ -63,7 +63,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         {
             foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
             {
-                if (Guid.Parse(i.Metadata.Id) == this.ExtensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == this.ExtensionId)
                 {
                     return (ExtensionConfiguration)i.Value;
                 }
