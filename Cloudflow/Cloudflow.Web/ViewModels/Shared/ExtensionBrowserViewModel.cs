@@ -62,15 +62,12 @@ namespace Cloudflow.Web.ViewModels.Shared
                 var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
                 foreach (var extension in extensionBrowser.GetConfigurableExtensions(extensionType))
                 {
-                    var displayNameAttribute = (DisplayNameAttribute)extension.GetType().GetCustomAttributes(typeof(DisplayNameAttribute), true).SingleOrDefault();
-                    var descriptionAttribute = (DescriptionAttribute)extension.GetType().GetCustomAttributes(typeof(DescriptionAttribute), true).SingleOrDefault();
-
                     var extensionViewModel = new ExtensionViewModel
                     {
                         ExtensionId = extension.ExtensionId,
                         ExtensionLibrary = extensionLibraryFile,
-                        Name = displayNameAttribute != null ? displayNameAttribute.DisplayName : extension.ExtensionType.ToString(),
-                        Description = descriptionAttribute != null ? descriptionAttribute.Description : ""
+                        Name = extension.ExtensionName,
+                        Description = extension.ExtensionDescription
                     };
                     extensionLibraryViewModel.Extensions.Add(extensionViewModel);
                 }
