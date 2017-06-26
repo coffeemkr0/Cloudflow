@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Drawing;
+using System.IO;
+using System.Resources;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -12,8 +15,10 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
 
         public string ConfigurationExtensionId { get; set; }
 
+        public byte[] Icon { get; set; }
+
         public ExportConfigurableExtensionAttribute(string extensionId, Type extensionType, string extensionName, 
-            string configurationExtensionId, string extensionDescription = "") :
+            string configurationExtensionId, string extensionDescription = "", string iconResourceName = "") :
             base(extensionId, extensionType, typeof(IConfigurableExtension))
         {
             if (string.IsNullOrWhiteSpace(configurationExtensionId))
@@ -22,8 +27,26 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
                 throw new ArgumentException("'extensionName' is required.", "extensionName");
 
             this.ExtensionName = extensionName;
-            this.ExtensionDescription = extensionDescription;
             this.ConfigurationExtensionId = configurationExtensionId;
+
+            this.ExtensionDescription = extensionDescription;
+            if (string.IsNullOrWhiteSpace(iconResourceName))
+            {
+                this.Icon = (byte[])new ImageConverter().ConvertTo(Properties.Resources.GenericExtensionIcon, typeof(byte[]));
+            }
+            else
+            {
+                this.Icon = (byte[])new ImageConverter().ConvertTo(Properties.Resources.GenericExtensionIcon, typeof(byte[]));
+
+                //using (Stream stream = ExtensionType.Assembly.
+                //           GetManifestResourceStream("Timer.png"))
+                //{
+                //    using (Bitmap bitmap = new Bitmap(stream))
+                //    {
+                //        this.Icon = (byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]));
+                //    }
+                //}
+            }
         }
     }
 }

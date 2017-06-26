@@ -6724,6 +6724,10 @@ button.close {
 .extensionBrowser__extensionList {
   overflow-y: auto;
 }
+.extensionBrowser__extensionIcon {
+  width: 32px;
+  height: 32px;
+}
 body {
   padding-top: 50px;
   padding-bottom: 20px;

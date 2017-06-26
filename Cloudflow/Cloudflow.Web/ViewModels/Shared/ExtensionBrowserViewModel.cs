@@ -4,6 +4,7 @@ using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -67,8 +68,10 @@ namespace Cloudflow.Web.ViewModels.Shared
                         ExtensionId = extension.ExtensionId,
                         ExtensionLibrary = extensionLibraryFile,
                         Name = extension.ExtensionName,
-                        Description = extension.ExtensionDescription
+                        Description = extension.ExtensionDescription,
+                        Icon = extension.Icon
                     };
+
                     extensionLibraryViewModel.Extensions.Add(extensionViewModel);
                 }
 
@@ -112,6 +115,8 @@ namespace Cloudflow.Web.ViewModels.Shared
             public string Name { get; set; }
 
             public string Description { get; set; }
+
+            public byte[] Icon { get; set; }
             #endregion
         }
     }

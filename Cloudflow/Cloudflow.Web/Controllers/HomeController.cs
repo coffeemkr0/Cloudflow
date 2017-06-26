@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Cloudflow.Web.Utility;
 using Cloudflow.Web.ViewModels.Shared;
 using Cloudflow.Web.ViewModels.Home;
+using System.Drawing;
 
 namespace Cloudflow.Web.Controllers
 {

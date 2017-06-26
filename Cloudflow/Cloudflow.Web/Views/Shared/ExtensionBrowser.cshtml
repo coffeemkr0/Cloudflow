@@ -28,35 +28,27 @@
                 @foreach (var library in Model.ExtensionLibraries)
                 {
                     <div id="libraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
-                        @foreach (var extension in library.Extensions)
+                        @for (int i = 0; i < 5; i++)
                         {
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <img src="#" alt="Extension icon" />
+                            foreach (var extension in library.Extensions)
+                            {
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <h5>@extension.Name</h5>
+                                                <p>@extension.Description</p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a href="#" class="btn btn-xs btn-success">Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-8">
-                                    <h5>@extension.Name</h5>
-                                    <p>@extension.Description</p>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a href="#" class="btn btn-xs btn-success">Add</a>
-                                </div>
-                            </div>
-                        }
-                        @foreach (var extension in library.Extensions)
-                        {
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <img src="#" alt="Extension icon" />
-                                </div>
-                                <div class="col-sm-8">
-                                    <h5>@extension.Name</h5>
-                                    <p>@extension.Description</p>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a href="#" class="btn btn-xs btn-success">Add</a>
-                                </div>
-                            </div>
+                            }
                         }
                     </div>
 
