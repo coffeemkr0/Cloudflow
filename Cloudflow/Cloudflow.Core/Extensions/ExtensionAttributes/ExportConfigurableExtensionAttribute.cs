@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Drawing;
 using System.IO;
 using System.Resources;
+using System.Linq;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -36,16 +37,18 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
             }
             else
             {
-                this.Icon = (byte[])new ImageConverter().ConvertTo(Properties.Resources.GenericExtensionIcon, typeof(byte[]));
-
-                //using (Stream stream = ExtensionType.Assembly.
-                //           GetManifestResourceStream("Timer.png"))
-                //{
-                //    using (Bitmap bitmap = new Bitmap(stream))
-                //    {
-                //        this.Icon = (byte[])new ImageConverter().ConvertTo(bitmap, typeof(byte[]));
-                //    }
-                //}
+                var defaultResources = extensionType.Assembly.GetManifestResourceNames().FirstOrDefault(i => i.Contains(".Properties"));
+                if (defaultResources != null)
+                {
+                    var resourceBaseName = defaultResources.Remove(defaultResources.LastIndexOf("."));
+                    ResourceManager resourceManager = new ResourceManager(resourceBaseName, extensionType.Assembly);
+                    var icon = (Bitmap)resourceManager.GetObject(iconResourceName);
+                    this.Icon = (byte[])new ImageConverter().ConvertTo(icon, typeof(byte[]));
+                }
+                else
+                {
+                    this.Icon = (byte[])new ImageConverter().ConvertTo(Properties.Resources.GenericExtensionIcon, typeof(byte[]));
+                }
             }
         }
     }
