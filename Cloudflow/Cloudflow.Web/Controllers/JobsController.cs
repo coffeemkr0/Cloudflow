@@ -13,6 +13,7 @@ using System.IO;
 using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Web.Utility;
+using Cloudflow.Web.ViewModels.Shared;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -164,6 +165,12 @@ namespace Cloudflow.Web.Controllers
 
                 return Json(jobDefinition, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult Triggers()
+        {
+            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger);
+            return PartialView("ExtensionBrowser", model);
         }
 
         [HttpPost]

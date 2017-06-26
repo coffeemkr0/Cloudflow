@@ -18,11 +18,5 @@ namespace Cloudflow.Web.Controllers
         {
             return View();
         }
-
-        public ActionResult Triggers()
-        {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger);
-            return PartialView("ExtensionBrowser", model);
-        }
     }
 }

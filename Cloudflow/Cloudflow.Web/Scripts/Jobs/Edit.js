@@ -1,12 +1,13 @@
 ﻿$(function () {
-    $("#btnAddTrigger").on("click", btnAddTrigger_Clicked);
+    ExtensionBrowser.AddExtensionClicked = AddExtension;
+
     $("#btnAddStep").on("click", btnAddStep_Clicked);
 
     $(document).on("click", ".deleteTrigger", deleteTrigger_Clicked);
     $(document).on("click", ".deleteStep", deleteStep_Clicked);
 });
 
-function btnAddTrigger_Clicked() {
+function AddExtension(extensionId) {
     var index = parseInt($(".triggerNavigationItem").last().attr("data-index")) + 1;
 
     $.ajax({
@@ -14,7 +15,7 @@ function btnAddTrigger_Clicked() {
         url: "/Jobs/AddTrigger",
         dataType: 'json',
         data: {
-            triggerId: "DABF8963-4B59-448E-BE5A-143EBDF123EF",
+            triggerId: extensionId,
             index: index
         },
         success: function (result) {

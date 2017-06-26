@@ -1,64 +1,73 @@
 ﻿@model Cloudflow.Web.ViewModels.Shared.ExtensionBrowserViewModel
 
-<header class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="extensionBrowserModal-label">@Model.ExtensionTypeDisplayText</h4>
-</header>
+<div class="modal fade" id="modalExtensionBrowser" tabindex="-1" role="dialog" aria-labelledby="extensionBrowser-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="modalExtensionBrowserContent">
 
-<div>
-    <section class="modal-body">
-        <div class="row">
-            <nav class="col-lg-4">
-                <h4>Libraries</h4>
+                <header class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="extensionBrowserModal-label">@Model.ExtensionTypeDisplayText</h3>
+                </header>
 
-                <ul class="nav nav-pills nav-stacked">
-                    @{ var libraryIndex = 0; }
-                    @foreach (var library in Model.ExtensionLibraries)
-                    {
-                        <li role="presentation" class="@(libraryIndex == 0 ? "active" : "")">
-                            <a href="#libraryTab@(libraryIndex)" role="tab" data-toggle="tab">@library.Name</a>
-                        </li>
-                        libraryIndex += 1;
-                    }
-                </ul>
-            </nav>
+                <div>
+                    <section class="modal-body">
+                        <div class="row">
+                            <nav class="col-lg-4">
+                                <h4>Libraries</h4>
 
-            <div class="col-lg-8 tab-content">
-                @{ libraryIndex = 0; }
-                @foreach (var library in Model.ExtensionLibraries)
-                {
-                    <div id="libraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
-                        @for (int i = 0; i < 5; i++)
-                        {
-                            foreach (var extension in library.Extensions)
-                            {
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-sm-2">
-                                                <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <h5>@extension.Name</h5>
-                                                <p>@extension.Description</p>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <a href="#" class="btn btn-xs btn-success">Add</a>
-                                            </div>
-                                        </div>
+                                <ul class="nav nav-pills nav-stacked">
+                                    @{ var libraryIndex = 0; }
+                                    @foreach (var library in Model.ExtensionLibraries)
+                                    {
+                                        <li role="presentation" class="@(libraryIndex == 0 ? "active" : "")">
+                                            <a href="#libraryTab@(libraryIndex)" role="tab" data-toggle="tab">@library.Name</a>
+                                        </li>
+                                        libraryIndex += 1;
+                                    }
+                                </ul>
+                            </nav>
+
+                            <div class="col-lg-8 tab-content">
+                                @{ libraryIndex = 0; }
+                                @foreach (var library in Model.ExtensionLibraries)
+                                {
+                                    <div id="libraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            foreach (var extension in library.Extensions)
+                                            {
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-2">
+                                                                <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <h5>@extension.Name</h5>
+                                                                <p>@extension.Description</p>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <a data-extensionid="@extension.ExtensionId" href="#" data-dismiss="modal" class="btn btn-xs btn-success extensionBrowser__addButton">Add</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     </div>
-                                </div>
-                            }
-                        }
-                    </div>
 
-                    libraryIndex += 1;
-                }
+                                    libraryIndex += 1;
+                                }
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
 </div>
