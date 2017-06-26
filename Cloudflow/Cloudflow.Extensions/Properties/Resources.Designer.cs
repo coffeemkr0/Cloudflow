@@ -61,12 +61,84 @@ namespace Cloudflow.Extensions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The default Cloudflow job..
+        /// </summary>
+        internal static string DefaultJobDescription {
+            get {
+                return ResourceManager.GetString("DefaultJobDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Job.
+        /// </summary>
+        internal static string DefaultJobName {
+            get {
+                return ResourceManager.GetString("DefaultJobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs a message to a file..
+        /// </summary>
+        internal static string LogStepDescription {
+            get {
+                return ResourceManager.GetString("LogStepDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log.
+        /// </summary>
+        internal static string LogStepName {
+            get {
+                return ResourceManager.GetString("LogStepName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A trigger that fires after a certain amount of time has passed..
+        /// </summary>
+        internal static string TimerTriggerDescription {
+            get {
+                return ResourceManager.GetString("TimerTriggerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Timer {
+        internal static System.Drawing.Bitmap TimerTriggerIcon {
             get {
-                object obj = ResourceManager.GetObject("Timer", resourceCulture);
+                object obj = ResourceManager.GetObject("TimerTriggerIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timer.
+        /// </summary>
+        internal static string TimerTriggerName {
+            get {
+                return ResourceManager.GetString("TimerTriggerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A trigger that fires when files are added, changed or deleted in a folder..
+        /// </summary>
+        internal static string WatchFolderTriggerDescription {
+            get {
+                return ResourceManager.GetString("WatchFolderTriggerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Watch Folder.
+        /// </summary>
+        internal static string WatchFolderTriggerName {
+            get {
+                return ResourceManager.GetString("WatchFolderTriggerName", resourceCulture);
             }
         }
     }
