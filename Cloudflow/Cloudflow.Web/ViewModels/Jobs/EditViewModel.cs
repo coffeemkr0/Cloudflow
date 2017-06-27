@@ -42,7 +42,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             editViewModel.JobConfigurationViewModel.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
 
             int index = 0;
-            foreach (var triggerDefinition in jobDefinition.TriggerDefinitions)
+            foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
             {
                 var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
                 triggerConfigurationViewModel.Id = triggerDefinition.TriggerDefinitionId;
@@ -60,10 +60,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 index += 1;
             }
 
-            foreach (var stepDefinition in jobDefinition.StepDefinitions)
+            index = 0;
+            foreach (var stepDefinition in jobDefinition.StepDefinitions.OrderBy(i => i.Index))
             {
                 var stepConfigurationViewModel = new ExtensionConfigurationViewModel();
                 stepConfigurationViewModel.Id = stepDefinition.StepDefinitionId;
+                stepConfigurationViewModel.Index = index;
+                if (index == 0) stepConfigurationViewModel.Active = true;
                 stepConfigurationViewModel.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
                 stepConfigurationViewModel.ConfigurationExtensionAssemblyPath = stepDefinition.ConfigurationExtensionAssemblyPath;
 
@@ -72,6 +75,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 stepConfigurationViewModel.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
 
                 editViewModel.StepsViewModel.Steps.Add(stepConfigurationViewModel);
+
+                index += 1;
             }
 
             return editViewModel;
@@ -133,7 +138,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     stepDefinition.ConfigurationExtensionAssemblyPath = step.ConfigurationExtensionAssemblyPath;
                     stepDefinition.Configuration = step.Configuration.ToJson();
 
-                    serverDbContext.StepDefinitions.Add(stepDefinition);
+                    jobDefinition.StepDefinitions.Add(stepDefinition);
                 }
                 index += 1;
             }

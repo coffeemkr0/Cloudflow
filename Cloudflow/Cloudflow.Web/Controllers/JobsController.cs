@@ -173,6 +173,12 @@ namespace Cloudflow.Web.Controllers
             return PartialView("ExtensionBrowser", model);
         }
 
+        public ActionResult Steps()
+        {
+            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Step);
+            return PartialView("ExtensionBrowser", model);
+        }
+
         [HttpPost]
         public JsonResult AddTrigger(Guid triggerId, int index)
         {
@@ -201,6 +207,37 @@ namespace Cloudflow.Web.Controllers
                 "_TriggerConfiguration", triggerConfigurationViewModel);
 
             return Json(new { triggerNavigationItemView, triggerConfigurationView });
+        }
+
+        [HttpPost]
+        public JsonResult AddStep(Guid stepId, int index)
+        {
+            var extensionAssemblyPath = this.GetExtensionLibraries().First();
+
+            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
+            var step = configurableExtensionBrowser.GetConfigurableExtension(stepId);
+
+            var stepConfigurationViewModel = new ExtensionConfigurationViewModel();
+            stepConfigurationViewModel.Id = Guid.NewGuid();
+            stepConfigurationViewModel.Index = index;
+            stepConfigurationViewModel.ExtensionId = Guid.Parse(step.ExtensionId);
+            stepConfigurationViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
+            stepConfigurationViewModel.ConfigurationExtensionId = Guid.Parse(step.ConfigurationExtensionId);
+            stepConfigurationViewModel.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
+
+            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(step.ConfigurationExtensionId),
+                extensionAssemblyPath);
+
+            stepConfigurationViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
+            stepConfigurationViewModel.Configuration.Name = "New Step";
+
+
+            var stepNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+                "_StepNavigationItem", stepConfigurationViewModel);
+            var stepConfigurationView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+                "_StepConfiguration", stepConfigurationViewModel);
+
+            return Json(new { stepNavigationItemView, stepConfigurationView });
         }
         #endregion
     }

@@ -1,13 +1,47 @@
 ﻿$(function () {
     ExtensionBrowser.AddExtensionClicked = AddExtension;
 
-    $("#btnAddStep").on("click", btnAddStep_Clicked);
-
     $(document).on("click", ".deleteTrigger", deleteTrigger_Clicked);
     $(document).on("click", ".deleteStep", deleteStep_Clicked);
 });
 
-function AddExtension(extensionId) {
+function AddExtension(extensionId, extensionType) {
+    switch (extensionType) {
+        case "1":
+            AddTrigger(extensionId);
+            break;
+        case "2":
+            AddStep(extensionId);
+            break;
+    }
+}
+
+function AddStep(extensionId) {
+    var index = parseInt($(".stepNavigationItem").last().attr("data-index")) + 1;
+
+    $.ajax({
+        type: 'POST',
+        url: "/Jobs/AddStep",
+        dataType: 'json',
+        data: {
+            stepId: extensionId,
+            index: index
+        },
+        success: function (result) {
+            if (result !== null) {
+                $("#stepNavigationItems").append(result.stepNavigationItemView);
+                $("#stepConfigurations").append(result.stepConfigurationView);
+            } else {
+                alert('Error getting data.');
+            }
+        },
+        error: function () {
+            alert('Error getting data.');
+        }
+    });
+}
+
+function AddTrigger(extensionId) {
     var index = parseInt($(".triggerNavigationItem").last().attr("data-index")) + 1;
 
     $.ajax({
@@ -19,7 +53,7 @@ function AddExtension(extensionId) {
             index: index
         },
         success: function (result) {
-            if (result != null) {
+            if (result !== null) {
                 $("#triggerNavigationItems").append(result.triggerNavigationItemView);
                 $("#triggerConfigurations").append(result.triggerConfigurationView);
             } else {
@@ -30,10 +64,6 @@ function AddExtension(extensionId) {
             alert('Error getting data.');
         }
     });
-}
-
-function btnAddStep_Clicked() {
-    alert("Add step clicked");
 }
 
 function deleteTrigger_Clicked(e) {

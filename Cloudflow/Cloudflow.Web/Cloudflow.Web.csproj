@@ -391,6 +391,8 @@
     <Content Include="Views\Jobs\_TriggerNavigationItem.cshtml" />
     <Content Include="Views\Jobs\_TriggerConfiguration.cshtml" />
     <Content Include="Views\Shared\ExtensionBrowser.cshtml" />
+    <Content Include="Views\Jobs\_StepConfiguration.cshtml" />
+    <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

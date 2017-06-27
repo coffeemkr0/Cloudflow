@@ -5,7 +5,7 @@
     <div class="col-md-3 panel panel-default">
         <div class="panel-body">
             <div>
-                <a id="btnAddStep" class="btn btn-default" href="#">
+                <a data-toggle="modal" data-target="#stepsExtensionBrowser" id="btnAddStep" class="btn btn-default" href="#">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Add Step...
                 </a>
@@ -13,41 +13,21 @@
 
             <hr />
 
-            <ul class="nav nav-pills nav-stacked">
+            <ul id="stepNavigationItems" class="nav nav-pills nav-stacked">
                 @foreach (var step in Model.Steps)
                 {
-                    <li role="presentation" class="@(Model.Steps.IndexOf(step) == 0 ? "active" : "")">
-                        <a href="#tab@(step.Id)" role="tab" data-toggle="tab">
-                            @step.Configuration.Name
-                            <i data-stepid="@step.Id" class="deleteStep glyphicon glyphicon-remove pull-right"></i>
-                        </a>
-                    </li>
+                    @Html.Partial("_StepNavigationItem", step)
                 }
             </ul>
         </div>
     </div>
 
-    <div class="tab-content col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                @foreach (var step in Model.Steps)
-                {
-                    int stepIndex = Model.Steps.IndexOf(step);
-                    <div role="tabpanel" class="tab-pane active" id="tab@(step.Id)">
-                        <input type="hidden" name="StepsViewModel.Steps[@stepIndex].Id"
-                               id="StepsViewModel.Steps[@stepIndex]_Id"
-                               value="@step.Id" />
-                        <input type="hidden" name="StepsViewModel.Steps[@stepIndex].ExtensionId"
-                               id="StepsViewModel.Steps[@stepIndex]_ExtensionId"
-                               value="@step.ExtensionId" />
-                        <input type="hidden" name="StepsViewModel.Steps[@stepIndex].ExtensionAssemblyPath"
-                               id="StepsViewModel.Steps[@stepIndex]_ExtensionAssemblyPath"
-                               value="@step.ExtensionAssemblyPath" />
-
-                        @Html.ExtensionConfiguration(step, "StepsViewModel.Steps[" + Model.Steps.IndexOf(step) + "]")
-                    </div>
-                }
-            </div>
-        </div>
+    <div id="stepConfigurations" class="tab-content col-md-9">
+        @foreach (var step in Model.Steps)
+        {
+            @Html.Partial("_StepConfiguration", step)
+        }
     </div>
 </section>
+
+@Html.Action("Steps")

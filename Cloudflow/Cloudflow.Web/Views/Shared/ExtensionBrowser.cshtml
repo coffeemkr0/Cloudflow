@@ -1,9 +1,24 @@
 ﻿@model Cloudflow.Web.ViewModels.Shared.ExtensionBrowserViewModel
 
-<div class="modal fade" id="modalExtensionBrowser" tabindex="-1" role="dialog" aria-labelledby="extensionBrowser-label">
+@{ 
+    var id = "";
+    switch (Model.ExtensionType)
+    {
+        case Cloudflow.Core.Extensions.ConfigurableExtensionTypes.Job:
+            id = "jobsExtensionBrowser";
+            break;
+        case Cloudflow.Core.Extensions.ConfigurableExtensionTypes.Trigger:
+            id = "triggersExtensionBrowser";
+            break;
+        case Cloudflow.Core.Extensions.ConfigurableExtensionTypes.Step:
+            id = "stepsExtensionBrowser";
+            break;
+    }
+}
+<div id="@(id)" class="modal fade extensionBrowser" tabindex="-1" role="dialog" aria-labelledby="extensionBrowser-label">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div id="modalExtensionBrowserContent">
+            <div>
 
                 <header class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -33,27 +48,25 @@
                                 @foreach (var library in Model.ExtensionLibraries)
                                 {
                                     <div id="libraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
-                                        @for (int i = 0; i < 5; i++)
+                                        @foreach (var extension in library.Extensions)
                                         {
-                                            foreach (var extension in library.Extensions)
-                                            {
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body">
-                                                        <div class="row">
-                                                            <div class="col-sm-2">
-                                                                <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
-                                                            </div>
-                                                            <div class="col-sm-8">
-                                                                <h5>@extension.Name</h5>
-                                                                <p>@extension.Description</p>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <a data-extensionid="@extension.ExtensionId" href="#" data-dismiss="modal" class="btn btn-xs btn-success extensionBrowser__addButton">Add</a>
-                                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-2">
+                                                            <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <h5>@extension.Name</h5>
+                                                            <p>@extension.Description</p>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <a data-extensionid="@extension.ExtensionId" data-extensiontype="@((int)Model.ExtensionType)" 
+                                                               href="#" data-dismiss="modal" class="btn btn-xs btn-success extensionBrowser__addButton">Add</a>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            }
+                                            </div>
                                         }
                                     </div>
 

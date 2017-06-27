@@ -60,7 +60,7 @@ namespace Cloudflow.Core.Extensions
 
         public IConfigurableExtensionMetaData GetConfigurableExtension(Guid id)
         {
-            return GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger).FirstOrDefault(i => Guid.Parse(i.ExtensionId) == id);
+            return _extensions.First(i => Guid.Parse(i.Metadata.ExtensionId) == id).Metadata;
         }
         #endregion
     }
