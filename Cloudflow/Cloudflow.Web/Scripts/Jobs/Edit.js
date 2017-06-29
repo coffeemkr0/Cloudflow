@@ -3,6 +3,13 @@
 
     $(document).on("click", ".deleteTrigger", deleteTrigger_Clicked);
     $(document).on("click", ".deleteStep", deleteStep_Clicked);
+
+    $(".sortable").sortable({
+        stop: function (event, ui) {
+            SetTriggerIndexes();
+        }
+    });
+    $(".sortable").disableSelection();
 });
 
 function AddExtension(extensionId, extensionType) {
@@ -17,7 +24,7 @@ function AddExtension(extensionId, extensionType) {
 }
 
 function AddStep(extensionId) {
-    var index = parseInt($(".stepNavigationItem").last().attr("data-index")) + 1;
+    var index = $(".stepNavigationItem").length;
 
     $.ajax({
         type: 'POST',
@@ -42,7 +49,7 @@ function AddStep(extensionId) {
 }
 
 function AddTrigger(extensionId) {
-    var index = parseInt($(".triggerNavigationItem").last().attr("data-index")) + 1;
+    var index = $(".triggerNavigationItem").length;
 
     $.ajax({
         type: 'POST',
@@ -74,4 +81,15 @@ function deleteTrigger_Clicked(e) {
 function deleteStep_Clicked(e) {
     var stepId = $(e.target).attr("data-stepid");
     alert("Delete step clicked for step id " + stepId);
+}
+
+function SetTriggerIndexes() {
+    var index = 0;
+    $(".triggerNavigationItem").each(function () {
+        var triggerId = $(this).attr("data-triggerid");
+        var $triggerConfigurationItem = $("#tab" + triggerId);
+        console.log("Index=" + index + " Trigger Id=" + triggerId);
+        index += 1;
+        //$triggerConfigurationItem.find('input[id$=_Position]').val(positionIndex++);
+    });
 }

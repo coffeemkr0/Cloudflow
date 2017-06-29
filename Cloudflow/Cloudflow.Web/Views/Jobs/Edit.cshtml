@@ -6,10 +6,8 @@
     ViewBag.ActivePage = "Jobs";
 }
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jqueryval")
-
 @section headScripts {
+    @Scripts.Render("~/bundles/jquery-ui")
     <script src="~/Scripts/Jobs/Edit.js"></script>
 }
 

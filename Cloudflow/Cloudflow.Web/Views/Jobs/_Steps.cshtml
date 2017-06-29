@@ -13,7 +13,7 @@
 
             <hr />
 
-            <ul id="stepNavigationItems" class="nav nav-pills nav-stacked">
+            <ul id="stepNavigationItems" class="nav nav-pills nav-stacked sortable">
                 @foreach (var step in Model.Steps)
                 {
                     @Html.Partial("_StepNavigationItem", step)

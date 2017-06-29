@@ -12,7 +12,7 @@
 
             <hr />
 
-            <ul id="triggerNavigationItems" class="nav nav-pills nav-stacked">
+            <ul id="triggerNavigationItems" class="nav nav-pills nav-stacked sortable">
                 @foreach (var trigger in Model.Triggers)
                 {
                     @Html.Partial("_TriggerNavigationItem", trigger)

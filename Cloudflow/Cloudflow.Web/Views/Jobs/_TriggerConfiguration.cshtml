@@ -1,7 +1,7 @@
 ﻿@model Cloudflow.Web.ViewModels.Jobs.ExtensionConfigurationViewModel
 @using Cloudflow.Web.Utility.HtmlHelpers
 
-<div role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")" id="tab@(Model.Id)">
+<div id="tab@(Model.Id)" role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")">
     <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Id"
            id="TriggersViewModel.Triggers[@Model.Index]_Id"
            value="@Model.Id" />
