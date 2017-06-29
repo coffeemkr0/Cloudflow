@@ -1,5 +1,9 @@
-Setup jobs in the web app
-Need to figure out how to push jobs to agents
+Delete triggers and steps
+
+Allow ordering and grouping of configuration properties
+
+Fancify the UI
+
 
 Need to at least throw a custom exception when no extension is found - could possibly switch to [Import] instead of [ImportMany] or
 find the attribute value that specifies at least one must be found.
@@ -32,7 +36,7 @@ Allow jobs, triggers and steps to perform impersonation
 Sign everything so that it is trusted
 Make it so that runs have a configurable name format that is generated when the run starts (similar to Tfs builds)
 
-Use a ViewModel for agent configurations instead of using the model directly from the Core assembly
+
 
 Triggers starting other triggers:
 	For example, a trigger that watches for folders being created in a watch folder
@@ -49,16 +53,5 @@ Trigger examples:
 
 Add an option to steps for continuing after errors
 Keep a history of runs and their logs and status etc.
-start making methods extensible
-Enable the agent to run as a windows server
+Enable the agent to run as a windows service
 Authenitcaiton - create a user account and only access "my stuff"
-
-
-
-
-Ability to setup "jobs" - Jobs being the settings that are required for the agent to know what to do:
-	1. Input folder that contains the jpegs
-	2. Output folder to place the pdfs
-
-
-
