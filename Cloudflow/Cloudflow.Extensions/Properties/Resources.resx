@@ -123,6 +123,12 @@
   <data name="DefaultJobName" xml:space="preserve">
     <value>Default Job</value>
   </data>
+  <data name="FileNameMasksLabel" xml:space="preserve">
+    <value>File Name Masks</value>
+  </data>
+  <data name="LogMessageLabel" xml:space="preserve">
+    <value>Log Message</value>
+  </data>
   <data name="LogStepDescription" xml:space="preserve">
     <value>Logs a message to a file.</value>
   </data>
@@ -138,6 +144,9 @@
   </data>
   <data name="TimerTriggerName" xml:space="preserve">
     <value>Timer</value>
+  </data>
+  <data name="WatchFolderPathLabel" xml:space="preserve">
+    <value>Path</value>
   </data>
   <data name="WatchFolderTriggerDescription" xml:space="preserve">
     <value>A trigger that fires when files are added, changed or deleted in a folder.</value>

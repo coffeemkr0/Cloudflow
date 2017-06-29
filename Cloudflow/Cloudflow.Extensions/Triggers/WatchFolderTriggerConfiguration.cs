@@ -14,8 +14,12 @@ namespace Cloudflow.Extensions.Triggers
     public class WatchFolderTriggerConfiguration : ExtensionConfiguration
     {
         #region Properties
+        [DisplayOrder(0)]
+        [LabelTextResourceAttribute("WatchFolderPathLabel")]
         public string WatchFolderPath { get; set; }
 
+        [DisplayOrder(1)]
+        [LabelTextResourceAttribute("FileNameMasksLabel")]
         public List<string> FileNameMasks { get; set; }
         #endregion
 

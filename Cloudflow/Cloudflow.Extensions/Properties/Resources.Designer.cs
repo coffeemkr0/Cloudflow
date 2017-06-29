@@ -79,6 +79,24 @@ namespace Cloudflow.Extensions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Name Masks.
+        /// </summary>
+        internal static string FileNameMasksLabel {
+            get {
+                return ResourceManager.GetString("FileNameMasksLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Message.
+        /// </summary>
+        internal static string LogMessageLabel {
+            get {
+                return ResourceManager.GetString("LogMessageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logs a message to a file..
         /// </summary>
         internal static string LogStepDescription {
@@ -121,6 +139,15 @@ namespace Cloudflow.Extensions.Properties {
         internal static string TimerTriggerName {
             get {
                 return ResourceManager.GetString("TimerTriggerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string WatchFolderPathLabel {
+            get {
+                return ResourceManager.GetString("WatchFolderPathLabel", resourceCulture);
             }
         }
         
