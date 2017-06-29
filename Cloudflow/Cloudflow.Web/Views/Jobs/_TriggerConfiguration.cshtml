@@ -1,7 +1,7 @@
 ﻿@model Cloudflow.Web.ViewModels.Jobs.ExtensionConfigurationViewModel
 @using Cloudflow.Web.Utility.HtmlHelpers
 
-<div id="tab@(Model.Id)" role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")">
+<div id="tab@(Model.Id)" role="tabpanel" class="sortableItem tab-pane @(Model.Active ? "active" : "")">
     <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Id"
            id="TriggersViewModel.Triggers[@Model.Index]_Id"
            value="@Model.Id" />
@@ -11,6 +11,10 @@
     <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].ExtensionAssemblyPath"
            id="TriggersViewModel.Triggers[@Model.Index]_ExtensionAssemblyPath"
            value="@Model.ExtensionAssemblyPath" />
+
+    <input class="sortableItemPosition" type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Position"
+           id="TriggersViewModel.Triggers[@Model.Index]_Position"
+           value="@Model.Index" />
 
     @Html.ExtensionConfiguration(Model, "TriggersViewModel.Triggers[" + Model.Index + "]")
 </div>

@@ -6,7 +6,7 @@
 
     $(".sortable").sortable({
         stop: function (event, ui) {
-            SetTriggerIndexes();
+            SetSortablePositions(ui.item);
         }
     });
     $(".sortable").disableSelection();
@@ -83,13 +83,12 @@ function deleteStep_Clicked(e) {
     alert("Delete step clicked for step id " + stepId);
 }
 
-function SetTriggerIndexes() {
-    var index = 0;
-    $(".triggerNavigationItem").each(function () {
-        var triggerId = $(this).attr("data-triggerid");
-        var $triggerConfigurationItem = $("#tab" + triggerId);
-        console.log("Index=" + index + " Trigger Id=" + triggerId);
-        index += 1;
-        //$triggerConfigurationItem.find('input[id$=_Position]').val(positionIndex++);
+function SetSortablePositions(item) {
+    var position = 0;
+    item.parent().find(".sortableNavigationItem").each(function (index) {
+        var $sortableItem = $("#" + $(this).attr("data-sortable-itemid"));
+        var $positionInput = $sortableItem.find(".sortableItemPosition");
+        $positionInput.val(position);
+        position += 1;
     });
 }

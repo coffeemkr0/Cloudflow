@@ -93,7 +93,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             serverDbContext.TriggerDefinitions.RemoveRange(serverDbContext.TriggerDefinitions.Where(i => deletedTriggerIds.Contains(i.TriggerDefinitionId)));
 
             int index = 0;
-            foreach (var trigger in this.TriggersViewModel.Triggers)
+            foreach (var trigger in this.TriggersViewModel.Triggers.OrderBy(i => i.Position))
             {
                 var triggerDefinition = serverDbContext.TriggerDefinitions.FirstOrDefault(i => i.TriggerDefinitionId == trigger.Id);
                 if (triggerDefinition != null)
@@ -120,7 +120,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             serverDbContext.StepDefinitions.RemoveRange(serverDbContext.StepDefinitions.Where(i => deletedStepIds.Contains(i.StepDefinitionId)));
 
             index = 0;
-            foreach (var step in this.StepsViewModel.Steps)
+            foreach (var step in this.StepsViewModel.Steps.OrderBy(i => i.Position))
             {
                 var stepDefinition = serverDbContext.StepDefinitions.FirstOrDefault(i => i.StepDefinitionId == step.Id);
                 if (stepDefinition != null)

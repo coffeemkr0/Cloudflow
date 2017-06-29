@@ -16,6 +16,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public int Index { get; set; }
 
+        public int Position { get; set; }
+
         public Guid ExtensionId { get; set; }
 
         public string ExtensionAssemblyPath { get; set; }
