@@ -3,6 +3,10 @@ Delete triggers and steps
 Allow ordering and grouping of configuration properties
 
 Fancify the UI
+	Saving job - make it an ajax call so it will keep focus on wherever it is
+	Fancy confirmations
+
+BEMify class names and ids. Refactor views, and scripts.
 
 
 Need to at least throw a custom exception when no extension is found - could possibly switch to [Import] instead of [ImportMany] or

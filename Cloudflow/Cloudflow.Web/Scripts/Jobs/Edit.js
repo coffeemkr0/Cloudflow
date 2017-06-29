@@ -74,13 +74,25 @@ function AddTrigger(extensionId) {
 }
 
 function deleteTrigger_Clicked(e) {
-    var triggerId = $(e.target).attr("data-triggerid");
-    alert("Delete trigger clicked for trigger id " + triggerId);
+    var id = $(e.target).attr("data-triggerid");
+    var $navigationItem = $(e.target).parents("li").addClass("hidden");
+
+    var $configurationItem = $("#tab" + id);
+    $configurationItem.addClass("hidden");
+
+    var $deletedInput = $configurationItem.find(".deletedInput");
+    $deletedInput.val("True");
 }
 
 function deleteStep_Clicked(e) {
-    var stepId = $(e.target).attr("data-stepid");
-    alert("Delete step clicked for step id " + stepId);
+    var id = $(e.target).attr("data-stepid");
+    var $navigationItem = $(e.target).parents("li").addClass("hidden");
+
+    var $configurationItem = $("#tab" + id);
+    $configurationItem.addClass("hidden");
+
+    var $deletedInput = $configurationItem.find(".deletedInput");
+    $deletedInput.val("True");
 }
 
 function SetSortablePositions(item) {

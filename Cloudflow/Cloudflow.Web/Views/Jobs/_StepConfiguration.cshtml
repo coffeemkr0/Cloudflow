@@ -15,6 +15,9 @@
     <input class="sortableItemPosition" type="hidden" name="StepsViewModel.Steps[@Model.Index].Position"
            id="StepsViewModel.Steps[@Model.Index]_Position"
            value="@Model.Index" />
+    <input class="deletedInput" type="hidden" name="StepsViewModel.Steps[@Model.Index].Deleted"
+           id="StepsViewModel.Steps[@Model.Index]_Deleted"
+           value="@Model.Deleted" />
 
     @Html.ExtensionConfiguration(Model, "StepsViewModel.Steps[" + Model.Index + "]")
 </div>

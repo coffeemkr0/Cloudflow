@@ -1,6 +1,8 @@
 ﻿@model Cloudflow.Web.ViewModels.Jobs.ExtensionConfigurationViewModel
 
-<li role="presentation" class="triggerNavigationItem sortableNavigationItem @(Model.Active ? "active" : "")" data-sortable-itemid="tab@(Model.Id)">
+<li role="presentation" 
+    class="triggerNavigationItem sortableNavigationItem @(Model.Active ? "active" : "")" 
+    data-sortable-itemid="tab@(Model.Id)">
     <a href="#tab@(Model.Id)" role="tab" data-toggle="tab">
         @Model.Configuration.Name
         <i data-triggerid="@Model.Id" class="deleteTrigger glyphicon glyphicon-remove pull-right"></i>

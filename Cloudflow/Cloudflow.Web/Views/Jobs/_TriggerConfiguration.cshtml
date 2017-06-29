@@ -15,6 +15,9 @@
     <input class="sortableItemPosition" type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Position"
            id="TriggersViewModel.Triggers[@Model.Index]_Position"
            value="@Model.Index" />
+    <input class="deletedInput" type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Deleted"
+           id="TriggersViewModel.Triggers[@Model.Index]_Deleted"
+           value="@Model.Deleted" />
 
     @Html.ExtensionConfiguration(Model, "TriggersViewModel.Triggers[" + Model.Index + "]")
 </div>
