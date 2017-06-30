@@ -71,6 +71,19 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return null;
         }
 
+        public static PropertyInfo[] GetSortedProperties(this Type type)
+        {
+            return type.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public).
+                Select(i => new
+                {
+                    Property = i,
+                    Attribute = (DisplayOrderAttribute)Attribute.GetCustomAttribute(i, typeof(DisplayOrderAttribute), true)
+                })
+                .OrderBy(i => i.Attribute != null ? i.Attribute.Order : 0)
+                .Select(i => i.Property)
+                .ToArray();
+        }
+
         private static bool IsTextType(Type type)
         {
             //Check to see if the type is text or if it's nullable text
@@ -212,7 +225,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, 
                 "ConfigurationExtensionAssemblyPath", configurationViewModel.ConfigurationExtensionAssemblyPath, InputTypes.Hidden));
 
-            foreach (var propertyInfo in configurationViewModel.Configuration.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
+            foreach (var propertyInfo in configurationViewModel.Configuration.ExtensionType.GetSortedProperties())
             {
                 switch (GetPropertyType(propertyInfo))
                 {

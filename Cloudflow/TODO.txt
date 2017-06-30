@@ -1,6 +1,6 @@
-Delete triggers and steps
-
-Allow ordering and grouping of configuration properties
+Handle Properties that are Lists of simple types
+Handle compex properties
+Allow grouping of configuration properties
 
 Fancify the UI
 	Saving job - make it an ajax call so it will keep focus on wherever it is
