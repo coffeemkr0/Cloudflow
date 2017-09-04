@@ -2,6 +2,7 @@
 using Cloudflow.Core.Extensions.ExtensionAttributes;
 using Cloudflow.Web.ViewModels.Jobs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,6 +21,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             Hidden,
             Text,
             Number,
+            Collection,
             Complex,
             Unknown
         }
@@ -84,18 +86,24 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 .ToArray();
         }
 
-        private static bool IsTextType(Type type)
+        private static bool IsTextType(this Type type)
         {
             //Check to see if the type is text or if it's nullable text
             return _textTypes.Contains(type) ||
                    _textTypes.Contains(Nullable.GetUnderlyingType(type));
         }
 
-        private static bool IsNumericType(Type type)
+        private static bool IsNumericType(this Type type)
         {
             //Check to see if the type is numeric or if it's a nullable numeric
             return _numericTypes.Contains(type) ||
                    _numericTypes.Contains(Nullable.GetUnderlyingType(type));
+        }
+
+        private static bool IsCollection(this Type type)
+        {
+            return typeof(IEnumerable).IsAssignableFrom(type) ||
+                type.GetInterface(typeof(IEnumerable<>).FullName) != null;
         }
 
         private static PropertyTypes GetPropertyType(PropertyInfo propertyInfo)
@@ -105,18 +113,23 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 return PropertyTypes.Hidden;
             }
 
-            if (IsTextType(propertyInfo.PropertyType))
+            if (propertyInfo.PropertyType.IsTextType())
             {
                 return PropertyTypes.Text;
             }
 
-            if (IsNumericType(propertyInfo.PropertyType))
+            if (propertyInfo.PropertyType.IsNumericType())
             {
                 return PropertyTypes.Number;
             }
 
+            if (propertyInfo.PropertyType.IsCollection())
+            {
+                return PropertyTypes.Collection;
+            }
+
             //If the property type has properties itself, we can consider it a complex type
-            if(propertyInfo.PropertyType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Any())
+            if (propertyInfo.PropertyType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Any())
             {
                 return PropertyTypes.Complex;
             }
@@ -207,6 +220,18 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
+
+        private static string CollectionEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
+            {
+                htmlStringBuilder.AppendLine(Input(prefixes, propertyInfo.Name, item.ToString(), InputTypes.Text));
+            }
+
+            return htmlStringBuilder.ToString();
+        }
         #endregion
 
         public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, string viewModelPropertyName)
@@ -225,18 +250,22 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, 
                 "ConfigurationExtensionAssemblyPath", configurationViewModel.ConfigurationExtensionAssemblyPath, InputTypes.Hidden));
 
+            var prefixes = new string[] { viewModelPropertyName, "Configuration" };
             foreach (var propertyInfo in configurationViewModel.Configuration.ExtensionType.GetSortedProperties())
             {
                 switch (GetPropertyType(propertyInfo))
                 {
                     case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(HiddenInput(new string[] { viewModelPropertyName, "Configuration" }, propertyInfo, configurationViewModel.Configuration));
+                        htmlStringBuilder.AppendLine(HiddenInput(prefixes, propertyInfo, configurationViewModel.Configuration));
                         break;
                     case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(new string[] { viewModelPropertyName, "Configuration" }, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(TextEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(new string[] { viewModelPropertyName, "Configuration" }, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(NumericEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        break;
+                    case PropertyTypes.Collection:
+                        htmlStringBuilder.AppendLine(CollectionEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Complex:
                         _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");

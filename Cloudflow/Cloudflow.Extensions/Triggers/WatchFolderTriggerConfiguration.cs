@@ -27,6 +27,9 @@ namespace Cloudflow.Extensions.Triggers
         public WatchFolderTriggerConfiguration()
         {
             this.FileNameMasks = new List<string>();
+            this.FileNameMasks.Add("*.jpg");
+            this.FileNameMasks.Add("*.tif");
+            this.FileNameMasks.Add("*.bmp");
         }
         #endregion
     }

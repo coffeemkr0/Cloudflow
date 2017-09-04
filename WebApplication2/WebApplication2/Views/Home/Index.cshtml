@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<form>
+    <div class="form-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <label>File Name Masks</label>
+            </div>
+            <div class="panel-heading">
+                <button class="btn btn-toolbar btn-success" type="button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
+                <button class="btn btn-toolbar btn-danger" type="button">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+            </div>
+            <div class="panel-body" style="max-height:226px;overflow:auto;">
+                <table class="table table-bordered table-striped">
+                    <tbody class="sortable">
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            <tr>
+                                <td style="width:50px;text-align:center;vertical-align:middle;">
+                                    <input type="checkbox" name="selected@(i)" value="" />
+                                </td>
+                                <td>
+                                    <input type="text" name="mask@(i)" value="Value @(i)" class="form-control input-sm" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<script>
+    $(".sortable").sortable({
+    });
+</script>
+
+
+
+
+
