@@ -4,6 +4,7 @@ using Cloudflow.Web.ViewModels.Jobs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -138,6 +139,21 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return PropertyTypes.Unknown;
         }
 
+        private static string GetView(HtmlHelper htmlHelper, string name, object model)
+        {
+            htmlHelper.ViewContext.Controller.ViewData.Model = model;
+            var result = ViewEngines.Engines.FindPartialView(htmlHelper.ViewContext.Controller.ControllerContext, name);
+            using (var writer = new StringWriter())
+            {
+                var viewContext = new ViewContext(htmlHelper.ViewContext.Controller.ControllerContext, result.View,
+                    htmlHelper.ViewContext.Controller.ViewData, htmlHelper.ViewContext.Controller.TempData, writer);
+
+                result.View.Render(viewContext, writer);
+                var html = writer.GetStringBuilder().ToString();
+                return html;
+            }
+        }
+
         private static string Label(string[] prefixes, PropertyInfo propertyInfo, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
@@ -221,14 +237,13 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string CollectionEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        private static string CollectionEdit(HtmlHelper htmlHelper, string[] prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
-            {
-                htmlStringBuilder.AppendLine(Input(prefixes, propertyInfo.Name, item.ToString(), InputTypes.Text));
-            }
+            var model = (IEnumerable)propertyInfo.GetValue(objectInstance);
+
+            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/StringCollection.cshtml", model));
 
             return htmlStringBuilder.ToString();
         }
@@ -265,7 +280,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                         htmlStringBuilder.AppendLine(NumericEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Complex:
                         _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<string>
+
+<div class="form-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span>File Name Masks</span>
+
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-toolbar btn-success" type="button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
+                <button class="btn btn-toolbar btn-danger" type="button">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+            </div>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-toolbar btn-default" type="button">
+                    <i class="glyphicon glyphicon-arrow-up"></i>
+                </button>
+                <button class="btn btn-toolbar btn-default" type="button">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                </button>
+            </div>
+        </div>
+        <div class="panel-body" style="max-height:226px;overflow:auto;">
+            <table class="table table-bordered table-striped">
+                <tbody class="sortable">
+                    @{ var i = 0; }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="width:50px;text-align:center;vertical-align:middle;">
+                                <input type="checkbox" name="selected@(i)" value="" />
+                            </td>
+                            <td>
+                                <input type="text" name="item@(i)" value="@item" class="form-control input-sm" />
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

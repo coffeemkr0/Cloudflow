@@ -436,6 +436,7 @@
     <Content Include="Views\Shared\ExtensionBrowser.cshtml" />
     <Content Include="Views\Jobs\_StepConfiguration.cshtml" />
     <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\StringCollection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
