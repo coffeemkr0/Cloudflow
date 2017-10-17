@@ -1,6 +1,5 @@
 Handle Properties that are Lists of simple types
 	Added a string collection edit
-	Need to look at how the model binder handles it though. The names of the Html inputs probably need to be adjusted
 	Implement the Add button
 	Implement the Remove button
 	Implement the Up and Down buttons to move items
