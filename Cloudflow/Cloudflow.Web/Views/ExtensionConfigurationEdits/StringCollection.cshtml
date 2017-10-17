@@ -1,4 +1,4 @@
-﻿@model IEnumerable<string>
+﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.StringCollectionViewModel
 
 <div class="form-group">
     <div class="panel panel-default">
@@ -26,14 +26,14 @@
             <table class="table table-bordered table-striped">
                 <tbody class="sortable">
                     @{ var i = 0; }
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Items)
                     {
                         <tr>
                             <td style="width:50px;text-align:center;vertical-align:middle;">
-                                <input type="checkbox" name="selected@(i)" value="" />
+                                <input type="checkbox" name="@(Model.PropertyName)[@(i)].Selected" value="" />
                             </td>
                             <td>
-                                <input type="text" name="item@(i)" value="@item" class="form-control input-sm" />
+                                <input type="text" name="@(Model.PropertyName)[@(i)]" value="@item" class="form-control input-sm" />
                             </td>
                         </tr>
                         i++;

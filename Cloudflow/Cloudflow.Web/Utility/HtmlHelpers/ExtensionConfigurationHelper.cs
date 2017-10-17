@@ -1,5 +1,6 @@
 ﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
+using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
 using Cloudflow.Web.ViewModels.Jobs;
 using System;
 using System.Collections;
@@ -241,8 +242,12 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            var model = (IEnumerable)propertyInfo.GetValue(objectInstance);
-
+            var items = (IEnumerable<string>)propertyInfo.GetValue(objectInstance);
+            var model = new StringCollectionViewModel
+            {
+                PropertyName = string.Join(".", prefixes) + "." + propertyInfo.Name,
+                Items = items
+            };
             htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/StringCollection.cshtml", model));
 
             return htmlStringBuilder.ToString();
