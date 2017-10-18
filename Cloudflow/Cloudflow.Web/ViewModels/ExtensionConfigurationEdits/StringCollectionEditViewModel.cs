@@ -5,13 +5,13 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
-    public class StringCollectionViewModel
+    public class StringCollectionEditViewModel
     {
         public string PropertyName { get; set; }
 
         public IEnumerable<string> Items { get; set; }
 
-        public StringCollectionViewModel()
+        public StringCollectionEditViewModel()
         {
             this.Items = new List<string>();
         }

@@ -1,23 +1,23 @@
-﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.StringCollectionViewModel
+﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.StringCollectionEditViewModel
 
-<div class="form-group">
+<div class="form-group stringCollectionEdit">
     <div class="panel panel-default">
         <div class="panel-heading">
             <span>File Name Masks</span>
 
             <div class="btn-group btn-group-sm">
-                <button class="btn btn-toolbar btn-success" type="button">
+                <button class="btn btn-toolbar btn-success stringCollectionEdit__addButton" type="button">
                     <i class="glyphicon glyphicon-plus"></i>
                 </button>
-                <button class="btn btn-toolbar btn-danger" type="button">
+                <button class="btn btn-toolbar btn-danger stringCollectionEdit__removeButton" type="button">
                     <i class="glyphicon glyphicon-remove"></i>
                 </button>
             </div>
             <div class="btn-group btn-group-sm">
-                <button class="btn btn-toolbar btn-default" type="button">
+                <button class="btn btn-toolbar btn-default stringCollectionEdit__upButton" type="button">
                     <i class="glyphicon glyphicon-arrow-up"></i>
                 </button>
-                <button class="btn btn-toolbar btn-default" type="button">
+                <button class="btn btn-toolbar btn-default stringCollectionEdit__downButton" type="button">
                     <i class="glyphicon glyphicon-arrow-down"></i>
                 </button>
             </div>
@@ -30,10 +30,12 @@
                     {
                         <tr>
                             <td style="width:50px;text-align:center;vertical-align:middle;">
-                                <input type="checkbox" name="@(Model.PropertyName)[@(i)].Selected" value="" />
+                                <input class="stringCollectionEdit__selectItem" 
+                                       type="checkbox" name="@(Model.PropertyName)[@(i)].Selected" value="" />
                             </td>
                             <td>
-                                <input type="text" name="@(Model.PropertyName)[@(i)]" value="@item" class="form-control input-sm" />
+                                <input class="form-control input-sm stringCollectionEdit__item"
+                                       type="text" name="@(Model.PropertyName)[@(i)]" value="@item" />
                             </td>
                         </tr>
                         i++;

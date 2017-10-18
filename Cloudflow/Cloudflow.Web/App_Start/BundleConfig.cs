@@ -32,6 +32,9 @@ namespace Cloudflow.Web
             bundles.Add(new ScriptBundle("~/bundles/Shared").IncludeDirectory(
                 "~/Scripts/Shared", "*.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ExtensionConfigurationEdits").IncludeDirectory(
+                "~/Scripts/ExtensionConfigurationEdits", "*.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/themes/base/jquery-ui.css",

@@ -1,7 +1,7 @@
 Handle Properties that are Lists of simple types
 	Added a string collection edit
-	Implement the Add button
 	Implement the Remove button
+	Implement the Add button
 	Implement the Up and Down buttons to move items
 
 Handle compex properties
