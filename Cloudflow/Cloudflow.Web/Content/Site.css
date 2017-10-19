@@ -6728,6 +6728,15 @@ button.close {
   width: 32px;
   height: 32px;
 }
+.stringCollectionEdit__items {
+  max-height: 226px;
+  overflow: auto;
+}
+.table td.stringCollectionEdit__itemSelector {
+  width: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
 body {
   padding-top: 50px;
   padding-bottom: 20px;

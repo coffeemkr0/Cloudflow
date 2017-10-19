@@ -22,19 +22,19 @@
                 </button>
             </div>
         </div>
-        <div class="panel-body" style="max-height:226px;overflow:auto;">
-            <table class="table table-bordered table-striped">
+        <div class="panel-body stringCollectionEdit__items">
+            <table class="table table-bordered table-striped stringCollectionEdit__itemsTable">
                 <tbody class="sortable">
                     @{ var i = 0; }
                     @foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td style="width:50px;text-align:center;vertical-align:middle;">
-                                <input class="stringCollectionEdit__selectItem" 
+                            <td class="stringCollectionEdit__itemSelector">
+                                <input class="stringCollectionEdit__itemSelectorInput" 
                                        type="checkbox" name="@(Model.PropertyName)[@(i)].Selected" value="" />
                             </td>
-                            <td>
-                                <input class="form-control input-sm stringCollectionEdit__item"
+                            <td class="stringCollectionEdit__item">
+                                <input class="form-control input-sm stringCollectionEdit__itemInput"
                                        type="text" name="@(Model.PropertyName)[@(i)]" value="@item" />
                             </td>
                         </tr>

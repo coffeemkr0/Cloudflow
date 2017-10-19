@@ -268,6 +268,8 @@
     </None>
     <Content Include="Content\Shared\Shared.less" />
     <Content Include="Content\Shared\ExtensionBrowser.less" />
+    <Content Include="Content\ExtensionConfigurationEdits\ExtensionConfigurationEdits.less" />
+    <Content Include="Content\ExtensionConfigurationEdits\StringCollectionEdit.less" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\Agents\Index.js" />
     <Content Include="Scripts\ExtensionConfigurationEdits\StringCollectionEdit.js" />
