@@ -23,20 +23,22 @@ function OnAddButtonClicked(stringCollectionEditElement) {
 }
 
 function OnRemoveButtonClicked(stringCollectionEditElement) {
-    //Remove each tr element that has a checked selector input
     GetSelectedItems(stringCollectionEditElement).remove();
     ReIndexItems(stringCollectionEditElement);
 }
 
 function OnUpButtonClicked(stringCollectionEditElement) {
-    var $selectedItems = GetSelectedItems(stringCollectionEditElement);
-    //Don't do anything if the first item is selected - it cannot be moved up any farther
-    if ($selectedItems.length > 0) {
-        $selectedItems.each(function () {
-            var inputName = $(this).find(".stringCollectionEdit__itemSelectorInput").attr("name");
-            console.log("Input Name = " + inputName + " Index = " + GetItemIndex(inputName));
-        });
-    }
+    GetSelectedItems(stringCollectionEditElement).each(function () {
+        var $item = $(this);
+
+        if ($item.is(':first-child')) {
+            return false;
+        }
+
+        $item.prev().before($item);
+    });
+
+    ReIndexItems(stringCollectionEditElement);
 }
 
 function OnDownButtonClicked(stringCollectionEditElement) {
@@ -56,15 +58,7 @@ function ReIndexItems(stringCollectionEditElement) {
     stringCollectionEditElement.find(".stringCollectionEdit__itemsTable tr").each(function () {
         var $tableRow = $(this);
 
-        $tableRow.find(".stringCollectionEdit__itemSelectorInput").attr("name", propertyName + "[" + index + "]");
         $tableRow.find(".stringCollectionEdit__itemInput").attr("name", propertyName + "[" + index + "]");
         index++;
     });
-}
-
-function GetItemIndex(name){
-    var firstBracketPosition = name.lastIndexOf("[");
-    var lastBracketPosition = name.lastIndexOf("]");
-
-    return name.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
 }
