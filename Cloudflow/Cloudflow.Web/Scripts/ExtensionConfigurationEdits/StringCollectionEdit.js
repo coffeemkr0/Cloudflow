@@ -42,8 +42,18 @@ function OnUpButtonClicked(stringCollectionEditElement) {
 }
 
 function OnDownButtonClicked(stringCollectionEditElement) {
-    console.log("Down button clicked");
-    console.log(stringCollectionEditElement);
+    $(GetSelectedItems(stringCollectionEditElement).get().reverse()).each(function () {
+        var $item = $(this);
+        console.log($item);
+        if ($item.is(':last-child')) {
+            console.log("Is last item");
+            return false;
+        }
+
+        $item.next().after($item);
+    });
+
+    ReIndexItems(stringCollectionEditElement);
 }
 
 function GetSelectedItems(stringCollectionEditElement) {
@@ -62,3 +72,10 @@ function ReIndexItems(stringCollectionEditElement) {
         index++;
     });
 }
+
+
+////move element to top
+//$el.parent().prepend($el);
+
+////move element to end
+//$el.parent().append($el);
