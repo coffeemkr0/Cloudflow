@@ -27,8 +27,9 @@ function OnAddButtonClicked(stringCollectionEditElement) {
 }
 
 function OnRemoveButtonClicked(stringCollectionEditElement) {
-    console.log("Remove button clicked");
-    console.log(stringCollectionEditElement);
+    //Remove each tr element that has a checked selector input
+    stringCollectionEditElement.find(".stringCollectionEdit__itemSelectorInput:checked").closest("tr").remove();
+    ReIndexItems(stringCollectionEditElement);
 }
 
 function OnUpButtonClicked(stringCollectionEditElement) {
@@ -39,4 +40,18 @@ function OnUpButtonClicked(stringCollectionEditElement) {
 function OnDownButtonClicked(stringCollectionEditElement) {
     console.log("Down button clicked");
     console.log(stringCollectionEditElement);
+}
+
+function ReIndexItems(stringCollectionEditElement) {
+    var index = 0;
+    var propertyName = stringCollectionEditElement.attr("data-propertyname");
+
+    //Reset the name attributes on inputs so that they have indexes in their names that are in order
+    stringCollectionEditElement.find(".stringCollectionEdit__itemsTable tr").each(function () {
+        var $tableRow = $(this);
+
+        $tableRow.find(".stringCollectionEdit__itemSelectorInput").attr("name", propertyName + "[" + index + "]");
+        $tableRow.find(".stringCollectionEdit__itemInput").attr("name", propertyName + "[" + index + "]");
+        index++;
+    });
 }

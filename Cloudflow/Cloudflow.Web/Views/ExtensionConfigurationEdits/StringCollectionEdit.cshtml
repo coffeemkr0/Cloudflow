@@ -1,6 +1,6 @@
 ﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.StringCollectionEditViewModel
 
-<div class="form-group stringCollectionEdit">
+<div class="form-group stringCollectionEdit" data-propertyname="@Model.PropertyName">
     <div class="panel panel-default">
         <div class="panel-heading">
             <span>File Name Masks</span>
@@ -40,6 +40,20 @@
                         </tr>
                         i++;
                     }
+                    @*@foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="stringCollectionEdit__itemSelector">
+                                <input class="stringCollectionEdit__itemSelectorInput"
+                                       type="checkbox" name="@(Model.PropertyName)[@(i)].Selected" value="" />
+                            </td>
+                            <td class="stringCollectionEdit__item">
+                                <input class="form-control input-sm stringCollectionEdit__itemInput"
+                                       type="text" name="@(Model.PropertyName)[@(i)]" value="@item" />
+                            </td>
+                        </tr>
+                        i++;
+                    }*@
                 </tbody>
             </table>
         </div>
