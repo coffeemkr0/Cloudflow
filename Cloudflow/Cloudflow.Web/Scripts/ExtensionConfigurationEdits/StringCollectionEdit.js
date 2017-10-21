@@ -1,9 +1,5 @@
-﻿
-$(function () {
-    InitializeStringCollectionEdits();
-});
-
-function InitializeStringCollectionEdits() {
+﻿$(function () {
+    //Assign event handlers that we care about
     $(document).on("click", ".stringCollectionEdit__addButton", function () {
         OnAddButtonClicked($(this).closest(".stringCollectionEdit"));
     });
@@ -19,7 +15,7 @@ function InitializeStringCollectionEdits() {
     $(document).on("click", ".stringCollectionEdit__downButton", function () {
         OnDownButtonClicked($(this).closest(".stringCollectionEdit"));
     });
-}
+});
 
 function OnAddButtonClicked(stringCollectionEditElement) {
     console.log("Add button clicked");
@@ -28,18 +24,28 @@ function OnAddButtonClicked(stringCollectionEditElement) {
 
 function OnRemoveButtonClicked(stringCollectionEditElement) {
     //Remove each tr element that has a checked selector input
-    stringCollectionEditElement.find(".stringCollectionEdit__itemSelectorInput:checked").closest("tr").remove();
+    GetSelectedItems(stringCollectionEditElement).remove();
     ReIndexItems(stringCollectionEditElement);
 }
 
 function OnUpButtonClicked(stringCollectionEditElement) {
-    console.log("Up button clicked");
-    console.log(stringCollectionEditElement);
+    var $selectedItems = GetSelectedItems(stringCollectionEditElement);
+    //Don't do anything if the first item is selected - it cannot be moved up any farther
+    if ($selectedItems.length > 0) {
+        $selectedItems.each(function () {
+            var inputName = $(this).find(".stringCollectionEdit__itemSelectorInput").attr("name");
+            console.log("Input Name = " + inputName + " Index = " + GetItemIndex(inputName));
+        });
+    }
 }
 
 function OnDownButtonClicked(stringCollectionEditElement) {
     console.log("Down button clicked");
     console.log(stringCollectionEditElement);
+}
+
+function GetSelectedItems(stringCollectionEditElement) {
+    return stringCollectionEditElement.find("tr").has(".stringCollectionEdit__itemSelectorInput:checked");
 }
 
 function ReIndexItems(stringCollectionEditElement) {
@@ -54,4 +60,11 @@ function ReIndexItems(stringCollectionEditElement) {
         $tableRow.find(".stringCollectionEdit__itemInput").attr("name", propertyName + "[" + index + "]");
         index++;
     });
+}
+
+function GetItemIndex(name){
+    var firstBracketPosition = name.lastIndexOf("[");
+    var lastBracketPosition = name.lastIndexOf("]");
+
+    return name.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
 }
