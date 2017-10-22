@@ -15,6 +15,10 @@
     $(document).on("click", ".stringCollectionEdit__downButton", function () {
         OnDownButtonClicked($(this).closest(".stringCollectionEdit"));
     });
+
+    $(document).on("click", ".stringCollectionEdit__itemSelector", function (e) {
+        OnItemSelectorClicked($(this), e);
+    });
 });
 
 function OnAddButtonClicked(stringCollectionEditElement) {
@@ -67,6 +71,52 @@ function OnDownButtonClicked(stringCollectionEditElement) {
     });
 
     ReIndexItems(stringCollectionEditElement);
+}
+
+function OnItemSelectorClicked(itemSelectorElement, e) {
+    var $itemSelectorInputElement = itemSelectorElement.find(".stringCollectionEdit__itemSelectorInput");
+
+    $itemSelectorInputElement.prop("checked", true);
+
+    OnItemSelectorInputClicked($itemSelectorInputElement, e);
+}
+
+function OnItemSelectorInputClicked(itemSelectorInputElement, e) {
+    var $clickedItemRowElement = itemSelectorInputElement.closest("tr");
+
+    if (!e.ctrlKey && !e.shiftKey) {
+        //If not using the ctrl or shift key, deselect other selections
+        itemSelectorInputElement.closest("tbody").find("tr").each(function () {
+            var $item = $(this);
+
+            if (!$clickedItemRowElement.is($item)) {
+                $item.find(".stringCollectionEdit__itemSelectorInput").prop("checked", false);
+            }
+        });
+    }
+    else if (e.shiftKey) {
+        //If using the shift key, select items in between the last selection and this one
+        var $tableElement = $clickedItemRowElement.parent();
+        var $lastSelectedRowElement = itemSelectorInputElement.closest(".stringCollectionEdit").data("lastSelectedRowElement");
+
+        if (typeof ($lastSelectedRowElement) !== "undefined") {
+            if ($clickedItemRowElement.index() < $lastSelectedRowElement.index()) {
+                $clickedItemRowElement.nextUntil($lastSelectedRowElement).each(function () {
+                    $(this).find(".stringCollectionEdit__itemSelectorInput").prop("checked", true);
+                });
+            }
+            else {
+                console.log("Selecting up");
+                $clickedItemRowElement.prevUntil($lastSelectedRowElement).each(function () {
+                    $(this).find(".stringCollectionEdit__itemSelectorInput").prop("checked", true);
+                });
+            }
+        }
+    }
+
+    //If using the Ctrl key, the default behavior covers it - add to the existing selection
+
+    itemSelectorInputElement.closest(".stringCollectionEdit").data("lastSelectedRowElement", $clickedItemRowElement);
 }
 
 function GetSelectedItems(stringCollectionEditElement) {
