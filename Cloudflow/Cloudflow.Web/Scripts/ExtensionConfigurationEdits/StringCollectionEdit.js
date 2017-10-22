@@ -18,8 +18,21 @@
 });
 
 function OnAddButtonClicked(stringCollectionEditElement) {
-    console.log("Add button clicked");
-    console.log(stringCollectionEditElement);
+    var index = stringCollectionEditElement.find(".stringCollectionEdit__itemInput").length;
+    var propertyName = stringCollectionEditElement.attr("data-propertyname");
+
+    $.ajax({
+        url: "/ExtensionConfigurationEdits/StringCollectionEditItem",
+        cache: false,
+        data: {
+            propertyName: propertyName,
+            index: index
+        },
+        success: function (html) { stringCollectionEditElement.find(".stringCollectionEdit__itemsTable").find("tbody:last-child").append(html); },
+        error: function () {
+            alert('Error getting data.');
+        }
+    });
 }
 
 function OnRemoveButtonClicked(stringCollectionEditElement) {

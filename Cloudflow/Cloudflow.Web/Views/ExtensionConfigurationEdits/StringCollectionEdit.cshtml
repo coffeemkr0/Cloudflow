@@ -24,7 +24,7 @@
         </div>
         <div class="panel-body stringCollectionEdit__items">
             <table class="table table-bordered table-striped stringCollectionEdit__itemsTable">
-                <tbody class="sortable">
+                <tbody>
                     @foreach (var item in Model.Items)
                     {
                         @Html.Partial("~/Views/ExtensionConfigurationEdits/StringCollectionEditItem.cshtml", item);

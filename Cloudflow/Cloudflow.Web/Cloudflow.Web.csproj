@@ -183,6 +183,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AgentsController.cs" />
+    <Compile Include="Controllers\ExtensionConfigurationEditsController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\RunsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
