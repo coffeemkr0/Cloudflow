@@ -200,6 +200,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Agents\IndexViewModel.cs" />
+    <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditItemViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditViewModel.cs" />
     <Compile Include="ViewModels\Shared\ExtensionBrowserViewModel.cs" />
@@ -441,6 +442,7 @@
     <Content Include="Views\Jobs\_StepConfiguration.cshtml" />
     <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEdit.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

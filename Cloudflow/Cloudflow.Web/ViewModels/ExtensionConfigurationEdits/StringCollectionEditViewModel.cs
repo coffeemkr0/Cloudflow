@@ -9,11 +9,11 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
     {
         public string PropertyName { get; set; }
 
-        public IEnumerable<string> Items { get; set; }
+        public List<StringCollectionEditItemViewModel> Items { get; set; }
 
         public StringCollectionEditViewModel()
         {
-            this.Items = new List<string>();
+            this.Items = new List<StringCollectionEditItemViewModel>();
         }
     }
 }

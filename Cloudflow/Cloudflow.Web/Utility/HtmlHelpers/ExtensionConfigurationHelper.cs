@@ -242,12 +242,21 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            var items = (IEnumerable<string>)propertyInfo.GetValue(objectInstance);
             var model = new StringCollectionEditViewModel
             {
                 PropertyName = string.Join(".", prefixes) + "." + propertyInfo.Name,
-                Items = items
             };
+            var index = 0;
+            foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
+            {
+                model.Items.Add(new StringCollectionEditItemViewModel
+                {
+                    PropertyName = model.PropertyName,
+                    ItemIndex = index++,
+                    Value = item == null ? "" : item.ToString()
+                });
+            }
+
             htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/StringCollectionEdit.cshtml", model));
 
             return htmlStringBuilder.ToString();
