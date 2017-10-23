@@ -19,6 +19,10 @@
     $(document).on("click", ".stringCollectionEdit__itemSelector", function (e) {
         OnItemSelectorClicked($(this), e);
     });
+
+    $(document).on("focus", ".stringCollectionEdit__itemInput", function (e) {
+        OnItemInputFocused($(this), e);
+    });
 });
 
 function OnAddButtonClicked(stringCollectionEditElement) {
@@ -61,9 +65,8 @@ function OnUpButtonClicked(stringCollectionEditElement) {
 function OnDownButtonClicked(stringCollectionEditElement) {
     $(GetSelectedItems(stringCollectionEditElement).get().reverse()).each(function () {
         var $item = $(this);
-        console.log($item);
+
         if ($item.is(':last-child')) {
-            console.log("Is last item");
             return false;
         }
 
@@ -86,13 +89,7 @@ function OnItemSelectorInputClicked(itemSelectorInputElement, e) {
 
     if (!e.ctrlKey && !e.shiftKey) {
         //If not using the ctrl or shift key, deselect other selections
-        itemSelectorInputElement.closest("tbody").find("tr").each(function () {
-            var $item = $(this);
-
-            if (!$clickedItemRowElement.is($item)) {
-                $item.find(".stringCollectionEdit__itemSelectorInput").prop("checked", false);
-            }
-        });
+        DeselectOtherItems(itemSelectorInputElement);
     }
     else if (e.shiftKey) {
         //If using the shift key, select items in between the last selection and this one
@@ -106,7 +103,6 @@ function OnItemSelectorInputClicked(itemSelectorInputElement, e) {
                 });
             }
             else {
-                console.log("Selecting up");
                 $clickedItemRowElement.prevUntil($lastSelectedRowElement).each(function () {
                     $(this).find(".stringCollectionEdit__itemSelectorInput").prop("checked", true);
                 });
@@ -117,6 +113,23 @@ function OnItemSelectorInputClicked(itemSelectorInputElement, e) {
     //If using the Ctrl key, the default behavior covers it - add to the existing selection
 
     itemSelectorInputElement.closest(".stringCollectionEdit").data("lastSelectedRowElement", $clickedItemRowElement);
+}
+
+function OnItemInputFocused(itemInputElement, e) {
+    var $itemSelectorInputElement = itemInputElement.closest("tr").find(".stringCollectionEdit__itemSelectorInput");
+    $itemSelectorInputElement.prop("checked", true);
+    $itemSelectorInputElement.closest(".stringCollectionEdit").data("lastSelectedRowElement", $itemSelectorInputElement.closest("tr"));
+    DeselectOtherItems($itemSelectorInputElement, e);
+}
+
+function DeselectOtherItems(selectedItemSelectorInputElement) {
+    selectedItemSelectorInputElement.closest("tbody").find("tr").each(function () {
+        var $itemSelectorInputElement = $(this).find(".stringCollectionEdit__itemSelectorInput");
+
+        if (!selectedItemSelectorInputElement.is($itemSelectorInputElement)) {
+            $itemSelectorInputElement.prop("checked", false);
+        }
+    });
 }
 
 function GetSelectedItems(stringCollectionEditElement) {
