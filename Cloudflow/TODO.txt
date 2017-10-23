@@ -1,16 +1,4 @@
-Add the ability to download an agent - the setup program actually has to be ran first
-	before you can add an agent to the web app so that you can know what port to enter
-Add the ability to test the connection to an agent while adding it to the web app
-	Perhaps use the Start Listening button on the Setup program to make this work
-
-Add a Condition property to steps
-	Make the base Condition class a configurable extension
-	The Condition class should have a virtual CheckCondition method that returns true or false or something like that
-	Consider making this a list of conditions instead of a single condition
-
 Run Management
-	Select a run in progress and view the console output
-	Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
 	Add the ability for runs to be queued instead of starting immediately
 	Add the ability to cancel a run
 
@@ -22,11 +10,6 @@ Add a Completion property to steps (or something)
 	Needs more thought - basically this needs to cover the ability for steps to be skipped or repeated
 
 
-
-Extension Configuration property validation (allowing the validation of form elements to be specified in an extension)
-	Add an attribute for extension configuration properties that will allow specifying validation masks for a string or collections of strings
-	Add an attribute to allow specifying a server callback to perform the validation
-	Add an attribute to allow the specification of a java script file and function that should be called from the extension to perform client side validation
 
 Add a job selection screen - currently hard coded to default job and default extensions path
 
