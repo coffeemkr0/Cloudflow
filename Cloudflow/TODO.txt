@@ -1,8 +1,8 @@
-Handle Properties that are Lists of simple types
-	Added a string collection edit
-	Implement the Remove button
-	Implement the Add button
-	Implement the Up and Down buttons to move items
+Extension Configuration property validation (allowing the validation of form elements to be specified in an extension)
+	Add an attribute for extension configuration properties that will allow specifying validation masks for a string or collections of strings
+	Add an attribute to allow specifying a server callback to perform the validation
+	Add an attribute to allow the specification of a java script file and function that should be called from the extension to perform client side validation
+
 
 Handle compex properties
 Allow grouping of configuration properties
