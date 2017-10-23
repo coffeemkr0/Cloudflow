@@ -5,6 +5,12 @@ Extension Configuration property validation (allowing the validation of form ele
 
 Add a job selection screen - currently hard coded to default job and default extensions path
 
+Publishing jobs needs attention
+	If a job is deleted, it is not removed from agents
+	Need to handle cases where agents are not running or not reachable
+	Need to be able to see what version of a job is currently running on an agent
+	Possibly just change this to a Update Agents function to update all agents with the current version of each job
+
 Handle compex properties
 Allow grouping of configuration properties
 
