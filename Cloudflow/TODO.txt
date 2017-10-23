@@ -3,6 +3,7 @@ Extension Configuration property validation (allowing the validation of form ele
 	Add an attribute to allow specifying a server callback to perform the validation
 	Add an attribute to allow the specification of a java script file and function that should be called from the extension to perform client side validation
 
+Add a job selection screen - currently hard coded to default job and default extensions path
 
 Handle compex properties
 Allow grouping of configuration properties

@@ -15,30 +15,42 @@
         @Html.AntiForgeryToken()
         
         <div class="form-horizontal">
-            <h4>JobDefinition</h4>
+            <h4>New Job Definition</h4>
             <hr />
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.Configuration)
+
             <div class="form-group">
-                @Html.LabelFor(model => model.JobConfigurationExtensionId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.ExtensionId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.JobConfigurationExtensionId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.JobConfigurationExtensionId, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.ExtensionId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ExtensionId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ExtensionAssemblyPath, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ExtensionAssemblyPath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ExtensionAssemblyPath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConfigurationExtensionId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ConfigurationExtensionId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ConfigurationExtensionId, "", new { @class = "text-danger" })
                 </div>
             </div>
     
             <div class="form-group">
-                @Html.LabelFor(model => model.JobConfigurationExtensionAssemblyPath, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.ConfigurationExtensionAssemblyPath, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.JobConfigurationExtensionAssemblyPath, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.JobConfigurationExtensionAssemblyPath, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.Configuration, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Configuration, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Configuration, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.ConfigurationExtensionAssemblyPath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ConfigurationExtensionAssemblyPath, "", new { @class = "text-danger" })
                 </div>
             </div>
     

@@ -73,7 +73,21 @@ namespace Cloudflow.Web.Controllers
         // GET: Jobs/Create
         public ActionResult Create()
         {
-            return View();
+            //TODO:Replace with a job selector
+            var model = new JobDefinition();
+            model.ExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99");
+            model.ExtensionAssemblyPath = this.GetExtensionLibraries().First();
+            model.ConfigurationExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
+            model.ConfigurationExtensionAssemblyPath = this.GetExtensionLibraries().First();
+
+            var jobConfigurationController = new ExtensionConfigurationController(model.ConfigurationExtensionId, model.ConfigurationExtensionAssemblyPath);
+
+            var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
+            jobConfiguration.Name = "New Job";
+
+            model.Configuration = jobConfiguration.ToJson();
+
+            return View(model);
         }
 
         // POST: Jobs/Create
@@ -81,7 +95,7 @@ namespace Cloudflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "JobDefinitionId,JobConfigurationExtensionId,JobConfigurationExtensionAssemblyPath,Configuration")] JobDefinition jobDefinition)
+        public ActionResult Create([Bind(Include = "ExtensionId,ExtensionAssemblyPath,ConfigurationExtensionId,ConfigurationExtensionAssemblyPath,Configuration")] JobDefinition jobDefinition)
         {
             if (ModelState.IsValid)
             {
