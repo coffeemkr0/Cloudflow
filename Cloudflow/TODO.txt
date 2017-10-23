@@ -1,3 +1,28 @@
+Add the ability to download an agent - the setup program actually has to be ran first
+	before you can add an agent to the web app so that you can know what port to enter
+Add the ability to test the connection to an agent while adding it to the web app
+	Perhaps use the Start Listening button on the Setup program to make this work
+
+Add a Condition property to steps
+	Make the base Condition class a configurable extension
+	The Condition class should have a virtual CheckCondition method that returns true or false or something like that
+	Consider making this a list of conditions instead of a single condition
+
+Run Management
+	Select a run in progress and view the console output
+	Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
+	Add the ability for runs to be queued instead of starting immediately
+	Add the ability to cancel a run
+
+Allow steps to have child steps (tree structure)
+	The UI for the configuration of this might get messy
+
+Add a Completion property to steps (or something)
+	Some sort of extension to call when a step completes that allows redirection of the workflow (to a specific step for example)
+	Needs more thought - basically this needs to cover the ability for steps to be skipped or repeated
+
+
+
 Extension Configuration property validation (allowing the validation of form elements to be specified in an extension)
 	Add an attribute for extension configuration properties that will allow specifying validation masks for a string or collections of strings
 	Add an attribute to allow specifying a server callback to perform the validation
@@ -26,33 +51,19 @@ find the attribute value that specifies at least one must be found.
 
 It's taking a few seconds to create DbContexts the first time, both on the server and agent.
 
-Make sure the CreateNewConfiguration methods actually create a new configuration instance
-
 Look at not creating a run controller every time a trigger is fired. 
 A dedicated thread for working on runs in a queue might be better. 
 This could still allow jobs to trigger multiple runs asynchronously but would give the ability to limit the numer of runs in progress.
 
-Select a run in progress and view the console output
-Select a completed run and view the log - should look like console output just for that run - this may involve passing the run logger around so that steps can use it
-Add the ability for runs to be queued instead of starting immediately
-Add the ability to cancel a run
-
-Change the Run Id in the agent Run model to a Guid that matches the Id that gets generated when a run is created
-Update the existing run record when a run ends (complete or fail)
-
 Create a view of what the agent is actually doing to expand on the Running status.
 
-Add the ability to download an agent - the setup program actually has to be ran first
-	before you can add an agent to the web app so that you can know what port to enter
-Add the ability to test the connection to an agent while adding it to the web app
-	Perhaps use the Start Listening button on the Setup program to make this work
 Allow jobs, triggers and steps to perform impersonation
+	Need to store the credentials on the agent host, not on the web server
 	Check out the Options on Tfs builds - Allow Scripts to Access OAuth Token
 
 Sign everything so that it is trusted
+
 Make it so that runs have a configurable name format that is generated when the run starts (similar to Tfs builds)
-
-
 
 Triggers starting other triggers:
 	For example, a trigger that watches for folders being created in a watch folder
@@ -68,6 +79,5 @@ Trigger examples:
 	Fire an event from Sql Server that fires the trigger (not polling)
 
 Add an option to steps for continuing after errors
-Keep a history of runs and their logs and status etc.
 Enable the agent to run as a windows service
 Authenitcaiton - create a user account and only access "my stuff"
