@@ -27,5 +27,19 @@ Cloudflow is an automation framework, or workflow system, that is configured and
 
 <h2>Projects</h2>
 <h3>Cloudflow.Web</h3>
-This is the web application that a user interacts with to configure jobs and agents.
+This is the ASP.NET MVC web application that a user interacts with to configure jobs and agents.
 
+<h3>Cloudflow.Core</h3>
+A class library that contains the core functionality of the application.
+
+<h3>Cloudflow.Agent.Desktop</h3>
+A simple console application that hosts an instance of the Agent class that is implemented in the Cloudflow.Core project.
+
+<h3>Cloudflow.Agent.WindowsService</h3>
+A simple windows service that hosts an instance of the Agent class that is implemented in the Cloudflow.Core project.
+
+<h3>Cloudflow.Extensions</h3>
+A class library that contains implementations of extensions, such as jobs, triggers and steps. Cloudflow does not implement any classes directly in the core project, every part of the workflow is treated as an extension. This project is basically treated like a custom assembly that a developer created that is just always available for use for every user.
+
+<h3>Cloudflow.Agent.Setup</h3>
+A simple windows forms application that can be ran on a PC to install/setup an agent on a PC.
