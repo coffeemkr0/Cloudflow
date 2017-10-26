@@ -41,8 +41,6 @@ namespace Cloudflow.Core.Extensions.Controllers
 
         public JobController JobController { get; }
 
-        public Dictionary<string, object> Triggerdata { get; }
-
         public log4net.ILog RunLogger { get; }
 
         public Run Run { get; set; }
@@ -51,13 +49,12 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Constructors
-        public RunController(string name, JobController jobController, Dictionary<string, object> triggerData)
+        public RunController(string name, JobController jobController)
         {
             this.RunLogger = log4net.LogManager.GetLogger("RunController." + name);
 
             this.Name = name;
             this.JobController = jobController;
-            this.Triggerdata = triggerData;
 
             this.AgentDbContext = new AgentDbContext();
 

@@ -14,14 +14,14 @@ namespace Cloudflow.Core.Extensions.Controllers
     public class TriggerController
     {
         #region Events
-        public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);
+        public delegate void TriggerFiredEventHandler(Trigger trigger);
         public event TriggerFiredEventHandler TriggerFired;
-        protected virtual void OnTriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
+        protected virtual void OnTriggerFired(Trigger trigger)
         {
             TriggerFiredEventHandler temp = TriggerFired;
             if (temp != null)
             {
-                temp(trigger, triggerData);
+                temp(trigger);
             }
         }
         #endregion
@@ -77,9 +77,9 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Private Methods
-        private void Trigger_Fired(Trigger trigger, Dictionary<string, object> triggerData)
+        private void Trigger_Fired(Trigger trigger)
         {
-            OnTriggerFired(trigger, triggerData);
+            OnTriggerFired(trigger);
         }
         #endregion
 

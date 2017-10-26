@@ -34,7 +34,7 @@ namespace Cloudflow.Extensions.Triggers
         {
             var triggerData = new Dictionary<string, object>();
             triggerData.Add("FilePath", e.FullPath);
-            OnTriggerFired(triggerData);
+            OnTriggerFired();
         }
 
         public override void Start()

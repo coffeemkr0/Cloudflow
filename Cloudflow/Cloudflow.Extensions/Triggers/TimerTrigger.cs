@@ -20,7 +20,7 @@ namespace Cloudflow.Extensions.Triggers
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            OnTriggerFired(null);
+            OnTriggerFired();
         }
 
         public override void Start()

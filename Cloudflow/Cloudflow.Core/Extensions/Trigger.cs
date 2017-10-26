@@ -10,7 +10,7 @@ namespace Cloudflow.Core.Extensions
     public abstract class Trigger : ConfigurableExtension
     {
         #region Events
-        public delegate void TriggerFiredEventHandler(Trigger trigger, Dictionary<string, object> triggerData);
+        public delegate void TriggerFiredEventHandler(Trigger trigger);
         public event TriggerFiredEventHandler Fired;
         #endregion
 
@@ -29,13 +29,13 @@ namespace Cloudflow.Core.Extensions
         #endregion
 
         #region Private Methods
-        protected virtual void OnTriggerFired(Dictionary<string, object> triggerData)
+        protected virtual void OnTriggerFired()
         {
             TriggerFiredEventHandler temp = Fired;
             if (temp != null)
             {
                 this.TriggerLogger.Info("Trigger fired");
-                temp(this, triggerData);
+                temp(this);
             }
         }
         #endregion

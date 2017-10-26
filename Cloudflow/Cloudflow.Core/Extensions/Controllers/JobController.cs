@@ -119,11 +119,11 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Private Methods
-        private void TriggerController_TriggerFired(Trigger trigger, Dictionary<string, object> triggerData)
+        private void TriggerController_TriggerFired(Trigger trigger)
         {
             this.JobControllerLoger.Info("Trigger event accepted - creating a run controller");
             RunController runController = new RunController(string.Format("{0} Run {1}",
-                this.JobConfiguration.Name, _runCounter++), this, triggerData);
+                this.JobConfiguration.Name, _runCounter++), this);
             runController.RunStatusChanged += RunController_RunStatusChanged;
 
             var task = Task.Run(() =>
