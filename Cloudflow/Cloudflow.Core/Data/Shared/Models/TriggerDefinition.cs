@@ -22,6 +22,8 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         public string Configuration { get; set; }
 
+        public virtual ICollection<TriggerConditionDefinition> TriggerConditionDefinitions { get; set; }
+
         public Guid JobDefinitionId { get; set; }
 
         [ScriptIgnore]
@@ -32,6 +34,7 @@ namespace Cloudflow.Core.Data.Shared.Models
         public TriggerDefinition()
         {
             this.TriggerDefinitionId = Guid.NewGuid();
+            this.TriggerConditionDefinitions = new List<TriggerConditionDefinition>();
         }
         #endregion
 

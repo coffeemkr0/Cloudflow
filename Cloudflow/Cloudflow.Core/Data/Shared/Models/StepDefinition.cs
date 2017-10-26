@@ -14,14 +14,15 @@ namespace Cloudflow.Core.Data.Shared.Models
     public class StepDefinition : ConfigurableExtensionDefinition
     {
         #region Properties
-        [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
+        [Index("IX_StepDefinitionId_Index", 1, IsUnique = true)]
         public Guid StepDefinitionId { get; set; }
 
-        [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
+        [Index("IX_StepDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
         public string Configuration { get; set; }
 
+        public virtual ICollection<StepConditionDefinition> StepConditionDefinitions { get; set; }
 
         public Guid JobDefinitionId { get; set; }
 
@@ -33,6 +34,7 @@ namespace Cloudflow.Core.Data.Shared.Models
         public StepDefinition()
         {
             this.StepDefinitionId = Guid.NewGuid();
+            this.StepConditionDefinitions = new List<StepConditionDefinition>();
         }
         #endregion
 

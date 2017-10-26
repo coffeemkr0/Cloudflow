@@ -100,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Shared\Models\ConfigurableExtensionDefinition.cs" />
+    <Compile Include="Data\Shared\Models\JobConditionDefinition.cs" />
+    <Compile Include="Data\Shared\Models\StepConditionDefinition.cs" />
+    <Compile Include="Data\Shared\Models\TriggerConditionDefinition.cs" />
     <Compile Include="Data\Shared\SharedDbContext.cs" />
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
