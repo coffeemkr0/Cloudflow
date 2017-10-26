@@ -446,6 +446,7 @@
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AgentFiles\" />
     <Folder Include="App_Data\" />
     <Folder Include="ExtensionLibraries\" />
   </ItemGroup>
@@ -489,6 +490,26 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PreBuildEvent>xcopy /y "$(SolutionDir)Cloudflow.Extensions\$(OutDir)$(ConfigurationName)\Cloudflow.Extensions.dll" "$(ProjectDir)ExtensionLibraries\"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.exe" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.config" "$(ProjectDir)AgentFiles\"
+
+
+xcopy /y "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.exe" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.config" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.exe" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
+
+xcopy /y "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.config" "$(ProjectDir)AgentFiles\"</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
