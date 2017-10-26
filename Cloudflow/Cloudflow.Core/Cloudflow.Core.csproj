@@ -121,6 +121,7 @@
     <Compile Include="Extensions\Job.cs" />
     <Compile Include="Extensions\Controllers\JobController.cs" />
     <Compile Include="Extensions\Step.cs" />
+    <Compile Include="Extensions\Condition.cs" />
     <Compile Include="Extensions\Trigger.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
