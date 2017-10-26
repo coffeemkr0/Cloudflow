@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -127,6 +128,20 @@ namespace Cloudflow.Web.Controllers
             _serverDbContext.AgentConfigurations.Remove(agentConfiguration);
             _serverDbContext.SaveChanges();
             return Json(new { success = true });
+        }
+
+        public ActionResult DownloadAgent()
+        {
+            var agentFilesFolder = Server.MapPath("~/AgentFiles");
+            var agentZipFilePath = Path.Combine(Path.GetTempFileName());
+            if (System.IO.File.Exists(agentZipFilePath))
+            {
+                System.IO.File.Delete(agentZipFilePath);
+            }
+
+            ZipFile.CreateFromDirectory(agentFilesFolder, agentZipFilePath);
+
+            return File(agentZipFilePath, "application/zip", "Agent.zip");
         }
 
         protected override void Dispose(bool disposing)
