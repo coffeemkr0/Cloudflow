@@ -37,6 +37,8 @@ namespace Cloudflow.Core.Extensions.Controllers
 
         public ExtensionConfiguration TriggerConfiguration { get; }
 
+        public List<ConditionController> ConditionControllers { get; }
+
         public log4net.ILog TriggerControllerLoger { get; }
 
         public Trigger Trigger { get; }
@@ -51,6 +53,18 @@ namespace Cloudflow.Core.Extensions.Controllers
             var triggerConfigurationController = new ExtensionConfigurationController(triggerDefinition.ConfigurationExtensionId,
                 triggerDefinition.ConfigurationExtensionAssemblyPath);
             this.TriggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
+
+            this.ConditionControllers = new List<ConditionController>();
+            foreach (var triggerConditionDefinition in triggerDefinition.TriggerConditionDefinitions)
+            {
+                var conditionController = new ConditionController(triggerConditionDefinition.TriggerConditionDefinitionId,
+                    triggerConditionDefinition.ExtensionId, triggerConditionDefinition.ExtensionAssemblyPath,
+                    triggerConditionDefinition.ConfigurationExtensionId, triggerConditionDefinition.ConfigurationExtensionAssemblyPath,
+                    triggerConditionDefinition.Configuration);
+
+                this.ConditionControllers.Add(conditionController);
+            }
+
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(triggerDefinition.ExtensionAssemblyPath));
@@ -79,6 +93,12 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Private Methods
         private void Trigger_Fired(Trigger trigger)
         {
+            //Do not raise the TriggerFired event if any condition is not met
+            foreach (var conditionController in this.ConditionControllers)
+            {
+                if (!conditionController.CheckCondition()) return;
+            }
+
             OnTriggerFired(trigger);
         }
         #endregion
