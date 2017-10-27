@@ -19,7 +19,7 @@ namespace Cloudflow.Extensions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,6 +61,24 @@ namespace Cloudflow.Extensions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checks a folder for the existence of files..
+        /// </summary>
+        internal static string CheckFolderContentDescription {
+            get {
+                return ResourceManager.GetString("CheckFolderContentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check Folder Content.
+        /// </summary>
+        internal static string CheckFolderContentName {
+            get {
+                return ResourceManager.GetString("CheckFolderContentName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The default Cloudflow job..
         /// </summary>
         internal static string DefaultJobDescription {
@@ -84,6 +102,25 @@ namespace Cloudflow.Extensions.Properties {
         internal static string FileNameMasksLabel {
             get {
                 return ResourceManager.GetString("FileNameMasksLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Folder {
+            get {
+                object obj = ResourceManager.GetObject("Folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder.
+        /// </summary>
+        internal static string FolderLabel {
+            get {
+                return ResourceManager.GetString("FolderLabel", resourceCulture);
             }
         }
         
