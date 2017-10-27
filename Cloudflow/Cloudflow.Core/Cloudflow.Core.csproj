@@ -106,6 +106,7 @@
     <Compile Include="Data\Shared\SharedDbContext.cs" />
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
+    <Compile Include="Extensions\Controllers\ConditionController.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayOrderAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\LabelTextResourceAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\HiddenAttribute.cs" />
