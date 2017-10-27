@@ -9,12 +9,15 @@ namespace Cloudflow.Web.ViewModels.Jobs
     {
         #region Properties
         public List<ExtensionConfigurationViewModel> Triggers { get; set; }
+
+        public ConditionsViewModel ConditionsViewModel { get; set; }
         #endregion
 
         #region Constructors
         public TriggersViewModel()
         {
             this.Triggers = new List<ExtensionConfigurationViewModel>();
+            this.ConditionsViewModel = new ConditionsViewModel();
         }
         #endregion
     }
