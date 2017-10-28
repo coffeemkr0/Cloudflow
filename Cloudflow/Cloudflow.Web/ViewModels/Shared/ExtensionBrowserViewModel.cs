@@ -30,6 +30,8 @@ namespace Cloudflow.Web.ViewModels.Shared
                         return "Triggers";
                     case ConfigurableExtensionTypes.Step:
                         return "Steps";
+                    case ConfigurableExtensionTypes.Condition:
+                        return "Conditions";
                     default:
                         throw new ArgumentException($"The extension type {this.ExtensionType} is not supported.", "ExtensionType");
                 }

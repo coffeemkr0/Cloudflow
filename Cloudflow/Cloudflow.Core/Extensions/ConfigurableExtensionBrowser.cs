@@ -53,6 +53,8 @@ namespace Cloudflow.Core.Extensions
                     return _extensions.Where(i => i.Metadata.ExtensionType.IsSubclassOf(typeof(Trigger))).Select(i => i.Metadata).ToList();
                 case ConfigurableExtensionTypes.Step:
                     return _extensions.Where(i => i.Metadata.ExtensionType.IsSubclassOf(typeof(Step))).Select(i => i.Metadata).ToList();
+                case ConfigurableExtensionTypes.Condition:
+                    return _extensions.Where(i => i.Metadata.ExtensionType.IsSubclassOf(typeof(Condition))).Select(i => i.Metadata).ToList();
                 default:
                     throw new ArgumentException($"The Extension type {extensionType.ToString()} is not supported", "extensionType");
             }

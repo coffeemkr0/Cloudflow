@@ -5,16 +5,16 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class TriggersViewModel
+    public class TriggerViewModel : ExtensionConfigurationViewModel
     {
         #region Properties
-        public List<TriggerViewModel> Triggers { get; set; }
+        public ConditionsViewModel ConditionsViewModel { get; set; }
         #endregion
 
         #region Constructors
-        public TriggersViewModel()
+        public TriggerViewModel()
         {
-            this.Triggers = new List<TriggerViewModel>();
+            this.ConditionsViewModel = new ConditionsViewModel();
         }
         #endregion
     }

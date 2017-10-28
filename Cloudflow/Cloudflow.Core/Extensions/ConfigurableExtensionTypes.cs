@@ -10,6 +10,7 @@ namespace Cloudflow.Core.Extensions
     {
         Job,
         Trigger,
-        Step
+        Step,
+        Condition
     }
 }

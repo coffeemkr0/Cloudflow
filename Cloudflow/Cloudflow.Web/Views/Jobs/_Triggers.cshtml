@@ -21,27 +21,13 @@
         </div>
     </div>
 
-    <div id="triggerConfigurations" class="tab-content col-md-9">
+    <div id="triggers" class="tab-content col-md-9">
         @foreach (var trigger in Model.Triggers)
         {
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active">
-                    <a href="#tabTriggerSettings-@(trigger.Id)" role="tab" data-toggle="tab">Settings</a>
-                </li>
-                <li role="presentation">
-                    <a href="#tabTriggerConditions-@(trigger.Id)" role="tab" data-toggle="tab">Conditions</a>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="tabTriggerSettings-@(trigger.Id)">
-                    @Html.Partial("_TriggerConfiguration", trigger)
-                </div>
-
-                <div role="tabpanel" class="tab-pane" id="tabTriggerConditions-@(trigger.Id)">
-                    @Html.Partial("_Conditions", Model.ConditionsViewModel)
-                </div>
-            </div>
+            @Html.Partial("_Trigger", trigger)
         }
     </div>
 </section>
+
+@*Render an extension browser for adding triggers*@
+@Html.Action("Triggers")

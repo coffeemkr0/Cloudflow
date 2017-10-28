@@ -3,6 +3,7 @@
 
     $(document).on("click", ".deleteTrigger", deleteTrigger_Clicked);
     $(document).on("click", ".deleteStep", deleteStep_Clicked);
+    $(document).on("click", ".deleteCondition", deleteCondition_Clicked);
 
     $(".sortable").sortable({
         stop: function (event, ui) {
@@ -19,6 +20,9 @@ function AddExtension(extensionId, extensionType) {
             break;
         case "2":
             AddStep(extensionId);
+            break;
+        case "3":
+            AddCondition(extensionId);
             break;
     }
 }
@@ -62,7 +66,32 @@ function AddTrigger(extensionId) {
         success: function (result) {
             if (result !== null) {
                 $("#triggerNavigationItems").append(result.triggerNavigationItemView);
-                $("#triggerConfigurations").append(result.triggerConfigurationView);
+                $("#triggers").append(result.triggerView);
+            } else {
+                alert('Error getting data.');
+            }
+        },
+        error: function () {
+            alert('Error getting data.');
+        }
+    });
+}
+
+function AddCondition(extensionId) {
+    var index = $(".conditionNavigationItem").length;
+
+    $.ajax({
+        type: 'POST',
+        url: "/Jobs/AddCondition",
+        dataType: 'json',
+        data: {
+            conditionId: extensionId,
+            index: index
+        },
+        success: function (result) {
+            if (result !== null) {
+                $("#conditionNavigationItems").append(result.triggerNavigationItemView);
+                $("#conditionConfigurations").append(result.triggerConfigurationView);
             } else {
                 alert('Error getting data.');
             }
@@ -86,6 +115,17 @@ function deleteTrigger_Clicked(e) {
 
 function deleteStep_Clicked(e) {
     var id = $(e.target).attr("data-stepid");
+    var $navigationItem = $(e.target).parents("li").addClass("hidden");
+
+    var $configurationItem = $("#tab" + id);
+    $configurationItem.addClass("hidden");
+
+    var $deletedInput = $configurationItem.find(".deletedInput");
+    $deletedInput.val("True");
+}
+
+function deleteCondition_Clicked(e) {
+    var id = $(e.target).attr("data-conditionid");
     var $navigationItem = $(e.target).parents("li").addClass("hidden");
 
     var $configurationItem = $("#tab" + id);

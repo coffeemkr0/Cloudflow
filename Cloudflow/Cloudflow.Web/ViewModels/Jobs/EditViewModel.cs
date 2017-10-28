@@ -44,18 +44,18 @@ namespace Cloudflow.Web.ViewModels.Jobs
             int index = 0;
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
             {
-                var triggerConfigurationViewModel = new ExtensionConfigurationViewModel();
-                triggerConfigurationViewModel.Id = triggerDefinition.TriggerDefinitionId;
-                triggerConfigurationViewModel.Index = index;
-                if (index == 0) triggerConfigurationViewModel.Active = true;
-                triggerConfigurationViewModel.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
-                triggerConfigurationViewModel.ConfigurationExtensionAssemblyPath = triggerDefinition.ConfigurationExtensionAssemblyPath;
+                var triggerViewModel = new TriggerViewModel();
+                triggerViewModel.Id = triggerDefinition.TriggerDefinitionId;
+                triggerViewModel.Index = index;
+                if (index == 0) triggerViewModel.Active = true;
+                triggerViewModel.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
+                triggerViewModel.ConfigurationExtensionAssemblyPath = triggerDefinition.ConfigurationExtensionAssemblyPath;
 
                 extensionConfigurationController = new ExtensionConfigurationController(triggerDefinition.ConfigurationExtensionId,
                     triggerDefinition.ConfigurationExtensionAssemblyPath);
-                triggerConfigurationViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
+                triggerViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
 
-                editViewModel.TriggersViewModel.Triggers.Add(triggerConfigurationViewModel);
+                editViewModel.TriggersViewModel.Triggers.Add(triggerViewModel);
 
                 index += 1;
             }
