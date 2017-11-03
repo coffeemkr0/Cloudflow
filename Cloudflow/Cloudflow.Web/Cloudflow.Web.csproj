@@ -450,7 +450,6 @@
     <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
-    <Content Include="Views\Jobs\_Conditions.cshtml" />
     <Content Include="Views\Jobs\_ConditionNavigationItem.cshtml" />
     <Content Include="Views\Jobs\_ConditionConfiguration.cshtml" />
     <Content Include="Views\Jobs\_Trigger.cshtml" />
