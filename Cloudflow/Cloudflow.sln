@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Core", "Cloudflow.Core\Cloudflow.Core.csproj", "{AD7BE488-ACF7-4664-B6F5-73171F8BA8A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Web", "Cloudflow.Web\Cloudflow.Web.csproj", "{3A8ADA6A-1D8D-4693-B81E-590A22A756B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF222B71-2B42-4B3B-8D41-BCC793B2E2E2} = {CF222B71-2B42-4B3B-8D41-BCC793B2E2E2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Agent.Setup", "Cloudflow.Agent.Setup\Cloudflow.Agent.Setup.csproj", "{55B9DC57-A500-44B4-841D-172FB091E243}"
 EndProject
@@ -59,5 +62,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4A39188-8723-4CD3-AA97-16244B15AB8D}
 	EndGlobalSection
 EndGlobal
