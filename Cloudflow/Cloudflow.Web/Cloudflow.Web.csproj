@@ -445,7 +445,6 @@
     <Content Include="Views\Jobs\_Steps.cshtml" />
     <Content Include="Views\Jobs\_Triggers.cshtml" />
     <Content Include="Views\Jobs\_TriggerNavigationItem.cshtml" />
-    <Content Include="Views\Jobs\_TriggerConfiguration.cshtml" />
     <Content Include="Views\Shared\ExtensionBrowser.cshtml" />
     <Content Include="Views\Jobs\_StepConfiguration.cshtml" />
     <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
