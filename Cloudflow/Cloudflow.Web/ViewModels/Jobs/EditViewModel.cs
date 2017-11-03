@@ -14,17 +14,17 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Properties
         public ExtensionConfigurationViewModel JobConfigurationViewModel { get; set; }
 
-        public TriggersViewModel TriggersViewModel { get; set; }
+        public List<TriggerViewModel> Triggers { get; set; }
 
-        public StepsViewModel StepsViewModel { get; set; }
+        public StepsViewModel Steps { get; set; }
         #endregion
 
         #region Constructors
         public EditViewModel()
         {
             this.JobConfigurationViewModel = new ExtensionConfigurationViewModel();
-            this.TriggersViewModel = new TriggersViewModel();
-            this.StepsViewModel = new StepsViewModel();
+            this.Triggers = new List<TriggerViewModel>();
+            this.Steps = new StepsViewModel();
         }
         #endregion
 
@@ -55,7 +55,25 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     triggerDefinition.ConfigurationExtensionAssemblyPath);
                 triggerViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
 
-                editViewModel.TriggersViewModel.Triggers.Add(triggerViewModel);
+                editViewModel.Triggers.Add(triggerViewModel);
+
+                var conditionIndex = 0;
+                foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions)
+                {
+                    var conditionConfigurationViewModel = new ConditionConfigurationViewModel();
+                    conditionConfigurationViewModel.Id = conditionDefinition.TriggerConditionDefinitionId;
+                    conditionConfigurationViewModel.Index = conditionIndex;
+                    if (conditionIndex == 0) conditionConfigurationViewModel.Active = true;
+
+                    conditionConfigurationViewModel.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
+                    conditionConfigurationViewModel.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
+
+                    extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
+                        conditionDefinition.ConfigurationExtensionAssemblyPath);
+                    conditionConfigurationViewModel.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
+
+                    conditionIndex += 1;
+                }
 
                 index += 1;
             }
@@ -74,7 +92,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     stepDefinition.ConfigurationExtensionAssemblyPath);
                 stepConfigurationViewModel.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
 
-                editViewModel.StepsViewModel.Steps.Add(stepConfigurationViewModel);
+                editViewModel.Steps.Steps.Add(stepConfigurationViewModel);
 
                 index += 1;
             }
@@ -89,13 +107,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
             jobDefinition.Version += 1;
             jobDefinition.Configuration = this.JobConfigurationViewModel.Configuration.ToJson();
 
-            var deletedTriggerIds = this.TriggersViewModel.Triggers.Where(i => i.Deleted).Select(i => i.Id).ToList();
+            var deletedTriggerIds = this.Triggers.Where(i => i.Deleted).Select(i => i.Id).ToList();
             serverDbContext.TriggerDefinitions.RemoveRange(serverDbContext.TriggerDefinitions.Where(i => deletedTriggerIds.Contains(i.TriggerDefinitionId)));
 
             int index = 0;
-            foreach (var trigger in this.TriggersViewModel.Triggers.OrderBy(i => i.Position))
+            foreach (var trigger in this.Triggers.OrderBy(i => i.Position))
             {
                 var triggerDefinition = serverDbContext.TriggerDefinitions.FirstOrDefault(i => i.TriggerDefinitionId == trigger.Id);
+
                 if (triggerDefinition != null)
                 {
                     triggerDefinition.Index = index;
@@ -113,14 +132,41 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
+
+                var conditionIndex = 0;
+                foreach (var condition in trigger.Conditions)
+                {
+                    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.Id);
+
+                    if (conditionDefinition != null)
+                    {
+                        conditionDefinition.Index = conditionIndex;
+                        conditionDefinition.Configuration = trigger.Configuration.ToJson();
+                    }
+                    else
+                    {
+                        conditionDefinition = new TriggerConditionDefinition();
+                        conditionDefinition.Index = conditionIndex;
+                        conditionDefinition.ExtensionId = condition.ExtensionId;
+                        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionAssemblyPath;
+                        conditionDefinition.ConfigurationExtensionId = condition.ConfigurationExtensionId;
+                        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ConfigurationExtensionAssemblyPath;
+                        conditionDefinition.Configuration = condition.Configuration.ToJson();
+
+                        triggerDefinition.TriggerConditionDefinitions.Add(conditionDefinition);
+                    }
+
+                    conditionIndex += 1;
+                }
+                
                 index += 1;
             }
 
-            var deletedStepIds = this.StepsViewModel.Steps.Where(i => i.Deleted).Select(i => i.Id).ToList();
+            var deletedStepIds = this.Steps.Steps.Where(i => i.Deleted).Select(i => i.Id).ToList();
             serverDbContext.StepDefinitions.RemoveRange(serverDbContext.StepDefinitions.Where(i => deletedStepIds.Contains(i.StepDefinitionId)));
 
             index = 0;
-            foreach (var step in this.StepsViewModel.Steps.OrderBy(i => i.Position))
+            foreach (var step in this.Steps.Steps.OrderBy(i => i.Position))
             {
                 var stepDefinition = serverDbContext.StepDefinitions.FirstOrDefault(i => i.StepDefinitionId == step.Id);
                 if (stepDefinition != null)

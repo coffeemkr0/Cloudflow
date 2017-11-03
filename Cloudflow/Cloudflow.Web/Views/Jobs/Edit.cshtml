@@ -53,13 +53,16 @@
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="tabTriggers">
-                    @Html.Partial("_Triggers", Model.TriggersViewModel)
+                    @Html.Partial("_Triggers", Model.Triggers)
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="tabSteps">
-                    @Html.Partial("_Steps", Model.StepsViewModel)
+                    @Html.Partial("_Steps", Model.Steps)
                 </div>
             </div>
         }
     </section>
 </section>
+
+@*Render an extension browser for adding conditions*@
+@Html.Action("Conditions")

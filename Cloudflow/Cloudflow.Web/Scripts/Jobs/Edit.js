@@ -5,6 +5,12 @@
     $(document).on("click", ".deleteStep", deleteStep_Clicked);
     $(document).on("click", ".deleteCondition", deleteCondition_Clicked);
 
+    $(document).on("click", ".addExtension", function () {
+        var viewModelPropertyName = $(this).attr("data-viewmodelpropertyname");
+        var extensionBrowserId = $(this).attr("data-target");
+        $(extensionBrowserId).attr("data-viewmodelpropertyname", viewModelPropertyName);
+    });
+
     $(".sortable").sortable({
         stop: function (event, ui) {
             SetSortablePositions(ui.item);
@@ -13,7 +19,7 @@
     $(".sortable").disableSelection();
 });
 
-function AddExtension(extensionId, extensionType) {
+function AddExtension(extensionId, extensionType, viewModelPropertyName) {
     switch (extensionType) {
         case "1":
             AddTrigger(extensionId);
@@ -22,7 +28,7 @@ function AddExtension(extensionId, extensionType) {
             AddStep(extensionId);
             break;
         case "3":
-            AddCondition(extensionId);
+            AddCondition(extensionId, viewModelPropertyName);
             break;
     }
 }
@@ -77,7 +83,7 @@ function AddTrigger(extensionId) {
     });
 }
 
-function AddCondition(extensionId) {
+function AddCondition(extensionId, viewModelPropertyName) {
     var index = $(".conditionNavigationItem").length;
 
     $.ajax({
@@ -86,12 +92,13 @@ function AddCondition(extensionId) {
         dataType: 'json',
         data: {
             conditionId: extensionId,
-            index: index
+            index: index,
+            viewModelPropertyName: viewModelPropertyName
         },
         success: function (result) {
             if (result !== null) {
-                $("#conditionNavigationItems").append(result.triggerNavigationItemView);
-                $("#conditionConfigurations").append(result.triggerConfigurationView);
+                $("#conditionNavigationItems").append(result.conditionNavigationItemView);
+                $("#conditionConfigurations").append(result.conditionConfigurationView);
             } else {
                 alert('Error getting data.');
             }

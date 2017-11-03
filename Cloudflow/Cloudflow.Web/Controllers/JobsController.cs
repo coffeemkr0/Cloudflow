@@ -193,7 +193,7 @@ namespace Cloudflow.Web.Controllers
             return PartialView("ExtensionBrowser", model);
         }
 
-        public ActionResult Conditions()
+        public ActionResult Conditions(string viewModelPropertyName)
         {
             var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Condition);
             return PartialView("ExtensionBrowser", model);
@@ -261,14 +261,17 @@ namespace Cloudflow.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddCondition(Guid conditionId, int index)
+        public JsonResult AddCondition(Guid conditionId, int index, string viewModelPropertyName)
         {
             var extensionAssemblyPath = this.GetExtensionLibraries().First();
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
             var condition = configurableExtensionBrowser.GetConfigurableExtension(conditionId);
 
-            var conditionConfigurationViewModel = new ExtensionConfigurationViewModel();
+            var conditionConfigurationViewModel = new ConditionConfigurationViewModel
+            {
+                ViewModelPropertyName = viewModelPropertyName
+            };
             conditionConfigurationViewModel.Id = Guid.NewGuid();
             conditionConfigurationViewModel.Index = index;
             conditionConfigurationViewModel.ExtensionId = Guid.Parse(condition.ExtensionId);

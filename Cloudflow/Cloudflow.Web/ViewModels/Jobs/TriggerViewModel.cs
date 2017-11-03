@@ -8,13 +8,15 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class TriggerViewModel : ExtensionConfigurationViewModel
     {
         #region Properties
-        public ConditionsViewModel ConditionsViewModel { get; set; }
+        public List<ConditionConfigurationViewModel> Conditions { get; set; }
         #endregion
 
         #region Constructors
         public TriggerViewModel()
         {
-            this.ConditionsViewModel = new ConditionsViewModel();
+            this.Conditions = new List<ConditionConfigurationViewModel>();
+
+            //$"Triggers[{index}].ConditionsViewModel.Conditions"
         }
         #endregion
     }

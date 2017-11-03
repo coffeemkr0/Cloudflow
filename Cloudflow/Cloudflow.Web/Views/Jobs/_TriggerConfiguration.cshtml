@@ -2,22 +2,22 @@
 @using Cloudflow.Web.Utility.HtmlHelpers
 
 <div id="tab@(Model.Id)" role="tabpanel" class="sortableItem tab-pane @(Model.Active ? "active" : "")">
-    <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Id"
-           id="TriggersViewModel.Triggers[@Model.Index]_Id"
+    <input type="hidden" name="Triggers[@Model.Index].Id"
+           id="Triggers[@Model.Index]_Id"
            value="@Model.Id" />
-    <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].ExtensionId"
-           id="TriggersViewModel.Triggers[@Model.Index]_ExtensionId"
+    <input type="hidden" name="Triggers[@Model.Index].ExtensionId"
+           id="Triggers[@Model.Index]_ExtensionId"
            value="@Model.ExtensionId" />
-    <input type="hidden" name="TriggersViewModel.Triggers[@Model.Index].ExtensionAssemblyPath"
-           id="TriggersViewModel.Triggers[@Model.Index]_ExtensionAssemblyPath"
+    <input type="hidden" name="Triggers[@Model.Index].ExtensionAssemblyPath"
+           id="Triggers[@Model.Index]_ExtensionAssemblyPath"
            value="@Model.ExtensionAssemblyPath" />
 
-    <input class="sortableItemPosition" type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Position"
-           id="TriggersViewModel.Triggers[@Model.Index]_Position"
+    <input class="sortableItemPosition" type="hidden" name="Triggers[@Model.Index].Position"
+           id="Triggers[@Model.Index]_Position"
            value="@Model.Index" />
-    <input class="deletedInput" type="hidden" name="TriggersViewModel.Triggers[@Model.Index].Deleted"
-           id="TriggersViewModel.Triggers[@Model.Index]_Deleted"
+    <input class="deletedInput" type="hidden" name="Triggers[@Model.Index].Deleted"
+           id="Triggers[@Model.Index]_Deleted"
            value="@Model.Deleted" />
 
-    @Html.ExtensionConfiguration(Model, "TriggersViewModel.Triggers[" + Model.Index + "]")
+    @Html.ExtensionConfiguration(Model, "Triggers[" + Model.Index + "]")
 </div>

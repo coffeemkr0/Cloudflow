@@ -1,23 +1,23 @@
-﻿@model Cloudflow.Web.ViewModels.Jobs.ExtensionConfigurationViewModel
+﻿@model Cloudflow.Web.ViewModels.Jobs.ConditionConfigurationViewModel
 @using Cloudflow.Web.Utility.HtmlHelpers
 
 <div id="tab@(Model.Id)" role="tabpanel" class="sortableItem tab-pane @(Model.Active ? "active" : "")">
-    <input type="hidden" name="ConditionsViewModel.Conditions[@Model.Index].Id"
-           id="ConditionsViewModel.Conditions[@Model.Index]_Id"
+    <input type="hidden" name="@(Model.ViewModelPropertyName).Conditions[@Model.Index].Id"
+           id="@(Model.ViewModelPropertyName)_Conditions[@Model.Index]_Id"
            value="@Model.Id" />
-    <input type="hidden" name="ConditionsViewModel.Conditions[@Model.Index].ExtensionId"
-           id="ConditionsViewModel.Conditions[@Model.Index]_ExtensionId"
+    <input type="hidden" name="@(Model.ViewModelPropertyName).Conditions[@Model.Index].ExtensionId"
+           id="@(Model.ViewModelPropertyName)_Conditions[@Model.Index]_ExtensionId"
            value="@Model.ExtensionId" />
-    <input type="hidden" name="ConditionsViewModel.Conditions[@Model.Index].ExtensionAssemblyPath"
-           id="ConditionsViewModel.Conditions[@Model.Index]_ExtensionAssemblyPath"
+    <input type="hidden" name="@(Model.ViewModelPropertyName).Conditions[@Model.Index].ExtensionAssemblyPath"
+           id="@(Model.ViewModelPropertyName)_Conditions[@Model.Index]_ExtensionAssemblyPath"
            value="@Model.ExtensionAssemblyPath" />
 
-    <input class="sortableItemPosition" type="hidden" name="ConditionsViewModel.Conditions[@Model.Index].Position"
-           id="ConditionsViewModel.Conditions[@Model.Index]_Position"
+    <input class="sortableItemPosition" type="hidden" name="@(Model.ViewModelPropertyName).Conditions[@Model.Index].Position"
+           id="@(Model.ViewModelPropertyName)_Conditions[@Model.Index]_Position"
            value="@Model.Index" />
-    <input class="deletedInput" type="hidden" name="ConditionsViewModel.Conditions[@Model.Index].Deleted"
-           id="ConditionsViewModel.Conditions[@Model.Index]_Deleted"
+    <input class="deletedInput" type="hidden" name="@(Model.ViewModelPropertyName).Conditions[@Model.Index].Deleted"
+           id="@(Model.ViewModelPropertyName)_Conditions[@Model.Index]_Deleted"
            value="@Model.Deleted" />
 
-    @Html.ExtensionConfiguration(Model, "ConditionsViewModel.Conditions[" + Model.Index + "]")
+    @Html.ExtensionConfiguration(Model, Model.ViewModelPropertyName + "[" + Model.Index + "]")
 </div>

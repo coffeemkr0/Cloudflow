@@ -209,7 +209,7 @@
     <Compile Include="ViewModels\Agents\IndexViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditItemViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\ConditionsViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ConditionConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditViewModel.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\ExtensionBrowserViewModel.cs" />
@@ -217,7 +217,6 @@
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Jobs\JobSummaryViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepsViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\TriggersViewModel.cs" />
     <Compile Include="ViewModels\Runs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
   </ItemGroup>

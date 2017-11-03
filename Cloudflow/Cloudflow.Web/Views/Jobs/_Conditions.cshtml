@@ -1,10 +1,11 @@
-﻿@model Cloudflow.Web.ViewModels.Jobs.ConditionsViewModel
+﻿@model List<Cloudflow.Web.ViewModels.Jobs.ConditionConfigurationViewModel>
 
 <section class="container-fluid">
     <div class="col-md-3 panel panel-default">
         <div class="panel-body">
             <div>
-                <a data-toggle="modal" data-target="#conditionsExtensionBrowser" id="btnAddCondition" class="btn btn-default" href="#">
+                <a data-toggle="modal" data-target="#conditionsExtensionBrowser" data-viewmodelpropertyname="Triggers[0].Conditions" 
+                   id="btnAddCondition" class="btn btn-default addExtension" href="#">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Add Condition...
                 </a>
@@ -13,7 +14,7 @@
             <hr />
 
             <ul id="conditionNavigationItems" class="nav nav-pills nav-stacked sortable">
-                @foreach (var condition in Model.Conditions)
+                @foreach (var condition in Model)
                 {
                     @Html.Partial("_ConditionNavigationItem", condition)
                 }
@@ -22,12 +23,9 @@
     </div>
 
     <div id="conditionConfigurations" class="tab-content col-md-9">
-        @foreach (var condition in Model.Conditions)
+        @foreach (var condition in Model)
         {
             @Html.Partial("_ConditionConfiguration", condition)
         }
     </div>
 </section>
-
-@*Render an extension browser for adding conditions*@
-@Html.Action("Conditions")
