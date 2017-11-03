@@ -24,5 +24,12 @@ namespace Cloudflow.Core.Data.Shared.Models
         [ScriptIgnore]
         public virtual TriggerDefinition TriggerDefinition { get; set; }
         #endregion
+
+        #region Constructors
+        public TriggerConditionDefinition()
+        {
+            this.TriggerConditionDefinitionId = Guid.NewGuid();
+        }
+        #endregion
     }
 }

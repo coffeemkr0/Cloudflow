@@ -19,5 +19,5 @@
            id="@(Model.ViewModelPropertyName)_Conditions[@Model.Index]_Deleted"
            value="@Model.Deleted" />
 
-    @Html.ExtensionConfiguration(Model, Model.ViewModelPropertyName + "[" + Model.Index + "]")
+    @Html.ExtensionConfiguration(Model, new List<string> { Model.ViewModelPropertyName, $"Conditions[{Model.Index}]" } )
 </div>

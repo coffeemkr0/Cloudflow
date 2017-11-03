@@ -61,6 +61,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions)
                 {
                     var conditionConfigurationViewModel = new ConditionConfigurationViewModel();
+                    conditionConfigurationViewModel.ViewModelPropertyName = $"Triggers[{index}]";
                     conditionConfigurationViewModel.Id = conditionDefinition.TriggerConditionDefinitionId;
                     conditionConfigurationViewModel.Index = conditionIndex;
                     if (conditionIndex == 0) conditionConfigurationViewModel.Active = true;
@@ -71,6 +72,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
                         conditionDefinition.ConfigurationExtensionAssemblyPath);
                     conditionConfigurationViewModel.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
+
+                    triggerViewModel.Conditions.Add(conditionConfigurationViewModel);
 
                     conditionIndex += 1;
                 }
@@ -133,6 +136,9 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
 
+                var deletedConditionIds = trigger.Conditions.Where(i => i.Deleted).Select(i => i.Id).ToList();
+                serverDbContext.TriggerConditionDefinitions.RemoveRange(serverDbContext.TriggerConditionDefinitions.Where(i => deletedConditionIds.Contains(i.TriggerConditionDefinitionId)));
+
                 var conditionIndex = 0;
                 foreach (var condition in trigger.Conditions)
                 {
@@ -141,7 +147,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     if (conditionDefinition != null)
                     {
                         conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.Configuration = trigger.Configuration.ToJson();
+                        conditionDefinition.Configuration = condition.Configuration.ToJson();
                     }
                     else
                     {

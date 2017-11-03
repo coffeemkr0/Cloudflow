@@ -15,8 +15,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public TriggerViewModel()
         {
             this.Conditions = new List<ConditionConfigurationViewModel>();
-
-            //$"Triggers[{index}].ConditionsViewModel.Conditions"
         }
         #endregion
     }

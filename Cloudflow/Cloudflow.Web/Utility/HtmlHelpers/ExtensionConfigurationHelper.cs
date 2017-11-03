@@ -155,7 +155,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
-        private static string Label(string[] prefixes, PropertyInfo propertyInfo, ResourceManager resourceManager)
+        private static string Label(List<string> prefixes, PropertyInfo propertyInfo, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
@@ -178,7 +178,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return htmlStringBuilder.ToString();
         }
 
-        private static string Input(string[] prefixes, string propertyName, string value, InputTypes inputType)
+        private static string Input(List<string> prefixes, string propertyName, string value, InputTypes inputType)
         {
             var tagBuilder = new TagBuilder("input");
 
@@ -208,13 +208,13 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.SelfClosing);
         }
 
-        private static string HiddenInput(string[] prefixes, PropertyInfo propertyInfo, object objectInstance)
+        private static string HiddenInput(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance)
         {
             var value = propertyInfo.GetValue(objectInstance);
             return Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Hidden);
         }
 
-        private static string NumericEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        private static string NumericEdit(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
@@ -226,7 +226,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string TextEdit(string[] prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        private static string TextEdit(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
@@ -238,7 +238,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string CollectionEdit(HtmlHelper htmlHelper, string[] prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        private static string CollectionEdit(HtmlHelper htmlHelper, List<string> prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
@@ -263,38 +263,44 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         }
         #endregion
 
-        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, string viewModelPropertyName)
+        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, string propertyNamePrefix)
+        {
+            return ExtensionConfiguration(htmlHelper, configurationViewModel, new List<string> { propertyNamePrefix });
+        }
+
+        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, List<string> propertyNamePrefixes)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
             var resourceManager = LoadResources(configurationViewModel.Configuration.ExtensionType);
 
-            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName },
+            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes,
                 "ExtensionId", configurationViewModel.ExtensionId.ToString(), InputTypes.Hidden));
-            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName },
+            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes,
                 "ExtensionAssemblyPath", configurationViewModel.ExtensionAssemblyPath, InputTypes.Hidden));
 
-            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, 
+            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes, 
                 "ConfigurationExtensionId", configurationViewModel.ConfigurationExtensionId.ToString(), InputTypes.Hidden));
-            htmlStringBuilder.AppendLine(Input(new string[] { viewModelPropertyName }, 
+            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes, 
                 "ConfigurationExtensionAssemblyPath", configurationViewModel.ConfigurationExtensionAssemblyPath, InputTypes.Hidden));
 
-            var prefixes = new string[] { viewModelPropertyName, "Configuration" };
+            propertyNamePrefixes.Add("Configuration");
+
             foreach (var propertyInfo in configurationViewModel.Configuration.ExtensionType.GetSortedProperties())
             {
                 switch (GetPropertyType(propertyInfo))
                 {
                     case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(HiddenInput(prefixes, propertyInfo, configurationViewModel.Configuration));
+                        htmlStringBuilder.AppendLine(HiddenInput(propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration));
                         break;
                     case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(TextEdit(propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(NumericEdit(propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, prefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Complex:
                         _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");
