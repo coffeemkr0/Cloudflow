@@ -6,9 +6,7 @@
     $(document).on("click", ".deleteCondition", deleteCondition_Clicked);
 
     $(document).on("click", ".addExtension", function () {
-        var viewModelPropertyName = $(this).attr("data-viewmodelpropertyname");
-        var extensionBrowserId = $(this).attr("data-target");
-        $(extensionBrowserId).attr("data-viewmodelpropertyname", viewModelPropertyName);
+        OnAddExtensionClicked($(this));
     });
 
     $(".sortable").sortable({
@@ -19,7 +17,16 @@
     $(".sortable").disableSelection();
 });
 
-function AddExtension(extensionId, extensionType, viewModelPropertyName) {
+function OnAddExtensionClicked(addButtonElement) {
+    var viewModelPropertyName = addButtonElement.attr("data-viewmodelpropertyname");
+    var itemId = addButtonElement.attr("data-itemid");
+    var extensionBrowserId = addButtonElement.attr("data-target");
+
+    $(extensionBrowserId).attr("data-itemid", itemId);
+    $(extensionBrowserId).attr("data-viewmodelpropertyname", viewModelPropertyName);
+}
+
+function AddExtension(extensionId, extensionType, itemId, viewModelPropertyName) {
     switch (extensionType) {
         case "1":
             AddTrigger(extensionId);
@@ -28,7 +35,7 @@ function AddExtension(extensionId, extensionType, viewModelPropertyName) {
             AddStep(extensionId);
             break;
         case "3":
-            AddCondition(extensionId, viewModelPropertyName);
+            AddCondition(extensionId, itemId, viewModelPropertyName);
             break;
     }
 }
@@ -83,8 +90,11 @@ function AddTrigger(extensionId) {
     });
 }
 
-function AddCondition(extensionId, viewModelPropertyName) {
-    var index = $(".conditionNavigationItem").length;
+function AddCondition(extensionId, itemId, viewModelPropertyName) {
+
+    var $conditionNavigationItemsElement = $("#conditionNavigationItems" + itemId);
+    var $conditionConfigurationsElement = $("#conditionConfigurations" + itemId);
+    var index = $conditionNavigationItemsElement.find(".conditionNavigationItem").length;
 
     $.ajax({
         type: 'POST',
@@ -97,8 +107,8 @@ function AddCondition(extensionId, viewModelPropertyName) {
         },
         success: function (result) {
             if (result !== null) {
-                $("#conditionNavigationItems").append(result.conditionNavigationItemView);
-                $("#conditionConfigurations").append(result.conditionConfigurationView);
+                $conditionNavigationItemsElement.append(result.conditionNavigationItemView);
+                $conditionConfigurationsElement.append(result.conditionConfigurationView);
             } else {
                 alert('Error getting data.');
             }

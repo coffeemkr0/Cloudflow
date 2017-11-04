@@ -40,8 +40,9 @@
                 <div class="col-md-3 panel panel-default">
                     <div class="panel-body">
                         <div>
-                            <a data-toggle="modal" data-target="#conditionsExtensionBrowser" data-viewmodelpropertyname="Triggers[@(Model.Index)]"
-                               id="btnAddCondition" class="btn btn-default addExtension" href="#">
+                            <a id="btnAddCondition" class="btn btn-default addExtension" href="#"
+                               data-toggle="modal" data-target="#conditionsExtensionBrowser"
+                               data-itemid="@Model.Id" data-viewmodelpropertyname="Triggers[@(Model.Index)]">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 Add Condition...
                             </a>
@@ -49,7 +50,7 @@
 
                         <hr />
 
-                        <ul id="conditionNavigationItems" class="nav nav-pills nav-stacked sortable">
+                        <ul id="conditionNavigationItems@(Model.Id)" class="nav nav-pills nav-stacked sortable">
                             @foreach (var condition in Model.Conditions)
                             {
                                 @Html.Partial("_ConditionNavigationItem", condition)
@@ -58,7 +59,7 @@
                     </div>
                 </div>
 
-                <div id="conditionConfigurations" class="tab-content col-md-9">
+                <div id="conditionConfigurations@(Model.Id)" class="tab-content col-md-9">
                     @foreach (var condition in Model.Conditions)
                     {
                         @Html.Partial("_ConditionConfiguration", condition)

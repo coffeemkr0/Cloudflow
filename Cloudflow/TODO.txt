@@ -1,3 +1,6 @@
+Make a new trigger, step or condition Active after it is added
+Make sortable work on all items (seems to be working on triggers but not conditions - not sure about steps)
+
 Run Management
 	Add the ability for runs to be queued instead of starting immediately
 	Add the ability to cancel a run

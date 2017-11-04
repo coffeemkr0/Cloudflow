@@ -11,7 +11,10 @@ $(function () {
         var extensionId = $(e.target).attr("data-extensionid");
         var extensionType = $(e.target).attr("data-extensionType");
         var $extensionBrowser = $(e.target).closest(".extensionBrowser");
+
+        var itemId = $extensionBrowser.attr("data-itemid");
         var viewModelPropertyName = $extensionBrowser.attr("data-viewmodelpropertyname");
-        ExtensionBrowser.AddExtensionClicked(extensionId, extensionType, viewModelPropertyName);
+
+        ExtensionBrowser.AddExtensionClicked(extensionId, extensionType, itemId, viewModelPropertyName);
     });
 });
