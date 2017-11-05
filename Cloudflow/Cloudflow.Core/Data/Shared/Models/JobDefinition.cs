@@ -16,8 +16,6 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         public int Version { get; set; }
 
-        public string Configuration { get; set; }
-
         public virtual ICollection<TriggerDefinition> TriggerDefinitions { get; set; }
 
         public virtual ICollection<StepDefinition> StepDefinitions { get; set; }

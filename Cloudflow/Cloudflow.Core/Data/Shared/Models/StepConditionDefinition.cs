@@ -17,8 +17,6 @@ namespace Cloudflow.Core.Data.Shared.Models
         [Index("IX_StepConditionDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
-        public string Configuration { get; set; }
-
         public Guid StepDefinitionId { get; set; }
 
         [ScriptIgnore]

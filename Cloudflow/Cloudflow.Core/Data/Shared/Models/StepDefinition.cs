@@ -20,8 +20,6 @@ namespace Cloudflow.Core.Data.Shared.Models
         [Index("IX_StepDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
-        public string Configuration { get; set; }
-
         public virtual ICollection<StepConditionDefinition> StepConditionDefinitions { get; set; }
 
         public Guid JobDefinitionId { get; set; }

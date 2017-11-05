@@ -20,8 +20,6 @@ namespace Cloudflow.Core.Data.Shared.Models
         [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
-        public string Configuration { get; set; }
-
         public virtual ICollection<TriggerConditionDefinition> TriggerConditionDefinitions { get; set; }
 
         public Guid JobDefinitionId { get; set; }
