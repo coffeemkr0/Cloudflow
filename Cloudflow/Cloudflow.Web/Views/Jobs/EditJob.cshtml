@@ -2,7 +2,7 @@
 @model Cloudflow.Web.ViewModels.Jobs.EditViewModel
 
 @{
-    ViewBag.Title = "Jobs";
+    ViewBag.Title = "Edit Job";
     ViewBag.ActivePage = "Jobs";
 }
 
@@ -15,54 +15,17 @@
 <section>
     <h3>@Model.JobConfigurationViewModel.Configuration.Name</h3>
 
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="active">
-            <a href="#tabGeneral" role="tab" data-toggle="tab">General</a>
-        </li>
-        <li role="presentation">
-            <a href="#tabTriggers" role="tab" data-toggle="tab">Triggers</a>
-        </li>
-        <li role="presentation">
-            <a href="#tabSteps" role="tab" data-toggle="tab">Steps</a>
-        </li>
-    </ul>
-
     <section>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            <div class="tab-content">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <button type="submit" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-                            Save
-                        </button>
-                        <a href="@Url.Action("Index")" class="btn btn-default">
-                            <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
-                            Back to Jobs
-                        </a>
-                    </div>
-                </div>
-
-                <div role="tabpanel" class="tab-pane active" id="tabGeneral">
-                    @Html.HiddenFor(model => model.JobConfigurationViewModel.Id)
-
-                    @Html.ExtensionConfiguration(Model.JobConfigurationViewModel, "JobConfigurationViewModel")
-                </div>
-
-                <div role="tabpanel" class="tab-pane" id="tabTriggers">
-                    @Html.Partial("_Triggers", Model.Triggers)
-                </div>
-
-                <div role="tabpanel" class="tab-pane" id="tabSteps">
-                    @Html.Partial("_Steps", Model.Steps)
-                </div>
-            </div>
+            
         }
     </section>
 </section>
 
-@*Render an extension browser for adding conditions*@
+@*Render extension browser dialogs for adding extensions*@
+@Html.Action("Triggers")
+@Html.Action("Steps")
 @Html.Action("Conditions")
