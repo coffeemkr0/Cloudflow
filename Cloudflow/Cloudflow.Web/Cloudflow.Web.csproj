@@ -210,7 +210,9 @@
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditItemViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ConditionConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\ExtensionBrowserViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
@@ -453,6 +455,7 @@
     <Content Include="Views\Jobs\_ConditionNavigationItem.cshtml" />
     <Content Include="Views\Jobs\_ConditionConfiguration.cshtml" />
     <Content Include="Views\Jobs\_Trigger.cshtml" />
+    <Content Include="Views\Jobs\EditJob.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />
