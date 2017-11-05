@@ -261,6 +261,16 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             return htmlStringBuilder.ToString();
         }
+
+        private static string EditorNotImplemented(PropertyInfo propertyInfo)
+        {
+            var tagBuilder = new TagBuilder("h3");
+
+            tagBuilder.InnerHtml = $"No editor available for type {propertyInfo.PropertyType}";
+
+            return tagBuilder.ToString(TagRenderMode.Normal);
+        }
+
         #endregion
 
         public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, string propertyNamePrefix)
@@ -303,10 +313,10 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                         htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
                         break;
                     case PropertyTypes.Complex:
-                        _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");
+                        htmlStringBuilder.AppendLine(EditorNotImplemented(propertyInfo));
                         break;
                     case PropertyTypes.Unknown:
-                        _log.Info($"A property type was encountered that is not implemented - { propertyInfo.PropertyType }");
+                        htmlStringBuilder.AppendLine(EditorNotImplemented(propertyInfo));
                         break;
                 }
             }
