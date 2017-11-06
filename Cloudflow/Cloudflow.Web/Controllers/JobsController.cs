@@ -123,6 +123,20 @@ namespace Cloudflow.Web.Controllers
             return View(EditViewModel.FromJobDefinition(jobDefinition));
         }
 
+        public ActionResult EditJob(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            if (jobDefinition == null)
+            {
+                return HttpNotFound();
+            }
+            return View(EditJobViewModel.FromJobDefinition(jobDefinition));
+        }
+
         // POST: Jobs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

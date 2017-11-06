@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
     /// <summary>
-    /// Specifies the name of a resource entry to load and use as the text on the label of a property in
-    /// the user interface for an extension's configuration
+    /// Specifies the name of a resource entry to load and use as the text for the label of a property
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class LabelTextResourceAttribute : Attribute

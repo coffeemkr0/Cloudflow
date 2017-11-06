@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace Cloudflow.Web.Utility.HtmlHelpers
 {
-    public static class ExtensionConfigurationHelper
+    public static class JobEditorHelper
     {
         #region Enums
         private enum PropertyTypes
@@ -182,10 +182,14 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             var tagBuilder = new TagBuilder("input");
 
-            var id = string.Join("_", prefixes) + "_" + propertyName;
+            var propertyNameParts = new List<string>();
+            propertyNameParts.AddRange(prefixes);
+            propertyNameParts.Add(propertyName);
+
+            var id = string.Join("_", propertyNameParts);
             tagBuilder.MergeAttribute("id", id);
 
-            var name = string.Join(".", prefixes) + "." + propertyName;
+            var name = string.Join(".", propertyNameParts);
             tagBuilder.MergeAttribute("name", name);
 
             switch (inputType)
@@ -242,9 +246,13 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
+            var propertyNameParts = new List<string>();
+            propertyNameParts.AddRange(prefixes);
+            propertyNameParts.Add(propertyInfo.Name);
+
             var model = new StringCollectionEditViewModel
             {
-                PropertyName = string.Join(".", prefixes) + "." + propertyInfo.Name,
+                PropertyName = string.Join(".", propertyNameParts)
             };
             var index = 0;
             foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
@@ -273,44 +281,27 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         #endregion
 
-        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, string propertyNamePrefix)
-        {
-            return ExtensionConfiguration(htmlHelper, configurationViewModel, new List<string> { propertyNamePrefix });
-        }
-
-        public static MvcHtmlString ExtensionConfiguration(this HtmlHelper htmlHelper, ExtensionConfigurationViewModel configurationViewModel, List<string> propertyNamePrefixes)
+        public static MvcHtmlString JobEditor(this HtmlHelper htmlHelper, EditJobViewModel model)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            var resourceManager = LoadResources(configurationViewModel.Configuration.ExtensionType);
+            var resourceManager = LoadResources(model.Configuration.ExtensionType);
 
-            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes,
-                "ExtensionId", configurationViewModel.ExtensionId.ToString(), InputTypes.Hidden));
-            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes,
-                "ExtensionAssemblyPath", configurationViewModel.ExtensionAssemblyPath, InputTypes.Hidden));
-
-            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes, 
-                "ConfigurationExtensionId", configurationViewModel.ConfigurationExtensionId.ToString(), InputTypes.Hidden));
-            htmlStringBuilder.AppendLine(Input(propertyNamePrefixes, 
-                "ConfigurationExtensionAssemblyPath", configurationViewModel.ConfigurationExtensionAssemblyPath, InputTypes.Hidden));
-
-            propertyNamePrefixes.Add("Configuration");
-
-            foreach (var propertyInfo in configurationViewModel.Configuration.ExtensionType.GetSortedProperties())
+            foreach (var propertyInfo in model.GetType().GetSortedProperties())
             {
                 switch (GetPropertyType(propertyInfo))
                 {
                     case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(HiddenInput(propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration));
+                        htmlStringBuilder.AppendLine(HiddenInput(new List<string>(), propertyInfo, model));
                         break;
                     case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(TextEdit(new List<string>(), propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(NumericEdit(new List<string>(), propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyNamePrefixes, propertyInfo, configurationViewModel.Configuration, resourceManager));
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, new List<string>(), propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Complex:
                         htmlStringBuilder.AppendLine(EditorNotImplemented(propertyInfo));

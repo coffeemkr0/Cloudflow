@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
     /// <summary>
-    /// Specifies the display order for a configuration property
+    /// Specifies the display order for a property
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class DisplayOrderAttribute : Attribute

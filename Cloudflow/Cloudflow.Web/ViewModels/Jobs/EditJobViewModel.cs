@@ -17,21 +17,25 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Constructors
-
+        public EditJobViewModel()
+        {
+            this.Triggers = new List<TriggerViewModel>();
+            this.Steps = new List<StepViewModel>();
+        }
         #endregion
 
         #region Public Methods
-        public static EditViewModel FromJobDefinition(JobDefinition jobDefinition)
+        public static EditJobViewModel FromJobDefinition(JobDefinition jobDefinition)
         {
-            var editViewModel = new EditViewModel();
+            var model = new EditJobViewModel();
 
-            editViewModel.JobConfigurationViewModel.Id = jobDefinition.JobDefinitionId;
-            editViewModel.JobConfigurationViewModel.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
-            editViewModel.JobConfigurationViewModel.ConfigurationExtensionAssemblyPath = jobDefinition.ConfigurationExtensionAssemblyPath;
+            model.Id = jobDefinition.JobDefinitionId;
+            model.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
+            model.ConfigurationExtensionAssemblyPath = jobDefinition.ConfigurationExtensionAssemblyPath;
 
             var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
                jobDefinition.ConfigurationExtensionAssemblyPath);
-            editViewModel.JobConfigurationViewModel.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
+            model.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
 
             int index = 0;
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
@@ -47,7 +51,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     triggerDefinition.ConfigurationExtensionAssemblyPath);
                 triggerViewModel.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
 
-                editViewModel.Triggers.Add(triggerViewModel);
+                model.Triggers.Add(triggerViewModel);
 
                 var conditionIndex = 0;
                 foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions)
@@ -76,23 +80,23 @@ namespace Cloudflow.Web.ViewModels.Jobs
             index = 0;
             foreach (var stepDefinition in jobDefinition.StepDefinitions.OrderBy(i => i.Index))
             {
-                var stepConfigurationViewModel = new ExtensionConfigurationViewModel();
-                stepConfigurationViewModel.Id = stepDefinition.StepDefinitionId;
-                stepConfigurationViewModel.Index = index;
-                if (index == 0) stepConfigurationViewModel.Active = true;
-                stepConfigurationViewModel.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
-                stepConfigurationViewModel.ConfigurationExtensionAssemblyPath = stepDefinition.ConfigurationExtensionAssemblyPath;
+                var stepViewModel = new StepViewModel();
+                stepViewModel.Id = stepDefinition.StepDefinitionId;
+                stepViewModel.Index = index;
+                if (index == 0) stepViewModel.Active = true;
+                stepViewModel.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
+                stepViewModel.ConfigurationExtensionAssemblyPath = stepDefinition.ConfigurationExtensionAssemblyPath;
 
                 extensionConfigurationController = new ExtensionConfigurationController(stepDefinition.ConfigurationExtensionId,
                     stepDefinition.ConfigurationExtensionAssemblyPath);
-                stepConfigurationViewModel.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
+                stepViewModel.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
 
-                editViewModel.Steps.Steps.Add(stepConfigurationViewModel);
+                model.Steps.Add(stepViewModel);
 
                 index += 1;
             }
 
-            return editViewModel;
+            return model;
         }
 
         public void Save(ServerDbContext serverDbContext)

@@ -197,6 +197,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Utility\HtmlHelpers\JobEditorHelper.cs" />
     <Compile Include="Utility\HtmlHelpers\ExtensionConfigurationHelper.cs" />
     <Compile Include="CustomModelBinder.cs" />
     <Compile Include="Utility\PathHelpers.cs" />

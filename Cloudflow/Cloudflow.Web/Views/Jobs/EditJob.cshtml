@@ -1,5 +1,5 @@
 ﻿@using Cloudflow.Web.Utility.HtmlHelpers
-@model Cloudflow.Web.ViewModels.Jobs.EditViewModel
+@model Cloudflow.Web.ViewModels.Jobs.EditJobViewModel
 
 @{
     ViewBag.Title = "Edit Job";
@@ -13,14 +13,14 @@
 }
 
 <section>
-    <h3>@Model.JobConfigurationViewModel.Configuration.Name</h3>
+    <h3>@Model.Configuration.Name</h3>
 
     <section>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            
+            @Html.JobEditor(Model)
         }
     </section>
 </section>
