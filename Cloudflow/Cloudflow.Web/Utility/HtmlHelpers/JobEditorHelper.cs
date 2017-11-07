@@ -322,12 +322,37 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                     htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
                     break;
                 case PropertyTypes.Complex:
-                    htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
-                    break;
+                    return ComplexCollectionEdit(htmlHelper, propertyInfo, objectInstance, propertyNameParts, resourceManager);
                 default:
                     htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
                     break;
             }
+
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string ComplexCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var model = new ComplexCollectionEditViewModel
+            {
+                LabelText = GetLabelText(propertyInfo, resourceManager),
+                PropertyName = string.Join(".", propertyNameParts)
+            };
+
+            var index = 0;
+            foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
+            {
+                model.Items.Add(new ComplexCollectionEditItemViewModel
+                {
+                    PropertyName = model.PropertyName,
+                    ItemIndex = index++,
+                    Value = item == null ? "" : item.ToString()
+                });
+            }
+
+            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/ComplexCollectionEdit.cshtml", model));
 
             return htmlStringBuilder.ToString();
         }
