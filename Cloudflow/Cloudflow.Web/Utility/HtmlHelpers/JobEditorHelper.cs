@@ -140,6 +140,35 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return PropertyTypes.Unknown;
         }
 
+        private static PropertyTypes GetCollectionItemType(PropertyInfo propertyInfo)
+        {
+            var listType = propertyInfo.PropertyType.GetGenericArguments().Single();
+
+            if (listType.IsTextType())
+            {
+                return PropertyTypes.Text;
+            }
+
+            if (listType.IsNumericType())
+            {
+                return PropertyTypes.Number;
+            }
+
+            if (listType.IsCollection())
+            {
+                return PropertyTypes.Collection;
+            }
+
+            //If the property type has properties itself, we can consider it a complex type
+            if (listType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Any())
+            {
+                return PropertyTypes.Complex;
+            }
+
+            //Otherwise we don't know what to do with it at this point
+            return PropertyTypes.Unknown;
+        }
+
         private static string GetView(HtmlHelper htmlHelper, string name, object model)
         {
             htmlHelper.ViewContext.Controller.ViewData.Model = model;
@@ -270,22 +299,22 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return htmlStringBuilder.ToString();
         }
 
-        private static string EditorNotImplemented(PropertyInfo propertyInfo)
+        private static string EditorNotImplemented(PropertyTypes propertyType, PropertyInfo propertyInfo)
         {
             var tagBuilder = new TagBuilder("h3");
 
-            tagBuilder.InnerHtml = $"No editor available for type {propertyInfo.PropertyType}";
+            tagBuilder.InnerHtml = $"There is no editor implemented for the {propertyType} property type - {propertyInfo.PropertyType}";
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
         #endregion
 
-        public static MvcHtmlString JobEditor(this HtmlHelper htmlHelper, EditJobViewModel model)
+        private static string Editor(HtmlHelper htmlHelper, object model)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            var resourceManager = LoadResources(model.Configuration.ExtensionType);
+            var resourceManager = LoadResources(model.GetType());
 
             foreach (var propertyInfo in model.GetType().GetSortedProperties())
             {
@@ -301,18 +330,26 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                         htmlStringBuilder.AppendLine(NumericEdit(new List<string>(), propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, new List<string>(), propertyInfo, model, resourceManager));
+                        foreach (var item in (IEnumerable)propertyInfo.GetValue(model))
+                        {
+                            htmlStringBuilder.AppendLine(Editor(htmlHelper, item));
+                        }
                         break;
                     case PropertyTypes.Complex:
-                        htmlStringBuilder.AppendLine(EditorNotImplemented(propertyInfo));
+                        htmlStringBuilder.AppendLine(Editor(htmlHelper, propertyInfo.GetValue(model)));
                         break;
                     case PropertyTypes.Unknown:
-                        htmlStringBuilder.AppendLine(EditorNotImplemented(propertyInfo));
+                        htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
                         break;
                 }
             }
 
-            return MvcHtmlString.Create(htmlStringBuilder.ToString());
+            return htmlStringBuilder.ToString();
+        }
+
+        public static MvcHtmlString JobEditor(this HtmlHelper htmlHelper, EditJobViewModel model)
+        {
+            return MvcHtmlString.Create(Editor(htmlHelper, model));
         }
     }
 }
