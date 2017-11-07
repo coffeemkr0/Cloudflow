@@ -184,36 +184,37 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
-        private static string Label(List<string> prefixes, PropertyInfo propertyInfo, ResourceManager resourceManager)
+        private static string GetLabelText(PropertyInfo propertyInfo, ResourceManager resourceManager)
+        {
+            var labelTextAttribute = (LabelTextResourceAttribute)propertyInfo.GetCustomAttribute(typeof(LabelTextResourceAttribute));
+            if (labelTextAttribute != null && resourceManager != null)
+            {
+                return resourceManager.GetString(labelTextAttribute.ResourceName);
+            }
+            else
+            {
+                return propertyInfo.Name;
+            }
+        }
+
+        private static string Label(List<string> propertyNameParts, PropertyInfo propertyInfo, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
             var tagBuilder = new TagBuilder("label");
-            var name = string.Join(".", prefixes) + "." + propertyInfo.Name;
+            var name = string.Join(".", propertyNameParts);
             tagBuilder.MergeAttribute("for", name);
 
-            var labelTextAttribute = (LabelTextResourceAttribute)propertyInfo.GetCustomAttribute(typeof(LabelTextResourceAttribute));
-            if (labelTextAttribute != null && resourceManager != null)
-            {
-                tagBuilder.SetInnerText(resourceManager.GetString(labelTextAttribute.ResourceName));
-            }
-            else
-            {
-                tagBuilder.SetInnerText(propertyInfo.Name);
-            }
+            tagBuilder.SetInnerText(GetLabelText(propertyInfo, resourceManager));
 
             htmlStringBuilder.AppendLine(tagBuilder.ToString(TagRenderMode.Normal));
 
             return htmlStringBuilder.ToString();
         }
 
-        private static string Input(List<string> prefixes, string propertyName, string value, InputTypes inputType)
+        private static string Input(List<string> propertyNameParts, string value, InputTypes inputType)
         {
             var tagBuilder = new TagBuilder("input");
-
-            var propertyNameParts = new List<string>();
-            propertyNameParts.AddRange(prefixes);
-            propertyNameParts.Add(propertyName);
 
             var id = string.Join("_", propertyNameParts);
             tagBuilder.MergeAttribute("id", id);
@@ -241,7 +242,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.SelfClosing);
         }
 
-        private static string Editor(HtmlHelper htmlHelper, object model)
+        private static string Editor(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
@@ -249,22 +250,26 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             foreach (var propertyInfo in model.GetType().GetSortedProperties())
             {
+                var thisPropertyNameParts = new List<string>();
+                thisPropertyNameParts.AddRange(propertyNameParts);
+                thisPropertyNameParts.Add(propertyInfo.Name);
+                
                 switch (GetPropertyType(propertyInfo))
                 {
                     case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(Input(new List<string>(), propertyInfo.Name, propertyInfo.GetValue(model)?.ToString() ?? "", InputTypes.Hidden));
+                        htmlStringBuilder.AppendLine(Input(thisPropertyNameParts, propertyInfo.GetValue(model)?.ToString() ?? "", InputTypes.Hidden));
                         break;
                     case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(new List<string>(), propertyInfo, model, resourceManager));
+                        htmlStringBuilder.AppendLine(TextEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(new List<string>(), propertyInfo, model, resourceManager));
+                        htmlStringBuilder.AppendLine(NumericEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model));
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, propertyNameParts));
                         break;
                     case PropertyTypes.Complex:
-                        htmlStringBuilder.AppendLine(Editor(htmlHelper, propertyInfo.GetValue(model)));
+                        htmlStringBuilder.AppendLine(Editor(htmlHelper, propertyInfo.GetValue(model), thisPropertyNameParts));
                         break;
                     case PropertyTypes.Unknown:
                         htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
@@ -275,38 +280,41 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return htmlStringBuilder.ToString();
         }
 
-        private static string NumericEdit(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        private static string NumericEdit(List<string> propertyNameParts, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
 
-            tagBuilder.InnerHtml = Label(prefixes, propertyInfo, resourceManager);
+            tagBuilder.InnerHtml = Label(propertyNameParts, propertyInfo, resourceManager);
             var value = propertyInfo.GetValue(objectInstance);
-            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Numeric);
+            tagBuilder.InnerHtml += Input(propertyNameParts, value == null ? "" : value.ToString(), InputTypes.Numeric);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string TextEdit(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
+        private static string TextEdit(List<string> propertyNameParts, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
         {
             var tagBuilder = new TagBuilder("div");
             tagBuilder.AddCssClass("form-group");
 
-            tagBuilder.InnerHtml = Label(prefixes, propertyInfo, resourceManager);
+            tagBuilder.InnerHtml = Label(propertyNameParts, propertyInfo, resourceManager);
             var value = propertyInfo.GetValue(objectInstance);
-            tagBuilder.InnerHtml += Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Text);
+            tagBuilder.InnerHtml += Input(propertyNameParts, value == null ? "" : value.ToString(), InputTypes.Text);
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
 
-        private static string CollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance)
+        private static string CollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var listType = propertyInfo.PropertyType.GetGenericArguments().Single();
+            var resourceManager = LoadResources(listType);
 
             switch (GetCollectionItemType(propertyInfo))
             {
                 case PropertyTypes.Text:
-                    return StringCollectionEdit(htmlHelper, propertyInfo, objectInstance);
+                    return StringCollectionEdit(htmlHelper, propertyInfo, objectInstance, propertyNameParts, resourceManager);
                 case PropertyTypes.Number:
                     htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
                     break;
@@ -324,13 +332,9 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return htmlStringBuilder.ToString();
         }
 
-        private static string StringCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance)
+        private static string StringCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var propertyNameParts = new List<string>();
-            //propertyNameParts.AddRange(prefixes);
-            propertyNameParts.Add(propertyInfo.Name);
 
             var model = new StringCollectionEditViewModel
             {
@@ -341,6 +345,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             {
                 model.Items.Add(new StringCollectionEditItemViewModel
                 {
+                    LabelText = GetLabelText(propertyInfo, resourceManager),
                     PropertyName = model.PropertyName,
                     ItemIndex = index++,
                     Value = item == null ? "" : item.ToString()
@@ -365,7 +370,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         #region Public Methods
         public static MvcHtmlString JobEditor(this HtmlHelper htmlHelper, EditJobViewModel model)
         {
-            return MvcHtmlString.Create(Editor(htmlHelper, model));
+            return MvcHtmlString.Create(Editor(htmlHelper, model, new List<string>()));
         }
         #endregion
     }
