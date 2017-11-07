@@ -338,14 +338,15 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             var model = new StringCollectionEditViewModel
             {
+                LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyName = string.Join(".", propertyNameParts)
             };
+
             var index = 0;
             foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
             {
                 model.Items.Add(new StringCollectionEditItemViewModel
                 {
-                    LabelText = GetLabelText(propertyInfo, resourceManager),
                     PropertyName = model.PropertyName,
                     ItemIndex = index++,
                     Value = item == null ? "" : item.ToString()
