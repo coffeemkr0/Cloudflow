@@ -241,10 +241,38 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return tagBuilder.ToString(TagRenderMode.SelfClosing);
         }
 
-        private static string HiddenInput(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance)
+        private static string Editor(HtmlHelper htmlHelper, object model)
         {
-            var value = propertyInfo.GetValue(objectInstance);
-            return Input(prefixes, propertyInfo.Name, value == null ? "" : value.ToString(), InputTypes.Hidden);
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var resourceManager = LoadResources(model.GetType());
+
+            foreach (var propertyInfo in model.GetType().GetSortedProperties())
+            {
+                switch (GetPropertyType(propertyInfo))
+                {
+                    case PropertyTypes.Hidden:
+                        htmlStringBuilder.AppendLine(Input(new List<string>(), propertyInfo.Name, propertyInfo.GetValue(model)?.ToString() ?? "", InputTypes.Hidden));
+                        break;
+                    case PropertyTypes.Text:
+                        htmlStringBuilder.AppendLine(TextEdit(new List<string>(), propertyInfo, model, resourceManager));
+                        break;
+                    case PropertyTypes.Number:
+                        htmlStringBuilder.AppendLine(NumericEdit(new List<string>(), propertyInfo, model, resourceManager));
+                        break;
+                    case PropertyTypes.Collection:
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model));
+                        break;
+                    case PropertyTypes.Complex:
+                        htmlStringBuilder.AppendLine(Editor(htmlHelper, propertyInfo.GetValue(model)));
+                        break;
+                    case PropertyTypes.Unknown:
+                        htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
+                        break;
+                }
+            }
+
+            return htmlStringBuilder.ToString();
         }
 
         private static string NumericEdit(List<string> prefixes, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
@@ -332,46 +360,13 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             return tagBuilder.ToString(TagRenderMode.Normal);
         }
-
         #endregion
 
-        private static string Editor(HtmlHelper htmlHelper, object model)
-        {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var resourceManager = LoadResources(model.GetType());
-
-            foreach (var propertyInfo in model.GetType().GetSortedProperties())
-            {
-                switch (GetPropertyType(propertyInfo))
-                {
-                    case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(HiddenInput(new List<string>(), propertyInfo, model));
-                        break;
-                    case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(new List<string>(), propertyInfo, model, resourceManager));
-                        break;
-                    case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(new List<string>(), propertyInfo, model, resourceManager));
-                        break;
-                    case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model));
-                        break;
-                    case PropertyTypes.Complex:
-                        htmlStringBuilder.AppendLine(Editor(htmlHelper, propertyInfo.GetValue(model)));
-                        break;
-                    case PropertyTypes.Unknown:
-                        htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
-                        break;
-                }
-            }
-
-            return htmlStringBuilder.ToString();
-        }
-
+        #region Public Methods
         public static MvcHtmlString JobEditor(this HtmlHelper htmlHelper, EditJobViewModel model)
         {
             return MvcHtmlString.Create(Editor(htmlHelper, model));
         }
+        #endregion
     }
 }
