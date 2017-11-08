@@ -1,36 +1,30 @@
 ﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ComplexCollectionEditViewModel
 
-<div class="form-group stringCollectionEdit" data-propertyname="@Model.PropertyName">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span>@Model.LabelText</span>
+<section class="container-fluid">
+    <div class="col-md-3 panel panel-default">
+        <div class="panel-body">
+            <div>
+                <a data-toggle="modal" data-target="#someTarget" class="btn btn-default" href="#">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add...
+                </a>
+            </div>
 
-            <div class="btn-group btn-group-sm">
-                <button class="btn btn-toolbar btn-success stringCollectionEdit__addButton" type="button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                </button>
-                <button class="btn btn-toolbar btn-danger stringCollectionEdit__removeButton" type="button">
-                    <i class="glyphicon glyphicon-remove"></i>
-                </button>
-            </div>
-            <div class="btn-group btn-group-sm">
-                <button class="btn btn-toolbar btn-default stringCollectionEdit__upButton" type="button">
-                    <i class="glyphicon glyphicon-arrow-up"></i>
-                </button>
-                <button class="btn btn-toolbar btn-default stringCollectionEdit__downButton" type="button">
-                    <i class="glyphicon glyphicon-arrow-down"></i>
-                </button>
-            </div>
-        </div>
-        <div class="panel-body stringCollectionEdit__items">
-            <table class="table table-bordered table-striped stringCollectionEdit__itemsTable">
-                <tbody>
-                    @foreach (var item in Model.Items)
-                    {
-                        @Html.Partial("~/Views/ExtensionConfigurationEdits/ComplexCollectionEditItem.cshtml", item);
-                    }
-                </tbody>
-            </table>
+            <hr />
+
+            <ul class="nav nav-pills nav-stacked sortable">
+                @*@foreach (var trigger in Model)
+                {
+                    @Html.Partial("_TriggerNavigationItem", trigger)
+                }*@
+            </ul>
         </div>
     </div>
-</div>
+
+    <div class="tab-content col-md-9">
+        @*@foreach (var trigger in Model)
+        {
+            @Html.Partial("_Trigger", trigger)
+        }*@
+    </div>
+</section>
