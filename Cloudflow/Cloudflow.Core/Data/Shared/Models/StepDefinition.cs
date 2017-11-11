@@ -37,7 +37,7 @@ namespace Cloudflow.Core.Data.Shared.Models
         #endregion
 
         #region Public Methods
-        public static StepDefinition CreateTestItem(string extensionsAssemblyPath)
+        public static StepDefinition CreateTestItem(string extensionsAssemblyPath, string name)
         {
             StepDefinition stepDefinition = new StepDefinition()
             {
@@ -51,7 +51,7 @@ namespace Cloudflow.Core.Data.Shared.Models
                 stepDefinition.ConfigurationExtensionId, extensionsAssemblyPath);
 
             var logStepConfiguration = stepConfigurationController.CreateNewConfiguration();
-            logStepConfiguration.Name = "Hard coded log step";
+            logStepConfiguration.Name = name;
             logStepConfiguration.GetType().GetProperty("LogMessage").SetValue(logStepConfiguration, "Hello World!");
             stepDefinition.Configuration = logStepConfiguration.ToJson();
 

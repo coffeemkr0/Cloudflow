@@ -51,8 +51,10 @@ namespace Cloudflow.Core.Data.Shared.Models
             jobConfiguration.Name = "Hard coded test job";
             jobDefinition.Configuration = jobConfiguration.ToJson();
 
-            jobDefinition.TriggerDefinitions.Add(TriggerDefinition.CreateTestItem(extensionsAssemblyPath));
-            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath));
+            jobDefinition.TriggerDefinitions.Add(TriggerDefinition.CreateTestItem(extensionsAssemblyPath, "Trigger 1"));
+            jobDefinition.TriggerDefinitions.Add(TriggerDefinition.CreateTestItem(extensionsAssemblyPath, "Trigger 2"));
+            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath, "Step 1"));
+            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath, "Step 2"));
 
             return jobDefinition;
         }

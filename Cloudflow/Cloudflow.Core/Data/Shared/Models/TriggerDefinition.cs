@@ -37,7 +37,7 @@ namespace Cloudflow.Core.Data.Shared.Models
         #endregion
 
         #region Public Methods
-        public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath)
+        public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath, string name)
         {
             TriggerDefinition triggerDefinition = new TriggerDefinition()
             {
@@ -51,9 +51,12 @@ namespace Cloudflow.Core.Data.Shared.Models
                 triggerDefinition.ConfigurationExtensionId, extensionsAssemblyPath);
 
             var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
-            timerConfiguration.Name = "Hard coded timer trigger";
+            timerConfiguration.Name = name;
             timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
             triggerDefinition.Configuration = timerConfiguration.ToJson();
+
+            triggerDefinition.TriggerConditionDefinitions.Add(TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 1"));
+            triggerDefinition.TriggerConditionDefinitions.Add(TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 2"));
 
             return triggerDefinition;
         }
