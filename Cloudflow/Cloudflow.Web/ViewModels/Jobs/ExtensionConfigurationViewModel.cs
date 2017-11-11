@@ -10,9 +10,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class ExtensionConfigurationViewModel
     {
         [Hidden]
-        public Guid Id { get; set; }
-
-        [Hidden]
         public Guid ExtensionId { get; set; }
 
         [Hidden]

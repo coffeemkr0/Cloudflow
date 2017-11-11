@@ -11,6 +11,9 @@ namespace Cloudflow.Web.ViewModels.Jobs
     {
         #region Properties
         [Hidden]
+        public Guid TriggerDefinitionId { get; set; }
+
+        [Hidden]
         public bool Deleted { get; set; }
 
         [Hidden]

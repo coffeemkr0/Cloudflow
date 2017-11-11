@@ -451,12 +451,9 @@
     <Content Include="Views\Agents\Details.cshtml" />
     <Content Include="Views\Agents\Edit.cshtml" />
     <Content Include="Views\Agents\Index.cshtml" />
-    <Content Include="Views\Jobs\_Triggers.cshtml" />
-    <Content Include="Views\Jobs\_TriggerNavigationItem.cshtml" />
     <Content Include="Views\Shared\ExtensionBrowser.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
-    <Content Include="Views\Jobs\_Trigger.cshtml" />
     <Content Include="Views\Jobs\EditJob.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEdit.cshtml" />

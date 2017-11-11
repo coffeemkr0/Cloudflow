@@ -12,6 +12,9 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class EditJobViewModel
     {
         #region Properties
+        [Hidden]
+        public Guid JobDefinitionId { get; set; }
+
         [PropertyGroupAttribute("GeneralTabText")]
         [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
@@ -39,7 +42,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         {
             var model = new EditJobViewModel();
 
-            model.ExtensionConfiguration.Id = jobDefinition.JobDefinitionId;
+            model.JobDefinitionId = jobDefinition.JobDefinitionId;
             model.ExtensionConfiguration.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
             model.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = jobDefinition.ConfigurationExtensionAssemblyPath;
 
@@ -51,7 +54,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
             {
                 var triggerViewModel = new TriggerViewModel();
-                triggerViewModel.ExtensionConfiguration.Id = triggerDefinition.TriggerDefinitionId;
+                triggerViewModel.TriggerDefinitionId = triggerDefinition.TriggerDefinitionId;
                 triggerViewModel.Index = index;
                 if (index == 0) triggerViewModel.Active = true;
                 triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
@@ -68,7 +71,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 {
                     var conditionConfigurationViewModel = new ConditionViewModel();
                     conditionConfigurationViewModel.ViewModelPropertyName = $"Triggers[{index}]";
-                    conditionConfigurationViewModel.ExtensionConfiguration.Id = conditionDefinition.TriggerConditionDefinitionId;
+                    conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId;
                     conditionConfigurationViewModel.Index = conditionIndex;
                     if (conditionIndex == 0) conditionConfigurationViewModel.Active = true;
 
@@ -91,7 +94,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             foreach (var stepDefinition in jobDefinition.StepDefinitions.OrderBy(i => i.Index))
             {
                 var stepViewModel = new StepViewModel();
-                stepViewModel.ExtensionConfiguration.Id = stepDefinition.StepDefinitionId;
+                stepViewModel.StepDefinitionId = stepDefinition.StepDefinitionId;
                 stepViewModel.Index = index;
                 if (index == 0) stepViewModel.Active = true;
                 stepViewModel.ExtensionConfiguration.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
@@ -111,18 +114,18 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void Save(ServerDbContext serverDbContext)
         {
-            var jobDefinition = serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == this.ExtensionConfiguration.Id);
+            var jobDefinition = serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == this.JobDefinitionId);
 
             jobDefinition.Version += 1;
             jobDefinition.Configuration = this.ExtensionConfiguration.Configuration.ToJson();
 
-            var deletedTriggerIds = this.Triggers.Where(i => i.Deleted).Select(i => i.ExtensionConfiguration.Id).ToList();
+            var deletedTriggerIds = this.Triggers.Where(i => i.Deleted).Select(i => i.TriggerDefinitionId).ToList();
             serverDbContext.TriggerDefinitions.RemoveRange(serverDbContext.TriggerDefinitions.Where(i => deletedTriggerIds.Contains(i.TriggerDefinitionId)));
 
             int index = 0;
             foreach (var trigger in this.Triggers.OrderBy(i => i.Index))
             {
-                var triggerDefinition = serverDbContext.TriggerDefinitions.FirstOrDefault(i => i.TriggerDefinitionId == trigger.ExtensionConfiguration.Id);
+                var triggerDefinition = serverDbContext.TriggerDefinitions.FirstOrDefault(i => i.TriggerDefinitionId == trigger.TriggerDefinitionId);
 
                 if (triggerDefinition != null)
                 {
@@ -142,13 +145,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
 
-                var deletedConditionIds = trigger.Conditions.Where(i => i.Deleted).Select(i => i.ExtensionConfiguration.Id).ToList();
+                var deletedConditionIds = trigger.Conditions.Where(i => i.Deleted).Select(i => i.ConditionDefinitionId).ToList();
                 serverDbContext.TriggerConditionDefinitions.RemoveRange(serverDbContext.TriggerConditionDefinitions.Where(i => deletedConditionIds.Contains(i.TriggerConditionDefinitionId)));
 
                 var conditionIndex = 0;
                 foreach (var condition in trigger.Conditions)
                 {
-                    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.ExtensionConfiguration.Id);
+                    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.ConditionDefinitionId);
 
                     if (conditionDefinition != null)
                     {
@@ -174,13 +177,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 index += 1;
             }
 
-            var deletedStepIds = this.Steps.Where(i => i.Deleted).Select(i => i.ExtensionConfiguration.Id).ToList();
+            var deletedStepIds = this.Steps.Where(i => i.Deleted).Select(i => i.StepDefinitionId).ToList();
             serverDbContext.StepDefinitions.RemoveRange(serverDbContext.StepDefinitions.Where(i => deletedStepIds.Contains(i.StepDefinitionId)));
 
             index = 0;
             foreach (var step in this.Steps.OrderBy(i => i.Index))
             {
-                var stepDefinition = serverDbContext.StepDefinitions.FirstOrDefault(i => i.StepDefinitionId == step.ExtensionConfiguration.Id);
+                var stepDefinition = serverDbContext.StepDefinitions.FirstOrDefault(i => i.StepDefinitionId == step.StepDefinitionId);
                 if (stepDefinition != null)
                 {
                     stepDefinition.Index = index;

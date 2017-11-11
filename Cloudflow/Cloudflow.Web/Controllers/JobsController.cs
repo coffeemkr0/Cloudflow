@@ -131,7 +131,7 @@ namespace Cloudflow.Web.Controllers
         {
             editJobViewModel.Save(_serverDbContext);
 
-            return RedirectToAction("Edit", new { editJobViewModel.ExtensionConfiguration.Id });
+            return RedirectToAction("Edit", new { editJobViewModel.JobDefinitionId });
         }
 
         // GET: Jobs/Delete/5
@@ -207,7 +207,7 @@ namespace Cloudflow.Web.Controllers
             var trigger = configurableExtensionBrowser.GetConfigurableExtension(triggerId);
             
             var triggerViewModel = new TriggerViewModel();
-            triggerViewModel.ExtensionConfiguration.Id = Guid.NewGuid();
+            triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
             triggerViewModel.Index = index;
             triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
             triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
@@ -237,7 +237,7 @@ namespace Cloudflow.Web.Controllers
             var step = configurableExtensionBrowser.GetConfigurableExtension(stepId);
             
             var stepViewModel = new StepViewModel();
-            stepViewModel.ExtensionConfiguration.Id = Guid.NewGuid();
+            stepViewModel.StepDefinitionId = Guid.NewGuid();
             stepViewModel.Index = index;
             stepViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(step.ExtensionId);
             stepViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
@@ -271,7 +271,7 @@ namespace Cloudflow.Web.Controllers
             {
                 ViewModelPropertyName = viewModelPropertyName
             };
-            conditionConfigurationViewModel.ExtensionConfiguration.Id = Guid.NewGuid();
+            conditionConfigurationViewModel.ConditionDefinitionId = Guid.NewGuid();
             conditionConfigurationViewModel.Index = index;
             conditionConfigurationViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(condition.ExtensionId);
             conditionConfigurationViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
