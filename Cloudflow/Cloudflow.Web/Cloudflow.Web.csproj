@@ -215,8 +215,8 @@
     <Compile Include="ViewModels\Agents\IndexViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\ObjectEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditItemViewModel.cs" />
-    <Compile Include="ViewModels\ExtensionConfigurationEdits\ComplexCollectionEditItemViewModel.cs" />
-    <Compile Include="ViewModels\ExtensionConfigurationEdits\ComplexCollectionEditViewModel.cs" />
+    <Compile Include="ViewModels\ExtensionConfigurationEdits\ObjectCollectionItemViewModel.cs" />
+    <Compile Include="ViewModels\ExtensionConfigurationEdits\ObjectCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabHeaderViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabPaneViewModel.cs" />
@@ -457,9 +457,9 @@
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
     <Content Include="Views\Jobs\EditJob.cshtml" />
-    <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditItem.cshtml" />
-    <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEdit.cshtml" />
-    <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditNavigationItem.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\ObjectCollectionItem.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\ObjectCollectionEdit.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\ObjectCollectionNavigationItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\TabHeader.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\TabPane.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ObjectEdit.cshtml" />

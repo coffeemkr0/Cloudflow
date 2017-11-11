@@ -5,17 +5,17 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
-    public class ComplexCollectionEditViewModel
+    public class ObjectCollectionEditViewModel
     {
         public string LabelText { get; set; }
 
         public List<String> PropertyNameParts { get; set; }
 
-        public List<ComplexCollectionEditItemViewModel> Items { get; set; }
+        public List<ObjectCollectionItemViewModel> Items { get; set; }
 
-        public ComplexCollectionEditViewModel()
+        public ObjectCollectionEditViewModel()
         {
-            this.Items = new List<ComplexCollectionEditItemViewModel>();
+            this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
         }
     }

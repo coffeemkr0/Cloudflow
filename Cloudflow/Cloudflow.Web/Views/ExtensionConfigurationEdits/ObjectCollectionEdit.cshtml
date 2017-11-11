@@ -1,4 +1,4 @@
-﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ComplexCollectionEditViewModel
+﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ObjectCollectionEditViewModel
 
 <section class="container-fluid">
     <div class="col-md-3 panel panel-default">
@@ -15,7 +15,7 @@
             <ul class="nav nav-pills nav-stacked sortable">
                 @foreach (var item in Model.Items)
                 {
-                    @Html.Partial("~/Views/ExtensionConfigurationEdits/ComplexCollectionEditNavigationItem.cshtml", item);
+                    @Html.Partial("~/Views/ExtensionConfigurationEdits/ObjectCollectionNavigationItem.cshtml", item);
                 }
             </ul>
         </div>
@@ -24,7 +24,7 @@
     <div class="tab-content col-md-9">
         @foreach (var item in Model.Items)
         {
-            @Html.Partial("~/Views/ExtensionConfigurationEdits/ComplexCollectionEditItem.cshtml", item);
+            @Html.Partial("~/Views/ExtensionConfigurationEdits/ObjectCollectionItem.cshtml", item);
         }
     </div>
 </section>

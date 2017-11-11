@@ -342,17 +342,17 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 case PropertyTypes.Collection:
                     return EditorNotImplemented(PropertyTypes.Collection, propertyInfo);
                 case PropertyTypes.Complex:
-                    return ComplexCollectionEdit(htmlHelper, propertyInfo, objectInstance, propertyNameParts, resourceManager);
+                    return ObjectCollectionEdit(htmlHelper, propertyInfo, objectInstance, propertyNameParts, resourceManager);
                 default:
                     return EditorNotImplemented(PropertyTypes.Collection, propertyInfo);
             }
         }
 
-        private static string ComplexCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
+        private static string ObjectCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            var model = new ComplexCollectionEditViewModel
+            var model = new ObjectCollectionEditViewModel
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyNameParts = propertyNameParts
@@ -366,7 +366,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 var itemPropertyName = itemPropertyNameParts.LastOrDefault();
                 if (itemPropertyName != null) itemPropertyName += $"[{index}]";
 
-                model.Items.Add(new ComplexCollectionEditItemViewModel
+                model.Items.Add(new ObjectCollectionItemViewModel
                 {
                     DisplayText = GetDisplayText(item),
                     Active = index == 0,
@@ -377,7 +377,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 index += 1;
             }
 
-            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/ComplexCollectionEdit.cshtml", model));
+            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/ObjectCollectionEdit.cshtml", model));
 
             return htmlStringBuilder.ToString();
         }
