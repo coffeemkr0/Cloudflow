@@ -205,6 +205,7 @@
     <Compile Include="Utility\HtmlHelpers\JobEditorHelper.cs" />
     <Compile Include="Utility\HtmlHelpers\ExtensionConfigurationHelper.cs" />
     <Compile Include="CustomModelBinder.cs" />
+    <Compile Include="Utility\HtmlHelpers\PropertyCollection.cs" />
     <Compile Include="Utility\PathHelpers.cs" />
     <Compile Include="Utility\ViewHelpers.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

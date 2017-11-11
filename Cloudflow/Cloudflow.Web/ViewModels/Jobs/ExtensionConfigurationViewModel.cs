@@ -37,7 +37,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public string ConfigurationExtensionAssemblyPath { get; set; }
 
-        [CreateTabAttribute("GeneralTabText")]
+        [PropertyGroupAttribute("GeneralTabText")]
         [DisplayOrder(0)]
         public ExtensionConfiguration Configuration { get; set; }
     }

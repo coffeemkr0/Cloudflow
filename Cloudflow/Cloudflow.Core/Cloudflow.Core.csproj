@@ -107,7 +107,6 @@
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
     <Compile Include="Extensions\Controllers\ConditionController.cs" />
-    <Compile Include="Extensions\ExtensionAttributes\CreateTabAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayOrderAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayTextPropertyName.cs" />
     <Compile Include="Extensions\ExtensionAttributes\LabelTextResourceAttribute.cs" />
@@ -115,6 +114,7 @@
     <Compile Include="Extensions\ConfigurableExtensionBrowser.cs" />
     <Compile Include="Extensions\ExtensionAttributes\ExportConfigurableExtensionAttribute.cs" />
     <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\PropertyGroupAttribute.cs" />
     <Compile Include="Extensions\ExtensionConfiguration.cs" />
     <Compile Include="Extensions\IConfigurableExtensionMetaData.cs" />
     <Compile Include="Extensions\IConfigurableExtension.cs" />

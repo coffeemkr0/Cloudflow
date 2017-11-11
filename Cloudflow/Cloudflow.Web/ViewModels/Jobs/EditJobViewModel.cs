@@ -12,11 +12,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class EditJobViewModel : ExtensionConfigurationViewModel
     {
         #region Properties
-        [CreateTabAttribute("TriggersTabText")]
+        [PropertyGroupAttribute("TriggersTabText")]
         [DisplayOrder(1)]
         public List<TriggerViewModel> Triggers { get; set; }
 
-        [CreateTabAttribute("StepsTabText")]
+        [PropertyGroupAttribute("StepsTabText")]
         [DisplayOrder(2)]
         public List<StepViewModel> Steps { get; set; }
         #endregion
