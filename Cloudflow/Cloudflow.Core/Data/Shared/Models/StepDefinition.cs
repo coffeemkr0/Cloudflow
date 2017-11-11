@@ -37,10 +37,11 @@ namespace Cloudflow.Core.Data.Shared.Models
         #endregion
 
         #region Public Methods
-        public static StepDefinition CreateTestItem(string extensionsAssemblyPath, string name)
+        public static StepDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index)
         {
             StepDefinition stepDefinition = new StepDefinition()
             {
+                Index = index,
                 ExtensionId = Guid.Parse("43D6FD16-0344-4204-AEE9-A09B3998C017"),
                 ExtensionAssemblyPath = extensionsAssemblyPath,
                 ConfigurationExtensionId = Guid.Parse("191A3C1A-FD25-4790-8141-DFC132DA4970"),

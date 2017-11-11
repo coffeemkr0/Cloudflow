@@ -64,7 +64,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 model.Triggers.Add(triggerViewModel);
 
                 var conditionIndex = 0;
-                foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions)
+                foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions.OrderBy(i => i.Index))
                 {
                     var conditionConfigurationViewModel = new ConditionViewModel();
                     conditionConfigurationViewModel.ViewModelPropertyName = $"Triggers[{index}]";

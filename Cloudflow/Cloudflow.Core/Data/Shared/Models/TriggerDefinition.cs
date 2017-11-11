@@ -37,10 +37,11 @@ namespace Cloudflow.Core.Data.Shared.Models
         #endregion
 
         #region Public Methods
-        public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath, string name)
+        public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index)
         {
             TriggerDefinition triggerDefinition = new TriggerDefinition()
             {
+                Index = index,
                 ExtensionId = Guid.Parse("DABF8963-4B59-448E-BE5A-143EBDF123EF"),
                 ExtensionAssemblyPath = extensionsAssemblyPath,
                 ConfigurationExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88"),
@@ -55,8 +56,8 @@ namespace Cloudflow.Core.Data.Shared.Models
             timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
             triggerDefinition.Configuration = timerConfiguration.ToJson();
 
-            triggerDefinition.TriggerConditionDefinitions.Add(TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 1"));
-            triggerDefinition.TriggerConditionDefinitions.Add(TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 2"));
+            triggerDefinition.TriggerConditionDefinitions.Add(TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 1", 0));
+            triggerDefinition.TriggerConditionDefinitions.Add(TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 2", 1));
 
             return triggerDefinition;
         }
