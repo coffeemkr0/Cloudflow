@@ -213,6 +213,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Agents\IndexViewModel.cs" />
+    <Compile Include="ViewModels\ExtensionConfigurationEdits\ObjectEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditItemViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\ComplexCollectionEditItemViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\ComplexCollectionEditViewModel.cs" />
@@ -461,6 +462,7 @@
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditNavigationItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\TabHeader.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\TabPane.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\ObjectEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />

@@ -217,37 +217,14 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             var propertyCollection = new PropertyCollection(model, resourceManager);
 
-            //Render property groups as a tab header
-            if (propertyCollection.GroupedProperties.Count > 0)
+            var objectEditViewModel = new ObjectEditViewModel
             {
-                htmlStringBuilder.AppendLine(TabHeader(htmlHelper, propertyCollection.GroupedProperties));
-            }
+                Model = model,
+                PropertyNameParts = propertyNameParts,
+                PropertyCollection = propertyCollection
+            };
 
-            //Render hidden properties as hidden inputs
-            foreach (var propertyInfo in propertyCollection.HiddenProperties)
-            {
-                var thisPropertyNameParts = new List<string>();
-                thisPropertyNameParts.AddRange(propertyNameParts);
-                thisPropertyNameParts.Add(propertyInfo.Name);
-
-                htmlStringBuilder.AppendLine(Input(thisPropertyNameParts, propertyInfo.GetValue(model)?.ToString() ?? "", InputTypes.Hidden));
-            }
-
-            //Render ungrouped properties first
-            foreach (var propertyInfo in propertyCollection.UngroupedProperties)
-            {
-                var thisPropertyNameParts = new List<string>();
-                thisPropertyNameParts.AddRange(propertyNameParts);
-                thisPropertyNameParts.Add(propertyInfo.Name);
-
-                htmlStringBuilder.AppendLine(PropertyEdit(htmlHelper, model, resourceManager, propertyInfo, thisPropertyNameParts));
-            }
-
-            //Render grouped properties as tab panes
-            foreach (var propertyGroup in propertyCollection.GroupedProperties)
-            {
-                htmlStringBuilder.AppendLine(TabPane(htmlHelper, propertyGroup, model, propertyNameParts, propertyCollection.GroupedProperties.IndexOf(propertyGroup) == 0));
-            }
+            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/ObjectEdit.cshtml", objectEditViewModel));
 
             return htmlStringBuilder.ToString();
         }
@@ -256,62 +233,28 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
+            List<string> thisPropertyNameParts = new List<string>();
+            thisPropertyNameParts.AddRange(propertyNameParts);
+            thisPropertyNameParts.Add(propertyInfo.Name);
+
             switch (GetPropertyType(propertyInfo))
             {
                 case PropertyTypes.Text:
-                    htmlStringBuilder.AppendLine(TextEdit(propertyNameParts, propertyInfo, model, resourceManager));
+                    htmlStringBuilder.AppendLine(TextEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
                     break;
                 case PropertyTypes.Number:
-                    htmlStringBuilder.AppendLine(NumericEdit(propertyNameParts, propertyInfo, model, resourceManager));
+                    htmlStringBuilder.AppendLine(NumericEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
                     break;
                 case PropertyTypes.Collection:
-                    htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, propertyNameParts));
+                    htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, thisPropertyNameParts));
                     break;
                 case PropertyTypes.Complex:
-                    htmlStringBuilder.AppendLine(ObjectEdit(htmlHelper, propertyInfo.GetValue(model), propertyNameParts));
+                    htmlStringBuilder.AppendLine(ObjectEdit(htmlHelper, propertyInfo.GetValue(model), thisPropertyNameParts));
                     break;
                 case PropertyTypes.Unknown:
                     htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
                     break;
             }
-
-            return htmlStringBuilder.ToString();
-        }
-
-        private static string TabHeader(HtmlHelper htmlHelper, List<PropertyCollection.PropertyGroup> propertyGroups)
-        {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var tabHeaderModel = new TabHeaderViewModel();
-            foreach (var propertyGroup in propertyGroups)
-            {
-                tabHeaderModel.Items.Add(new TabHeaderViewModel.TabHeaderItem
-                {
-                    Id = propertyGroup.GroupId,
-                    Active = propertyGroups.IndexOf(propertyGroup) == 0,
-                    DisplayText = propertyGroup.DisplayText
-                });
-            }
-
-            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/TabHeader.cshtml", tabHeaderModel));
-
-            return htmlStringBuilder.ToString();
-        }
-
-        private static string TabPane(HtmlHelper htmlHelper, PropertyCollection.PropertyGroup propertyGroup, object model, List<string> propertyNameParts, bool active)
-        {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var tabPaneModel = new TabPaneViewModel
-            {
-                Id = propertyGroup.GroupId,
-                Active = active,
-                Model = model,
-                PropertyNameParts = propertyNameParts,
-                Properties = propertyGroup.Properties
-            };
-
-            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/TabPane.cshtml", tabPaneModel));
 
             return htmlStringBuilder.ToString();
         }

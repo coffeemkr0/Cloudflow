@@ -1,0 +1,47 @@
+﻿@using Cloudflow.Web.Utility.HtmlHelpers
+@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ObjectEditViewModel
+
+
+@*Render property groups as a tab header*@
+@if (Model.PropertyCollection.GroupedProperties.Count > 0)
+{
+    <ul class="nav nav-tabs">
+        @foreach (var propertyGroup in Model.PropertyCollection.GroupedProperties)
+        {
+            <li role="presentation" class="@(Model.PropertyCollection.GroupedProperties.IndexOf(propertyGroup) == 0 ? "active" : "")">
+                <a href="#@(propertyGroup.GroupId)" role="tab" data-toggle="tab">@propertyGroup.DisplayText</a>
+            </li>
+        }
+    </ul>
+}
+
+@*Render hidden properties as hidden inputs*@
+@foreach (var property in Model.PropertyCollection.HiddenProperties)
+{
+    var thisPropertyNameParts = new List<string>();
+    thisPropertyNameParts.AddRange(Model.PropertyNameParts);
+    thisPropertyNameParts.Add(property.Name);
+
+    var propertyValue = property.GetValue(Model.Model);
+
+    <input type="hidden" name="@(string.Join(".", thisPropertyNameParts))" value="@(propertyValue?.ToString() ?? "")" />
+}
+
+@*Render ungrouped properties first*@
+@foreach (var property in Model.PropertyCollection.UngroupedProperties)
+{
+    @Html.CreatePropertyEdit(Model.Model, property, Model.PropertyNameParts)
+}
+
+@*Render grouped properties as tab panes*@
+<div class="tab-content">
+@foreach (var propertyGroup in Model.PropertyCollection.GroupedProperties)
+{
+    <div role="tabpanel" class="tab-pane @(Model.PropertyCollection.GroupedProperties.IndexOf(propertyGroup) == 0 ? "active" : "")" id="@(propertyGroup.GroupId)">
+        @foreach (var property in propertyGroup.Properties)
+        {
+            @Html.CreatePropertyEdit(Model.Model, property, Model.PropertyNameParts)
+        }
+    </div>
+}
+</div>
