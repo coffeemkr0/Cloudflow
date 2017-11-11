@@ -88,6 +88,24 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 .ToArray();
         }
 
+        private static Dictionary<string, List<PropertyInfo>> GetTabbedProperties(this Type type, ResourceManager resourceManager)
+        {
+            Dictionary<string, List<PropertyInfo>> tabbedProperties = new Dictionary<string, List<PropertyInfo>>();
+
+            foreach (var propertyInfo in type.GetSortedProperties().Where(i => i.GetCustomAttribute(typeof(CreateTabAttribute)) != null))
+            {
+                var tabText = GetTabText(propertyInfo, resourceManager);
+
+                if (!tabbedProperties.ContainsKey(tabText))
+                {
+                    tabbedProperties.Add(tabText, new List<PropertyInfo>());
+                }
+                tabbedProperties[tabText].Add(propertyInfo);
+            }
+
+            return tabbedProperties;
+        }
+
         private static bool IsTextType(this Type type)
         {
             //Check to see if the type is text or if it's nullable text
@@ -199,6 +217,8 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string GetDisplayText(object model)
         {
+            if (model == null) return "Null";
+
             var attribute = (DisplayTextPropertyName)model.GetType().GetCustomAttribute(typeof(DisplayTextPropertyName));
             if (attribute != null)
             {
@@ -220,11 +240,30 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
+        private static string GetTabText(PropertyInfo propertyInfo, ResourceManager resourceManager)
+        {
+            var attribute = (CreateTabAttribute)propertyInfo.GetCustomAttribute(typeof(CreateTabAttribute));
+            if (attribute != null && resourceManager != null)
+            {
+                return resourceManager.GetString(attribute.TabTextResourceName);
+            }
+            else
+            {
+                return propertyInfo.Name;
+            }
+        }
+
         private static string GetEditorHtml(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
             var resourceManager = LoadResources(model.GetType());
+
+            var tabbedProperties = GetTabbedProperties(model.GetType(), resourceManager);
+            if (tabbedProperties.Count > 1)
+            {
+                htmlStringBuilder.AppendLine(TabHeader(htmlHelper, tabbedProperties.Keys.ToList()));
+            }
 
             foreach (var propertyInfo in model.GetType().GetSortedProperties())
             {
@@ -254,6 +293,26 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                         break;
                 }
             }
+
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string TabHeader(HtmlHelper htmlHelper, List<string> tabs)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var tabHeaderModel = new TabHeaderViewModel();
+            foreach (var tab in tabs)
+            {
+                tabHeaderModel.Items.Add(new TabHeaderViewModel.TabHeaderItem
+                {
+                    Id = Guid.NewGuid(),
+                    Active = tabs.IndexOf(tab) == 0,
+                    DisplayText = tab
+                });
+            }
+
+            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/TabHeader.cshtml", tabHeaderModel));
 
             return htmlStringBuilder.ToString();
         }

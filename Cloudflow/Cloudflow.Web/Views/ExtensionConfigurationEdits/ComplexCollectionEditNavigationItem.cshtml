@@ -2,8 +2,8 @@
 
 <li role="presentation"
     class="complexCollectionNavigationItem sortableNavigationItem @(Model.Active ? "active" : "")"
-    data-sortable-itemid="tab@(Model.Id)">
-    <a href="#tab@(Model.Id)" role="tab" data-toggle="tab">
+    data-sortable-itemid="@(Model.Id)">
+    <a href="#@(Model.Id)" role="tab" data-toggle="tab">
         @Model.DisplayText
         <i data-stepid="@Model.Id" class="deleteStep glyphicon glyphicon-remove pull-right"></i>
     </a>

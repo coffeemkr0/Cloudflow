@@ -1,0 +1,10 @@
+﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.TabHeaderViewModel
+
+<ul class="nav nav-tabs">
+    @foreach (var item in Model.Items)
+    {
+        <li role="presentation" class="@(item.Active ? "active" : "")">
+            <a href="#@(item.Id)" role="tab" data-toggle="tab">@item.DisplayText</a>
+        </li>
+    }
+</ul>

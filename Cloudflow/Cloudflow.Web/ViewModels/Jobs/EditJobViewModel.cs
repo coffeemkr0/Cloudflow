@@ -1,6 +1,7 @@
 ﻿using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class EditJobViewModel : ExtensionConfigurationViewModel
     {
         #region Properties
+        [CreateTabAttribute("TriggersTabText")]
+        [DisplayOrder(1)]
         public List<TriggerViewModel> Triggers { get; set; }
 
+        [CreateTabAttribute("StepsTabText")]
+        [DisplayOrder(2)]
         public List<StepViewModel> Steps { get; set; }
         #endregion
 
