@@ -1,20 +1,38 @@
-﻿using System;
+﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class StepViewModel : ExtensionConfigurationViewModel
+    [DisplayTextPropertyName("ExtensionConfiguration.Configuration.Name")]
+    public class StepViewModel
     {
         #region Properties
-        public List<ConditionConfigurationViewModel> Conditions { get; set; }
+        [Hidden]
+        public bool Deleted { get; set; }
+
+        [Hidden]
+        public bool Active { get; set; }
+
+        [Hidden]
+        public int Index { get; set; }
+
+        [PropertyGroupAttribute("GeneralTabText")]
+        [DisplayOrder(0)]
+        public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
+
+        [PropertyGroupAttribute("ConditionsTabText")]
+        [DisplayOrder(1)]
+        public List<ConditionViewModel> Conditions { get; set; }
         #endregion
 
         #region Constructors
         public StepViewModel()
         {
-            this.Conditions = new List<ConditionConfigurationViewModel>();
+            this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
+            this.Conditions = new List<ConditionViewModel>();
         }
         #endregion
     }

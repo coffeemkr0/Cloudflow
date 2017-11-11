@@ -7,23 +7,10 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    [DisplayTextPropertyName("Configuration.Name")]
     public class ExtensionConfigurationViewModel
     {
         [Hidden]
         public Guid Id { get; set; }
-
-        [Hidden]
-        public bool Deleted { get; set; }
-
-        [Hidden]
-        public bool Active { get; set; }
-
-        [Hidden]
-        public int Index { get; set; }
-
-        [Hidden]
-        public int Position { get; set; }
 
         [Hidden]
         public Guid ExtensionId { get; set; }
@@ -37,8 +24,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public string ConfigurationExtensionAssemblyPath { get; set; }
 
-        [PropertyGroupAttribute("GeneralTabText")]
-        [DisplayOrder(0)]
         public ExtensionConfiguration Configuration { get; set; }
     }
 }

@@ -61,6 +61,15 @@ namespace Cloudflow.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conditions.
+        /// </summary>
+        internal static string ConditionsTabText {
+            get {
+                return ResourceManager.GetString("ConditionsTabText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         internal static string GeneralTabText {

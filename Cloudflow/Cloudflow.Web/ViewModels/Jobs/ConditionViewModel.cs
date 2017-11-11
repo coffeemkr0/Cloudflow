@@ -7,7 +7,7 @@ using System.Web;
 namespace Cloudflow.Web.ViewModels.Jobs
 {
     [DisplayTextPropertyName("ExtensionConfiguration.Configuration.Name")]
-    public class TriggerViewModel
+    public class ConditionViewModel
     {
         #region Properties
         [Hidden]
@@ -19,20 +19,17 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public int Index { get; set; }
 
-        [PropertyGroupAttribute("GeneralTabText")]
         [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        [PropertyGroupAttribute("ConditionsTabText")]
-        [DisplayOrder(1)]
-        public List<ConditionViewModel> Conditions { get; set; }
+        [Hidden]
+        public string ViewModelPropertyName { get; set; }
         #endregion
 
         #region Constructors
-        public TriggerViewModel()
+        public ConditionViewModel()
         {
             this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
-            this.Conditions = new List<ConditionViewModel>();
         }
         #endregion
     }

@@ -108,21 +108,6 @@ namespace Cloudflow.Web.Controllers
             return View(jobDefinition);
         }
 
-        // GET: Jobs/Edit/5
-        public ActionResult Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
-            if (jobDefinition == null)
-            {
-                return HttpNotFound();
-            }
-            return View(EditViewModel.FromJobDefinition(jobDefinition));
-        }
-
         public ActionResult EditJob(Guid? id)
         {
             if (id == null)
@@ -142,11 +127,11 @@ namespace Cloudflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditViewModel editViewModel)
+        public ActionResult EditJob(EditJobViewModel editJobViewModel)
         {
-            editViewModel.Save(_serverDbContext);
+            editJobViewModel.Save(_serverDbContext);
 
-            return RedirectToAction("Edit", new { editViewModel.JobConfigurationViewModel.Id });
+            return RedirectToAction("Edit", new { editJobViewModel.ExtensionConfiguration.Id });
         }
 
         // GET: Jobs/Delete/5
@@ -222,18 +207,18 @@ namespace Cloudflow.Web.Controllers
             var trigger = configurableExtensionBrowser.GetConfigurableExtension(triggerId);
             
             var triggerViewModel = new TriggerViewModel();
-            triggerViewModel.Id = Guid.NewGuid();
+            triggerViewModel.ExtensionConfiguration.Id = Guid.NewGuid();
             triggerViewModel.Index = index;
-            triggerViewModel.ExtensionId = Guid.Parse(trigger.ExtensionId);
-            triggerViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
-            triggerViewModel.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
-            triggerViewModel.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
+            triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
+            triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
+            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
+            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
 
             var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationExtensionId),
                 extensionAssemblyPath);
 
-            triggerViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            triggerViewModel.Configuration.Name = "New Trigger";
+            triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
+            triggerViewModel.ExtensionConfiguration.Configuration.Name = "New Trigger";
 
             var triggerNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
                 "_TriggerNavigationItem", triggerViewModel);
@@ -250,26 +235,26 @@ namespace Cloudflow.Web.Controllers
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
             var step = configurableExtensionBrowser.GetConfigurableExtension(stepId);
-
-            var stepConfigurationViewModel = new ExtensionConfigurationViewModel();
-            stepConfigurationViewModel.Id = Guid.NewGuid();
-            stepConfigurationViewModel.Index = index;
-            stepConfigurationViewModel.ExtensionId = Guid.Parse(step.ExtensionId);
-            stepConfigurationViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
-            stepConfigurationViewModel.ConfigurationExtensionId = Guid.Parse(step.ConfigurationExtensionId);
-            stepConfigurationViewModel.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
+            
+            var stepViewModel = new StepViewModel();
+            stepViewModel.ExtensionConfiguration.Id = Guid.NewGuid();
+            stepViewModel.Index = index;
+            stepViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(step.ExtensionId);
+            stepViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
+            stepViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(step.ConfigurationExtensionId);
+            stepViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
 
             var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(step.ConfigurationExtensionId),
                 extensionAssemblyPath);
 
-            stepConfigurationViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            stepConfigurationViewModel.Configuration.Name = "New Step";
+            stepViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
+            stepViewModel.ExtensionConfiguration.Configuration.Name = "New Step";
 
 
             var stepNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_StepNavigationItem", stepConfigurationViewModel);
+                "_StepNavigationItem", stepViewModel);
             var stepConfigurationView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_StepConfiguration", stepConfigurationViewModel);
+                "_StepConfiguration", stepViewModel);
 
             return Json(new { stepNavigationItemView, stepConfigurationView });
         }
@@ -282,22 +267,22 @@ namespace Cloudflow.Web.Controllers
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
             var condition = configurableExtensionBrowser.GetConfigurableExtension(conditionId);
 
-            var conditionConfigurationViewModel = new ConditionConfigurationViewModel
+            var conditionConfigurationViewModel = new ConditionViewModel
             {
                 ViewModelPropertyName = viewModelPropertyName
             };
-            conditionConfigurationViewModel.Id = Guid.NewGuid();
+            conditionConfigurationViewModel.ExtensionConfiguration.Id = Guid.NewGuid();
             conditionConfigurationViewModel.Index = index;
-            conditionConfigurationViewModel.ExtensionId = Guid.Parse(condition.ExtensionId);
-            conditionConfigurationViewModel.ExtensionAssemblyPath = extensionAssemblyPath;
-            conditionConfigurationViewModel.ConfigurationExtensionId = Guid.Parse(condition.ConfigurationExtensionId);
-            conditionConfigurationViewModel.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
+            conditionConfigurationViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(condition.ExtensionId);
+            conditionConfigurationViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
+            conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(condition.ConfigurationExtensionId);
+            conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
 
             var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(condition.ConfigurationExtensionId),
                 extensionAssemblyPath);
 
-            conditionConfigurationViewModel.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            conditionConfigurationViewModel.Configuration.Name = "New Condition";
+            conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
+            conditionConfigurationViewModel.ExtensionConfiguration.Configuration.Name = "New Condition";
 
 
             var conditionNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,

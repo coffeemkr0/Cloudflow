@@ -203,7 +203,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utility\HtmlHelpers\JobEditorHelper.cs" />
-    <Compile Include="Utility\HtmlHelpers\ExtensionConfigurationHelper.cs" />
     <Compile Include="CustomModelBinder.cs" />
     <Compile Include="Utility\HtmlHelpers\PropertyCollection.cs" />
     <Compile Include="Utility\PathHelpers.cs" />
@@ -219,16 +218,14 @@
     <Compile Include="ViewModels\ExtensionConfigurationEdits\ComplexCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabHeaderViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\ConditionConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\EditViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\ExtensionBrowserViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Jobs\JobSummaryViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\StepsViewModel.cs" />
     <Compile Include="ViewModels\Runs\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
   </ItemGroup>
@@ -448,23 +445,17 @@
     <Content Include="Views\Jobs\Create.cshtml" />
     <Content Include="Views\Jobs\Delete.cshtml" />
     <Content Include="Views\Jobs\Details.cshtml" />
-    <Content Include="Views\Jobs\Edit.cshtml" />
     <Content Include="Views\Jobs\Index.cshtml" />
     <Content Include="Views\Agents\Create.cshtml" />
     <Content Include="Views\Agents\Delete.cshtml" />
     <Content Include="Views\Agents\Details.cshtml" />
     <Content Include="Views\Agents\Edit.cshtml" />
     <Content Include="Views\Agents\Index.cshtml" />
-    <Content Include="Views\Jobs\_Steps.cshtml" />
     <Content Include="Views\Jobs\_Triggers.cshtml" />
     <Content Include="Views\Jobs\_TriggerNavigationItem.cshtml" />
     <Content Include="Views\Shared\ExtensionBrowser.cshtml" />
-    <Content Include="Views\Jobs\_StepConfiguration.cshtml" />
-    <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
-    <Content Include="Views\Jobs\_ConditionNavigationItem.cshtml" />
-    <Content Include="Views\Jobs\_ConditionConfiguration.cshtml" />
     <Content Include="Views\Jobs\_Trigger.cshtml" />
     <Content Include="Views\Jobs\EditJob.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditItem.cshtml" />
