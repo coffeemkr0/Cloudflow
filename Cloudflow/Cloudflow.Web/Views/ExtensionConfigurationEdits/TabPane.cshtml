@@ -1,0 +1,9 @@
+﻿@using Cloudflow.Web.Utility.HtmlHelpers
+@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.TabPaneViewModel
+
+<div role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")" id="@(Model.Id)">
+    @foreach (var property in Model.Properties)
+    {
+        @Html.CreatePropertyEdit(Model.Model, property, Model.PropertyNameParts)
+    }
+</div>

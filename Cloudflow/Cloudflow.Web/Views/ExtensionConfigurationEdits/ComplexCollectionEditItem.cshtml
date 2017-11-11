@@ -2,6 +2,6 @@
 @model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ComplexCollectionEditItemViewModel
 
 <div role="tabpanel" class="sortableItem tab-pane @(Model.Active ? "active" : "")" id="@(Model.Id)">
-    @Html.CreateEdit(Model.Value, Model.PropertyNameParts)
+    @Html.CreateModelEdit(Model.Value, Model.PropertyNameParts)
 </div>
 

@@ -218,6 +218,7 @@
     <Compile Include="ViewModels\ExtensionConfigurationEdits\ComplexCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabHeaderViewModel.cs" />
+    <Compile Include="ViewModels\ExtensionConfigurationEdits\TabPaneViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
@@ -459,6 +460,7 @@
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditNavigationItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\TabHeader.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\TabPane.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />

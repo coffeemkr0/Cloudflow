@@ -220,7 +220,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             //Render property groups as a tab header
             if (propertyCollection.GroupedProperties.Count > 0)
             {
-                htmlStringBuilder.AppendLine(TabHeader(htmlHelper, propertyCollection.GroupedProperties.Keys.ToList()));
+                htmlStringBuilder.AppendLine(TabHeader(htmlHelper, propertyCollection.GroupedProperties));
             }
 
             //Render hidden properties as hidden inputs
@@ -243,21 +243,10 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 htmlStringBuilder.AppendLine(PropertyEdit(htmlHelper, model, resourceManager, propertyInfo, thisPropertyNameParts));
             }
 
-            //Render grouped properties as tab panels
+            //Render grouped properties as tab panes
             foreach (var propertyGroup in propertyCollection.GroupedProperties)
             {
-                //TODO:Render tab panel begin here
-
-                foreach (var propertyInfo in propertyGroup.Value)
-                {
-                    var thisPropertyNameParts = new List<string>();
-                    thisPropertyNameParts.AddRange(propertyNameParts);
-                    thisPropertyNameParts.Add(propertyInfo.Name);
-
-                    htmlStringBuilder.AppendLine(PropertyEdit(htmlHelper, model, resourceManager, propertyInfo, thisPropertyNameParts));
-                }
-
-                //TODO:Render tab panel end here
+                htmlStringBuilder.AppendLine(TabPane(htmlHelper, propertyGroup, model, propertyNameParts, propertyCollection.GroupedProperties.IndexOf(propertyGroup) == 0));
             }
 
             return htmlStringBuilder.ToString();
@@ -289,22 +278,40 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             return htmlStringBuilder.ToString();
         }
 
-        private static string TabHeader(HtmlHelper htmlHelper, List<string> tabs)
+        private static string TabHeader(HtmlHelper htmlHelper, List<PropertyCollection.PropertyGroup> propertyGroups)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
             var tabHeaderModel = new TabHeaderViewModel();
-            foreach (var tab in tabs)
+            foreach (var propertyGroup in propertyGroups)
             {
                 tabHeaderModel.Items.Add(new TabHeaderViewModel.TabHeaderItem
                 {
-                    Id = Guid.NewGuid(),
-                    Active = tabs.IndexOf(tab) == 0,
-                    DisplayText = tab
+                    Id = propertyGroup.GroupId,
+                    Active = propertyGroups.IndexOf(propertyGroup) == 0,
+                    DisplayText = propertyGroup.DisplayText
                 });
             }
 
             htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/TabHeader.cshtml", tabHeaderModel));
+
+            return htmlStringBuilder.ToString();
+        }
+
+        private static string TabPane(HtmlHelper htmlHelper, PropertyCollection.PropertyGroup propertyGroup, object model, List<string> propertyNameParts, bool active)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var tabPaneModel = new TabPaneViewModel
+            {
+                Id = propertyGroup.GroupId,
+                Active = active,
+                Model = model,
+                PropertyNameParts = propertyNameParts,
+                Properties = propertyGroup.Properties
+            };
+
+            htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/TabPane.cshtml", tabPaneModel));
 
             return htmlStringBuilder.ToString();
         }
@@ -469,12 +476,18 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         #endregion
 
         #region Public Methods
-        public static MvcHtmlString CreateEdit(this HtmlHelper htmlHelper, object model)
+        public static MvcHtmlString CreateModelEdit(this HtmlHelper htmlHelper, object model)
         {
-            return CreateEdit(htmlHelper, model, new List<string>());
+            return CreateModelEdit(htmlHelper, model, new List<string>());
         }
 
-        public static MvcHtmlString CreateEdit(this HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
+        public static MvcHtmlString CreatePropertyEdit(this HtmlHelper htmlHelper, object model, PropertyInfo propertyInfo, List<string> propertyNameParts)
+        {
+            var resourceManager = LoadResources(model.GetType());
+            return MvcHtmlString.Create(PropertyEdit(htmlHelper, model, resourceManager, propertyInfo, propertyNameParts));
+        }
+
+        public static MvcHtmlString CreateModelEdit(this HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
         {
             return MvcHtmlString.Create(ObjectEdit(htmlHelper, model, propertyNameParts));
         }

@@ -15,7 +15,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         public List<PropertyInfo> UngroupedProperties { get; set; }
 
-        public Dictionary<string,List<PropertyInfo>> GroupedProperties { get; set; }
+        public List<PropertyGroup> GroupedProperties { get; set; }
         #endregion
 
         #region Constructors
@@ -23,7 +23,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             this.HiddenProperties = new List<PropertyInfo>();
             this.UngroupedProperties = new List<PropertyInfo>();
-            this.GroupedProperties = new Dictionary<string, List<PropertyInfo>>();
+            this.GroupedProperties = new List<PropertyGroup>();
 
             var sortedProperties = GetSortedProperties(model.GetType());
 
@@ -43,11 +43,18 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                     }
                     else
                     {
-                        if (!this.GroupedProperties.ContainsKey(propertyGroupText))
+                        var propertyGroup = this.GroupedProperties.FirstOrDefault(i => i.DisplayText == propertyGroupText);
+
+                        if (propertyGroup == null)
                         {
-                            this.GroupedProperties.Add(propertyGroupText, new List<PropertyInfo>());
+                            propertyGroup = new PropertyGroup
+                            {
+                                DisplayText = propertyGroupText
+                            };
+                            this.GroupedProperties.Add(propertyGroup);
                         }
-                        this.GroupedProperties[propertyGroupText].Add(property);
+
+                        propertyGroup.Properties.Add(property);
                     }
                 }
             }
@@ -77,6 +84,27 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
 
             return "";
+        }
+        #endregion
+
+        #region PropertyGroup
+        public class PropertyGroup
+        {
+            #region Properties
+            public Guid GroupId { get; }
+
+            public string DisplayText { get; set; }
+
+            public List<PropertyInfo> Properties { get; set; }
+            #endregion
+
+            #region Constructors
+            public PropertyGroup()
+            {
+                this.GroupId = Guid.NewGuid();
+                this.Properties = new List<PropertyInfo>();
+            }
+            #endregion
         }
         #endregion
     }
