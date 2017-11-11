@@ -351,6 +351,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
                 model.Items.Add(new ComplexCollectionEditItemViewModel
                 {
+                    Active = index == 0,
                     PropertyNameParts = itemPropertyNameParts,
                     Value = item
                 });

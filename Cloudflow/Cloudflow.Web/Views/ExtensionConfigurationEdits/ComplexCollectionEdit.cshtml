@@ -15,12 +15,8 @@
             <ul class="nav nav-pills nav-stacked sortable">
                 @foreach (var item in Model.Items)
                 {
-
+                    @Html.Partial("~/Views/ExtensionConfigurationEdits/ComplexCollectionEditNavigationItem.cshtml", item);
                 }
-                @*@foreach (var trigger in Model)
-                {
-                    @Html.Partial("_TriggerNavigationItem", trigger)
-                }*@
             </ul>
         </div>
     </div>
