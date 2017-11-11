@@ -380,8 +380,6 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string CollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
             var listType = propertyInfo.PropertyType.GetGenericArguments().Single();
             var resourceManager = LoadResources(listType);
 
@@ -390,19 +388,14 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                 case PropertyTypes.Text:
                     return StringCollectionEdit(htmlHelper, propertyInfo, objectInstance, propertyNameParts, resourceManager);
                 case PropertyTypes.Number:
-                    htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
-                    break;
+                    return EditorNotImplemented(PropertyTypes.Collection, propertyInfo);
                 case PropertyTypes.Collection:
-                    htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
-                    break;
+                    return EditorNotImplemented(PropertyTypes.Collection, propertyInfo);
                 case PropertyTypes.Complex:
                     return ComplexCollectionEdit(htmlHelper, propertyInfo, objectInstance, propertyNameParts, resourceManager);
                 default:
-                    htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Collection, propertyInfo));
-                    break;
+                    return EditorNotImplemented(PropertyTypes.Collection, propertyInfo);
             }
-
-            return htmlStringBuilder.ToString();
         }
 
         private static string ComplexCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
