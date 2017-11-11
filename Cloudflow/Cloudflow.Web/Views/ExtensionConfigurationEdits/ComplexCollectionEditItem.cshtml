@@ -1,12 +1,4 @@
-﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ComplexCollectionEditItemViewModel
+﻿@using Cloudflow.Web.Utility.HtmlHelpers
+@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ComplexCollectionEditItemViewModel
 
-<tr>
-    <td class="stringCollectionEdit__itemSelector">
-        <input class="stringCollectionEdit__itemSelectorInput"
-               type="checkbox" />
-    </td>
-    <td class="stringCollectionEdit__item">
-        <input class="form-control input-sm stringCollectionEdit__itemInput"
-               type="text" name="@(Model.PropertyName)[@Model.ItemIndex]" value="@Model.Value" />
-    </td>
-</tr>
+@Html.CreateEdit(Model.Value, Model.PropertyNameParts)

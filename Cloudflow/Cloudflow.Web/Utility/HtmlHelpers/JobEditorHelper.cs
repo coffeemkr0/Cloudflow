@@ -197,6 +197,44 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
+        private static string GetEditorHtml(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
+        {
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            var resourceManager = LoadResources(model.GetType());
+
+            foreach (var propertyInfo in model.GetType().GetSortedProperties())
+            {
+                var thisPropertyNameParts = new List<string>();
+                thisPropertyNameParts.AddRange(propertyNameParts);
+                thisPropertyNameParts.Add(propertyInfo.Name);
+
+                switch (GetPropertyType(propertyInfo))
+                {
+                    case PropertyTypes.Hidden:
+                        htmlStringBuilder.AppendLine(Input(thisPropertyNameParts, propertyInfo.GetValue(model)?.ToString() ?? "", InputTypes.Hidden));
+                        break;
+                    case PropertyTypes.Text:
+                        htmlStringBuilder.AppendLine(TextEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
+                        break;
+                    case PropertyTypes.Number:
+                        htmlStringBuilder.AppendLine(NumericEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
+                        break;
+                    case PropertyTypes.Collection:
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, propertyNameParts));
+                        break;
+                    case PropertyTypes.Complex:
+                        htmlStringBuilder.AppendLine(GetEditorHtml(htmlHelper, propertyInfo.GetValue(model), thisPropertyNameParts));
+                        break;
+                    case PropertyTypes.Unknown:
+                        htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
+                        break;
+                }
+            }
+
+            return htmlStringBuilder.ToString();
+        }
+
         private static string Label(List<string> propertyNameParts, PropertyInfo propertyInfo, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
@@ -240,44 +278,6 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             tagBuilder.AddCssClass("form-control");
 
             return tagBuilder.ToString(TagRenderMode.SelfClosing);
-        }
-
-        private static string Editor(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
-        {
-            StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var resourceManager = LoadResources(model.GetType());
-
-            foreach (var propertyInfo in model.GetType().GetSortedProperties())
-            {
-                var thisPropertyNameParts = new List<string>();
-                thisPropertyNameParts.AddRange(propertyNameParts);
-                thisPropertyNameParts.Add(propertyInfo.Name);
-                
-                switch (GetPropertyType(propertyInfo))
-                {
-                    case PropertyTypes.Hidden:
-                        htmlStringBuilder.AppendLine(Input(thisPropertyNameParts, propertyInfo.GetValue(model)?.ToString() ?? "", InputTypes.Hidden));
-                        break;
-                    case PropertyTypes.Text:
-                        htmlStringBuilder.AppendLine(TextEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
-                        break;
-                    case PropertyTypes.Number:
-                        htmlStringBuilder.AppendLine(NumericEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
-                        break;
-                    case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, propertyNameParts));
-                        break;
-                    case PropertyTypes.Complex:
-                        htmlStringBuilder.AppendLine(Editor(htmlHelper, propertyInfo.GetValue(model), thisPropertyNameParts));
-                        break;
-                    case PropertyTypes.Unknown:
-                        htmlStringBuilder.AppendLine(EditorNotImplemented(PropertyTypes.Unknown, propertyInfo));
-                        break;
-                }
-            }
-
-            return htmlStringBuilder.ToString();
         }
 
         private static string NumericEdit(List<string> propertyNameParts, PropertyInfo propertyInfo, object objectInstance, ResourceManager resourceManager)
@@ -338,18 +338,24 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             var model = new ComplexCollectionEditViewModel
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
-                PropertyName = string.Join(".", propertyNameParts)
+                PropertyNameParts = propertyNameParts
             };
 
             var index = 0;
             foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
             {
+                var itemPropertyNameParts = new List<string>();
+                itemPropertyNameParts.AddRange(propertyNameParts);
+                var itemPropertyName = itemPropertyNameParts.LastOrDefault();
+                if (itemPropertyName != null) itemPropertyName += $"[{index}]";
+
                 model.Items.Add(new ComplexCollectionEditItemViewModel
                 {
-                    PropertyName = model.PropertyName,
-                    ItemIndex = index++,
-                    Value = item == null ? "" : item.ToString()
+                    PropertyNameParts = itemPropertyNameParts,
+                    Value = item
                 });
+
+                index += 1;
             }
 
             htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/ComplexCollectionEdit.cshtml", model));
@@ -394,9 +400,14 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         #endregion
 
         #region Public Methods
-        public static MvcHtmlString JobEditor(this HtmlHelper htmlHelper, EditJobViewModel model)
+        public static MvcHtmlString CreateEdit(this HtmlHelper htmlHelper, object model)
         {
-            return MvcHtmlString.Create(Editor(htmlHelper, model, new List<string>()));
+            return CreateEdit(htmlHelper, model, new List<string>());
+        }
+
+        public static MvcHtmlString CreateEdit(this HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
+        {
+            return MvcHtmlString.Create(GetEditorHtml(htmlHelper, model, propertyNameParts));
         }
         #endregion
     }

@@ -7,15 +7,13 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
     public class ComplexCollectionEditItemViewModel
     {
-        public string PropertyName { get; set; }
+        public List<string> PropertyNameParts { get; set; }
 
-        public string Value { get; set; }
-
-        public int ItemIndex { get; set; }
+        public object Value { get; set; }
 
         public ComplexCollectionEditItemViewModel()
         {
-            
+            this.PropertyNameParts = new List<string>();
         }
     }
 }

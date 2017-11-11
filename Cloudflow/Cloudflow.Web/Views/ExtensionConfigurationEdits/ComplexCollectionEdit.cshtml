@@ -6,13 +6,17 @@
             <div>
                 <a data-toggle="modal" data-target="#someTarget" class="btn btn-default" href="#">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    Add...
+                    Add @Model.LabelText...
                 </a>
             </div>
 
             <hr />
 
             <ul class="nav nav-pills nav-stacked sortable">
+                @foreach (var item in Model.Items)
+                {
+
+                }
                 @*@foreach (var trigger in Model)
                 {
                     @Html.Partial("_TriggerNavigationItem", trigger)
@@ -22,9 +26,9 @@
     </div>
 
     <div class="tab-content col-md-9">
-        @*@foreach (var trigger in Model)
+        @foreach (var item in Model.Items)
         {
-            @Html.Partial("_Trigger", trigger)
-        }*@
+            @Html.Partial("~/Views/ExtensionConfigurationEdits/ComplexCollectionEditItem.cshtml", item);
+        }
     </div>
 </section>

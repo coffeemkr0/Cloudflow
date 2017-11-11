@@ -462,6 +462,7 @@
     <Content Include="Views\Jobs\EditJob.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEdit.cshtml" />
+    <Content Include="Views\ExtensionConfigurationEdits\ComplexCollectionEditNavigationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />
