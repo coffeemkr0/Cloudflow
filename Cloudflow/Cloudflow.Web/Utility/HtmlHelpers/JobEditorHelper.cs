@@ -197,6 +197,29 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
+        private static string GetDisplayText(object model)
+        {
+            var attribute = (DisplayTextPropertyName)model.GetType().GetCustomAttribute(typeof(DisplayTextPropertyName));
+            if (attribute != null)
+            {
+                var propertyNameParts = attribute.PropertyName.Split('.').ToList();
+                object value = model;
+
+                while(propertyNameParts.Count > 0)
+                {
+                    var propertyInfo = value.GetType().GetProperty(propertyNameParts.First());
+                    value = propertyInfo.GetValue(value);
+                    propertyNameParts.RemoveAt(0);
+                }
+
+                return value?.ToString() ?? model.GetType().Name;
+            }
+            else
+            {
+                return model.GetType().Name;
+            }
+        }
+
         private static string GetEditorHtml(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
@@ -351,6 +374,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
                 model.Items.Add(new ComplexCollectionEditItemViewModel
                 {
+                    DisplayText = GetDisplayText(item),
                     Active = index == 0,
                     PropertyNameParts = itemPropertyNameParts,
                     Value = item

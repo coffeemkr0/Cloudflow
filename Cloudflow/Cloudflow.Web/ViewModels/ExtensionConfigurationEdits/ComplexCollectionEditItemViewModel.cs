@@ -13,6 +13,8 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public List<string> PropertyNameParts { get; set; }
 
+        public string DisplayText { get; set; }
+
         public object Value { get; set; }
 
         public ComplexCollectionEditItemViewModel()

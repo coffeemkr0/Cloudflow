@@ -7,6 +7,7 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
+    [DisplayTextPropertyName("Configuration.Name")]
     public class ExtensionConfigurationViewModel
     {
         [Hidden]
