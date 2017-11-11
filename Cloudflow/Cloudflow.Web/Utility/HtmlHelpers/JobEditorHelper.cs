@@ -244,7 +244,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                         htmlStringBuilder.AppendLine(NumericEdit(thisPropertyNameParts, propertyInfo, model, resourceManager));
                         break;
                     case PropertyTypes.Collection:
-                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, propertyNameParts));
+                        htmlStringBuilder.AppendLine(CollectionEdit(htmlHelper, propertyInfo, model, thisPropertyNameParts));
                         break;
                     case PropertyTypes.Complex:
                         htmlStringBuilder.AppendLine(GetEditorHtml(htmlHelper, propertyInfo.GetValue(model), thisPropertyNameParts));
