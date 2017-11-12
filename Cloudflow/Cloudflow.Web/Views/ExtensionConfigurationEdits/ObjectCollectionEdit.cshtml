@@ -12,7 +12,8 @@
 
             <hr />
 
-            <ul class="nav nav-pills nav-stacked sortable">
+            <ul class="nav nav-pills nav-stacked objectCollectionEdit__navigationItems"
+                data-propertyname="@(string.Join(".", Model.PropertyNameParts))">
                 @foreach (var item in Model.Items)
                 {
                     @Html.Partial("~/Views/ExtensionConfigurationEdits/ObjectCollectionNavigationItem.cshtml", item);

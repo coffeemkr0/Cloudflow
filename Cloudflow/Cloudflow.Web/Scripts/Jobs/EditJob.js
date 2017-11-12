@@ -1,20 +1,18 @@
 ﻿$(function () {
     ExtensionBrowser.AddExtensionClicked = AddExtension;
 
-    $(document).on("click", ".deleteTrigger", deleteTrigger_Clicked);
-    $(document).on("click", ".deleteStep", deleteStep_Clicked);
-    $(document).on("click", ".deleteCondition", deleteCondition_Clicked);
+    $(document).on("click", ".objectCollectionNavigationItem__deleteButton", deleteObjectCollectionItem_Clicked);
 
     $(document).on("click", ".addExtension", function () {
         OnAddExtensionClicked($(this));
     });
 
-    $(".sortable").sortable({
+    $(".objectCollectionEdit__navigationItems").sortable({
         stop: function (event, ui) {
-            SetSortablePositions(ui.item);
+            UpdateObjectCollectionNames(ui.item.closest(".objectCollectionEdit__navigationItems"));
         }
     });
-    $(".sortable").disableSelection();
+    $(".objectCollectionEdit__navigationItems").disableSelection();
 });
 
 function OnAddExtensionClicked(addButtonElement) {
@@ -119,8 +117,8 @@ function AddCondition(extensionId, itemId, viewModelPropertyName) {
     });
 }
 
-function deleteTrigger_Clicked(e) {
-    var id = $(e.target).attr("data-triggerid");
+function deleteObjectCollectionItem_Clicked(e) {
+    var id = $(e.target).attr("data-itemid");
     var $navigationItem = $(e.target).parents("li").addClass("hidden");
 
     var $configurationItem = $("#tab" + id);
@@ -130,34 +128,46 @@ function deleteTrigger_Clicked(e) {
     $deletedInput.val("True");
 }
 
-function deleteStep_Clicked(e) {
-    var id = $(e.target).attr("data-stepid");
-    var $navigationItem = $(e.target).parents("li").addClass("hidden");
+function UpdateObjectCollectionNames(navigationItemsElement) {
+    var index = 0;
+    var propertyName = navigationItemsElement.attr("data-propertyname");
 
-    var $configurationItem = $("#tab" + id);
-    $configurationItem.addClass("hidden");
+    //Iterate the navigation items in the object collection edit
+    navigationItemsElement.children(".objectCollectionNavigationItem").each(function () {
+        //Select the navigation item's object edit
+        var $objectEditElement = $("#" + $(this).attr("data-itemid"));
 
-    var $deletedInput = $configurationItem.find(".deletedInput");
-    $deletedInput.val("True");
-}
+        //Reindex name attributes
+        var propertyNamePattern = propertyName.replace(".", "\\.").replace("[", "\\[").replace("]", "\\]");
+        var nameRegEx = new RegExp("^" + propertyNamePattern + "\\[\\d+\\]");
+        $objectEditElement.find("[name]").filter(function () {
+            return nameRegEx.test($(this).attr("name"));
+        }).each(function () {
+            $(this).attr("name", $(this).attr("name").replace(nameRegEx, propertyName + "[" + index + "]"));
+        });
 
-function deleteCondition_Clicked(e) {
-    var id = $(e.target).attr("data-conditionid");
-    var $navigationItem = $(e.target).parents("li").addClass("hidden");
+        //Reindex label for attributes
+        $objectEditElement.find("[for]").filter(function () {
+            return nameRegEx.test($(this).attr("for"));
+        }).each(function () {
+            $(this).attr("for", $(this).attr("for").replace(nameRegEx, propertyName + "[" + index + "]"));
+        });
 
-    var $configurationItem = $("#tab" + id);
-    $configurationItem.addClass("hidden");
+        //Reindex any data-propertyname attributes
+        $objectEditElement.find("[data-propertyname]").filter(function () {
+            return nameRegEx.test($(this).attr("data-propertyname"));
+        }).each(function () {
+            $(this).attr("data-propertyname", $(this).attr("data-propertyname").replace(nameRegEx, propertyName + "[" + index + "]"));
+        });
 
-    var $deletedInput = $configurationItem.find(".deletedInput");
-    $deletedInput.val("True");
-}
+        //Reindex id attributes
+        var idRegEx = new RegExp("^" + propertyName.replace(".", "_") + "\\[\\d+\\]");
+        $objectEditElement.find("[id]").filter(function () {
+            return idRegEx.test($(this).attr("id"));
+        }).each(function () {
+            $(this).attr("id", $(this).attr("id").replace(idRegEx, propertyName.replace(".", "_") + "[" + index + "]"));
+        });
 
-function SetSortablePositions(item) {
-    var position = 0;
-    item.parent().find(".sortableNavigationItem").each(function (index) {
-        var $sortableItem = $("#" + $(this).attr("data-sortable-itemid"));
-        var $positionInput = $sortableItem.find(".sortableItemPosition");
-        $positionInput.val(position);
-        position += 1;
+        index += 1;
     });
 }

@@ -19,9 +19,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public bool Active { get; set; }
 
-        [Hidden]
-        public int Index { get; set; }
-
         [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 

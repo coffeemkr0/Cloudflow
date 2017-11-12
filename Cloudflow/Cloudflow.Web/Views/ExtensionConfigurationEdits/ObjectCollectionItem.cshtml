@@ -1,7 +1,7 @@
 ﻿@using Cloudflow.Web.Utility.HtmlHelpers
 @model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ObjectCollectionItemViewModel
 
-<div role="tabpanel" class="sortableItem tab-pane @(Model.Active ? "active" : "")" id="@(Model.Id)">
+<div role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")" id="@(Model.Id)">
     @Html.CreateModelEdit(Model.Value, Model.PropertyNameParts)
 </div>
 

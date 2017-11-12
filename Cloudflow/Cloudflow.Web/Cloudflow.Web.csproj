@@ -292,9 +292,8 @@
     <Content Include="Content\ExtensionConfigurationEdits\StringCollectionEdit.less" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\Agents\Index.js" />
-    <Content Include="Scripts\ExtensionConfigurationEdits\ComplexCollectionEdit.js" />
     <Content Include="Scripts\ExtensionConfigurationEdits\StringCollectionEdit.js" />
-    <Content Include="Scripts\Jobs\Edit.js" />
+    <Content Include="Scripts\Jobs\EditJob.js" />
     <Content Include="Scripts\Jobs\Index.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />

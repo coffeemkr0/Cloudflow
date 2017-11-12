@@ -208,7 +208,6 @@ namespace Cloudflow.Web.Controllers
             
             var triggerViewModel = new TriggerViewModel();
             triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
-            triggerViewModel.Index = index;
             triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
             triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
             triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
@@ -238,7 +237,6 @@ namespace Cloudflow.Web.Controllers
             
             var stepViewModel = new StepViewModel();
             stepViewModel.StepDefinitionId = Guid.NewGuid();
-            stepViewModel.Index = index;
             stepViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(step.ExtensionId);
             stepViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
             stepViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(step.ConfigurationExtensionId);
@@ -272,7 +270,6 @@ namespace Cloudflow.Web.Controllers
                 ViewModelPropertyName = viewModelPropertyName
             };
             conditionConfigurationViewModel.ConditionDefinitionId = Guid.NewGuid();
-            conditionConfigurationViewModel.Index = index;
             conditionConfigurationViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(condition.ExtensionId);
             conditionConfigurationViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
             conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(condition.ConfigurationExtensionId);
