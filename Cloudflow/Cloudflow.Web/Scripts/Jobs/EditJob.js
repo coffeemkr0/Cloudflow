@@ -1,7 +1,7 @@
 ﻿$(function () {
     ExtensionBrowser.AddExtensionClicked = AddExtension;
 
-    $(document).on("click", ".objectCollectionNavigationItem__deleteButton", deleteObjectCollectionItem_Clicked);
+    $(document).on("click", ".objectCollectionNavigationItem__deleteButton", ObjectCollectionNavigationItem__deleteButton_Clicked);
 
     $(document).on("click", ".addExtension", function () {
         OnAddExtensionClicked($(this));
@@ -117,15 +117,12 @@ function AddCondition(extensionId, itemId, viewModelPropertyName) {
     });
 }
 
-function deleteObjectCollectionItem_Clicked(e) {
-    var id = $(e.target).attr("data-itemid");
-    var $navigationItem = $(e.target).parents("li").addClass("hidden");
+function ObjectCollectionNavigationItem__deleteButton_Clicked(e) {
+    var $navigationItemElement = $(e.target).closest(".objectCollectionNavigationItem");
+    var $objectEditElement = $("#" + $navigationItemElement.attr("data-itemid"));
 
-    var $configurationItem = $("#tab" + id);
-    $configurationItem.addClass("hidden");
-
-    var $deletedInput = $configurationItem.find(".deletedInput");
-    $deletedInput.val("True");
+    $navigationItemElement.remove();
+    $objectEditElement.remove();
 }
 
 function UpdateObjectCollectionNames(navigationItemsElement) {

@@ -18,6 +18,8 @@ namespace Cloudflow.Core.Data.Shared
 
         public DbSet<TriggerConditionDefinition> TriggerConditionDefinitions { get; set; }
 
+        public DbSet<StepConditionDefinition> StepConditionDefinitions { get; set; }
+
         protected virtual void CreateTestData(string extensionsAssemblyPath)
         {
             if (this.JobDefinitions.FirstOrDefault() == null)

@@ -116,8 +116,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
             jobDefinition.Version += 1;
             jobDefinition.Configuration = this.ExtensionConfiguration.Configuration.ToJson();
 
-            var deletedTriggerIds = this.Triggers.Where(i => i.Deleted).Select(i => i.TriggerDefinitionId).ToList();
-            serverDbContext.TriggerDefinitions.RemoveRange(serverDbContext.TriggerDefinitions.Where(i => deletedTriggerIds.Contains(i.TriggerDefinitionId)));
+            var triggerIds = this.Triggers.Select(i => i.TriggerDefinitionId);
+            var deletedTriggers = serverDbContext.TriggerDefinitions.Where(
+                i => i.JobDefinitionId == this.JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
+            serverDbContext.TriggerDefinitions.RemoveRange(deletedTriggers);
 
             int index = 0;
             foreach (var trigger in this.Triggers)
@@ -142,8 +144,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
 
-                var deletedConditionIds = trigger.Conditions.Where(i => i.Deleted).Select(i => i.ConditionDefinitionId).ToList();
-                serverDbContext.TriggerConditionDefinitions.RemoveRange(serverDbContext.TriggerConditionDefinitions.Where(i => deletedConditionIds.Contains(i.TriggerConditionDefinitionId)));
+                var triggerConditionIds = trigger.Conditions.Select(i => i.ConditionDefinitionId);
+                var deletedTriggerConditions = serverDbContext.TriggerConditionDefinitions.Where(
+                    i => i.TriggerDefinitionId == trigger.TriggerDefinitionId && !triggerConditionIds.Contains(i.TriggerConditionDefinitionId));
+                serverDbContext.TriggerConditionDefinitions.RemoveRange(deletedTriggerConditions);
 
                 var conditionIndex = 0;
                 foreach (var condition in trigger.Conditions)
@@ -174,8 +178,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 index += 1;
             }
 
-            var deletedStepIds = this.Steps.Where(i => i.Deleted).Select(i => i.StepDefinitionId).ToList();
-            serverDbContext.StepDefinitions.RemoveRange(serverDbContext.StepDefinitions.Where(i => deletedStepIds.Contains(i.StepDefinitionId)));
+            var stepIds = this.Steps.Select(i => i.StepDefinitionId);
+            var deletedSteps = serverDbContext.StepDefinitions.Where(
+                i => i.JobDefinitionId == this.JobDefinitionId && !stepIds.Contains(i.StepDefinitionId));
+            serverDbContext.StepDefinitions.RemoveRange(deletedSteps);
 
             index = 0;
             foreach (var step in this.Steps)
@@ -198,6 +204,38 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                     jobDefinition.StepDefinitions.Add(stepDefinition);
                 }
+
+                var stepConditionIds = step.Conditions.Select(i => i.ConditionDefinitionId);
+                var deletedStepConditions = serverDbContext.StepConditionDefinitions.Where(
+                    i => i.StepDefinitionId == step.StepDefinitionId && !stepConditionIds.Contains(i.StepConditionDefinitionId));
+                serverDbContext.StepConditionDefinitions.RemoveRange(deletedStepConditions);
+
+                var conditionIndex = 0;
+                foreach (var condition in step.Conditions)
+                {
+                    var conditionDefinition = serverDbContext.StepConditionDefinitions.FirstOrDefault(i => i.StepConditionDefinitionId == condition.ConditionDefinitionId);
+
+                    if (conditionDefinition != null)
+                    {
+                        conditionDefinition.Index = conditionIndex;
+                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                    }
+                    else
+                    {
+                        conditionDefinition = new StepConditionDefinition();
+                        conditionDefinition.Index = conditionIndex;
+                        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
+                        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
+                        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
+                        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
+                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+
+                        stepDefinition.StepConditionDefinitions.Add(conditionDefinition);
+                    }
+
+                    conditionIndex += 1;
+                }
+
                 index += 1;
             }
 
