@@ -363,8 +363,10 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             {
                 var itemPropertyNameParts = new List<string>();
                 itemPropertyNameParts.AddRange(propertyNameParts);
-                var itemPropertyName = itemPropertyNameParts.LastOrDefault();
-                if (itemPropertyName != null) itemPropertyName += $"[{index}]";
+                if (itemPropertyNameParts.Count > 0)
+                {
+                    itemPropertyNameParts[itemPropertyNameParts.Count - 1] += $"[{index}]";
+                }
 
                 model.Items.Add(new ObjectCollectionItemViewModel
                 {

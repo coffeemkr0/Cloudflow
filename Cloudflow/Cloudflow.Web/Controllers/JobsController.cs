@@ -131,7 +131,7 @@ namespace Cloudflow.Web.Controllers
         {
             editJobViewModel.Save(_serverDbContext);
 
-            return RedirectToAction("Edit", new { editJobViewModel.JobDefinitionId });
+            return RedirectToAction("EditJob", new { editJobViewModel.JobDefinitionId });
         }
 
         // GET: Jobs/Delete/5
