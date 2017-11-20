@@ -6728,6 +6728,13 @@ button.close {
   width: 32px;
   height: 32px;
 }
+.categorizedItemSelector__itemList {
+  overflow-y: auto;
+}
+.categorizedItemSelector__itemIcon {
+  width: 32px;
+  height: 32px;
+}
 .stringCollectionEdit__items {
   max-height: 226px;
   overflow: auto;

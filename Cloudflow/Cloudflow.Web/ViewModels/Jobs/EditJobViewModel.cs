@@ -15,15 +15,16 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public Guid JobDefinitionId { get; set; }
 
-        [PropertyGroupAttribute("GeneralTabText")]
+        [PropertyGroup("GeneralTabText")]
         [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        [PropertyGroupAttribute("TriggersTabText")]
+        [PropertyGroup("TriggersTabText")]
         [DisplayOrder(1)]
+        [TriggerSelector]
         public List<TriggerViewModel> Triggers { get; set; }
 
-        [PropertyGroupAttribute("StepsTabText")]
+        [PropertyGroup("StepsTabText")]
         [DisplayOrder(2)]
         public List<StepViewModel> Steps { get; set; }
         #endregion

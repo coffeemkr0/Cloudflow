@@ -12,6 +12,7 @@ using System.Resources;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Cloudflow.Web.Controllers;
 
 namespace Cloudflow.Web.Utility.HtmlHelpers
 {
@@ -351,8 +352,8 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         private static string ObjectCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
-
-            var model = new ObjectCollectionEditViewModel
+            
+            var model = new ObjectCollectionEditViewModel(htmlHelper.ViewContext.HttpContext.Server.MapPath(@"~\ExtensionLibraries"))
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyNameParts = propertyNameParts

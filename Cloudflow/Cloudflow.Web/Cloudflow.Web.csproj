@@ -223,7 +223,9 @@
     <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\TriggerSelectorAttribute.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
+    <Compile Include="ViewModels\Shared\CategorizedItemSelectorViewModel.cs" />
     <Compile Include="ViewModels\Shared\ExtensionBrowserViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
@@ -290,8 +292,10 @@
     <Content Include="Content\Shared\ExtensionBrowser.less" />
     <Content Include="Content\ExtensionConfigurationEdits\ExtensionConfigurationEdits.less" />
     <Content Include="Content\ExtensionConfigurationEdits\StringCollectionEdit.less" />
+    <Content Include="Content\Shared\CategorizedItemSelector.less" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\Agents\Index.js" />
+    <Content Include="Scripts\ExtensionConfigurationEdits\ObjectCollectionEdit.js" />
     <Content Include="Scripts\ExtensionConfigurationEdits\StringCollectionEdit.js" />
     <Content Include="Scripts\Jobs\EditJob.js" />
     <Content Include="Scripts\Jobs\Index.js" />
@@ -402,6 +406,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Shared\AgentControllerClient.js" />
     <Content Include="Scripts\Shared\DialogHelper.js" />
+    <Content Include="Scripts\Shared\CategorizedItemSelector.js" />
     <Content Include="Scripts\Shared\ExtensionBrowser.js" />
     <Content Include="Scripts\Shared\Layout.js" />
     <Content Include="Scripts\_references.js" />
@@ -462,6 +467,7 @@
     <Content Include="Views\ExtensionConfigurationEdits\TabHeader.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\TabPane.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ObjectEdit.cshtml" />
+    <Content Include="Views\Shared\CategorizedItemSelector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />

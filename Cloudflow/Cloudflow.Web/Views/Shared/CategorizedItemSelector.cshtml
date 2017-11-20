@@ -1,0 +1,70 @@
+﻿@model Cloudflow.Web.ViewModels.Shared.CategorizedItemSelectorViewModel
+
+<div id="addItemModal@(Model.Id)" class="modal fade categorizedItemSelector" tabindex="-1" role="dialog" aria-labelledby="categorizedItemSelector__caption">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div>
+
+                <header class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="categorizedItemSelector__caption">@Model.Caption</h3>
+                </header>
+
+                <div>
+                    <section class="modal-body">
+                        <div class="row">
+                            <nav class="col-lg-4">
+                                <h4>@Model.CategoriesCaption</h4>
+
+                                <ul class="nav nav-pills nav-stacked">
+                                    @{ var categoryIndex = 0; }
+                                    @foreach (var category in Model.ItemCollection.Categories)
+                                    {
+                                        <li role="presentation" class="@(categoryIndex == 0 ? "active" : "")">
+                                            <a href="#categoryTab@(categoryIndex)" role="tab" data-toggle="tab">@category.Name</a>
+                                        </li>
+                                        categoryIndex += 1;
+                                    }
+                                </ul>
+                            </nav>
+
+                            <div class="col-lg-8 tab-content">
+                                @{ categoryIndex = 0; }
+                                @foreach (var category in Model.ItemCollection.Categories)
+                                {
+                                    <div id="categoryTab@(categoryIndex)" class="tab-pane categorizedItemSelector__itemList @(categoryIndex == 0 ? "active" : "")">
+                                        @foreach (var item in category.Items)
+                                        {
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-2">
+                                                            <img class="categorizedItemSelector__itemIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.Icon))" />
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <h5>@item.Name</h5>
+                                                            <p>@item.Description</p>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <a href="#" data-dismiss="modal" class="btn btn-xs btn-success categorizedItemSelector__addButton">Add</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    categoryIndex += 1;
+                                }
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
