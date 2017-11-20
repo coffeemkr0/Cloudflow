@@ -21,7 +21,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [PropertyGroup("TriggersTabText")]
         [DisplayOrder(1)]
-        [TriggerSelector]
+        [TriggerSelector("AddTriggerCaption", "AddTriggerCategoriesCaption")]
         public List<TriggerViewModel> Triggers { get; set; }
 
         [PropertyGroup("StepsTabText")]

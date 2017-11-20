@@ -61,6 +61,24 @@ namespace Cloudflow.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Triggers.
+        /// </summary>
+        internal static string AddTriggerCaption {
+            get {
+                return ResourceManager.GetString("AddTriggerCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Libraries.
+        /// </summary>
+        internal static string AddTriggerCategoriesCaption {
+            get {
+                return ResourceManager.GetString("AddTriggerCategoriesCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conditions.
         /// </summary>
         internal static string ConditionsTabText {

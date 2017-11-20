@@ -8,6 +8,20 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
     public abstract class CategorizedItemSelectorAttribute : Attribute
     {
+        #region Properties
+        public string CaptionResourceName { get; set; }
+
+        public string CategoriesCaptionResourceName { get; set; }
+        #endregion
+
+        #region Constructors
+        public CategorizedItemSelectorAttribute(string captionResourceName, string categoriesCaptionResourceName)
+        {
+            this.CaptionResourceName = captionResourceName;
+            this.CategoriesCaptionResourceName = categoriesCaptionResourceName;
+        }
+        #endregion
+
         #region Public Methods
         public abstract CategorizedItemCollection GetItems();
         #endregion

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Reflection;
+using System.Resources;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
@@ -19,24 +21,28 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public CategorizedItemSelectorViewModel NewItemSelectorModel { get; set; }
 
-        public ObjectCollectionEditViewModel(string extensionLibrariesFolder)
+        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo, ResourceManager resourceManager, string extensionLibrariesFolder)
         {
             this.Id = Guid.NewGuid();
             this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
 
-            this.NewItemSelectorModel = new CategorizedItemSelectorViewModel()
+            var triggerSelectorAttribute = (TriggerSelectorAttribute)propertyInfo.GetCustomAttribute(typeof(TriggerSelectorAttribute));
+            if(triggerSelectorAttribute != null)
             {
-                Id = this.Id,
-                Caption = "Triggers",
-                CategoriesCaption = "Libraries"
-            };
+                triggerSelectorAttribute.ExtensionLibraryFolder = extensionLibrariesFolder;
+                var caption = resourceManager.GetString(triggerSelectorAttribute.CaptionResourceName);
+                var categoriesCaption = resourceManager.GetString(triggerSelectorAttribute.CategoriesCaptionResourceName);
 
-            var triggerSelector = new TriggerSelectorAttribute()
-            {
-                ExtensionLibraryFolder = extensionLibrariesFolder
-            };
-            this.NewItemSelectorModel.ItemCollection = triggerSelector.GetItems();
+                this.NewItemSelectorModel = new CategorizedItemSelectorViewModel()
+                {
+                    Id = this.Id,
+                    Caption = caption,
+                    CategoriesCaption = categoriesCaption
+                };
+
+                this.NewItemSelectorModel.ItemCollection = triggerSelectorAttribute.GetItems();
+            }
         }
     }
 }

@@ -353,7 +353,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
             
-            var model = new ObjectCollectionEditViewModel(htmlHelper.ViewContext.HttpContext.Server.MapPath(@"~\ExtensionLibraries"))
+            var model = new ObjectCollectionEditViewModel(propertyInfo, resourceManager, htmlHelper.ViewContext.HttpContext.Server.MapPath(@"~\ExtensionLibraries"))
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyNameParts = propertyNameParts

@@ -15,6 +15,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public string ExtensionLibraryFolder { get; set; }
         #endregion
 
+        #region Constructors
+        public TriggerSelectorAttribute(string captionResourceName, string categoriesCaptionResourceName) 
+            : base(captionResourceName, categoriesCaptionResourceName)
+        {
+            
+        }
+        #endregion
+
         #region Public Methods
         public override CategorizedItemCollection GetItems()
         {
