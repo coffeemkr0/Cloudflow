@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
+    public interface ICategorizedItemSelector
+    {
+        CategorizedItemSelectorAttribute.CategorizedItemCollection GetItems(string collectionName);
+    }
+
     public abstract class CategorizedItemSelectorAttribute : Attribute
     {
         #region Properties

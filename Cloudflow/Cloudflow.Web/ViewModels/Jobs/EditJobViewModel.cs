@@ -6,11 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.IO;
+using System.Diagnostics;
+using Cloudflow.Core.Extensions;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class EditJobViewModel
+    public class EditJobViewModel : ICategorizedItemSelector
     {
+        #region Declarations
+        CategorizedItemSelectorAttribute.CategorizedItemCollection _triggerExtensions;
+        #endregion
+
         #region Properties
         [Hidden]
         public Guid JobDefinitionId { get; set; }
@@ -30,18 +37,48 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Constructors
-        public EditJobViewModel()
+        public EditJobViewModel(string extensionLibraryFolder)
         {
             this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
             this.Triggers = new List<TriggerViewModel>();
             this.Steps = new List<StepViewModel>();
+            _triggerExtensions = GetTriggerExtensions(extensionLibraryFolder);
+        }
+        #endregion
+
+        #region Private Methods
+        private CategorizedItemSelectorAttribute.CategorizedItemCollection GetTriggerExtensions(string extensionLibraryFolder)
+        {
+            var itemCollection = new CategorizedItemSelectorAttribute.CategorizedItemCollection();
+
+            foreach (var extensionLibraryFile in Directory.GetFiles(extensionLibraryFolder, "*.dll"))
+            {
+                var category = new CategorizedItemSelectorAttribute.CategorizedItemCollection.Category
+                {
+                    Name = FileVersionInfo.GetVersionInfo(extensionLibraryFile).ProductName
+                };
+                itemCollection.Categories.Add(category);
+
+                var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
+                foreach (var extension in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger))
+                {
+                    category.Items.Add(new CategorizedItemSelectorAttribute.CategorizedItemCollection.Category.Item
+                    {
+                        Name = extension.ExtensionName,
+                        Description = extension.ExtensionDescription,
+                        Icon = extension.Icon
+                    });
+                }
+            }
+
+            return itemCollection;
         }
         #endregion
 
         #region Public Methods
-        public static EditJobViewModel FromJobDefinition(JobDefinition jobDefinition)
+        public static EditJobViewModel FromJobDefinition(JobDefinition jobDefinition, string extensionLibraryFolder)
         {
-            var model = new EditJobViewModel();
+            var model = new EditJobViewModel(extensionLibraryFolder);
 
             model.JobDefinitionId = jobDefinition.JobDefinitionId;
             model.ExtensionConfiguration.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
@@ -241,6 +278,17 @@ namespace Cloudflow.Web.ViewModels.Jobs
             }
 
             serverDbContext.SaveChanges();
+        }
+
+        public CategorizedItemSelectorAttribute.CategorizedItemCollection GetItems(string collectionName)
+        {
+            switch (collectionName)
+            {
+                case nameof(this.Triggers):
+                    return _triggerExtensions;
+                default:
+                    throw new ArgumentException($"{collectionName} is not implemented");
+            }
         }
         #endregion
     }

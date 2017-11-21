@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Reflection;
 using System.Resources;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
@@ -27,12 +28,12 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
             this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
 
-            var triggerSelectorAttribute = (TriggerSelectorAttribute)propertyInfo.GetCustomAttribute(typeof(TriggerSelectorAttribute));
-            if(triggerSelectorAttribute != null)
+            var categorizedItemSelectorAttribute = (CategorizedItemSelectorAttribute)propertyInfo.GetCustomAttribute(typeof(CategorizedItemSelectorAttribute));
+            if(categorizedItemSelectorAttribute != null)
             {
-                triggerSelectorAttribute.ExtensionLibraryFolder = extensionLibrariesFolder;
-                var caption = resourceManager.GetString(triggerSelectorAttribute.CaptionResourceName);
-                var categoriesCaption = resourceManager.GetString(triggerSelectorAttribute.CategoriesCaptionResourceName);
+                //categorizedItemSelectorAttribute.ExtensionLibraryFolder = extensionLibrariesFolder;
+                var caption = resourceManager.GetString(categorizedItemSelectorAttribute.CaptionResourceName);
+                var categoriesCaption = resourceManager.GetString(categorizedItemSelectorAttribute.CategoriesCaptionResourceName);
 
                 this.NewItemSelectorModel = new CategorizedItemSelectorViewModel()
                 {
@@ -41,7 +42,7 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
                     CategoriesCaption = categoriesCaption
                 };
 
-                this.NewItemSelectorModel.ItemCollection = triggerSelectorAttribute.GetItems();
+                this.NewItemSelectorModel.ItemCollection = categorizedItemSelectorAttribute.GetItems();
             }
         }
     }

@@ -11,14 +11,14 @@ namespace Cloudflow.Web.Utility
     {
         #region Public Methods
 
-        public static string GetExtensionLibrariesPath(this Controller controller)
+        public static string GetExtensionLibraryFolder(this Controller controller)
         {
             return controller.Server.MapPath(@"~\ExtensionLibraries");
         }
 
         public static List<string> GetExtensionLibraries(this Controller controller)
         {
-            return Directory.GetFiles(GetExtensionLibrariesPath(controller), "*.dll").ToList();
+            return Directory.GetFiles(GetExtensionLibraryFolder(controller), "*.dll").ToList();
         }
         #endregion
     }

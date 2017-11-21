@@ -119,7 +119,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(EditJobViewModel.FromJobDefinition(jobDefinition));
+            return View(EditJobViewModel.FromJobDefinition(jobDefinition, this.GetExtensionLibraryFolder()));
         }
 
         // POST: Jobs/Edit/5
@@ -182,19 +182,19 @@ namespace Cloudflow.Web.Controllers
 
         public ActionResult Triggers()
         {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Trigger);
+            var model = new ExtensionBrowserViewModel(this.GetExtensionLibraryFolder(), ConfigurableExtensionTypes.Trigger);
             return PartialView("ExtensionBrowser", model);
         }
 
         public ActionResult Steps()
         {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Step);
+            var model = new ExtensionBrowserViewModel(this.GetExtensionLibraryFolder(), ConfigurableExtensionTypes.Step);
             return PartialView("ExtensionBrowser", model);
         }
 
         public ActionResult Conditions(string viewModelPropertyName)
         {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibrariesPath(), ConfigurableExtensionTypes.Condition);
+            var model = new ExtensionBrowserViewModel(this.GetExtensionLibraryFolder(), ConfigurableExtensionTypes.Condition);
             return PartialView("ExtensionBrowser", model);
         }
 
