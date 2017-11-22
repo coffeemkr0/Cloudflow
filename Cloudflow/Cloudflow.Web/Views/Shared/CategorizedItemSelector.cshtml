@@ -1,6 +1,6 @@
 ﻿@model Cloudflow.Web.ViewModels.Shared.CategorizedItemSelectorViewModel
 
-<div id="addItemModal@(Model.Id)" class="modal fade categorizedItemSelector" tabindex="-1" role="dialog" aria-labelledby="categorizedItemSelector__caption">
+<div id="addItemModal@(Model.Id)" data-collectionid="@(Model.Id)" class="modal fade categorizedItemSelector" tabindex="-1" role="dialog" aria-labelledby="categorizedItemSelector__caption">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div>
@@ -38,6 +38,7 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     <div class="row">
+                                                        <input type="hidden" name="metaData" value="@item.MetaData" />
                                                         <div class="col-sm-2">
                                                             <img class="categorizedItemSelector__itemIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(item.Icon))" />
                                                         </div>

@@ -14,6 +14,7 @@ using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Web.Utility;
 using Cloudflow.Web.ViewModels.Shared;
+using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -199,13 +200,13 @@ namespace Cloudflow.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddTrigger(Guid triggerId, int index)
+        public JsonResult AddTrigger(string propertyName, string metaData)
         {
             var extensionAssemblyPath = this.GetExtensionLibraries().First();
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
-            var trigger = configurableExtensionBrowser.GetConfigurableExtension(triggerId);
-            
+            var trigger = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(metaData));
+
             var triggerViewModel = new TriggerViewModel();
             triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
             triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
@@ -219,12 +220,20 @@ namespace Cloudflow.Web.Controllers
             triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
             triggerViewModel.ExtensionConfiguration.Configuration.Name = "New Trigger";
 
-            var triggerNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_TriggerNavigationItem", triggerViewModel);
-            var triggerView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_Trigger", triggerViewModel);
+            var model = new ObjectCollectionItemViewModel
+            {
+                DisplayText = "New Trigger",
+                PropertyNameParts = (propertyName + "[0]").Split('.').ToList(),
+                Value = triggerViewModel
+            };
 
-            return Json(new { triggerNavigationItemView, triggerView });
+            var navigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "~/Views/ExtensionConfigurationEdits/ObjectCollectionNavigationItem.cshtml", model);
+
+            var itemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "~/Views/ExtensionConfigurationEdits/ObjectCollectionItem.cshtml", model);
+
+            return Json(new { navigationItemView, itemView });
         }
 
         [HttpPost]

@@ -73,9 +73,10 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
                 public byte[] Icon { get; set; }
 
                 /// <summary>
-                /// Gets or sets meta data for the item.
+                /// Gets or sets meta data for the item that will be passed from the client to the server when an item is selected.
+                /// This meta data can be used to construct a new instance of an object for the collection.
                 /// </summary>
-                public Dictionary<string, object> MetaData { get; set; }
+                public string MetaData { get; set; }
                 #endregion
             }
             #endregion

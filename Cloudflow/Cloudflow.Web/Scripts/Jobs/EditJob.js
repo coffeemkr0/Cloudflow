@@ -1,10 +1,13 @@
 ﻿$(function () {
-    ExtensionBrowser.AddExtensionClicked = AddExtension;
-
     $(document).on("click", ".objectCollectionNavigationItem__deleteButton", ObjectCollectionNavigationItem__deleteButton_Clicked);
 
-    $(document).on("click", ".addExtension", function () {
-        OnAddExtensionClicked($(this));
+    $(document).on("click", ".categorizedItemSelector__addButton", function () {
+        var $categorizedItemSelectorElement = $(this).closest(".categorizedItemSelector");
+        var collectionId = $categorizedItemSelectorElement.attr("data-collectionid");
+        var metaData = $categorizedItemSelectorElement.find("[name='metaData']").val();
+        var $objectCollectionEditElement = $("#" + collectionId);
+
+        AddTrigger($objectCollectionEditElement, metaData);
     });
 
     $(".objectCollectionEdit__navigationItems").sortable({
@@ -53,6 +56,8 @@ function AddStep(extensionId) {
             if (result !== null) {
                 $("#stepNavigationItems").append(result.stepNavigationItemView);
                 $("#stepConfigurations").append(result.stepConfigurationView);
+
+
             } else {
                 alert('Error getting data.');
             }
@@ -63,21 +68,20 @@ function AddStep(extensionId) {
     });
 }
 
-function AddTrigger(extensionId) {
-    var index = $(".triggerNavigationItem").length;
-
+function AddTrigger(objectCollectionEditElement, metaData) {
     $.ajax({
         type: 'POST',
         url: "/Jobs/AddTrigger",
         dataType: 'json',
         data: {
-            triggerId: extensionId,
-            index: index
+            propertyName: objectCollectionEditElement.attr("data-propertyname"),
+            metaData: metaData
         },
         success: function (result) {
             if (result !== null) {
-                $("#triggerNavigationItems").append(result.triggerNavigationItemView);
-                $("#triggers").append(result.triggerView);
+                objectCollectionEditElement.find(".objectCollectionEdit__navigationItems").first().append(result.navigationItemView);
+                objectCollectionEditElement.find(".objectCollectionEdit__items").first().append(result.itemView);
+                UpdateObjectCollectionNames(objectCollectionEditElement.find(".objectCollectionEdit__navigationItems").first());
             } else {
                 alert('Error getting data.');
             }
@@ -127,7 +131,7 @@ function ObjectCollectionNavigationItem__deleteButton_Clicked(e) {
 
 function UpdateObjectCollectionNames(navigationItemsElement) {
     var index = 0;
-    var propertyName = navigationItemsElement.attr("data-propertyname");
+    var propertyName = navigationItemsElement.closest(".objectCollectionEdit").attr("data-propertyname");
 
     //Iterate the navigation items in the object collection edit
     navigationItemsElement.children(".objectCollectionNavigationItem").each(function () {

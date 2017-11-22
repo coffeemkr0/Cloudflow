@@ -37,12 +37,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Constructors
-        public EditJobViewModel(string extensionLibraryFolder)
+        public EditJobViewModel()
         {
             this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
             this.Triggers = new List<TriggerViewModel>();
             this.Steps = new List<StepViewModel>();
-            _triggerExtensions = GetTriggerExtensions(extensionLibraryFolder);
         }
         #endregion
 
@@ -62,12 +61,16 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
                 foreach (var extension in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger))
                 {
-                    category.Items.Add(new CategorizedItemCollection.Category.Item
+                    var item = new CategorizedItemCollection.Category.Item
                     {
                         Name = extension.ExtensionName,
                         Description = extension.ExtensionDescription,
                         Icon = extension.Icon
-                    });
+                    };
+
+                    item.MetaData = extension.ExtensionId.ToString();
+
+                    category.Items.Add(item);
                 }
             }
 
@@ -78,7 +81,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Public Methods
         public static EditJobViewModel FromJobDefinition(JobDefinition jobDefinition, string extensionLibraryFolder)
         {
-            var model = new EditJobViewModel(extensionLibraryFolder);
+            var model = new EditJobViewModel();
 
             model.JobDefinitionId = jobDefinition.JobDefinitionId;
             model.ExtensionConfiguration.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
@@ -143,6 +146,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 index += 1;
             }
+
+            model.LoadExtensions(extensionLibraryFolder);
 
             return model;
         }
@@ -278,6 +283,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
             }
 
             serverDbContext.SaveChanges();
+        }
+
+        public void LoadExtensions(string extensionLibraryFolder)
+        {
+            _triggerExtensions = GetTriggerExtensions(extensionLibraryFolder);
         }
 
         public CategorizedItemCollection GetItems(string propertyName)

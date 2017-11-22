@@ -1,6 +1,6 @@
 ﻿@model Cloudflow.Web.ViewModels.ExtensionConfigurationEdits.ObjectCollectionEditViewModel
 
-<section class="container-fluid">
+<section class="container-fluid objectCollectionEdit" id="@Model.Id" data-propertyname="@(string.Join(".", Model.PropertyNameParts))">
     <div class="col-md-3 panel panel-default">
         <div class="panel-body">
             <div>
@@ -12,8 +12,7 @@
 
             <hr />
 
-            <ul class="nav nav-pills nav-stacked objectCollectionEdit__navigationItems"
-                data-propertyname="@(string.Join(".", Model.PropertyNameParts))">
+            <ul class="nav nav-pills nav-stacked objectCollectionEdit__navigationItems">
                 @foreach (var item in Model.Items)
                 {
                     @Html.Partial("~/Views/ExtensionConfigurationEdits/ObjectCollectionNavigationItem.cshtml", item);
@@ -22,13 +21,14 @@
         </div>
     </div>
 
-    <div class="tab-content col-md-9">
+    <div class="tab-content col-md-9 objectCollectionEdit__items">
         @foreach (var item in Model.Items)
         {
             @Html.Partial("~/Views/ExtensionConfigurationEdits/ObjectCollectionItem.cshtml", item);
         }
     </div>
 </section>
+
 @if(Model.CategorizedItemSelectorViewModel != null)
 {
     Html.RenderPartial("CategorizedItemSelector", Model.CategorizedItemSelectorViewModel);
