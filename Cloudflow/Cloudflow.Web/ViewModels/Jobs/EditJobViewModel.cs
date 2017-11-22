@@ -15,7 +15,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class EditJobViewModel : ICategorizedItemFetcher
     {
         #region Declarations
-        CategorizedItemSelectorAttribute.CategorizedItemCollection _triggerExtensions;
+        CategorizedItemCollection _triggerExtensions;
         #endregion
 
         #region Properties
@@ -47,13 +47,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Private Methods
-        private CategorizedItemSelectorAttribute.CategorizedItemCollection GetTriggerExtensions(string extensionLibraryFolder)
+        private CategorizedItemCollection GetTriggerExtensions(string extensionLibraryFolder)
         {
-            var itemCollection = new CategorizedItemSelectorAttribute.CategorizedItemCollection();
+            var itemCollection = new CategorizedItemCollection();
 
             foreach (var extensionLibraryFile in Directory.GetFiles(extensionLibraryFolder, "*.dll"))
             {
-                var category = new CategorizedItemSelectorAttribute.CategorizedItemCollection.Category
+                var category = new CategorizedItemCollection.Category
                 {
                     Name = FileVersionInfo.GetVersionInfo(extensionLibraryFile).ProductName
                 };
@@ -62,7 +62,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
                 foreach (var extension in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger))
                 {
-                    category.Items.Add(new CategorizedItemSelectorAttribute.CategorizedItemCollection.Category.Item
+                    category.Items.Add(new CategorizedItemCollection.Category.Item
                     {
                         Name = extension.ExtensionName,
                         Description = extension.ExtensionDescription,

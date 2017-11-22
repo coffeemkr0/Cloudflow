@@ -18,7 +18,7 @@
 
                                 <ul class="nav nav-pills nav-stacked">
                                     @{ var categoryIndex = 0; }
-                                    @foreach (var category in Model.ItemCollection.Categories)
+                                    @foreach (var category in Model.CategorizedItemCollection.Categories)
                                     {
                                         <li role="presentation" class="@(categoryIndex == 0 ? "active" : "")">
                                             <a href="#categoryTab@(categoryIndex)" role="tab" data-toggle="tab">@category.Name</a>
@@ -30,7 +30,7 @@
 
                             <div class="col-lg-8 tab-content">
                                 @{ categoryIndex = 0; }
-                                @foreach (var category in Model.ItemCollection.Categories)
+                                @foreach (var category in Model.CategorizedItemCollection.Categories)
                                 {
                                     <div id="categoryTab@(categoryIndex)" class="tab-pane categorizedItemSelector__itemList @(categoryIndex == 0 ? "active" : "")">
                                         @foreach (var item in category.Items)

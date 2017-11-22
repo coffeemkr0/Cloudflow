@@ -349,25 +349,18 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
-        private static string ObjectCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
+        private static string ObjectCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object collectionOwner, List<string> propertyNameParts, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            if (objectInstance.GetType().GetInterfaces().Contains(typeof(ICategorizedItemFetcher)))
-            {
-                //TODO:Load items here
-                //var categorizedItemSelectorAttribute = (CategorizedItemSelectorAttribute)propertyInfo.GetCustomAttribute(typeof(CategorizedItemSelectorAttribute));
-            }
-
-            //TODO:Populate loaded items to the ObjectCollectionEditViewModel
-            var model = new ObjectCollectionEditViewModel(propertyInfo, resourceManager, htmlHelper.ViewContext.HttpContext.Server.MapPath(@"~\ExtensionLibraries"))
+            var model = new ObjectCollectionEditViewModel(collectionOwner, propertyInfo, resourceManager)
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyNameParts = propertyNameParts
             };
 
             var index = 0;
-            foreach (var item in (IEnumerable)propertyInfo.GetValue(objectInstance))
+            foreach (var item in (IEnumerable)propertyInfo.GetValue(collectionOwner))
             {
                 var itemPropertyNameParts = new List<string>();
                 itemPropertyNameParts.AddRange(propertyNameParts);

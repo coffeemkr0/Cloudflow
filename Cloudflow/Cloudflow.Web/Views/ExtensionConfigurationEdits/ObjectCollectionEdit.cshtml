@@ -29,7 +29,7 @@
         }
     </div>
 </section>
-@if(Model.NewItemSelectorModel != null)
+@if(Model.CategorizedItemSelectorViewModel != null)
 {
-    Html.RenderPartial("CategorizedItemSelector", Model.NewItemSelectorModel);
+    Html.RenderPartial("CategorizedItemSelector", Model.CategorizedItemSelectorViewModel);
 }

@@ -22,31 +22,29 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public CategorizedItemSelectorViewModel CategorizedItemSelectorViewModel { get; set; }
 
-        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo, ResourceManager resourceManager, CategorizedItemSelectorAttribute.CategorizedItemCollection categorizedItemCollection)
+        public ObjectCollectionEditViewModel(object collectionOwner, PropertyInfo propertyInfo, ResourceManager resourceManager)
         {
             this.Id = Guid.NewGuid();
             this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
 
-            if(categorizedItemCollection != null)
+            if (collectionOwner.GetType().GetInterfaces().Contains(typeof(ICategorizedItemFetcher)))
             {
-                var caption = resourceManager.GetString(categorizedItemCollection.CaptionResourceName);
-                var categoriesCaption = resourceManager.GetString(categorizedItemCollection.CategoriesCaptionResourceName);
-
-                this.NewItemSelectorModel = new CategorizedItemSelectorViewModel()
+                var categorizedItemSelectorAttribute = propertyInfo.GetCustomAttribute<CategorizedItemSelectorAttribute>();
+                if (categorizedItemSelectorAttribute != null)
                 {
-                    Id = this.Id,
-                    Caption = caption,
-                    CategoriesCaption = categoriesCaption
-                };
+                    var caption = resourceManager.GetString(categorizedItemSelectorAttribute.CaptionResourceName);
+                    var categoriesCaption = resourceManager.GetString(categorizedItemSelectorAttribute.CategoriesCaptionResourceName);
 
-                this.NewItemSelectorModel.ItemCollection = categorizedItemSelectorAttribute.GetItems();
-            }
-            
-            if(categorizedItemSelectorAttribute != null)
-            {
-                //categorizedItemSelectorAttribute.ExtensionLibraryFolder = extensionLibrariesFolder;
-                
+                    this.CategorizedItemSelectorViewModel = new CategorizedItemSelectorViewModel()
+                    {
+                        Id = this.Id,
+                        Caption = caption,
+                        CategoriesCaption = categoriesCaption
+                    };
+
+                    this.CategorizedItemSelectorViewModel.CategorizedItemCollection = ((ICategorizedItemFetcher)collectionOwner).GetItems(propertyInfo.Name);
+                }
             }
         }
     }

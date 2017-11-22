@@ -111,7 +111,7 @@
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemSelectorAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayOrderAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayTextPropertyName.cs" />
-    <Compile Include="Extensions\ExtensionAttributes\ICategorizedItemLoader.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\ICategorizedItemFetcher.cs" />
     <Compile Include="Extensions\ExtensionAttributes\LabelTextResourceAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\HiddenAttribute.cs" />
     <Compile Include="Extensions\ConfigurableExtensionBrowser.cs" />

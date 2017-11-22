@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
+    /// <summary>
+    /// Represents a collection of generic items that are categorized.
+    /// </summary>
     public class CategorizedItemCollection
     {
         #region Properties
+        /// <summary>
+        /// Gets or sets the categories for the collection.
+        /// </summary>
         public List<Category> Categories { get; set; }
         #endregion
 
@@ -20,11 +26,20 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #endregion
 
         #region Category
+        /// <summary>
+        /// Represents a category in a CategorizedItemCollection
+        /// </summary>
         public class Category
         {
             #region Properties
+            /// <summary>
+            /// Gets or sets the Name of the category
+            /// </summary>
             public string Name { get; set; }
 
+            /// <summary>
+            /// Gets or sets the Items for the category
+            /// </summary>
             public List<Item> Items { get; set; }
             #endregion
 
@@ -36,18 +51,31 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
             #endregion
 
             #region Item
+            /// <summary>
+            /// Represents an Item in a Category
+            /// </summary>
             public class Item
             {
                 #region Properties
-                public string Category { get; set; }
-
+                /// <summary>
+                /// Gets or sets the name for the item
+                /// </summary>
                 public string Name { get; set; }
 
+                /// <summary>
+                /// Gets or sets a description for the item.
+                /// </summary>
                 public string Description { get; set; }
 
+                /// <summary>
+                /// Gets or sets binary data for an icon for the item.
+                /// </summary>
                 public byte[] Icon { get; set; }
 
-                public Dictionary<string, object> Values { get; set; }
+                /// <summary>
+                /// Gets or sets meta data for the item.
+                /// </summary>
+                public Dictionary<string, object> MetaData { get; set; }
                 #endregion
             }
             #endregion
