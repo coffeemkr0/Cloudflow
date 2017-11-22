@@ -20,20 +20,18 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public List<ObjectCollectionItemViewModel> Items { get; set; }
 
-        public CategorizedItemSelectorViewModel NewItemSelectorModel { get; set; }
+        public CategorizedItemSelectorViewModel CategorizedItemSelectorViewModel { get; set; }
 
-        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo, ResourceManager resourceManager, string extensionLibrariesFolder)
+        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo, ResourceManager resourceManager, CategorizedItemSelectorAttribute.CategorizedItemCollection categorizedItemCollection)
         {
             this.Id = Guid.NewGuid();
             this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
 
-            var categorizedItemSelectorAttribute = (CategorizedItemSelectorAttribute)propertyInfo.GetCustomAttribute(typeof(CategorizedItemSelectorAttribute));
-            if(categorizedItemSelectorAttribute != null)
+            if(categorizedItemCollection != null)
             {
-                //categorizedItemSelectorAttribute.ExtensionLibraryFolder = extensionLibrariesFolder;
-                var caption = resourceManager.GetString(categorizedItemSelectorAttribute.CaptionResourceName);
-                var categoriesCaption = resourceManager.GetString(categorizedItemSelectorAttribute.CategoriesCaptionResourceName);
+                var caption = resourceManager.GetString(categorizedItemCollection.CaptionResourceName);
+                var categoriesCaption = resourceManager.GetString(categorizedItemCollection.CategoriesCaptionResourceName);
 
                 this.NewItemSelectorModel = new CategorizedItemSelectorViewModel()
                 {
@@ -43,6 +41,12 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
                 };
 
                 this.NewItemSelectorModel.ItemCollection = categorizedItemSelectorAttribute.GetItems();
+            }
+            
+            if(categorizedItemSelectorAttribute != null)
+            {
+                //categorizedItemSelectorAttribute.ExtensionLibraryFolder = extensionLibrariesFolder;
+                
             }
         }
     }

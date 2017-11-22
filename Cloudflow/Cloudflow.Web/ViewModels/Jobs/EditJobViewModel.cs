@@ -12,7 +12,7 @@ using Cloudflow.Core.Extensions;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class EditJobViewModel : ICategorizedItemSelector
+    public class EditJobViewModel : ICategorizedItemFetcher
     {
         #region Declarations
         CategorizedItemSelectorAttribute.CategorizedItemCollection _triggerExtensions;
@@ -28,7 +28,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [PropertyGroup("TriggersTabText")]
         [DisplayOrder(1)]
-        [TriggerSelector("AddTriggerCaption", "AddTriggerCategoriesCaption")]
+        [CategorizedItemSelector("AddTriggerCaption", "AddTriggerCategoriesCaption")]
         public List<TriggerViewModel> Triggers { get; set; }
 
         [PropertyGroup("StepsTabText")]
@@ -280,14 +280,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
             serverDbContext.SaveChanges();
         }
 
-        public CategorizedItemSelectorAttribute.CategorizedItemCollection GetItems(string collectionName)
+        public CategorizedItemCollection GetItems(string propertyName)
         {
-            switch (collectionName)
+            switch (propertyName)
             {
                 case nameof(this.Triggers):
                     return _triggerExtensions;
                 default:
-                    throw new ArgumentException($"{collectionName} is not implemented");
+                    throw new ArgumentException($"{propertyName} is not implemented.");
             }
         }
         #endregion

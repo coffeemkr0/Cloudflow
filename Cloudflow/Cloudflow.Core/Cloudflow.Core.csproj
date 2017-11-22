@@ -107,9 +107,11 @@
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
     <Compile Include="Extensions\Controllers\ConditionController.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\CategorizedItemCollection.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemSelectorAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayOrderAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayTextPropertyName.cs" />
+    <Compile Include="Extensions\ExtensionAttributes\ICategorizedItemLoader.cs" />
     <Compile Include="Extensions\ExtensionAttributes\LabelTextResourceAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\HiddenAttribute.cs" />
     <Compile Include="Extensions\ConfigurableExtensionBrowser.cs" />

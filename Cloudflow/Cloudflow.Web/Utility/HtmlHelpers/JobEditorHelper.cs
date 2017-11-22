@@ -352,7 +352,14 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         private static string ObjectCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
-            
+
+            if (objectInstance.GetType().GetInterfaces().Contains(typeof(ICategorizedItemFetcher)))
+            {
+                //TODO:Load items here
+                //var categorizedItemSelectorAttribute = (CategorizedItemSelectorAttribute)propertyInfo.GetCustomAttribute(typeof(CategorizedItemSelectorAttribute));
+            }
+
+            //TODO:Populate loaded items to the ObjectCollectionEditViewModel
             var model = new ObjectCollectionEditViewModel(propertyInfo, resourceManager, htmlHelper.ViewContext.HttpContext.Server.MapPath(@"~\ExtensionLibraries"))
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),

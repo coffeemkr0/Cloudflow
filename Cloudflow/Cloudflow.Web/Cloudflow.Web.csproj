@@ -223,7 +223,6 @@
     <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\TriggerSelectorAttribute.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\CategorizedItemSelectorViewModel.cs" />
     <Compile Include="ViewModels\Shared\ExtensionBrowserViewModel.cs" />
