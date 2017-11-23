@@ -478,16 +478,16 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
-      <Project>{ad7be488-acf7-4664-b6f5-73171f8ba8a7}</Project>
-      <Name>Cloudflow.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cloudflow.Core\Cloudflow.Core.csproj">
+      <Project>{ad7be488-acf7-4664-b6f5-73171f8ba8a7}</Project>
+      <Name>Cloudflow.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

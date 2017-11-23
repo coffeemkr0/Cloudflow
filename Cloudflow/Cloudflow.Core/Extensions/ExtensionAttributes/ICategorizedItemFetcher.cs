@@ -29,5 +29,7 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         /// </summary>
         /// <param name="propertyName">The Name of the property that the items are being loaded for.</param>
         CategorizedItemCollection GetItems(string propertyName);
+
+        object CreateInstance(string propertyName, string metaData);
     }
 }

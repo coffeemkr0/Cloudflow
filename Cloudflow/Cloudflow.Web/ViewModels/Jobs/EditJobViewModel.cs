@@ -300,6 +300,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     throw new ArgumentException($"{propertyName} is not implemented.");
             }
         }
+
+        public static object CreateInstance(string propertyName, string metaData)
+        {
+            return null;
+        }
         #endregion
     }
 }
