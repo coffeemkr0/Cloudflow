@@ -2,10 +2,13 @@
     $(document).on("click", ".objectCollectionNavigationItem__deleteButton", ObjectCollectionNavigationItem__deleteButton_Clicked);
 
     $(document).on("click", ".categorizedItemSelector__addButton", function () {
-        var $categorizedItemSelectorElement = $(this).closest(".categorizedItemSelector");
+        var $clickedItemElement = $(this).closest(".categorizedItemSelector__item");
+        var $categorizedItemSelectorElement = $clickedItemElement.closest(".categorizedItemSelector");
         var collectionId = $categorizedItemSelectorElement.attr("data-collectionid");
-        var metaData = $categorizedItemSelectorElement.find("[name='metaData']").val();
+        var metaData = $clickedItemElement.find("input[name='metaData']").val();
         var $objectCollectionEditElement = $("#" + collectionId);
+
+        console.log(metaData);
 
         AddTrigger($objectCollectionEditElement, metaData);
     });

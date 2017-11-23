@@ -35,7 +35,7 @@
                                     <div id="categoryTab@(categoryIndex)" class="tab-pane categorizedItemSelector__itemList @(categoryIndex == 0 ? "active" : "")">
                                         @foreach (var item in category.Items)
                                         {
-                                            <div class="panel panel-default">
+                                            <div class="panel panel-default categorizedItemSelector__item">
                                                 <div class="panel-body">
                                                     <div class="row">
                                                         <input type="hidden" name="metaData" value="@item.MetaData" />
