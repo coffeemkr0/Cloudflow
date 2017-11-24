@@ -182,24 +182,6 @@ namespace Cloudflow.Web.Controllers
             }
         }
 
-        public ActionResult Triggers()
-        {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibraryFolder(), ConfigurableExtensionTypes.Trigger);
-            return PartialView("ExtensionBrowser", model);
-        }
-
-        public ActionResult Steps()
-        {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibraryFolder(), ConfigurableExtensionTypes.Step);
-            return PartialView("ExtensionBrowser", model);
-        }
-
-        public ActionResult Conditions(string viewModelPropertyName)
-        {
-            var model = new ExtensionBrowserViewModel(this.GetExtensionLibraryFolder(), ConfigurableExtensionTypes.Condition);
-            return PartialView("ExtensionBrowser", model);
-        }
-
         [HttpPost]
         public JsonResult CreateObjectCollectionItem(string propertyName, string objectFactoryAssemblyPath, string objectFactoryExtensionId,
             string factoryData, string instanceData)
@@ -222,69 +204,6 @@ namespace Cloudflow.Web.Controllers
             "~/Views/ExtensionConfigurationEdits/ObjectCollectionItem.cshtml", model);
 
             return Json(new { navigationItemView, itemView });
-        }
-
-        [HttpPost]
-        public JsonResult AddStep(Guid stepId, int index)
-        {
-            var extensionAssemblyPath = this.GetExtensionLibraries().First();
-
-            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
-            var step = configurableExtensionBrowser.GetConfigurableExtension(stepId);
-            
-            var stepViewModel = new StepViewModel();
-            stepViewModel.StepDefinitionId = Guid.NewGuid();
-            stepViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(step.ExtensionId);
-            stepViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
-            stepViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(step.ConfigurationExtensionId);
-            stepViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
-
-            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(step.ConfigurationExtensionId),
-                extensionAssemblyPath);
-
-            stepViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            stepViewModel.ExtensionConfiguration.Configuration.Name = "New Step";
-
-
-            var stepNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_StepNavigationItem", stepViewModel);
-            var stepConfigurationView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_StepConfiguration", stepViewModel);
-
-            return Json(new { stepNavigationItemView, stepConfigurationView });
-        }
-
-        [HttpPost]
-        public JsonResult AddCondition(Guid conditionId, int index, string viewModelPropertyName)
-        {
-            var extensionAssemblyPath = this.GetExtensionLibraries().First();
-
-            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
-            var condition = configurableExtensionBrowser.GetConfigurableExtension(conditionId);
-
-            var conditionConfigurationViewModel = new ConditionViewModel
-            {
-                ViewModelPropertyName = viewModelPropertyName
-            };
-            conditionConfigurationViewModel.ConditionDefinitionId = Guid.NewGuid();
-            conditionConfigurationViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(condition.ExtensionId);
-            conditionConfigurationViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
-            conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(condition.ConfigurationExtensionId);
-            conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
-
-            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(condition.ConfigurationExtensionId),
-                extensionAssemblyPath);
-
-            conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            conditionConfigurationViewModel.ExtensionConfiguration.Configuration.Name = "New Condition";
-
-
-            var conditionNavigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_ConditionNavigationItem", conditionConfigurationViewModel);
-            var conditionConfigurationView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                "_ConditionConfiguration", conditionConfigurationViewModel);
-
-            return Json(new { conditionNavigationItemView, conditionConfigurationView });
         }
         #endregion
     }

@@ -101,7 +101,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
             {
                 var triggerViewModel = new TriggerViewModel();
                 triggerViewModel.TriggerDefinitionId = triggerDefinition.TriggerDefinitionId;
-                if (index == 0) triggerViewModel.Active = true;
                 triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
                 triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = triggerDefinition.ConfigurationExtensionAssemblyPath;
 
