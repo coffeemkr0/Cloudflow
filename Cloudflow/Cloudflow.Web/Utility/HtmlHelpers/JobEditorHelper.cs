@@ -185,31 +185,6 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             }
         }
 
-        private static string GetDisplayText(object model)
-        {
-            if (model == null) return "Null";
-
-            var attribute = (DisplayTextPropertyName)model.GetType().GetCustomAttribute(typeof(DisplayTextPropertyName));
-            if (attribute != null)
-            {
-                var propertyNameParts = attribute.PropertyName.Split('.').ToList();
-                object value = model;
-
-                while(propertyNameParts.Count > 0)
-                {
-                    var propertyInfo = value.GetType().GetProperty(propertyNameParts.First());
-                    value = propertyInfo.GetValue(value);
-                    propertyNameParts.RemoveAt(0);
-                }
-
-                return value?.ToString() ?? model.GetType().Name;
-            }
-            else
-            {
-                return model.GetType().Name;
-            }
-        }
-
         private static string ObjectEdit(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
@@ -422,6 +397,31 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         #endregion
 
         #region Public Methods
+        public static string GetDisplayText(object model)
+        {
+            if (model == null) return "Null";
+
+            var attribute = (DisplayTextPropertyName)model.GetType().GetCustomAttribute(typeof(DisplayTextPropertyName));
+            if (attribute != null)
+            {
+                var propertyNameParts = attribute.PropertyName.Split('.').ToList();
+                object value = model;
+
+                while (propertyNameParts.Count > 0)
+                {
+                    var propertyInfo = value.GetType().GetProperty(propertyNameParts.First());
+                    value = propertyInfo.GetValue(value);
+                    propertyNameParts.RemoveAt(0);
+                }
+
+                return value?.ToString() ?? model.GetType().Name;
+            }
+            else
+            {
+                return model.GetType().Name;
+            }
+        }
+
         public static MvcHtmlString CreateModelEdit(this HtmlHelper htmlHelper, object model)
         {
             return CreateModelEdit(htmlHelper, model, new List<string>());

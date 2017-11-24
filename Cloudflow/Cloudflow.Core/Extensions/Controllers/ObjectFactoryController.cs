@@ -19,12 +19,12 @@ namespace Cloudflow.Core.Extensions.Controllers
         #endregion
 
         #region Constructors
-        public ObjectFactoryController(string factoryData, Guid extensionId, Assembly assembly)
+        public ObjectFactoryController(string objectFactoryAssemblyPath, Guid objectFactoryExtensionId, string factoryData)
         {
-            _extensionId = extensionId;
+            _extensionId = objectFactoryExtensionId;
 
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(assembly));
+            catalog.Catalogs.Add(new AssemblyCatalog(objectFactoryAssemblyPath));
             _extensionsContainer = new CompositionContainer(catalog);
             _extensionsContainer.ComposeExportedValue<string>("factoryData", factoryData);
 

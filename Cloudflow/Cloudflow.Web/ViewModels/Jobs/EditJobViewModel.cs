@@ -66,10 +66,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     {
                         Name = extension.ExtensionName,
                         Description = extension.ExtensionDescription,
-                        Icon = extension.Icon
+                        Icon = extension.Icon,
+                        ObjectFactoryAssemblyPath = typeof(EditJobViewModel).Assembly.CodeBase,
+                        ObjectFactoryExtensionId = Guid.Parse("A530569D-546E-44CD-A957-39E330E12B9F"),
+                        FactoryData = extensionLibraryFile,
+                        InstanceData = extension.ExtensionId
                     };
 
-                    item.MetaData = extension.ExtensionId.ToString();
+                    item.InstanceData = extension.ExtensionId.ToString();
 
                     category.Items.Add(item);
                 }
@@ -301,11 +305,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     throw new ArgumentException($"{propertyName} is not implemented.");
             }
         }
-
-        public object CreateInstance(string propertyName, string metaData)
-        {
-            return null;
-        }
         #endregion
     }
 
@@ -313,27 +312,27 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class TriggerFactory : ObjectFactory
     {
         [ImportingConstructor]
-        public TriggerFactory([Import("factoryData")]string extensionLibraryPath) : base(extensionLibraryPath)
+        public TriggerFactory([Import("factoryData")]string factoryData) : base(factoryData)
         {
 
         }
 
         public override object CreateObject(string instanceData)
         {
-            var extensionAssemblyPath = this.FactoryData;
+            var extensionLibraryPath = this.FactoryData;
 
-            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
+            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryPath);
             var trigger = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(instanceData));
 
             var triggerViewModel = new TriggerViewModel();
             triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
             triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
-            triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
+            triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionLibraryPath;
             triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
-            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
+            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionLibraryPath;
 
             var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationExtensionId),
-                extensionAssemblyPath);
+                extensionLibraryPath);
 
             triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
             triggerViewModel.ExtensionConfiguration.Configuration.Name = "New Trigger";

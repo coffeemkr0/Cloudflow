@@ -73,10 +73,25 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
                 public byte[] Icon { get; set; }
 
                 /// <summary>
-                /// Gets or sets meta data for the item that will be passed from the client to the server when an item is selected.
-                /// This meta data can be used to construct a new instance of an object for the collection.
+                /// Gets or sets the path to the assembly that contains the object factory extension that will be
+                /// used for creating an instance of the item.
                 /// </summary>
-                public string MetaData { get; set; }
+                public string ObjectFactoryAssemblyPath { get; set; }
+
+                /// <summary>
+                /// Gets or sets the Id of the object factory extensions that will be used for creating an instance of the item.
+                /// </summary>
+                public Guid ObjectFactoryExtensionId { get; set; }
+
+                /// <summary>
+                /// Gets or sets factory data that will be used to create an object factory for creating an instance of the item.
+                /// </summary>
+                public string FactoryData { get; set; }
+
+                /// <summary>
+                /// Gets or sets instance data that will be used by an object factory to initialize an instance of the item.
+                /// </summary>
+                public string InstanceData { get; set; }
                 #endregion
             }
             #endregion

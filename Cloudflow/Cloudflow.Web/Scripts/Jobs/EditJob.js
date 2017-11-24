@@ -5,12 +5,15 @@
         var $clickedItemElement = $(this).closest(".categorizedItemSelector__item");
         var $categorizedItemSelectorElement = $clickedItemElement.closest(".categorizedItemSelector");
         var collectionId = $categorizedItemSelectorElement.attr("data-collectionid");
-        var metaData = $clickedItemElement.find("input[name='metaData']").val();
         var $objectCollectionEditElement = $("#" + collectionId);
 
-        console.log(metaData);
+        var objectFactoryAssemblyPath = $clickedItemElement.find("input[name='objectFactoryAssemblyPath']").val();
+        var objectFactoryExtensionId = $clickedItemElement.find("input[name='objectFactoryExtensionId']").val();
+        var factoryData = $clickedItemElement.find("input[name='factoryData']").val();
+        var instanceData = $clickedItemElement.find("input[name='instanceData']").val();
 
-        AddTrigger($objectCollectionEditElement, metaData);
+        AddObjectCollectionItem($objectCollectionEditElement, objectFactoryAssemblyPath,
+            objectFactoryExtensionId, factoryData, instanceData);
     });
 
     $(".objectCollectionEdit__navigationItems").sortable({
@@ -21,99 +24,24 @@
     $(".objectCollectionEdit__navigationItems").disableSelection();
 });
 
-function OnAddExtensionClicked(addButtonElement) {
-    var viewModelPropertyName = addButtonElement.attr("data-viewmodelpropertyname");
-    var itemId = addButtonElement.attr("data-itemid");
-    var extensionBrowserId = addButtonElement.attr("data-target");
-
-    $(extensionBrowserId).attr("data-itemid", itemId);
-    $(extensionBrowserId).attr("data-viewmodelpropertyname", viewModelPropertyName);
-}
-
-function AddExtension(extensionId, extensionType, itemId, viewModelPropertyName) {
-    switch (extensionType) {
-        case "1":
-            AddTrigger(extensionId);
-            break;
-        case "2":
-            AddStep(extensionId);
-            break;
-        case "3":
-            AddCondition(extensionId, itemId, viewModelPropertyName);
-            break;
-    }
-}
-
-function AddStep(extensionId) {
-    var index = $(".stepNavigationItem").length;
-
+function AddObjectCollectionItem(objectCollectionEditElement, objectFactoryAssemblyPath,
+    objectFactoryExtensionId, factoryData, instanceData) {
     $.ajax({
         type: 'POST',
-        url: "/Jobs/AddStep",
-        dataType: 'json',
-        data: {
-            stepId: extensionId,
-            index: index
-        },
-        success: function (result) {
-            if (result !== null) {
-                $("#stepNavigationItems").append(result.stepNavigationItemView);
-                $("#stepConfigurations").append(result.stepConfigurationView);
-
-
-            } else {
-                alert('Error getting data.');
-            }
-        },
-        error: function () {
-            alert('Error getting data.');
-        }
-    });
-}
-
-function AddTrigger(objectCollectionEditElement, metaData) {
-    $.ajax({
-        type: 'POST',
-        url: "/Jobs/AddTrigger",
+        url: "/Jobs/CreateObjectCollectionItem",
         dataType: 'json',
         data: {
             propertyName: objectCollectionEditElement.attr("data-propertyname"),
-            metaData: metaData
+            objectFactoryAssemblyPath: objectFactoryAssemblyPath,
+            objectFactoryExtensionId: objectFactoryExtensionId,
+            factoryData: factoryData,
+            instanceData: instanceData
         },
         success: function (result) {
             if (result !== null) {
                 objectCollectionEditElement.find(".objectCollectionEdit__navigationItems").first().append(result.navigationItemView);
                 objectCollectionEditElement.find(".objectCollectionEdit__items").first().append(result.itemView);
                 UpdateObjectCollectionNames(objectCollectionEditElement.find(".objectCollectionEdit__navigationItems").first());
-            } else {
-                alert('Error getting data.');
-            }
-        },
-        error: function () {
-            alert('Error getting data.');
-        }
-    });
-}
-
-function AddCondition(extensionId, itemId, viewModelPropertyName) {
-
-    var $conditionNavigationItemsElement = $("#conditionNavigationItems" + itemId);
-    var $conditionConfigurationsElement = $("#conditionConfigurations" + itemId);
-    var index = $conditionNavigationItemsElement.find(".conditionNavigationItem").length;
-
-    $.ajax({
-        type: 'POST',
-        url: "/Jobs/AddCondition",
-        dataType: 'json',
-        data: {
-            conditionId: extensionId,
-            index: index,
-            viewModelPropertyName: viewModelPropertyName
-        },
-        success: function (result) {
-            if (result !== null) {
-                $conditionNavigationItemsElement.append(result.conditionNavigationItemView);
-                $conditionConfigurationsElement.append(result.conditionConfigurationView);
             } else {
                 alert('Error getting data.');
             }

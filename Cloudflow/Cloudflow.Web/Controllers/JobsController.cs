@@ -15,6 +15,7 @@ using Cloudflow.Core.Extensions;
 using Cloudflow.Web.Utility;
 using Cloudflow.Web.ViewModels.Shared;
 using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
+using Cloudflow.Web.Utility.HtmlHelpers;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -200,19 +201,18 @@ namespace Cloudflow.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddTrigger(string propertyName, string metaData)
+        public JsonResult CreateObjectCollectionItem(string propertyName, string objectFactoryAssemblyPath, string objectFactoryExtensionId,
+            string factoryData, string instanceData)
         {
-            var extensionAssemblyPath = this.GetExtensionLibraries().First();
-            var objectFactoryController = new ObjectFactoryController(this.GetExtensionLibraries().First(),
-                Guid.Parse("A530569D-546E-44CD-A957-39E330E12B9F"), typeof(TriggerViewModel).Assembly);
-
-            var triggerViewModel = (TriggerViewModel)objectFactoryController.CreateObject(metaData);
+            var objectFactoryController = new ObjectFactoryController(objectFactoryAssemblyPath,
+                Guid.Parse(objectFactoryExtensionId), factoryData);
+            var newItem = objectFactoryController.CreateObject(instanceData);
 
             var model = new ObjectCollectionItemViewModel
             {
-                DisplayText = "New Trigger",
+                DisplayText = JobEditorHelper.GetDisplayText(newItem),
                 PropertyNameParts = (propertyName + "[0]").Split('.').ToList(),
-                Value = triggerViewModel
+                Value = newItem
             };
 
             var navigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
