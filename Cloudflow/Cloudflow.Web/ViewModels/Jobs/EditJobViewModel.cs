@@ -17,6 +17,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
     {
         #region Declarations
         CategorizedItemCollection _triggerExtensions;
+        CategorizedItemCollection _stepExtensions;
         #endregion
 
         #region Properties
@@ -34,6 +35,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [PropertyGroup("StepsTabText")]
         [DisplayOrder(2)]
+        [CategorizedItemSelector("AddStepCaption", "AddStepCategoriesCaption", "8CAC8ED3-DA70-48B9-B720-361735114FAC")]
         public List<StepViewModel> Steps { get; set; }
         #endregion
 
@@ -47,9 +49,22 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Private Methods
-        private CategorizedItemCollection GetTriggerExtensions(string extensionLibraryFolder)
+        private CategorizedItemCollection GetExtensions(string extensionLibraryFolder, ConfigurableExtensionTypes extensionType)
         {
             var itemCollection = new CategorizedItemCollection();
+            var objectFactoryAssemblyPath = this.GetType().Assembly.CodeBase;
+            var objectFactoryExtensionId = "";
+            switch (extensionType)
+            {
+                case ConfigurableExtensionTypes.Trigger:
+                    objectFactoryExtensionId = "A530569D-546E-44CD-A957-39E330E12B9F";
+                    break;
+                case ConfigurableExtensionTypes.Step:
+                    objectFactoryExtensionId = "8CAC8ED3-DA70-48B9-B720-361735114FAC";
+                    break;
+                default:
+                    throw new ArgumentException($"The extension type {extensionType} is not implemented.");
+            }
 
             foreach (var extensionLibraryFile in Directory.GetFiles(extensionLibraryFolder, "*.dll"))
             {
@@ -60,15 +75,15 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 itemCollection.Categories.Add(category);
 
                 var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
-                foreach (var extension in extensionBrowser.GetConfigurableExtensions(ConfigurableExtensionTypes.Trigger))
+                foreach (var extension in extensionBrowser.GetConfigurableExtensions(extensionType))
                 {
                     var item = new CategorizedItemCollection.Category.Item
                     {
                         Name = extension.ExtensionName,
                         Description = extension.ExtensionDescription,
                         Icon = extension.Icon,
-                        ObjectFactoryAssemblyPath = typeof(EditJobViewModel).Assembly.CodeBase,
-                        ObjectFactoryExtensionId = Guid.Parse("A530569D-546E-44CD-A957-39E330E12B9F"),
+                        ObjectFactoryAssemblyPath = objectFactoryAssemblyPath,
+                        ObjectFactoryExtensionId = Guid.Parse(objectFactoryExtensionId),
                         FactoryData = extensionLibraryFile,
                         InstanceData = extension.ExtensionId
                     };
@@ -116,8 +131,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     var conditionConfigurationViewModel = new ConditionViewModel();
                     conditionConfigurationViewModel.ViewModelPropertyName = $"Triggers[{index}]";
                     conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId;
-                    if (conditionIndex == 0) conditionConfigurationViewModel.Active = true;
-
                     conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
                     conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
 
@@ -138,7 +151,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
             {
                 var stepViewModel = new StepViewModel();
                 stepViewModel.StepDefinitionId = stepDefinition.StepDefinitionId;
-                if (index == 0) stepViewModel.Active = true;
                 stepViewModel.ExtensionConfiguration.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
                 stepViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = stepDefinition.ConfigurationExtensionAssemblyPath;
 
@@ -291,7 +303,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void LoadExtensions(string extensionLibraryFolder)
         {
-            _triggerExtensions = GetTriggerExtensions(extensionLibraryFolder);
+            _triggerExtensions = GetExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Trigger);
+            _stepExtensions = GetExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Step);
         }
 
         public CategorizedItemCollection GetItems(string propertyName)
@@ -300,43 +313,12 @@ namespace Cloudflow.Web.ViewModels.Jobs
             {
                 case nameof(this.Triggers):
                     return _triggerExtensions;
+                case nameof(this.Steps):
+                    return _stepExtensions;
                 default:
                     throw new ArgumentException($"{propertyName} is not implemented.");
             }
         }
         #endregion
-    }
-
-    [ExportExtension("A530569D-546E-44CD-A957-39E330E12B9F", typeof(TriggerFactory))]
-    public class TriggerFactory : ObjectFactory
-    {
-        [ImportingConstructor]
-        public TriggerFactory([Import("factoryData")]string factoryData) : base(factoryData)
-        {
-
-        }
-
-        public override object CreateObject(string instanceData)
-        {
-            var extensionLibraryPath = this.FactoryData;
-
-            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryPath);
-            var trigger = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(instanceData));
-
-            var triggerViewModel = new TriggerViewModel();
-            triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
-            triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
-            triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionLibraryPath;
-            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
-            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionLibraryPath;
-
-            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationExtensionId),
-                extensionLibraryPath);
-
-            triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            triggerViewModel.ExtensionConfiguration.Configuration.Name = "New Trigger";
-
-            return triggerViewModel;
-        }
     }
 }

@@ -61,6 +61,24 @@ namespace Cloudflow.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Steps.
+        /// </summary>
+        internal static string AddStepCaption {
+            get {
+                return ResourceManager.GetString("AddStepCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Libraries.
+        /// </summary>
+        internal static string AddStepCategoriesCaption {
+            get {
+                return ResourceManager.GetString("AddStepCategoriesCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Triggers.
         /// </summary>
         internal static string AddTriggerCaption {

@@ -13,12 +13,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public Guid StepDefinitionId { get; set; }
 
-        [Hidden]
-        public bool Deleted { get; set; }
-
-        [Hidden]
-        public bool Active { get; set; }
-
         [PropertyGroupAttribute("GeneralTabText")]
         [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
