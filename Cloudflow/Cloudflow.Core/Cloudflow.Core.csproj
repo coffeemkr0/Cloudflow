@@ -107,6 +107,7 @@
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
     <Compile Include="Extensions\Controllers\ConditionController.cs" />
+    <Compile Include="Extensions\Controllers\ObjectFactoryController.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemCollection.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemSelectorAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayOrderAttribute.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Extensions\ExtensionAttributes\ExportExtensionAttribute.cs" />
     <Compile Include="Extensions\Job.cs" />
     <Compile Include="Extensions\Controllers\JobController.cs" />
+    <Compile Include="Extensions\ObjectFactory.cs" />
     <Compile Include="Extensions\Step.cs" />
     <Compile Include="Extensions\Condition.cs" />
     <Compile Include="Extensions\Trigger.cs" />

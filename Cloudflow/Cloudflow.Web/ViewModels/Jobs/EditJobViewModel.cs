@@ -9,6 +9,7 @@ using System.Web;
 using System.IO;
 using System.Diagnostics;
 using Cloudflow.Core.Extensions;
+using System.ComponentModel.Composition;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -28,7 +29,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [PropertyGroup("TriggersTabText")]
         [DisplayOrder(1)]
-        [CategorizedItemSelector("AddTriggerCaption", "AddTriggerCategoriesCaption")]
+        [CategorizedItemSelector("AddTriggerCaption", "AddTriggerCategoriesCaption", "A530569D-546E-44CD-A957-39E330E12B9F")]
         public List<TriggerViewModel> Triggers { get; set; }
 
         [PropertyGroup("StepsTabText")]
@@ -301,10 +302,43 @@ namespace Cloudflow.Web.ViewModels.Jobs
             }
         }
 
-        public static object CreateInstance(string propertyName, string metaData)
+        public object CreateInstance(string propertyName, string metaData)
         {
             return null;
         }
         #endregion
+    }
+
+    [ExportExtension("A530569D-546E-44CD-A957-39E330E12B9F", typeof(TriggerFactory))]
+    public class TriggerFactory : ObjectFactory
+    {
+        [ImportingConstructor]
+        public TriggerFactory([Import("factoryData")]string extensionLibraryPath) : base(extensionLibraryPath)
+        {
+
+        }
+
+        public override object CreateObject(string instanceData)
+        {
+            var extensionAssemblyPath = this.FactoryData;
+
+            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
+            var trigger = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(instanceData));
+
+            var triggerViewModel = new TriggerViewModel();
+            triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
+            triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
+            triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
+            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
+            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
+
+            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationExtensionId),
+                extensionAssemblyPath);
+
+            triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
+            triggerViewModel.ExtensionConfiguration.Configuration.Name = "New Trigger";
+
+            return triggerViewModel;
+        }
     }
 }

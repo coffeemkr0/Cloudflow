@@ -203,22 +203,10 @@ namespace Cloudflow.Web.Controllers
         public JsonResult AddTrigger(string propertyName, string metaData)
         {
             var extensionAssemblyPath = this.GetExtensionLibraries().First();
+            var objectFactoryController = new ObjectFactoryController(this.GetExtensionLibraries().First(),
+                Guid.Parse("A530569D-546E-44CD-A957-39E330E12B9F"), typeof(TriggerViewModel).Assembly);
 
-            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
-            var trigger = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(metaData));
-
-            var triggerViewModel = new TriggerViewModel();
-            triggerViewModel.TriggerDefinitionId = Guid.NewGuid();
-            triggerViewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(trigger.ExtensionId);
-            triggerViewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionAssemblyPath;
-            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = Guid.Parse(trigger.ConfigurationExtensionId);
-            triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = extensionAssemblyPath;
-
-            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(trigger.ConfigurationExtensionId),
-                extensionAssemblyPath);
-
-            triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.CreateNewConfiguration();
-            triggerViewModel.ExtensionConfiguration.Configuration.Name = "New Trigger";
+            var triggerViewModel = (TriggerViewModel)objectFactoryController.CreateObject(metaData);
 
             var model = new ObjectCollectionItemViewModel
             {

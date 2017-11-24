@@ -12,13 +12,16 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         public string CaptionResourceName { get; set; }
 
         public string CategoriesCaptionResourceName { get; set; }
+
+        public Guid ObjectFactoryExtensionId { get; set; }
         #endregion
 
         #region Constructors
-        public CategorizedItemSelectorAttribute(string captionResourceName, string categoriesCaptionResourceName)
+        public CategorizedItemSelectorAttribute(string captionResourceName, string categoriesCaptionResourceName, string objectFactoryExtensionId)
         {
             this.CaptionResourceName = captionResourceName;
             this.CategoriesCaptionResourceName = categoriesCaptionResourceName;
+            this.ObjectFactoryExtensionId = Guid.Parse(objectFactoryExtensionId);
         }
         #endregion
     }
