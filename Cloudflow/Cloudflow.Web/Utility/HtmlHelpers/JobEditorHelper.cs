@@ -328,7 +328,12 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            var model = new ObjectCollectionEditViewModel(collectionOwner, propertyInfo, resourceManager)
+            ICategorizedItemFetcher categorizedItemFetcher = null;
+            if (collectionOwner.GetType().GetInterfaces().Contains(typeof(ICategorizedItemFetcher)))
+            {
+                categorizedItemFetcher = (ICategorizedItemFetcher)collectionOwner;
+            }
+            var model = new ObjectCollectionEditViewModel(propertyInfo, resourceManager, categorizedItemFetcher)
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyNameParts = propertyNameParts

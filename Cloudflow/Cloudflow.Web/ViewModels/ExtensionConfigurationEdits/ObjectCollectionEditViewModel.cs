@@ -22,13 +22,14 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public CategorizedItemSelectorViewModel CategorizedItemSelectorViewModel { get; set; }
 
-        public ObjectCollectionEditViewModel(object collectionOwner, PropertyInfo propertyInfo, ResourceManager resourceManager)
+        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo, ResourceManager resourceManager, 
+            ICategorizedItemFetcher categorizedItemFetcher)
         {
             this.Id = Guid.NewGuid();
             this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
 
-            if (collectionOwner.GetType().GetInterfaces().Contains(typeof(ICategorizedItemFetcher)))
+            if (categorizedItemFetcher != null)
             {
                 var categorizedItemSelectorAttribute = propertyInfo.GetCustomAttribute<CategorizedItemSelectorAttribute>();
                 if (categorizedItemSelectorAttribute != null)
@@ -43,7 +44,7 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
                         CategoriesCaption = categoriesCaption
                     };
 
-                    this.CategorizedItemSelectorViewModel.CategorizedItemCollection = ((ICategorizedItemFetcher)collectionOwner).GetItems(propertyInfo.Name);
+                    this.CategorizedItemSelectorViewModel.CategorizedItemCollection = categorizedItemFetcher.GetItems(propertyInfo.Name);
                 }
             }
         }
