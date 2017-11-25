@@ -1,6 +1,12 @@
 ﻿$(function () {
     $(document).on("click", ".objectCollectionNavigationItem__deleteButton", ObjectCollectionNavigationItem__deleteButton_Clicked);
 
+    $(document).on("click", ".objectCollectionEdit__addButton", function () {
+        var addItemModalId = $(this).attr("data-target");
+        console.log("Target=" + addItemModalId);
+        $(addItemModalId).attr("data-collectionid", $(this).closest(".objectCollectionEdit").attr("id"));
+    });
+
     $(document).on("click", ".categorizedItemSelector__addButton", function () {
         var $clickedItemElement = $(this).closest(".categorizedItemSelector__item");
         var $categorizedItemSelectorElement = $clickedItemElement.closest(".categorizedItemSelector");

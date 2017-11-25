@@ -14,11 +14,10 @@ using Cloudflow.Web.ObjectFactories;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class EditJobViewModel : ICategorizedItemFetcher
+    public class EditJobViewModel : ICategorizedItemCollectionLoader
     {
-        #region Declarations
-        CategorizedItemCollection _triggerExtensions;
-        CategorizedItemCollection _stepExtensions;
+        #region Private Members
+        private List<CategorizedItemCollection> _extensions;
         #endregion
 
         #region Properties
@@ -31,12 +30,12 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [PropertyGroup("TriggersTabText")]
         [DisplayOrder(1)]
-        [CategorizedItemSelector("AddTriggerCaption", "AddTriggerCategoriesCaption", "A530569D-546E-44CD-A957-39E330E12B9F")]
+        [CategorizedItemSelector(ConfigurableExtensionFetcher.TriggerExtensionCollectionId, ConfigurableExtensionFetcher.TriggerObjectFactoryExtensionId)]
         public List<TriggerViewModel> Triggers { get; set; }
 
         [PropertyGroup("StepsTabText")]
         [DisplayOrder(2)]
-        [CategorizedItemSelector("AddStepCaption", "AddStepCategoriesCaption", "8CAC8ED3-DA70-48B9-B720-361735114FAC")]
+        [CategorizedItemSelector(ConfigurableExtensionFetcher.StepExtensionCollectionId, ConfigurableExtensionFetcher.StepObjectFactoryExtensionId)]
         public List<StepViewModel> Steps { get; set; }
         #endregion
 
@@ -66,7 +65,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
             {
                 var triggerViewModel = new TriggerViewModel();
-                triggerViewModel.LoadExtensions(extensionLibraryFolder);
                 triggerViewModel.TriggerDefinitionId = triggerDefinition.TriggerDefinitionId;
                 triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
                 triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = triggerDefinition.ConfigurationExtensionAssemblyPath;
@@ -255,21 +253,15 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void LoadExtensions(string extensionLibraryFolder)
         {
-            _triggerExtensions = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Trigger);
-            _stepExtensions = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Step);
+            _extensions = new List<CategorizedItemCollection>();
+            _extensions.Add(ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Trigger));
+            _extensions.Add(ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Step));
+            _extensions.Add(ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Condition));
         }
 
-        public CategorizedItemCollection GetItems(string propertyName)
+        public List<CategorizedItemCollection> GetCategorizedItemCollections()
         {
-            switch (propertyName)
-            {
-                case nameof(this.Triggers):
-                    return _triggerExtensions;
-                case nameof(this.Steps):
-                    return _stepExtensions;
-                default:
-                    throw new ArgumentException($"{propertyName} is not implemented.");
-            }
+            return _extensions;
         }
         #endregion
     }

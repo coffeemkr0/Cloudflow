@@ -14,38 +14,24 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
     {
         public Guid Id { get; set; }
 
+        public string CategorizedItemSelectorId { get; set; }
+
         public string LabelText { get; set; }
 
         public List<String> PropertyNameParts { get; set; }
 
         public List<ObjectCollectionItemViewModel> Items { get; set; }
 
-        public CategorizedItemSelectorViewModel CategorizedItemSelectorViewModel { get; set; }
-
-        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo, ResourceManager resourceManager, 
-            ICategorizedItemFetcher categorizedItemFetcher)
+        public ObjectCollectionEditViewModel(PropertyInfo propertyInfo)
         {
             this.Id = Guid.NewGuid();
             this.Items = new List<ObjectCollectionItemViewModel>();
             this.PropertyNameParts = new List<string>();
 
-            if (categorizedItemFetcher != null)
+            var categorizedItemSelectorAttribute = propertyInfo.GetCustomAttribute<CategorizedItemSelectorAttribute>();
+            if (categorizedItemSelectorAttribute != null)
             {
-                var categorizedItemSelectorAttribute = propertyInfo.GetCustomAttribute<CategorizedItemSelectorAttribute>();
-                if (categorizedItemSelectorAttribute != null)
-                {
-                    var caption = resourceManager.GetString(categorizedItemSelectorAttribute.CaptionResourceName);
-                    var categoriesCaption = resourceManager.GetString(categorizedItemSelectorAttribute.CategoriesCaptionResourceName);
-
-                    this.CategorizedItemSelectorViewModel = new CategorizedItemSelectorViewModel()
-                    {
-                        Id = this.Id,
-                        Caption = caption,
-                        CategoriesCaption = categoriesCaption
-                    };
-
-                    this.CategorizedItemSelectorViewModel.CategorizedItemCollection = categorizedItemFetcher.GetItems(propertyInfo.Name);
-                }
+                this.CategorizedItemSelectorId = categorizedItemSelectorAttribute.CollectionId.ToString();
             }
         }
     }

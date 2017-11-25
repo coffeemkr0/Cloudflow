@@ -14,8 +14,6 @@ namespace Cloudflow.Web.ViewModels.Shared
     public class CategorizedItemSelectorViewModel
     {
         #region Properties
-        public Guid Id { get; set; }
-
         public CategorizedItemCollection CategorizedItemCollection { get; set; }
 
         public string Caption { get; set; }

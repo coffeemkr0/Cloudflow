@@ -6,28 +6,13 @@ using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
-    //Notes:
-    //Why did I use an interface like this?
-    //Sticking purely to attributes to try to load the categorized item colleciton was turning out to be impossible.
-    //Attributes cannot except delegates in their constructors, so it was not possible to specify a method to call in the attribute declaration.
-
-    //I could have used reflection or extensibility in the attribute to callback to a static method on a specified class or plugin, but using static methods made
-    //it unsafe if there were multiple collections on the same class.
-    
-    //I also needed a way for the class with the collection to be able to figure out how it loads the items for a given collection.
-    //For example, I needed the Triggers collection to be able to load only trigger extensions.
-    //There is a clear example of how this is implemented in the EditJobViewModel.
-
     /// <summary>
-    /// An interface that a class should implement when the class has a collection property with the CategorizedItemCollectionAttribute attribute specifed.
-    /// The interface provieds functionality for loading the items that should be displayed for a categorized item selector.
+    /// Provides functionality for loading a list of categorized item collections so that the collections
+    /// can be used when selecting options for creating a new item in object collections.
+    /// If a class implements this interface, each collection returned will be rendered to the client as a modal dialog.
     /// </summary>
-    public interface ICategorizedItemFetcher
+    public interface ICategorizedItemCollectionLoader
     {
-        /// <summary>
-        /// When implemented, this method should provied a collection of categorized items for the given property name.
-        /// </summary>
-        /// <param name="propertyName">The Name of the property that the items are being loaded for.</param>
-        CategorizedItemCollection GetItems(string propertyName);
+        List<CategorizedItemCollection> GetCategorizedItemCollections();
     }
 }

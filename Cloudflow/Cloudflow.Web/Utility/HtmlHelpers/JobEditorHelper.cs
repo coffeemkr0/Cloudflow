@@ -13,6 +13,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Cloudflow.Web.Controllers;
+using Cloudflow.Web.ViewModels.Shared;
 
 namespace Cloudflow.Web.Utility.HtmlHelpers
 {
@@ -202,6 +203,24 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
             htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/ExtensionConfigurationEdits/ObjectEdit.cshtml", objectEditViewModel));
 
+            if (model.GetType().GetInterfaces().Contains(typeof(ICategorizedItemCollectionLoader)))
+            {
+                var loader = (ICategorizedItemCollectionLoader)model;
+                var collections = loader.GetCategorizedItemCollections();
+
+                foreach (var collection in collections)
+                {
+                    var categorizedItemSelectorViewModel = new CategorizedItemSelectorViewModel()
+                    {
+                        Caption = collection.Caption,
+                        CategoriesCaption = collection.CategoriesCaption,
+                        CategorizedItemCollection = collection
+                    };
+
+                    htmlStringBuilder.AppendLine(GetView(htmlHelper, "~/Views/Shared/CategorizedItemSelector.cshtml", categorizedItemSelectorViewModel));
+                }
+            }
+
             return htmlStringBuilder.ToString();
         }
 
@@ -328,12 +347,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         {
             StringBuilder htmlStringBuilder = new StringBuilder();
 
-            ICategorizedItemFetcher categorizedItemFetcher = null;
-            if (collectionOwner.GetType().GetInterfaces().Contains(typeof(ICategorizedItemFetcher)))
-            {
-                categorizedItemFetcher = (ICategorizedItemFetcher)collectionOwner;
-            }
-            var model = new ObjectCollectionEditViewModel(propertyInfo, resourceManager, categorizedItemFetcher)
+            var model = new ObjectCollectionEditViewModel(propertyInfo)
             {
                 LabelText = GetLabelText(propertyInfo, resourceManager),
                 PropertyNameParts = propertyNameParts

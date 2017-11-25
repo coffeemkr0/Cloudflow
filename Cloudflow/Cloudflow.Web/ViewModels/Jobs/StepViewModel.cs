@@ -1,4 +1,5 @@
 ﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
+using Cloudflow.Web.ObjectFactories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [PropertyGroupAttribute("ConditionsTabText")]
         [DisplayOrder(1)]
+        [CategorizedItemSelector(ConfigurableExtensionFetcher.ConditionsExtensionCollectionId, ConfigurableExtensionFetcher.ConditionObjectFactoryExtensionId)]
         public List<ConditionViewModel> Conditions { get; set; }
         #endregion
 

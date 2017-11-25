@@ -4,7 +4,7 @@
     <div class="col-md-3 panel panel-default">
         <div class="panel-body">
             <div>
-                <a data-toggle="modal" data-target="#addItemModal@(Model.Id)" class="btn btn-default" href="#">
+                <a data-toggle="modal" data-target="#addItemModal@(Model.CategorizedItemSelectorId)" class="btn btn-default objectCollectionEdit__addButton" href="#">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Add @Model.LabelText...
                 </a>
@@ -28,8 +28,3 @@
         }
     </div>
 </section>
-
-@if(Model.CategorizedItemSelectorViewModel != null)
-{
-    Html.RenderPartial("CategorizedItemSelector", Model.CategorizedItemSelectorViewModel);
-}

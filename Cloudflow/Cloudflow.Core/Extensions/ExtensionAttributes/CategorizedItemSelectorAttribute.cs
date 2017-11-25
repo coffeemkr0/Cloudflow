@@ -9,18 +9,15 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
     public class CategorizedItemSelectorAttribute : Attribute
     {
         #region Properties
-        public string CaptionResourceName { get; set; }
-
-        public string CategoriesCaptionResourceName { get; set; }
+        public Guid CollectionId { get; set; }
 
         public Guid ObjectFactoryExtensionId { get; set; }
         #endregion
 
         #region Constructors
-        public CategorizedItemSelectorAttribute(string captionResourceName, string categoriesCaptionResourceName, string objectFactoryExtensionId)
+        public CategorizedItemSelectorAttribute(string collectionId, string objectFactoryExtensionId)
         {
-            this.CaptionResourceName = captionResourceName;
-            this.CategoriesCaptionResourceName = categoriesCaptionResourceName;
+            this.CollectionId = Guid.Parse(collectionId);
             this.ObjectFactoryExtensionId = Guid.Parse(objectFactoryExtensionId);
         }
         #endregion

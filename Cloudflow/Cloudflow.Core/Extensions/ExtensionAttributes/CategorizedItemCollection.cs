@@ -12,6 +12,18 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
     public class CategorizedItemCollection
     {
         #region Properties
+        public Guid Id { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the caption to display on a modal dialog for the collection.
+        /// </summary>
+        public string Caption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the caption to display above the categories on a modal dialog for the collection.
+        /// </summary>
+        public string CategoriesCaption { get; set; }
+
         /// <summary>
         /// Gets or sets the categories for the collection.
         /// </summary>
@@ -19,8 +31,11 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #endregion
 
         #region Constructors
-        public CategorizedItemCollection()
+        public CategorizedItemCollection(Guid collectionId, string caption, string categoriesCaption)
         {
+            this.Id = collectionId;
+            this.Caption = categoriesCaption;
+            this.CategoriesCaption = categoriesCaption;
             this.Categories = new List<Category>();
         }
         #endregion
