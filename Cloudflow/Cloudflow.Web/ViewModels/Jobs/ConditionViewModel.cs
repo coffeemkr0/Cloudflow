@@ -15,9 +15,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
-
-        [Hidden]
-        public string ViewModelPropertyName { get; set; }
         #endregion
 
         #region Constructors
