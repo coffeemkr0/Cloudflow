@@ -40,6 +40,8 @@ namespace Cloudflow.Core.Extensions.Controllers
 
         public Step Step { get; }
 
+        public List<ConditionController> ConditionControllers { get; }
+
         public log4net.ILog StepControllerLogger { get; }
         #endregion
 
@@ -52,6 +54,17 @@ namespace Cloudflow.Core.Extensions.Controllers
             var stepConfigurationController = new ExtensionConfigurationController(stepDefinition.ConfigurationExtensionId,
                     stepDefinition.ConfigurationExtensionAssemblyPath);
             this.StepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
+
+            this.ConditionControllers = new List<ConditionController>();
+            foreach (var stepConditionDefinition in stepDefinition.StepConditionDefinitions)
+            {
+                var conditionController = new ConditionController(stepConditionDefinition.StepConditionDefinitionId,
+                    stepConditionDefinition.ExtensionId, stepConditionDefinition.ExtensionAssemblyPath,
+                    stepConditionDefinition.ConfigurationExtensionId, stepConditionDefinition.ConfigurationExtensionAssemblyPath,
+                    stepConditionDefinition.Configuration);
+
+                this.ConditionControllers.Add(conditionController);
+            }
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(stepDefinition.ExtensionAssemblyPath));
@@ -91,6 +104,12 @@ namespace Cloudflow.Core.Extensions.Controllers
         {
             try
             {
+                //Do not execute the step if any condition is not met
+                foreach (var conditionController in this.ConditionControllers)
+                {
+                    if (!conditionController.CheckCondition()) return;
+                }
+
                 this.Step.Execute();
             }
             catch (Exception ex)

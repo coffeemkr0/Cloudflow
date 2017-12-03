@@ -65,7 +65,6 @@ namespace Cloudflow.Core.Extensions.Controllers
                 this.ConditionControllers.Add(conditionController);
             }
 
-
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(triggerDefinition.ExtensionAssemblyPath));
             _triggersContainer = new CompositionContainer(catalog);
