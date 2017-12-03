@@ -12,12 +12,12 @@ namespace Cloudflow.Core.Data.Shared.Models
     public class TriggerConditionDefinition : ConfigurableExtensionDefinition
     {
         #region Properties
-        [Index("IX_TriggerConditionDefinitionId_Index", 1, IsUnique = true)]
         public Guid TriggerConditionDefinitionId { get; set; }
 
-        [Index("IX_TriggerConditionDefinitionId_Index", 2, IsUnique = true)]
+        [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
+        [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
         public Guid TriggerDefinitionId { get; set; }
 
         [ScriptIgnore]

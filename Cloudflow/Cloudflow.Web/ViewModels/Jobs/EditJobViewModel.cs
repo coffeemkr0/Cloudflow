@@ -109,6 +109,23 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 model.Steps.Add(stepViewModel);
 
+                var conditionIndex = 0;
+                foreach (var conditionDefinition in stepDefinition.StepConditionDefinitions.OrderBy(i => i.Index))
+                {
+                    var conditionConfigurationViewModel = new ConditionViewModel();
+                    conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.StepConditionDefinitionId;
+                    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
+                    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
+
+                    extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
+                        conditionDefinition.ConfigurationExtensionAssemblyPath);
+                    conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
+
+                    stepViewModel.Conditions.Add(conditionConfigurationViewModel);
+
+                    conditionIndex += 1;
+                }
+
                 index += 1;
             }
 
@@ -124,6 +141,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
             jobDefinition.Version += 1;
             jobDefinition.Configuration = this.ExtensionConfiguration.Configuration.ToJson();
 
+            SaveTriggers(serverDbContext, jobDefinition);
+            SaveSteps(serverDbContext, jobDefinition);
+
+            serverDbContext.SaveChanges();
+        }
+
+        private void SaveTriggers(ServerDbContext serverDbContext, JobDefinition jobDefinition)
+        {
             var triggerIds = this.Triggers.Select(i => i.TriggerDefinitionId);
             var deletedTriggers = serverDbContext.TriggerDefinitions.Where(
                 i => i.JobDefinitionId == this.JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
@@ -185,13 +210,16 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 index += 1;
             }
+        }
 
+        private void SaveSteps(ServerDbContext serverDbContext, JobDefinition jobDefinition)
+        {
             var stepIds = this.Steps.Select(i => i.StepDefinitionId);
             var deletedSteps = serverDbContext.StepDefinitions.Where(
                 i => i.JobDefinitionId == this.JobDefinitionId && !stepIds.Contains(i.StepDefinitionId));
             serverDbContext.StepDefinitions.RemoveRange(deletedSteps);
 
-            index = 0;
+            int index = 0;
             foreach (var step in this.Steps)
             {
                 var stepDefinition = serverDbContext.StepDefinitions.FirstOrDefault(i => i.StepDefinitionId == step.StepDefinitionId);
@@ -246,8 +274,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 index += 1;
             }
-
-            serverDbContext.SaveChanges();
         }
 
         public void LoadExtensions(string extensionLibraryFolder)

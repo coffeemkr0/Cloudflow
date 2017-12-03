@@ -19,8 +19,6 @@ namespace Cloudflow.Core.Data.Shared.Models
         public virtual ICollection<TriggerDefinition> TriggerDefinitions { get; set; }
 
         public virtual ICollection<StepDefinition> StepDefinitions { get; set; }
-
-        public virtual ICollection<JobConditionDefinition> JobConditionDefinitions { get; set; }
         #endregion
 
         #region Constructors
@@ -29,7 +27,6 @@ namespace Cloudflow.Core.Data.Shared.Models
             this.JobDefinitionId = Guid.NewGuid();
             this.TriggerDefinitions = new List<TriggerDefinition>();
             this.StepDefinitions = new List<StepDefinition>();
-            this.JobConditionDefinitions = new List<JobConditionDefinition>();
             this.Version = 1;
         }
         #endregion

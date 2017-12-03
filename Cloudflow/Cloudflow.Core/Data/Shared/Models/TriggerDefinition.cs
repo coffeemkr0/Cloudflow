@@ -14,14 +14,14 @@ namespace Cloudflow.Core.Data.Shared.Models
     public class TriggerDefinition : ConfigurableExtensionDefinition
     {
         #region Properties
-        [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
         public Guid TriggerDefinitionId { get; set; }
 
-        [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
+        [Index("IX_JobDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
         public virtual ICollection<TriggerConditionDefinition> TriggerConditionDefinitions { get; set; }
 
+        [Index("IX_JobDefinitionId_Index", 1, IsUnique = true)]
         public Guid JobDefinitionId { get; set; }
 
         [ScriptIgnore]

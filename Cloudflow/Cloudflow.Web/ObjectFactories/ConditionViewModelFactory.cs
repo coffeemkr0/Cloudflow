@@ -10,7 +10,7 @@ using System.Web;
 
 namespace Cloudflow.Web.ObjectFactories
 {
-    [ExportExtension("E0F69CBB-4199-4F62-B344-97325B252B91", typeof(TriggerViewModelFactory))]
+    [ExportExtension("E0F69CBB-4199-4F62-B344-97325B252B91", typeof(ConditionViewModelFactory))]
     public class ConditionViewModelFactory : ObjectFactory
     {
         [ImportingConstructor]
