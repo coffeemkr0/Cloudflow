@@ -121,7 +121,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(EditJobViewModel.FromJobDefinition(jobDefinition, this.GetExtensionLibraryFolder()));
+            return View("Edit", EditJobViewModel.FromJobDefinition(jobDefinition, this.GetExtensionLibraryFolder()));
         }
 
         // POST: Jobs/Edit/5

@@ -468,6 +468,7 @@
     <Content Include="Views\ExtensionConfigurationEdits\TabPane.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ObjectEdit.cshtml" />
     <Content Include="Views\Shared\CategorizedItemSelector.cshtml" />
+    <Content Include="Views\Jobs\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />
