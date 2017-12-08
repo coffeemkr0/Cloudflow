@@ -10,10 +10,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class ConditionViewModel
     {
         #region Properties
-        [Hidden]
+        public Guid CategorizedItemSelectorId { get; set; }
+
         public Guid ConditionDefinitionId { get; set; }
 
-        [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
         #endregion
 

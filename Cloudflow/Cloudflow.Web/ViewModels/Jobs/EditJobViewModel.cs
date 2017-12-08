@@ -48,6 +48,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
         {
             var model = new EditJobViewModel();
 
+            model.LoadExtensions(extensionLibraryFolder);
+
             model.JobDefinitionId = jobDefinition.JobDefinitionId;
             model.ExtensionConfiguration.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
             model.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = jobDefinition.ConfigurationExtensionAssemblyPath;
@@ -123,8 +125,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 index += 1;
             }
-
-            model.LoadExtensions(extensionLibraryFolder);
 
             return model;
         }
