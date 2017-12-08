@@ -199,7 +199,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ObjectFactories\ConditionViewModelFactory.cs" />
-    <Compile Include="ObjectFactories\ConfigurableExtensionFetcher.cs" />
     <Compile Include="ObjectFactories\StepViewModelFactory.cs" />
     <Compile Include="ObjectFactories\TriggerViewModelFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -207,6 +206,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ConfigurableExtensionFetcher.cs" />
     <Compile Include="Utility\HtmlHelpers\JobEditorHelper.cs" />
     <Compile Include="CustomModelBinder.cs" />
     <Compile Include="Utility\HtmlHelpers\PropertyCollection.cs" />

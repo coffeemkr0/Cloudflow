@@ -15,16 +15,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #endregion
 
         #region Properties
-        [Hidden]
         public Guid TriggerDefinitionId { get; set; }
 
-        [PropertyGroupAttribute("GeneralTabText")]
-        [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        [PropertyGroupAttribute("ConditionsTabText")]
-        [DisplayOrder(1)]
-        [CategorizedItemSelector(ConfigurableExtensionFetcher.ConditionsExtensionCollectionId, ConfigurableExtensionFetcher.ConditionObjectFactoryExtensionId)]
         public List<ConditionViewModel> Conditions { get; set; }
         #endregion
 

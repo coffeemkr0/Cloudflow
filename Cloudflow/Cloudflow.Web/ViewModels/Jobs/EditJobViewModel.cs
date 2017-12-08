@@ -11,32 +11,27 @@ using System.Diagnostics;
 using Cloudflow.Core.Extensions;
 using System.ComponentModel.Composition;
 using Cloudflow.Web.ObjectFactories;
+using Cloudflow.Web.Utility;
+using Cloudflow.Web.ViewModels.Shared;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    public class EditJobViewModel : ICategorizedItemCollectionLoader
+    public class EditJobViewModel
     {
-        #region Private Members
-        private List<CategorizedItemCollection> _extensions;
-        #endregion
-
         #region Properties
-        [Hidden]
         public Guid JobDefinitionId { get; set; }
 
-        [PropertyGroup("GeneralTabText")]
-        [DisplayOrder(0)]
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        [PropertyGroup("TriggersTabText")]
-        [DisplayOrder(1)]
-        [CategorizedItemSelector(ConfigurableExtensionFetcher.TriggerExtensionCollectionId, ConfigurableExtensionFetcher.TriggerObjectFactoryExtensionId)]
         public List<TriggerViewModel> Triggers { get; set; }
 
-        [PropertyGroup("StepsTabText")]
-        [DisplayOrder(2)]
-        [CategorizedItemSelector(ConfigurableExtensionFetcher.StepExtensionCollectionId, ConfigurableExtensionFetcher.StepObjectFactoryExtensionId)]
         public List<StepViewModel> Steps { get; set; }
+
+        public CategorizedItemSelectorViewModel TriggerExtensions { get; set; }
+
+        public CategorizedItemSelectorViewModel StepExtensions { get; set; }
+
+        public CategorizedItemSelectorViewModel ConditionExtensions { get; set; }
         #endregion
 
         #region Constructors
@@ -278,15 +273,24 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void LoadExtensions(string extensionLibraryFolder)
         {
-            _extensions = new List<CategorizedItemCollection>();
-            _extensions.Add(ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Trigger));
-            _extensions.Add(ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Step));
-            _extensions.Add(ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Condition));
-        }
-
-        public List<CategorizedItemCollection> GetCategorizedItemCollections()
-        {
-            return _extensions;
+            this.TriggerExtensions = new CategorizedItemSelectorViewModel
+            {
+                Caption = "Triggers",
+                CategoriesCaption = "Libraries",
+                CategorizedItemCollection = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Trigger)
+            };
+            this.StepExtensions = new CategorizedItemSelectorViewModel
+            {
+                Caption = "Steps",
+                CategoriesCaption = "Libraries",
+                CategorizedItemCollection = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Step)
+            };
+            this.ConditionExtensions = new CategorizedItemSelectorViewModel
+            {
+                Caption = "Conditions",
+                CategoriesCaption = "Libraries",
+                CategorizedItemCollection = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Condition)
+            };
         }
         #endregion
     }

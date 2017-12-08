@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace Cloudflow.Web.ObjectFactories
+namespace Cloudflow.Web.Utility
 {
     public static class ConfigurableExtensionFetcher
     {
