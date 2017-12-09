@@ -20,7 +20,8 @@ function AddExtension(extensionCollectionElement, extensionId, extensionAssembly
         data: {
             extensionId: extensionId,
             extensionAssemblyPath: extensionAssemblyPath,
-            extensionType: extensionCollectionElement.attr("data-extensiontype")
+            extensionType: extensionCollectionElement.attr("data-extensiontype"),
+            propertyName: extensionCollectionElement.attr("data-propertyname")
         },
         success: function (result) {
             if (result !== null) {

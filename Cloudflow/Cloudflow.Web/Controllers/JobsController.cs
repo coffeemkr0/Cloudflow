@@ -83,11 +83,13 @@ namespace Cloudflow.Web.Controllers
             return Json(new { navigationItem, itemEdit });
         }
 
-        private JsonResult GetNewConditionResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, ExtensionConfiguration configuration)
+        private JsonResult GetNewConditionResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, 
+            ExtensionConfiguration configuration, string propertyName)
         {
             var conditionViewModel = new ConditionViewModel
             {
                 ConditionDefinitionId = Guid.NewGuid(),
+                PropertyName = propertyName,
                 ExtensionConfiguration = new ExtensionConfigurationViewModel
                 {
                     ExtensionId = Guid.Parse(extension.ExtensionId),
@@ -279,7 +281,8 @@ namespace Cloudflow.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddConfigurableExtension(Guid extensionId, string extensionAssemblyPath, ConfigurableExtensionTypes extensionType)
+        public JsonResult AddConfigurableExtension(Guid extensionId, string extensionAssemblyPath, 
+            ConfigurableExtensionTypes extensionType, string propertyName)
         {
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
             var extension = configurableExtensionBrowser.GetConfigurableExtension(extensionId);
@@ -295,7 +298,7 @@ namespace Cloudflow.Web.Controllers
                 case ConfigurableExtensionTypes.Step:
                     return GetNewStepResult(extension, extensionAssemblyPath, configuration);
                 case ConfigurableExtensionTypes.Condition:
-                    return GetNewConditionResult(extension, extensionAssemblyPath, configuration);
+                    return GetNewConditionResult(extension, extensionAssemblyPath, configuration, propertyName);
                 default:
                     throw new NotImplementedException();
             }
