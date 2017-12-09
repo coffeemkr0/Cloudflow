@@ -29,6 +29,23 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
             return model;
         }
+
+        public static ConditionCollectionViewModel FromStepDefinition(StepDefinition stepDefinition, int stepIndex)
+        {
+            var model = new ConditionCollectionViewModel
+            {
+                PropertyName = $"Steps[{stepIndex}].Conditions"
+            };
+
+            foreach (var conditionDefinition in stepDefinition.StepConditionDefinitions.OrderBy(i => i.Index))
+            {
+                var conditionModel = ConditionViewModel.FromStepConditionDefinition(conditionDefinition, conditionDefinition.Index);
+                conditionModel.Active = conditionDefinition.Index == 0;
+                model.Add(conditionModel);
+            }
+
+            return model;
+        }
         #endregion
     }
 }

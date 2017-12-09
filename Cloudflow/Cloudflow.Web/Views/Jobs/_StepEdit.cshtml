@@ -1,0 +1,26 @@
+﻿@using Cloudflow.Web.Utility.HtmlHelpers
+@model Cloudflow.Web.ViewModels.Jobs.StepViewModel
+
+<div role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")" id="@Model.StepDefinitionId">
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active">
+            <a href="#@(Model.StepDefinitionId)__general" role="tab" data-toggle="tab">General</a>
+        </li>
+        <li role="presentation" class="">
+            <a href="#@(Model.StepDefinitionId)__conditions" role="tab" data-toggle="tab">Conditions</a>
+        </li>
+    </ul>
+
+    <div class="tab-content clearfix">
+        <div role="tabpanel" class="tab-pane active" id="@(Model.StepDefinitionId)__general">
+            <input type="hidden" name="@($"Steps[{Model.Index}].StepDefinitionId")"
+                   id="@($"Steps[{Model.Index}]_StepDefinitionId")"
+                   value="@Model.StepDefinitionId" />
+            @Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { $"Steps[{Model.Index}].ExtensionConfiguration" })
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="@(Model.StepDefinitionId)__conditions">
+            @Html.Partial("_ConditionCollection", Model.Conditions) 
+        </div>
+    </div>
+</div>

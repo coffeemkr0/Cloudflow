@@ -71,33 +71,9 @@ namespace Cloudflow.Web.ViewModels.Jobs
             index = 0;
             foreach (var stepDefinition in jobDefinition.StepDefinitions.OrderBy(i => i.Index))
             {
-                var stepViewModel = new StepViewModel();
-                stepViewModel.StepDefinitionId = stepDefinition.StepDefinitionId;
-                stepViewModel.ExtensionConfiguration.ConfigurationExtensionId = stepDefinition.ConfigurationExtensionId;
-                stepViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = stepDefinition.ConfigurationExtensionAssemblyPath;
-
-                extensionConfigurationController = new ExtensionConfigurationController(stepDefinition.ConfigurationExtensionId,
-                    stepDefinition.ConfigurationExtensionAssemblyPath);
-                stepViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(stepDefinition.Configuration);
-
+                var stepViewModel = StepViewModel.FromStepDefinition(stepDefinition, index);
+                stepViewModel.Active = index == 0;
                 model.Steps.Add(stepViewModel);
-
-                var conditionIndex = 0;
-                foreach (var conditionDefinition in stepDefinition.StepConditionDefinitions.OrderBy(i => i.Index))
-                {
-                    var conditionConfigurationViewModel = new ConditionViewModel();
-                    conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.StepConditionDefinitionId;
-                    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
-                    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
-
-                    extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
-                        conditionDefinition.ConfigurationExtensionAssemblyPath);
-                    conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
-
-                    stepViewModel.Conditions.Add(conditionConfigurationViewModel);
-
-                    conditionIndex += 1;
-                }
 
                 index += 1;
             }
@@ -194,6 +170,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             foreach (var step in this.Steps)
             {
                 var stepDefinition = serverDbContext.StepDefinitions.FirstOrDefault(i => i.StepDefinitionId == step.StepDefinitionId);
+
                 if (stepDefinition != null)
                 {
                     stepDefinition.Index = index;

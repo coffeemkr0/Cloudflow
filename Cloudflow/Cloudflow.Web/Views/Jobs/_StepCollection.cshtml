@@ -1,0 +1,33 @@
+﻿@using Cloudflow.Web.Utility.HtmlHelpers
+@model List<Cloudflow.Web.ViewModels.Jobs.StepViewModel>
+
+<section id="@(Guid.NewGuid())" class="container-fluid objectCollectionEdit" data-extensiontype="@(Cloudflow.Core.Extensions.ConfigurableExtensionTypes.Step)"  data-propertyname="Steps">
+    <div class="col-md-3 panel panel-default">
+        <div class="panel-body">
+            <div>
+                <a data-toggle="modal" data-target="#StepExtensionBrowser"
+                   class="btn btn-default objectCollectionEdit__addButton" href="#">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add Step
+                </a>
+            </div>
+
+            <hr />
+
+            <ul class="nav nav-pills nav-stacked objectCollectionEdit__navigationItems">
+                @foreach (var trigger in Model)
+                {
+                    @Html.Partial("_StepNavigationItem", trigger)
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content col-md-9 objectCollectionEdit__items">
+        @foreach (var trigger in Model)
+        {
+            @Html.Partial("_StepEdit", trigger)
+        }
+    </div>
+</section>
+

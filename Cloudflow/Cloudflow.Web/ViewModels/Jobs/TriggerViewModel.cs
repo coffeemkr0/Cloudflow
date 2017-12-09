@@ -22,6 +22,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public ConditionCollectionViewModel Conditions { get; set; }
         #endregion
 
+        #region Constructors
+        public TriggerViewModel()
+        {
+            this.Conditions = new ConditionCollectionViewModel();
+        }
+        #endregion
+
         #region Public Methods
         public static TriggerViewModel FromTriggerDefinition(TriggerDefinition triggerDefinition, int index)
         {

@@ -52,12 +52,12 @@
                     @Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { "ExtensionConfiguration" })
                 </div>
 
-                <div role="tabpanel" class="tab-pane" id="job__triggersTab" data-propertyname="Triggers">
+                <div role="tabpanel" class="tab-pane" id="job__triggersTab">
                     @Html.Partial("_TriggerCollection", Model.Triggers)
                 </div>
 
-                <div role="tabpanel" class="tab-pane" id="job__steps">
-                    Steps
+                <div role="tabpanel" class="tab-pane" id="job__stepsTab">
+                    @Html.Partial("_StepCollection", Model.Steps)
                 </div>
             </div>
         }

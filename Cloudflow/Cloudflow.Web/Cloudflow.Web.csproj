@@ -477,6 +477,9 @@
     <Content Include="Views\Jobs\_ConditionNavigationItem.cshtml" />
     <Content Include="Views\Jobs\_ConditionEdit.cshtml" />
     <Content Include="Views\Jobs\_ExtensionBrowser.cshtml" />
+    <Content Include="Views\Jobs\_StepCollection.cshtml" />
+    <Content Include="Views\Jobs\_StepEdit.cshtml" />
+    <Content Include="Views\Jobs\_StepNavigationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />
