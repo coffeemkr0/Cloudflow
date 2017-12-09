@@ -205,6 +205,50 @@ namespace Cloudflow.Web.Controllers
 
             return Json(new { navigationItemView, itemView });
         }
+
+        [HttpPost]
+        public JsonResult AddConfigurableExtension(Guid extensionId, string extensionAssemblyPath, ConfigurableExtensionTypes extensionType)
+        {
+            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
+            var extension = configurableExtensionBrowser.GetConfigurableExtension(extensionId);
+
+            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(extension.ConfigurationExtensionId), extensionAssemblyPath);
+            var configuration = extensionConfigurationController.CreateNewConfiguration();
+            configuration.Name = extension.ExtensionName;
+
+            switch (extensionType)
+            {
+                case ConfigurableExtensionTypes.Trigger:
+                    var model = new TriggerViewModel
+                    {
+                        TriggerDefinitionId = Guid.NewGuid(),
+                        ExtensionConfiguration = new ExtensionConfigurationViewModel
+                        {
+                            ExtensionId = Guid.Parse(extension.ExtensionId),
+                            ExtensionAssemblyPath = extensionAssemblyPath,
+                            ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
+                            ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
+                            Configuration = configuration
+                        }
+                    };
+
+                    var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+                    "_TriggerNavigationItem", model);
+
+                    var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+                    "_TriggerEdit", model);
+
+                    return Json(new { navigationItem, itemEdit });
+                case ConfigurableExtensionTypes.Step:
+                    break;
+                case ConfigurableExtensionTypes.Condition:
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            return Json(null);
+        }
         #endregion
     }
 }

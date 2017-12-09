@@ -1,12 +1,12 @@
 ﻿@using Cloudflow.Web.Utility.HtmlHelpers
 @model List<Cloudflow.Web.ViewModels.Jobs.TriggerViewModel>
 
-<section class="container-fluid objectCollectionEdit" data-propertyname="Triggers">
+<section id="@(Guid.NewGuid())" class="container-fluid objectCollectionEdit" data-extensiontype="@(Cloudflow.Core.Extensions.ConfigurableExtensionTypes.Trigger)"  data-propertyname="Triggers">
     <div class="col-md-3 panel panel-default">
         <div class="panel-body">
             <div>
                 <a data-toggle="modal" data-target="#TriggerExtensionBrowser"
-                   class="btn btn-default" href="#">
+                   class="btn btn-default objectCollectionEdit__addButton" href="#">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Add Trigger
                 </a>
