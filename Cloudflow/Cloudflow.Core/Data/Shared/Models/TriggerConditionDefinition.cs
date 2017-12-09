@@ -14,10 +14,8 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Properties
         public Guid TriggerConditionDefinitionId { get; set; }
 
-        [Index("IX_TriggerDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
-        [Index("IX_TriggerDefinitionId_Index", 1, IsUnique = true)]
         public Guid TriggerDefinitionId { get; set; }
 
         [ScriptIgnore]

@@ -13,10 +13,8 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Properties
         public Guid StepConditionDefinitionId { get; set; }
 
-        [Index("IX_StepDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
-        [Index("IX_StepDefinitionId_Index", 1, IsUnique = true)]
         public Guid StepDefinitionId { get; set; }
 
         [ScriptIgnore]

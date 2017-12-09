@@ -16,12 +16,10 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Properties
         public Guid StepDefinitionId { get; set; }
 
-        [Index("IX_JobDefinitionId_Index", 2, IsUnique = true)]
         public int Index { get; set; }
 
         public virtual ICollection<StepConditionDefinition> StepConditionDefinitions { get; set; }
 
-        [Index("IX_JobDefinitionId_Index", 1, IsUnique = true)]
         public Guid JobDefinitionId { get; set; }
 
         [ScriptIgnore]

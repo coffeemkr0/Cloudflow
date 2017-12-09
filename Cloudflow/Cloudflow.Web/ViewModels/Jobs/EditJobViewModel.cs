@@ -65,23 +65,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 triggerViewModel.Active = index == 0;
                 model.Triggers.Add(triggerViewModel);
 
-                //var conditionIndex = 0;
-                //foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions.OrderBy(i => i.Index))
-                //{
-                //    var conditionConfigurationViewModel = new ConditionViewModel();
-                //    conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId;
-                //    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
-                //    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
-
-                //    extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
-                //        conditionDefinition.ConfigurationExtensionAssemblyPath);
-                //    conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
-
-                //    triggerViewModel.Conditions.Add(conditionConfigurationViewModel);
-
-                //    conditionIndex += 1;
-                //}
-
                 index += 1;
             }
 
@@ -165,36 +148,36 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
 
-                //var triggerConditionIds = trigger.Conditions.Select(i => i.ConditionDefinitionId);
-                //var deletedTriggerConditions = serverDbContext.TriggerConditionDefinitions.Where(
-                //    i => i.TriggerDefinitionId == trigger.TriggerDefinitionId && !triggerConditionIds.Contains(i.TriggerConditionDefinitionId));
-                //serverDbContext.TriggerConditionDefinitions.RemoveRange(deletedTriggerConditions);
+                var triggerConditionIds = trigger.Conditions.Select(i => i.ConditionDefinitionId);
+                var deletedTriggerConditions = serverDbContext.TriggerConditionDefinitions.Where(
+                    i => i.TriggerDefinitionId == trigger.TriggerDefinitionId && !triggerConditionIds.Contains(i.TriggerConditionDefinitionId));
+                serverDbContext.TriggerConditionDefinitions.RemoveRange(deletedTriggerConditions);
 
-                //var conditionIndex = 0;
-                //foreach (var condition in trigger.Conditions)
-                //{
-                //    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.ConditionDefinitionId);
+                var conditionIndex = 0;
+                foreach (var condition in trigger.Conditions)
+                {
+                    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.ConditionDefinitionId);
 
-                //    if (conditionDefinition != null)
-                //    {
-                //        conditionDefinition.Index = conditionIndex;
-                //        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
-                //    }
-                //    else
-                //    {
-                //        conditionDefinition = new TriggerConditionDefinition();
-                //        conditionDefinition.Index = conditionIndex;
-                //        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
-                //        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
-                //        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
-                //        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
-                //        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                    if (conditionDefinition != null)
+                    {
+                        conditionDefinition.Index = conditionIndex;
+                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                    }
+                    else
+                    {
+                        conditionDefinition = new TriggerConditionDefinition();
+                        conditionDefinition.Index = conditionIndex;
+                        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
+                        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
+                        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
+                        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
+                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
 
-                //        triggerDefinition.TriggerConditionDefinitions.Add(conditionDefinition);
-                //    }
+                        triggerDefinition.TriggerConditionDefinitions.Add(conditionDefinition);
+                    }
 
-                //    conditionIndex += 1;
-                //}
+                    conditionIndex += 1;
+                }
 
                 index += 1;
             }

@@ -20,14 +20,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 PropertyName = $"Triggers[{triggerIndex}].Conditions"
             };
 
-            var conditionIndex = 0;
-            foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions)
+            foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions.OrderBy(i => i.Index))
             {
-                var conditionModel = ConditionViewModel.FromTriggerConditionDefinition(conditionDefinition, conditionIndex);
-                conditionModel.Active = conditionIndex == 0;
+                var conditionModel = ConditionViewModel.FromTriggerConditionDefinition(conditionDefinition, conditionDefinition.Index);
+                conditionModel.Active = conditionDefinition.Index == 0;
                 model.Add(conditionModel);
-
-                conditionIndex += 1;
             }
 
             return model;

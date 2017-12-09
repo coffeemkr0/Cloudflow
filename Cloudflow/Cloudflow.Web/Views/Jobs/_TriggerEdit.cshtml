@@ -13,7 +13,7 @@
 
     <div class="tab-content clearfix">
         <div role="tabpanel" class="tab-pane active" id="@(Model.TriggerDefinitionId)__general">
-            <input type="hidden" name="@($"Triggers.[{Model.Index}].TriggerDefinitionId")"
+            <input type="hidden" name="@($"Triggers[{Model.Index}].TriggerDefinitionId")"
                    id="@($"Triggers[{Model.Index}]_TriggerDefinitionId")"
                    value="@Model.TriggerDefinitionId" />
             @Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { $"Triggers[{Model.Index}].ExtensionConfiguration" })

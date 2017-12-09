@@ -2,5 +2,8 @@
 @model Cloudflow.Web.ViewModels.Jobs.ConditionViewModel
 
 <div role="tabpanel" class="tab-pane @(Model.Active ? "active" : "")" id="@Model.ConditionDefinitionId">
+    <input type="hidden" name="@($"{Model.BasePropertyName}.Conditions[{Model.Index}].ConditionDefinitionId")"
+           id="@($"{Model.BasePropertyName}_Conditions[{Model.Index}]_ConditionDefinitionId")"
+           value="@Model.ConditionDefinitionId" />
     @Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { $"{Model.BasePropertyName}.Conditions[{Model.Index}].ExtensionConfiguration" })
 </div>
