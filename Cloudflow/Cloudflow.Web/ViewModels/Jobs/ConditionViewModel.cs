@@ -1,4 +1,5 @@
-﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
+﻿using Cloudflow.Core.Data.Shared.Models;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,14 @@ using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
-    [DisplayTextPropertyName("ExtensionConfiguration.Configuration.Name")]
     public class ConditionViewModel
     {
         #region Properties
-        public Guid CategorizedItemSelectorId { get; set; }
-
         public Guid ConditionDefinitionId { get; set; }
+
+        public bool Active { get; set; }
+
+        public int Index { get; set; }
 
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
         #endregion
@@ -21,6 +23,21 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public ConditionViewModel()
         {
             this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
+        }
+        #endregion
+
+        #region Public Methods
+        public static ConditionViewModel FromTriggerConditionDefinition(TriggerConditionDefinition conditionDefinition, int index)
+        {
+            var model = new ConditionViewModel
+            {
+                ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId,
+                Index = index
+            };
+
+            model.ExtensionConfiguration = ExtensionConfigurationViewModel.FromConfigurableExtensionDefinition(conditionDefinition);
+
+            return model;
         }
         #endregion
     }

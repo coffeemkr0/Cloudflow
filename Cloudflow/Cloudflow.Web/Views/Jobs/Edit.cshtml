@@ -54,8 +54,6 @@
 
                 <div role="tabpanel" class="tab-pane" id="job__triggersTab" data-propertyname="Triggers">
                     @Html.Partial("_TriggerCollection", Model.Triggers)
-
-                    @Html.Partial("_ExtensionBrowser", Model.TriggerBrowserViewModel)
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="job__steps">
@@ -65,3 +63,7 @@
         }
     </section>
 </section>
+
+@Html.Partial("_ExtensionBrowser", Model.TriggerBrowserViewModel)
+@Html.Partial("_ExtensionBrowser", Model.StepBrowserViewModel)
+@Html.Partial("_ExtensionBrowser", Model.ConditionBrowserViewModel)

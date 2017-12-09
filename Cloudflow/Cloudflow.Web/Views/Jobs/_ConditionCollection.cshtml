@@ -1,36 +1,34 @@
-﻿
-@*<div class="col-md-3 panel panel-default">
-    <div class="panel-body">
-        <div>
-            <a data-toggle="modal" data-target="#addItemModal@(Model.ConditionExtensions.CategorizedItemCollection.Id)" class="btn btn-default" href="#">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                Add Condition
-            </a>
-        </div>
+﻿@model List<Cloudflow.Web.ViewModels.Jobs.ConditionViewModel>
 
-        <hr />
+<section id="@(Guid.NewGuid())" class="container-fluid objectCollectionEdit" data-extensiontype="@(Cloudflow.Core.Extensions.ConfigurableExtensionTypes.Condition)" 
+    data-propertyname="Conditions">
 
-        <ul class="nav nav-pills nav-stacked">
-            @foreach (var condition in trigger.Conditions)
-            {
-                <li role="presentation" class="@(trigger.Conditions.IndexOf(condition) == 0 ? "active" : "")">
-                    <a href="#@condition.ConditionDefinitionId" role="tab" data-toggle="tab">
-                        @condition.ExtensionConfiguration.Configuration.Name
-                        <i class="glyphicon glyphicon-remove pull-right"></i>
-                    </a>
-                </li>
-            }
-        </ul>
-    </div>
-</div>
-
-<div class="tab-content col-md-9 objectCollectionEdit__items">
-    @foreach (var condition in trigger.Conditions)
-    {
-        <div role="tabpanel" class="tab-pane @(trigger.Conditions.IndexOf(condition) == 0 ? "active" : "")" id="@condition.ConditionDefinitionId">
-            <div class="tab-content clearfix">
-                @Html.CreateModelEdit(condition.ExtensionConfiguration)
+    <div class="col-md-3 panel panel-default">
+        <div class="panel-body">
+            <div>
+                <a data-toggle="modal" data-target="#ConditionExtensionBrowser"
+                   class="btn btn-default objectCollectionEdit__addButton" href="#">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add Condition
+                </a>
             </div>
+
+            <hr />
+
+            <ul class="nav nav-pills nav-stacked objectCollectionEdit__navigationItems">
+                @foreach (var condition in Model)
+                {
+                    @Html.Partial("_ConditionNavigationItem", condition)
+                }
+            </ul>
         </div>
-    }
-</div>*@
+    </div>
+
+    <div class="tab-content col-md-9 objectCollectionEdit__items">
+        @foreach (var condition in Model)
+        {
+            @Html.Partial("_ConditionEdit", condition)
+        }
+    </div>
+</section>
+

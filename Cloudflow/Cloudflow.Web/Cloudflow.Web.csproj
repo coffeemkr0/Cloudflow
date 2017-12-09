@@ -461,7 +461,6 @@
     <Content Include="Views\Agents\Index.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\StringCollectionEditItem.cshtml" />
-    <Content Include="Views\Jobs\EditJob.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ObjectCollectionItem.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ObjectCollectionEdit.cshtml" />
     <Content Include="Views\ExtensionConfigurationEdits\ObjectCollectionNavigationItem.cshtml" />
@@ -475,7 +474,7 @@
     <Content Include="Views\Jobs\_TriggerEdit.cshtml" />
     <Content Include="Views\Jobs\_ConditionCollection.cshtml" />
     <Content Include="Views\Jobs\_ConditionNavigationItem.cshtml" />
-    <Content Include="Views\Jobs\ConditionEdit.cshtml" />
+    <Content Include="Views\Jobs\_ConditionEdit.cshtml" />
     <Content Include="Views\Jobs\_ExtensionBrowser.cshtml" />
   </ItemGroup>
   <ItemGroup>

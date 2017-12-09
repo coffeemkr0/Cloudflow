@@ -28,6 +28,10 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public List<StepViewModel> Steps { get; set; }
 
         public ExtensionBrowserViewModel TriggerBrowserViewModel { get; set; }
+
+        public ExtensionBrowserViewModel StepBrowserViewModel { get; set; }
+
+        public ExtensionBrowserViewModel ConditionBrowserViewModel { get; set; }
         #endregion
 
         #region Constructors
@@ -263,6 +267,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public void LoadExtensions(string extensionLibraryFolder)
         {
             this.TriggerBrowserViewModel = ExtensionBrowserViewModel.GetModel("TriggerExtensionBrowser", extensionLibraryFolder, ConfigurableExtensionTypes.Trigger);
+            this.StepBrowserViewModel = ExtensionBrowserViewModel.GetModel("StepExtensionBrowser", extensionLibraryFolder, ConfigurableExtensionTypes.Step);
+            this.ConditionBrowserViewModel = ExtensionBrowserViewModel.GetModel("ConditionExtensionBrowser", extensionLibraryFolder, ConfigurableExtensionTypes.Condition);
         }
         #endregion
     }
