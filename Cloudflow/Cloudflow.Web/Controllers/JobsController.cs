@@ -34,6 +34,78 @@ namespace Cloudflow.Web.Controllers
             }
             base.Dispose(disposing);
         }
+
+        private JsonResult GetNewTriggerResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, ExtensionConfiguration configuration)
+        {
+            var triggerViewModel = new TriggerViewModel
+            {
+                TriggerDefinitionId = Guid.NewGuid(),
+                ExtensionConfiguration = new ExtensionConfigurationViewModel
+                {
+                    ExtensionId = Guid.Parse(extension.ExtensionId),
+                    ExtensionAssemblyPath = extensionAssemblyPath,
+                    ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
+                    ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
+                    Configuration = configuration
+                }
+            };
+
+            var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "_TriggerNavigationItem", triggerViewModel);
+
+            var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "_TriggerEdit", triggerViewModel);
+
+            return Json(new { navigationItem, itemEdit });
+        }
+
+        private JsonResult GetNewStepResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, ExtensionConfiguration configuration)
+        {
+            var stepViewModel = new StepViewModel
+            {
+                StepDefinitionId = Guid.NewGuid(),
+                ExtensionConfiguration = new ExtensionConfigurationViewModel
+                {
+                    ExtensionId = Guid.Parse(extension.ExtensionId),
+                    ExtensionAssemblyPath = extensionAssemblyPath,
+                    ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
+                    ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
+                    Configuration = configuration
+                }
+            };
+
+            var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "_StepNavigationItem", stepViewModel);
+
+            var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "_StepEdit", stepViewModel);
+
+            return Json(new { navigationItem, itemEdit });
+        }
+
+        private JsonResult GetNewConditionResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, ExtensionConfiguration configuration)
+        {
+            var conditionViewModel = new ConditionViewModel
+            {
+                ConditionDefinitionId = Guid.NewGuid(),
+                ExtensionConfiguration = new ExtensionConfigurationViewModel
+                {
+                    ExtensionId = Guid.Parse(extension.ExtensionId),
+                    ExtensionAssemblyPath = extensionAssemblyPath,
+                    ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
+                    ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
+                    Configuration = configuration
+                }
+            };
+
+            var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "_ConditionNavigationItem", conditionViewModel);
+
+            var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            "_ConditionEdit", conditionViewModel);
+
+            return Json(new { navigationItem, itemEdit });
+        }
         #endregion
 
         #region Actions
@@ -219,35 +291,14 @@ namespace Cloudflow.Web.Controllers
             switch (extensionType)
             {
                 case ConfigurableExtensionTypes.Trigger:
-                    var model = new TriggerViewModel
-                    {
-                        TriggerDefinitionId = Guid.NewGuid(),
-                        ExtensionConfiguration = new ExtensionConfigurationViewModel
-                        {
-                            ExtensionId = Guid.Parse(extension.ExtensionId),
-                            ExtensionAssemblyPath = extensionAssemblyPath,
-                            ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
-                            ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
-                            Configuration = configuration
-                        }
-                    };
-
-                    var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                    "_TriggerNavigationItem", model);
-
-                    var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
-                    "_TriggerEdit", model);
-
-                    return Json(new { navigationItem, itemEdit });
+                    return GetNewTriggerResult(extension, extensionAssemblyPath, configuration);
                 case ConfigurableExtensionTypes.Step:
-                    break;
+                    return GetNewStepResult(extension, extensionAssemblyPath, configuration);
                 case ConfigurableExtensionTypes.Condition:
-                    break;
+                    return GetNewConditionResult(extension, extensionAssemblyPath, configuration);
                 default:
                     throw new NotImplementedException();
             }
-
-            return Json(null);
         }
         #endregion
     }
