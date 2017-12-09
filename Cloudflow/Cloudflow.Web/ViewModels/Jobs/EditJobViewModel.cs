@@ -23,7 +23,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        public TriggerCollectionViewModel Triggers { get; set; }
+        public List<TriggerViewModel> Triggers { get; set; }
 
         public List<StepViewModel> Steps { get; set; }
 
@@ -34,7 +34,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         public EditJobViewModel()
         {
             this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
-            this.Triggers = new TriggerCollectionViewModel();
+            this.Triggers = new List<TriggerViewModel>();
             this.Steps = new List<StepViewModel>();
         }
         #endregion
@@ -57,13 +57,9 @@ namespace Cloudflow.Web.ViewModels.Jobs
             int index = 0;
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
             {
-                var triggerEditViewModel = TriggerEditViewModel.FromTriggerDefinition(triggerDefinition);
-                model.Triggers.TriggerEdits.Add(triggerEditViewModel);
-                model.Triggers.TriggerNavigationItems.Add(new TriggerNavigationItemViewModel
-                {
-                    TriggerDefinitionId = triggerDefinition.TriggerDefinitionId,
-                    Caption = triggerEditViewModel.ExtensionConfiguration.Configuration.Name
-                });
+                var triggerViewModel = TriggerViewModel.FromTriggerDefinition(triggerDefinition, index);
+                triggerViewModel.Active = index == 0;
+                model.Triggers.Add(triggerViewModel);
 
                 //var conditionIndex = 0;
                 //foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions.OrderBy(i => i.Index))
@@ -137,13 +133,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         private void SaveTriggers(ServerDbContext serverDbContext, JobDefinition jobDefinition)
         {
-            var triggerIds = this.Triggers.TriggerEdits.Select(i => i.TriggerDefinitionId);
+            var triggerIds = this.Triggers.Select(i => i.TriggerDefinitionId);
             var deletedTriggers = serverDbContext.TriggerDefinitions.Where(
                 i => i.JobDefinitionId == this.JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
             serverDbContext.TriggerDefinitions.RemoveRange(deletedTriggers);
 
             int index = 0;
-            foreach (var trigger in this.Triggers.TriggerEdits)
+            foreach (var trigger in this.Triggers)
             {
                 var triggerDefinition = serverDbContext.TriggerDefinitions.FirstOrDefault(i => i.TriggerDefinitionId == trigger.TriggerDefinitionId);
 

@@ -26,7 +26,7 @@ namespace Cloudflow.Web.ObjectFactories
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryPath);
             var extension = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(instanceData));
 
-            var viewModel = new TriggerViewModel();
+            var viewModel = new OldTriggerViewModel();
             viewModel.TriggerDefinitionId = Guid.NewGuid();
             viewModel.ExtensionConfiguration.ExtensionId = Guid.Parse(extension.ExtensionId);
             viewModel.ExtensionConfiguration.ExtensionAssemblyPath = extensionLibraryPath;

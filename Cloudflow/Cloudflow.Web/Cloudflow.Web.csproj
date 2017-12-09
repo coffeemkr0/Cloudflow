@@ -232,10 +232,8 @@
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionBrowserViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\TriggerCollectionViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\TriggerEditViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\TriggerNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\OldTriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\CategorizedItemSelectorViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
