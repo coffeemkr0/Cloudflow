@@ -10,7 +10,7 @@ using System.Web;
 
 namespace Cloudflow.Web.ObjectFactories
 {
-    [ExportExtension("8CAC8ED3-DA70-48B9-B720-361735114FAC", typeof(TriggerViewModelFactory))]
+    [ExportExtension("8CAC8ED3-DA70-48B9-B720-361735114FAC", typeof(StepViewModelFactory))]
     public class StepViewModelFactory : ObjectFactory
     {
         [ImportingConstructor]

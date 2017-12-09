@@ -200,7 +200,6 @@
     </Compile>
     <Compile Include="ObjectFactories\ConditionViewModelFactory.cs" />
     <Compile Include="ObjectFactories\StepViewModelFactory.cs" />
-    <Compile Include="ObjectFactories\TriggerViewModelFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,15 +224,11 @@
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabHeaderViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabPaneViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\ConditionCollectionViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\ConditionEditViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\ConditionNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionBrowserViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
-    <Compile Include="ViewModels\Jobs\OldTriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\CategorizedItemSelectorViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Jobs\IndexViewModel.cs" />
