@@ -536,20 +536,20 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.exe" "$(ProjectDir)AgentFiles\"
 
-xcopy /y "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
+xcopy /y /s "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
 
 xcopy /y "$(SolutionDir)Cloudflow.Agent.Desktop\$(OutDir)$(ConfigurationName)\*.config" "$(ProjectDir)AgentFiles\"
 
 
 xcopy /y "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.exe" "$(ProjectDir)AgentFiles\"
 
-xcopy /y "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
+xcopy /y /s "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
 
 xcopy /y "$(SolutionDir)Cloudflow.Agent.Setup\$(OutDir)$(ConfigurationName)\*.config" "$(ProjectDir)AgentFiles\"
 
 xcopy /y "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.exe" "$(ProjectDir)AgentFiles\"
 
-xcopy /y "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
+xcopy /y /s "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.dll" "$(ProjectDir)AgentFiles\"
 
 xcopy /y "$(SolutionDir)Cloudflow.Core\$(OutDir)$(ConfigurationName)\*.config" "$(ProjectDir)AgentFiles\"</PostBuildEvent>
   </PropertyGroup>
