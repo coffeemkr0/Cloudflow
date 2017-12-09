@@ -1,0 +1,72 @@
+﻿@model Cloudflow.Web.ViewModels.Jobs.ExtensionBrowserViewModel
+
+<div id="@Model.Id" data-collectionid=""
+     class="modal fade extensionBrowser" tabindex="-1" role="dialog" aria-labelledby="extensionBrowser__caption">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div>
+
+                <header class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="extensionBrowser__caption">@Model.Caption</h3>
+                </header>
+
+                <div>
+                    <section class="modal-body">
+                        <div class="row">
+                            <nav class="col-lg-4">
+                                <h4>Libraries</h4>
+
+                                <ul class="nav nav-pills nav-stacked">
+                                    @{ var libraryIndex = 0; }
+                                    @foreach (var extensionLibrary in Model.ExtensionLibraries)
+                                    {
+                                        <li role="presentation" class="@(libraryIndex == 0 ? "active" : "")">
+                                            <a href="#extensionLibraryTab@(libraryIndex)" role="tab" data-toggle="tab">@extensionLibrary.Caption</a>
+                                        </li>
+                                        libraryIndex += 1;
+                                    }
+                                </ul>
+                            </nav>
+
+                            <div class="col-lg-8 tab-content">
+                                @{ libraryIndex = 0; }
+                                @foreach (var extensionLibrary in Model.ExtensionLibraries)
+                                {
+                                    <div id="extensionLibraryTab@(libraryIndex)" class="tab-pane extensionBrowser__extensionList @(libraryIndex == 0 ? "active" : "")">
+                                        @foreach (var extension in extensionLibrary.Extensions)
+                                        {
+                                            <div class="panel panel-default extensionBrowser__item">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-2">
+                                                            <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <h5>@extension.Name</h5>
+                                                            <p>@extension.Description</p>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <a href="#" data-dismiss="modal" class="btn btn-xs btn-success extensionBrowser__addButton">Add</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    libraryIndex += 1;
+                                }
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

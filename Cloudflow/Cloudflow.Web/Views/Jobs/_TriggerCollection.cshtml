@@ -1,0 +1,94 @@
+﻿@using Cloudflow.Web.Utility.HtmlHelpers
+@model Cloudflow.Web.ViewModels.Jobs.TriggerCollectionViewModel
+
+<section class="container-fluid">
+    <div class="col-md-3 panel panel-default">
+        <div class="panel-body">
+            <div>
+                <a data-toggle="modal" data-target="#TriggerExtensionBrowser"
+                   class="btn btn-default" href="#">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add Trigger
+                </a>
+            </div>
+
+            <hr />
+
+            <ul class="nav nav-pills nav-stacked">
+                @foreach (var triggerNavigationItem in Model.TriggerNavigationItems)
+                {
+                    <li role="presentation" class="@(Model.TriggerNavigationItems.IndexOf(triggerNavigationItem) == 0 ? "active" : "")">
+                        <a href="#@triggerNavigationItem.TriggerDefinitionId" role="tab" data-toggle="tab">
+                            @triggerNavigationItem.Caption
+                            <i class="glyphicon glyphicon-remove pull-right"></i>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content col-md-9 objectCollectionEdit__items">
+        @foreach (var trigger in Model.TriggerEdits)
+        {
+            <div role="tabpanel" class="tab-pane @(Model.TriggerEdits.IndexOf(trigger) == 0 ? "active" : "")" id="@trigger.TriggerDefinitionId">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active">
+                        <a href="#@(trigger.TriggerDefinitionId)__general" role="tab" data-toggle="tab">General</a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a href="#@(trigger.TriggerDefinitionId)__conditions" role="tab" data-toggle="tab">Conditions</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content clearfix">
+                    <div role="tabpanel" class="tab-pane active" id="@(trigger.TriggerDefinitionId)__general">
+                        <input type="hidden" name="@($"Triggers.TriggerEdits[{Model.TriggerEdits.IndexOf(trigger)}].TriggerDefinitionId")"
+                               id="@($"Triggers_TriggerEdits[{Model.TriggerEdits.IndexOf(trigger)}]_TriggerDefinitionId")"
+                               value="@trigger.TriggerDefinitionId" />
+                        @Html.CreateModelEdit(trigger.ExtensionConfiguration, new List<string> { $"Triggers.TriggerEdits[{Model.TriggerEdits.IndexOf(trigger)}].ExtensionConfiguration" })
+                    </div>
+
+                    @*<div role="tabpanel" class="tab-pane" id="@(trigger.TriggerDefinitionId)__conditions">
+                        <div class="col-md-3 panel panel-default">
+                            <div class="panel-body">
+                                <div>
+                                    <a data-toggle="modal" data-target="#addItemModal@(Model.ConditionExtensions.CategorizedItemCollection.Id)" class="btn btn-default" href="#">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        Add Condition
+                                    </a>
+                                </div>
+
+                                <hr />
+
+                                <ul class="nav nav-pills nav-stacked">
+                                    @foreach (var condition in trigger.Conditions)
+                                    {
+                                        <li role="presentation" class="@(trigger.Conditions.IndexOf(condition) == 0 ? "active" : "")">
+                                            <a href="#@condition.ConditionDefinitionId" role="tab" data-toggle="tab">
+                                                @condition.ExtensionConfiguration.Configuration.Name
+                                                <i class="glyphicon glyphicon-remove pull-right"></i>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="tab-content col-md-9 objectCollectionEdit__items">
+                            @foreach (var condition in trigger.Conditions)
+                            {
+                                <div role="tabpanel" class="tab-pane @(trigger.Conditions.IndexOf(condition) == 0 ? "active" : "")" id="@condition.ConditionDefinitionId">
+                                    <div class="tab-content clearfix">
+                                        @Html.CreateModelEdit(condition.ExtensionConfiguration)
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        }
+    </div>
+</section>
+

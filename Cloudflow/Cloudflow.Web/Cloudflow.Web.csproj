@@ -225,9 +225,16 @@
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabHeaderViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabPaneViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ConditionCollectionViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ConditionEditViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ConditionNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ExtensionBrowserViewModel.cs" />
     <Compile Include="ViewModels\Jobs\StepViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\TriggerCollectionViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\TriggerEditViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\TriggerNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Jobs\TriggerViewModel.cs" />
     <Compile Include="ViewModels\Shared\CategorizedItemSelectorViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionConfigurationViewModel.cs" />
@@ -295,6 +302,7 @@
     <Content Include="Content\ExtensionConfigurationEdits\ExtensionConfigurationEdits.less" />
     <Content Include="Content\ExtensionConfigurationEdits\StringCollectionEdit.less" />
     <Content Include="Content\Shared\CategorizedItemSelector.less" />
+    <Content Include="Content\Jobs\Jobs.less" />
     <None Include="Content\Site.less" />
     <Content Include="Scripts\Agents\Index.js" />
     <Content Include="Scripts\ExtensionConfigurationEdits\ObjectCollectionEdit.js" />
@@ -469,6 +477,13 @@
     <Content Include="Views\ExtensionConfigurationEdits\ObjectEdit.cshtml" />
     <Content Include="Views\Shared\CategorizedItemSelector.cshtml" />
     <Content Include="Views\Jobs\Edit.cshtml" />
+    <Content Include="Views\Jobs\_TriggerCollection.cshtml" />
+    <Content Include="Views\Jobs\_TriggerNavigationItem.cshtml" />
+    <Content Include="Views\Jobs\_TriggerEdit.cshtml" />
+    <Content Include="Views\Jobs\_ConditionCollection.cshtml" />
+    <Content Include="Views\Jobs\_ConditionNavigationItem.cshtml" />
+    <Content Include="Views\Jobs\ConditionEdit.cshtml" />
+    <Content Include="Views\Jobs\_ExtensionBrowser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AgentFiles\" />

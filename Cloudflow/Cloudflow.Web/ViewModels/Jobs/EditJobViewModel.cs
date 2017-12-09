@@ -23,22 +23,18 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        public List<TriggerViewModel> Triggers { get; set; }
+        public TriggerCollectionViewModel Triggers { get; set; }
 
         public List<StepViewModel> Steps { get; set; }
 
-        public CategorizedItemSelectorViewModel TriggerExtensions { get; set; }
-
-        public CategorizedItemSelectorViewModel StepExtensions { get; set; }
-
-        public CategorizedItemSelectorViewModel ConditionExtensions { get; set; }
+        public ExtensionBrowserViewModel TriggerBrowserViewModel { get; set; }
         #endregion
 
         #region Constructors
         public EditJobViewModel()
         {
             this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
-            this.Triggers = new List<TriggerViewModel>();
+            this.Triggers = new TriggerCollectionViewModel();
             this.Steps = new List<StepViewModel>();
         }
         #endregion
@@ -61,33 +57,30 @@ namespace Cloudflow.Web.ViewModels.Jobs
             int index = 0;
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
             {
-                var triggerViewModel = new TriggerViewModel();
-                triggerViewModel.TriggerDefinitionId = triggerDefinition.TriggerDefinitionId;
-                triggerViewModel.ExtensionConfiguration.ConfigurationExtensionId = triggerDefinition.ConfigurationExtensionId;
-                triggerViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = triggerDefinition.ConfigurationExtensionAssemblyPath;
-
-                extensionConfigurationController = new ExtensionConfigurationController(triggerDefinition.ConfigurationExtensionId,
-                    triggerDefinition.ConfigurationExtensionAssemblyPath);
-                triggerViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(triggerDefinition.Configuration);
-
-                model.Triggers.Add(triggerViewModel);
-
-                var conditionIndex = 0;
-                foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions.OrderBy(i => i.Index))
+                var triggerEditViewModel = TriggerEditViewModel.FromTriggerDefinition(triggerDefinition);
+                model.Triggers.TriggerEdits.Add(triggerEditViewModel);
+                model.Triggers.TriggerNavigationItems.Add(new TriggerNavigationItemViewModel
                 {
-                    var conditionConfigurationViewModel = new ConditionViewModel();
-                    conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId;
-                    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
-                    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
+                    TriggerDefinitionId = triggerDefinition.TriggerDefinitionId,
+                    Caption = triggerEditViewModel.ExtensionConfiguration.Configuration.Name
+                });
 
-                    extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
-                        conditionDefinition.ConfigurationExtensionAssemblyPath);
-                    conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
+                //var conditionIndex = 0;
+                //foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions.OrderBy(i => i.Index))
+                //{
+                //    var conditionConfigurationViewModel = new ConditionViewModel();
+                //    conditionConfigurationViewModel.ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId;
+                //    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionId = conditionDefinition.ConfigurationExtensionId;
+                //    conditionConfigurationViewModel.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = conditionDefinition.ConfigurationExtensionAssemblyPath;
 
-                    triggerViewModel.Conditions.Add(conditionConfigurationViewModel);
+                //    extensionConfigurationController = new ExtensionConfigurationController(conditionDefinition.ConfigurationExtensionId,
+                //        conditionDefinition.ConfigurationExtensionAssemblyPath);
+                //    conditionConfigurationViewModel.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(conditionDefinition.Configuration);
 
-                    conditionIndex += 1;
-                }
+                //    triggerViewModel.Conditions.Add(conditionConfigurationViewModel);
+
+                //    conditionIndex += 1;
+                //}
 
                 index += 1;
             }
@@ -144,13 +137,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         private void SaveTriggers(ServerDbContext serverDbContext, JobDefinition jobDefinition)
         {
-            var triggerIds = this.Triggers.Select(i => i.TriggerDefinitionId);
+            var triggerIds = this.Triggers.TriggerEdits.Select(i => i.TriggerDefinitionId);
             var deletedTriggers = serverDbContext.TriggerDefinitions.Where(
                 i => i.JobDefinitionId == this.JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
             serverDbContext.TriggerDefinitions.RemoveRange(deletedTriggers);
 
             int index = 0;
-            foreach (var trigger in this.Triggers)
+            foreach (var trigger in this.Triggers.TriggerEdits)
             {
                 var triggerDefinition = serverDbContext.TriggerDefinitions.FirstOrDefault(i => i.TriggerDefinitionId == trigger.TriggerDefinitionId);
 
@@ -172,36 +165,36 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
 
-                var triggerConditionIds = trigger.Conditions.Select(i => i.ConditionDefinitionId);
-                var deletedTriggerConditions = serverDbContext.TriggerConditionDefinitions.Where(
-                    i => i.TriggerDefinitionId == trigger.TriggerDefinitionId && !triggerConditionIds.Contains(i.TriggerConditionDefinitionId));
-                serverDbContext.TriggerConditionDefinitions.RemoveRange(deletedTriggerConditions);
+                //var triggerConditionIds = trigger.Conditions.Select(i => i.ConditionDefinitionId);
+                //var deletedTriggerConditions = serverDbContext.TriggerConditionDefinitions.Where(
+                //    i => i.TriggerDefinitionId == trigger.TriggerDefinitionId && !triggerConditionIds.Contains(i.TriggerConditionDefinitionId));
+                //serverDbContext.TriggerConditionDefinitions.RemoveRange(deletedTriggerConditions);
 
-                var conditionIndex = 0;
-                foreach (var condition in trigger.Conditions)
-                {
-                    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.ConditionDefinitionId);
+                //var conditionIndex = 0;
+                //foreach (var condition in trigger.Conditions)
+                //{
+                //    var conditionDefinition = serverDbContext.TriggerConditionDefinitions.FirstOrDefault(i => i.TriggerConditionDefinitionId == condition.ConditionDefinitionId);
 
-                    if (conditionDefinition != null)
-                    {
-                        conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
-                    }
-                    else
-                    {
-                        conditionDefinition = new TriggerConditionDefinition();
-                        conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
-                        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
-                        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
-                        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
-                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                //    if (conditionDefinition != null)
+                //    {
+                //        conditionDefinition.Index = conditionIndex;
+                //        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                //    }
+                //    else
+                //    {
+                //        conditionDefinition = new TriggerConditionDefinition();
+                //        conditionDefinition.Index = conditionIndex;
+                //        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
+                //        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
+                //        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
+                //        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
+                //        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
 
-                        triggerDefinition.TriggerConditionDefinitions.Add(conditionDefinition);
-                    }
+                //        triggerDefinition.TriggerConditionDefinitions.Add(conditionDefinition);
+                //    }
 
-                    conditionIndex += 1;
-                }
+                //    conditionIndex += 1;
+                //}
 
                 index += 1;
             }
@@ -273,24 +266,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void LoadExtensions(string extensionLibraryFolder)
         {
-            this.TriggerExtensions = new CategorizedItemSelectorViewModel
-            {
-                Caption = "Triggers",
-                CategoriesCaption = "Libraries",
-                CategorizedItemCollection = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Trigger)
-            };
-            this.StepExtensions = new CategorizedItemSelectorViewModel
-            {
-                Caption = "Steps",
-                CategoriesCaption = "Libraries",
-                CategorizedItemCollection = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Step)
-            };
-            this.ConditionExtensions = new CategorizedItemSelectorViewModel
-            {
-                Caption = "Conditions",
-                CategoriesCaption = "Libraries",
-                CategorizedItemCollection = ConfigurableExtensionFetcher.GetConfigurableExtensions(extensionLibraryFolder, ConfigurableExtensionTypes.Condition)
-            };
+            this.TriggerBrowserViewModel = ExtensionBrowserViewModel.GetModel("TriggerExtensionBrowser", extensionLibraryFolder, ConfigurableExtensionTypes.Trigger);
         }
         #endregion
     }
