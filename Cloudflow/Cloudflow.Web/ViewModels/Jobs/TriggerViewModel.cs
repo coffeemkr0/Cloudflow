@@ -19,15 +19,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
 
-        public List<ConditionViewModel> Conditions { get; set; }
-        #endregion
-
-        #region Constructors
-        public TriggerViewModel()
-        {
-            this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
-            this.Conditions = new List<ConditionViewModel>();
-        }
+        public ConditionCollectionViewModel Conditions { get; set; }
         #endregion
 
         #region Public Methods
@@ -40,16 +32,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             };
 
             model.ExtensionConfiguration = ExtensionConfigurationViewModel.FromConfigurableExtensionDefinition(triggerDefinition);
-
-            var conditionIndex = 0;
-            foreach (var conditionDefinition in triggerDefinition.TriggerConditionDefinitions)
-            {
-                var conditionModel = ConditionViewModel.FromTriggerConditionDefinition(conditionDefinition, conditionIndex);
-                conditionModel.Active = conditionIndex == 0;
-                model.Conditions.Add(conditionModel);
-
-                conditionIndex += 1;
-            }
+            model.Conditions = ConditionCollectionViewModel.FromTriggerDefinition(triggerDefinition, index);
 
             return model;
         }

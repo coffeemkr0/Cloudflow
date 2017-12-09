@@ -16,6 +16,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public int Index { get; set; }
 
+        public string BasePropertyName { get; set; }
+
         public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
         #endregion
 
@@ -32,7 +34,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
             var model = new ConditionViewModel
             {
                 ConditionDefinitionId = conditionDefinition.TriggerConditionDefinitionId,
-                Index = index
+                Index = index,
+                BasePropertyName = $"Triggers[{conditionDefinition.TriggerDefinition.Index}]"
             };
 
             model.ExtensionConfiguration = ExtensionConfigurationViewModel.FromConfigurableExtensionDefinition(conditionDefinition);

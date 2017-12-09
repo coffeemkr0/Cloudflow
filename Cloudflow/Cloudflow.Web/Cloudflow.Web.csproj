@@ -224,6 +224,7 @@
     <Compile Include="ViewModels\ExtensionConfigurationEdits\StringCollectionEditViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabHeaderViewModel.cs" />
     <Compile Include="ViewModels\ExtensionConfigurationEdits\TabPaneViewModel.cs" />
+    <Compile Include="ViewModels\Jobs\ConditionCollectionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ConditionViewModel.cs" />
     <Compile Include="ViewModels\Jobs\EditJobViewModel.cs" />
     <Compile Include="ViewModels\Jobs\ExtensionBrowserViewModel.cs" />
