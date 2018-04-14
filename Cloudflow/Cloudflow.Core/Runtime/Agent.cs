@@ -10,7 +10,7 @@ namespace Cloudflow.Core.Runtime
     public class Agent
     {
         #region Private Members
-        
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Events
@@ -19,33 +19,24 @@ namespace Cloudflow.Core.Runtime
         protected virtual void OnStatusChanged()
         {
             var temp = StatusChanged;
-            if (temp != null)
-            {
-                temp(AgentStatus);
-            }
+            temp?.Invoke(AgentStatus);
         }
 
         public delegate void RunStatusChangedEventHandler(Run run);
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged(Run run)
         {
-            var temp = RunStatusChanged;
-            if (temp != null)
-            {
-                temp(run);
-            }
+            RunStatusChanged?.Invoke(run);
         }
         #endregion
 
         #region Properties
         public List<JobController> JobControllers { get; }
 
-        public log4net.ILog AgentLogger { get; }
-
         private AgentStatus _agentStatus;
         public AgentStatus AgentStatus
         {
-            get { return _agentStatus; }
+            get => _agentStatus;
             set
             {
                 if (_agentStatus != value)
@@ -60,7 +51,6 @@ namespace Cloudflow.Core.Runtime
         #region Constructors
         public Agent()
         {
-            AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
             JobControllers = new List<JobController>();
             AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
@@ -77,19 +67,19 @@ namespace Cloudflow.Core.Runtime
             switch (level)
             {
                 case OutputEventLevels.Debug:
-                    AgentLogger.Debug($"[Step Output] {message}");
+                    Logger.Debug($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Info:
-                    AgentLogger.Info($"[Step Output] {message}");
+                    Logger.Info($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Warning:
-                    AgentLogger.Warn($"[Step Output] {message}");
+                    Logger.Warn($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Error:
-                    AgentLogger.Error($"[Step Output] {message}");
+                    Logger.Error($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Fatal:
-                    AgentLogger.Fatal($"[Step Output] {message}");
+                    Logger.Fatal($"[Step Output] {message}");
                     break;
                 default:
                     throw new NotImplementedException();
@@ -100,10 +90,10 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void AddJob(JobDefinition jobDefinition)
         {
-            AgentLogger.Info($"Add job {jobDefinition.JobDefinitionId}");
+            Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
 
             var jobController = new JobController(jobDefinition);
-            AgentLogger.Info($"Loading job {jobController.JobConfiguration.Name}");
+            Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
 
             jobController.RunStatusChanged += JobController_RunStatusChanged;
             jobController.StepOutput += JobController_StepOutput;
@@ -125,7 +115,7 @@ namespace Cloudflow.Core.Runtime
 
         public void Stop()
         {
-            AgentLogger.Info("Stopping agent");
+            Logger.Info("Stopping agent");
 
             AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Stopping };
 
@@ -134,13 +124,13 @@ namespace Cloudflow.Core.Runtime
                 jobController.Stop();
             }
 
-            AgentLogger.Info("Waiting for any runs in progress");
+            Logger.Info("Waiting for any runs in progress");
             foreach (var jobController in JobControllers)
             {
                 jobController.Wait();
             }
 
-            AgentLogger.Info("Agent stopped");
+            Logger.Info("Agent stopped");
             AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
 
