@@ -1,21 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Data.Shared.Models;
+using log4net;
 
 namespace Cloudflow.Core.Runtime
 {
     public class Agent
     {
+        #region Constructors
+
+        public Agent(List<JobController> jobControllers)
+        {
+            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
+            _jobControllers = jobControllers;
+
+            foreach (var jobController in jobControllers)
+            {
+                jobController.RunStatusChanged += JobController_RunStatusChanged;
+                jobController.StepOutput += JobController_StepOutput;
+            }
+        }
+
+        #endregion
+
         #region Private Members
-        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly List<JobController> _jobControllers;
+
         #endregion
 
         #region Events
+
         public delegate void StatusChangedEventHandler(AgentStatus status);
+
         public event StatusChangedEventHandler StatusChanged;
+
         protected virtual void OnStatusChanged()
         {
             var temp = StatusChanged;
@@ -23,17 +46,20 @@ namespace Cloudflow.Core.Runtime
         }
 
         public delegate void RunStatusChangedEventHandler(Run run);
+
         public event RunStatusChangedEventHandler RunStatusChanged;
+
         protected virtual void OnRunStatusChanged(Run run)
         {
             RunStatusChanged?.Invoke(run);
         }
+
         #endregion
 
         #region Properties
-        public List<JobController> JobControllers { get; }
 
         private AgentStatus _agentStatus;
+
         public AgentStatus AgentStatus
         {
             get => _agentStatus;
@@ -46,17 +72,11 @@ namespace Cloudflow.Core.Runtime
                 }
             }
         }
-        #endregion
 
-        #region Constructors
-        public Agent()
-        {
-            JobControllers = new List<JobController>();
-            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
-        }
         #endregion
 
         #region Private Methods
+
         private void JobController_RunStatusChanged(Run run)
         {
             OnRunStatusChanged(run);
@@ -85,66 +105,44 @@ namespace Cloudflow.Core.Runtime
                     throw new NotImplementedException();
             }
         }
+
         #endregion
 
         #region Public Methods
-        public void AddJob(JobDefinition jobDefinition)
-        {
-            Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
-
-            var jobController = new JobController(jobDefinition);
-            Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
-
-            jobController.RunStatusChanged += JobController_RunStatusChanged;
-            jobController.StepOutput += JobController_StepOutput;
-
-            JobControllers.Add(jobController);
-        }
 
         public void Start()
         {
-            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Starting };
+            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.Starting};
 
-            foreach (var jobController in JobControllers)
-            {
-                jobController.Start();
-            }
+            foreach (var jobController in _jobControllers) jobController.Start();
 
-            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Running };
+            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.Running};
         }
 
         public void Stop()
         {
             Logger.Info("Stopping agent");
 
-            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Stopping };
+            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.Stopping};
 
-            foreach (var jobController in JobControllers)
-            {
-                jobController.Stop();
-            }
+            foreach (var jobController in _jobControllers) jobController.Stop();
 
             Logger.Info("Waiting for any runs in progress");
-            foreach (var jobController in JobControllers)
-            {
-                jobController.Wait();
-            }
+            foreach (var jobController in _jobControllers) jobController.Wait();
 
             Logger.Info("Agent stopped");
-            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
+            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
         }
 
         public List<Run> GetQueuedRuns()
         {
             var runs = new List<Run>();
 
-            foreach (var jobController in JobControllers)
-            {
-                runs.AddRange(jobController.GetQueuedRuns());
-            }
+            foreach (var jobController in _jobControllers) runs.AddRange(jobController.GetQueuedRuns());
 
             return runs;
         }
+
         #endregion
     }
 }

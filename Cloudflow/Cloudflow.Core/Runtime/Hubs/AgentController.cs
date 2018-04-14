@@ -5,28 +5,39 @@ using System.Linq;
 using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Data.Shared.Models;
+using log4net;
+using System.Reflection;
+using Cloudflow.Core.Extensions.Controllers;
 
 namespace Cloudflow.Core.Runtime.Hubs
 {
     public class AgentController : Hub
     {
-        private static readonly log4net.ILog _logger =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Agent _agent;
         private static object _agentControlSynch = new object();
         private static object _publishJobSynch = new object();
 
         #region Private Methods
-        private void LoadJobs()
+        private List<JobController> GetJobControllers()
         {
+            var jobControllers = new List<JobController>();
+
             using (var agentDbContext = new AgentDbContext())
             {
                 foreach (var jobDefinition in agentDbContext.JobDefinitions)
                 {
-                    _agent.AddJob(jobDefinition);
+                    Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
+
+                    var jobController = new JobController(jobDefinition);
+                    Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
+
+                    jobControllers.Add(jobController);
                 }
             }
+
+            return jobControllers;
         }
 
         private void _agent_StatusChanged(AgentStatus status)
@@ -57,7 +68,7 @@ namespace Cloudflow.Core.Runtime.Hubs
             }
             catch (Exception ex)
             {
-                _logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
 
             return null;
@@ -99,21 +110,18 @@ namespace Cloudflow.Core.Runtime.Hubs
                 {
                     if (_agent == null)
                     {
-                        _logger.Info("Starting agent");
+                        Logger.Info("Starting agent");
 
-                        _agent = new Agent();
+                        _agent = new Agent(GetJobControllers());
                         _agent.StatusChanged += _agent_StatusChanged;
                         _agent.RunStatusChanged += _agent_RunStatusChanged;
-
-                        LoadJobs();
-
                         _agent.Start();
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -132,7 +140,7 @@ namespace Cloudflow.Core.Runtime.Hubs
             }
             catch (Exception ex)
             {
-                _logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
