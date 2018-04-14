@@ -8,10 +8,11 @@ using Cloudflow.Core.Data.Shared.Models;
 using log4net;
 using System.Reflection;
 using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Extensions;
 
 namespace Cloudflow.Core.Runtime.Hubs
 {
-    public class AgentController : Hub
+    public class AgentController : Hub, IAgentNotificationService
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -20,9 +21,9 @@ namespace Cloudflow.Core.Runtime.Hubs
         private static object _publishJobSynch = new object();
 
         #region Private Methods
-        private List<JobController> GetJobControllers()
+        private List<IJobController> GetJobControllers()
         {
-            var jobControllers = new List<JobController>();
+            var jobControllers = new List<IJobController>();
 
             using (var agentDbContext = new AgentDbContext())
             {
@@ -40,14 +41,38 @@ namespace Cloudflow.Core.Runtime.Hubs
             return jobControllers;
         }
 
-        private void _agent_StatusChanged(AgentStatus status)
+        public void AgentStatusChanged(AgentStatus status)
         {
             Clients.All.updateStatus(status);
         }
 
-        private void _agent_RunStatusChanged(Run run)
+        public void RunStatusChanged(Run run)
         {
             Clients.All.runStatusChanged(run);
+        }
+
+        public void StepOutput(Job job, Step step, OutputEventLevels level, string message)
+        {
+            switch (level)
+            {
+                case OutputEventLevels.Debug:
+                    Logger.Debug($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Info:
+                    Logger.Info($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Warning:
+                    Logger.Warn($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Error:
+                    Logger.Error($"[Step Output] {message}");
+                    break;
+                case OutputEventLevels.Fatal:
+                    Logger.Fatal($"[Step Output] {message}");
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
         #endregion
 
@@ -112,9 +137,7 @@ namespace Cloudflow.Core.Runtime.Hubs
                     {
                         Logger.Info("Starting agent");
 
-                        _agent = new Agent(GetJobControllers());
-                        _agent.StatusChanged += _agent_StatusChanged;
-                        _agent.RunStatusChanged += _agent_RunStatusChanged;
+                        _agent = new Agent(GetJobControllers(), this);
                         _agent.Start();
                     }
                 }

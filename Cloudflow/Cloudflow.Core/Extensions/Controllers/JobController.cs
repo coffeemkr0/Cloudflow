@@ -10,7 +10,7 @@ using Cloudflow.Core.Runtime;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
-    public class JobController
+    public class JobController : IJobController
     {
         #region Events
         public delegate void RunStatusChangedEventHandler(Run run);

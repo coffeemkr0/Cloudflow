@@ -106,6 +106,7 @@
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
     <Compile Include="Extensions\Controllers\ConditionController.cs" />
+    <Compile Include="Extensions\Controllers\IJobController.cs" />
     <Compile Include="Extensions\Controllers\ObjectFactoryController.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemCollection.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemSelectorAttribute.cs" />

@@ -12,12 +12,14 @@ namespace Cloudflow.Core.Runtime
     {
         #region Constructors
 
-        public Agent(List<JobController> jobControllers)
+        public Agent(List<IJobController> jobControllers, IAgentNotificationService agentNotificationService)
         {
-            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
             _jobControllers = jobControllers;
+            _agentNotificationService = agentNotificationService;
 
-            foreach (var jobController in jobControllers)
+            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
+
+            foreach (var jobController in _jobControllers)
             {
                 jobController.RunStatusChanged += JobController_RunStatusChanged;
                 jobController.StepOutput += JobController_StepOutput;
@@ -29,30 +31,8 @@ namespace Cloudflow.Core.Runtime
         #region Private Members
 
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly List<JobController> _jobControllers;
-
-        #endregion
-
-        #region Events
-
-        public delegate void StatusChangedEventHandler(AgentStatus status);
-
-        public event StatusChangedEventHandler StatusChanged;
-
-        protected virtual void OnStatusChanged()
-        {
-            var temp = StatusChanged;
-            temp?.Invoke(AgentStatus);
-        }
-
-        public delegate void RunStatusChangedEventHandler(Run run);
-
-        public event RunStatusChangedEventHandler RunStatusChanged;
-
-        protected virtual void OnRunStatusChanged(Run run)
-        {
-            RunStatusChanged?.Invoke(run);
-        }
+        private readonly List<IJobController> _jobControllers;
+        private readonly IAgentNotificationService _agentNotificationService;
 
         #endregion
 
@@ -68,7 +48,7 @@ namespace Cloudflow.Core.Runtime
                 if (_agentStatus != value)
                 {
                     _agentStatus = value;
-                    OnStatusChanged();
+                    _agentNotificationService.AgentStatusChanged(value);
                 }
             }
         }
@@ -79,31 +59,12 @@ namespace Cloudflow.Core.Runtime
 
         private void JobController_RunStatusChanged(Run run)
         {
-            OnRunStatusChanged(run);
+            _agentNotificationService.RunStatusChanged(run);
         }
 
         private void JobController_StepOutput(Job job, Step step, OutputEventLevels level, string message)
         {
-            switch (level)
-            {
-                case OutputEventLevels.Debug:
-                    Logger.Debug($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Info:
-                    Logger.Info($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Warning:
-                    Logger.Warn($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Error:
-                    Logger.Error($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Fatal:
-                    Logger.Fatal($"[Step Output] {message}");
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            _agentNotificationService.StepOutput(job, step, level, message);
         }
 
         #endregion
@@ -144,5 +105,14 @@ namespace Cloudflow.Core.Runtime
         }
 
         #endregion
+    }
+
+    public interface IAgentNotificationService
+    {
+        void AgentStatusChanged(AgentStatus status);
+
+        void RunStatusChanged(Run run);
+
+        void StepOutput(Job job, Step step, OutputEventLevels level, string message);
     }
 }
