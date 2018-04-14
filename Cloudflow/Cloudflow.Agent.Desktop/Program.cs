@@ -1,14 +1,8 @@
 ﻿using Cloudflow.Core.Configuration;
 using Cloudflow.Core.Runtime.Hubs;
-using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.ServiceModel.Web;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Agent.Desktop
 {
