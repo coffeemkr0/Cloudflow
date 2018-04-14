@@ -8,7 +8,7 @@ namespace Cloudflow.Agent.Desktop
 {
     class Program
     {
-        private static readonly log4net.ILog log = 
+        private static readonly log4net.ILog Log = 
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static Configuration _agentLocalConfiguration;
 
@@ -26,10 +26,10 @@ namespace Cloudflow.Agent.Desktop
                 string url = "http://+:" + _agentLocalConfiguration.AppSettings.Settings["Port"].Value +
                     "/CloudflowAgent/";
 
-                log.Info(string.Format("Starting agent host at {0}", url));
+                Log.Info(string.Format("Starting agent host at {0}", url));
 
                 var signalRHost = WebApp.Start<SignalRStartup>(url);
-                log.Info(string.Format("The agent is hosted and can now be started", url));
+                Log.Info(string.Format("The agent is hosted and can now be started", url));
 
                 Console.WriteLine("Press Ctrl+C or close this window to stop the agent host.");
                 var result = Console.ReadKey();
@@ -42,13 +42,13 @@ namespace Cloudflow.Agent.Desktop
             }
             catch (System.Reflection.TargetInvocationException targetInvocationEx)
             {
-                log.Warn("Could not start the agent host. Make sure that the Cloudflow.Agent.Setup program has been used to setup the agent.");
-                log.Error(targetInvocationEx);
+                Log.Warn("Could not start the agent host. Make sure that the Cloudflow.Agent.Setup program has been used to setup the agent.");
+                Log.Error(targetInvocationEx);
                 Console.ReadKey();
             }
             catch (Exception ex)
             {
-                log.Fatal(ex);
+                Log.Fatal(ex);
                 Console.ReadKey();
             }
         }
