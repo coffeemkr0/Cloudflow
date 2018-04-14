@@ -12,10 +12,10 @@ namespace Cloudflow.Core.Runtime
     {
         #region Constructors
 
-        public Agent(List<IJobController> jobControllers, IAgentNotificationService agentNotificationService)
+        public Agent(List<IJobController> jobControllers, IAgentMonitor agentNotificationService)
         {
             _jobControllers = jobControllers;
-            _agentNotificationService = agentNotificationService;
+            _agentMonitor = agentNotificationService;
 
             AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
 
@@ -32,7 +32,7 @@ namespace Cloudflow.Core.Runtime
 
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly List<IJobController> _jobControllers;
-        private readonly IAgentNotificationService _agentNotificationService;
+        private readonly IAgentMonitor _agentMonitor;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace Cloudflow.Core.Runtime
                 if (_agentStatus != value)
                 {
                     _agentStatus = value;
-                    _agentNotificationService.AgentStatusChanged(value);
+                    _agentMonitor.AgentStatusChanged(value);
                 }
             }
         }
@@ -59,12 +59,12 @@ namespace Cloudflow.Core.Runtime
 
         private void JobController_RunStatusChanged(Run run)
         {
-            _agentNotificationService.RunStatusChanged(run);
+            _agentMonitor.RunStatusChanged(run);
         }
 
         private void JobController_StepOutput(Job job, Step step, OutputEventLevels level, string message)
         {
-            _agentNotificationService.StepOutput(job, step, level, message);
+            _agentMonitor.StepOutput(job, step, level, message);
         }
 
         #endregion
@@ -105,14 +105,5 @@ namespace Cloudflow.Core.Runtime
         }
 
         #endregion
-    }
-
-    public interface IAgentNotificationService
-    {
-        void AgentStatusChanged(AgentStatus status);
-
-        void RunStatusChanged(Run run);
-
-        void StepOutput(Job job, Step step, OutputEventLevels level, string message);
     }
 }

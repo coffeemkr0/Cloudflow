@@ -148,6 +148,7 @@
     <Compile Include="Data\Server\ServerDbContext.cs" />
     <Compile Include="Data\Server\Models\AgentConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\IAgentMonitor.cs" />
     <Compile Include="Runtime\OutputEventLevels.cs" />
     <Compile Include="Extensions\Controllers\RunController.cs" />
     <Compile Include="Runtime\Agent.cs" />

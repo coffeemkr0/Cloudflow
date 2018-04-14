@@ -12,7 +12,7 @@ using Cloudflow.Core.Extensions;
 
 namespace Cloudflow.Core.Runtime.Hubs
 {
-    public class AgentController : Hub, IAgentNotificationService
+    public class AgentController : Hub, IAgentMonitor
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
