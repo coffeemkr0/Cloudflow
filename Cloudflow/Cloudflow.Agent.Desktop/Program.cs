@@ -7,30 +7,30 @@ using Cloudflow.Agent.Desktop.Properties;
 
 namespace Cloudflow.Agent.Desktop
 {
-    class Program
+    internal class Program
     {
         private static readonly log4net.ILog Log = 
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static Configuration _agentLocalConfiguration;
 
-        static void Main(string[] args)
+        private static void Main()
         {
             try
             {
                 //Load the local agent configuration
-                _agentLocalConfiguration = Core.Configuration.AgentLocalConfiguration.GetConfiguration();
+                _agentLocalConfiguration = AgentLocalConfiguration.GetConfiguration();
 
                 //Load hubs from the Agent.Service assembly so that SignalR will pick them up
                 AppDomain.CurrentDomain.Load(typeof(AgentController).Assembly.FullName);
 
                 //Setup the SignalR messaging service first so that we can let clients know what is going on
-                string url = "http://+:" + _agentLocalConfiguration.AppSettings.Settings["Port"].Value +
+                var url = "http://+:" + _agentLocalConfiguration.AppSettings.Settings["Port"].Value +
                     "/CloudflowAgent/";
 
                 Log.Info($"Starting agent host at {url}");
 
                 var signalRHost = WebApp.Start<SignalRStartup>(url);
-                Log.Info(string.Format("The agent is hosted and can now be started"));
+                Log.Info("The agent is hosted and can now be started");
 
                 Console.WriteLine(Resources.Program_Main_Press_Ctrl_C_or_close_this_window_to_stop_the_agent_host_);
                 var result = Console.ReadKey();
