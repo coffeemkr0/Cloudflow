@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Extensions", "Cloudflow.Extensions\Cloudflow.Extensions.csproj", "{CF222B71-2B42-4B3B-8D41-BCC793B2E2E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloudflow.Core.SOLID", "Cloudflow.Core.SOLID\Cloudflow.Core.SOLID.csproj", "{CF864357-F216-4DB7-98CE-2BED669D8E28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{CF222B71-2B42-4B3B-8D41-BCC793B2E2E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF222B71-2B42-4B3B-8D41-BCC793B2E2E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF222B71-2B42-4B3B-8D41-BCC793B2E2E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF864357-F216-4DB7-98CE-2BED669D8E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF864357-F216-4DB7-98CE-2BED669D8E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF864357-F216-4DB7-98CE-2BED669D8E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF864357-F216-4DB7-98CE-2BED669D8E28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
