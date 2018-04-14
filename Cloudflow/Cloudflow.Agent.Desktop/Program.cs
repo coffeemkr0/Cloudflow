@@ -26,7 +26,7 @@ namespace Cloudflow.Agent.Desktop
                 string url = "http://+:" + _agentLocalConfiguration.AppSettings.Settings["Port"].Value +
                     "/CloudflowAgent/";
 
-                Log.Info(string.Format("Starting agent host at {0}", url));
+                Log.Info($"Starting agent host at {url}");
 
                 var signalRHost = WebApp.Start<SignalRStartup>(url);
                 Log.Info(string.Format("The agent is hosted and can now be started", url));
