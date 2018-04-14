@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Data.Shared.Models;
 
@@ -20,10 +18,10 @@ namespace Cloudflow.Core.Runtime
         public event StatusChangedEventHandler StatusChanged;
         protected virtual void OnStatusChanged()
         {
-            StatusChangedEventHandler temp = StatusChanged;
+            var temp = StatusChanged;
             if (temp != null)
             {
-                temp(this.AgentStatus);
+                temp(AgentStatus);
             }
         }
 
@@ -31,7 +29,7 @@ namespace Cloudflow.Core.Runtime
         public event RunStatusChangedEventHandler RunStatusChanged;
         protected virtual void OnRunStatusChanged(Run run)
         {
-            RunStatusChangedEventHandler temp = RunStatusChanged;
+            var temp = RunStatusChanged;
             if (temp != null)
             {
                 temp(run);
@@ -62,9 +60,9 @@ namespace Cloudflow.Core.Runtime
         #region Constructors
         public Agent()
         {
-            this.AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
-            this.JobControllers = new List<JobController>();
-            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
+            AgentLogger = log4net.LogManager.GetLogger("Agent." + Environment.MachineName);
+            JobControllers = new List<JobController>();
+            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
         #endregion
 
@@ -79,19 +77,19 @@ namespace Cloudflow.Core.Runtime
             switch (level)
             {
                 case OutputEventLevels.Debug:
-                    this.AgentLogger.Debug($"[Step Output] {message}");
+                    AgentLogger.Debug($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Info:
-                    this.AgentLogger.Info($"[Step Output] {message}");
+                    AgentLogger.Info($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Warning:
-                    this.AgentLogger.Warn($"[Step Output] {message}");
+                    AgentLogger.Warn($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Error:
-                    this.AgentLogger.Error($"[Step Output] {message}");
+                    AgentLogger.Error($"[Step Output] {message}");
                     break;
                 case OutputEventLevels.Fatal:
-                    this.AgentLogger.Fatal($"[Step Output] {message}");
+                    AgentLogger.Fatal($"[Step Output] {message}");
                     break;
                 default:
                     throw new NotImplementedException();
@@ -102,55 +100,55 @@ namespace Cloudflow.Core.Runtime
         #region Public Methods
         public void AddJob(JobDefinition jobDefinition)
         {
-            this.AgentLogger.Info($"Add job {jobDefinition.JobDefinitionId}");
+            AgentLogger.Info($"Add job {jobDefinition.JobDefinitionId}");
 
             var jobController = new JobController(jobDefinition);
-            this.AgentLogger.Info($"Loading job {jobController.JobConfiguration.Name}");
+            AgentLogger.Info($"Loading job {jobController.JobConfiguration.Name}");
 
             jobController.RunStatusChanged += JobController_RunStatusChanged;
             jobController.StepOutput += JobController_StepOutput;
 
-            this.JobControllers.Add(jobController);
+            JobControllers.Add(jobController);
         }
 
         public void Start()
         {
-            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Starting };
+            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Starting };
 
-            foreach (var jobController in this.JobControllers)
+            foreach (var jobController in JobControllers)
             {
                 jobController.Start();
             }
 
-            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Running };
+            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Running };
         }
 
         public void Stop()
         {
-            this.AgentLogger.Info("Stopping agent");
+            AgentLogger.Info("Stopping agent");
 
-            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Stopping };
+            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.Stopping };
 
-            foreach (var jobController in this.JobControllers)
+            foreach (var jobController in JobControllers)
             {
                 jobController.Stop();
             }
 
-            this.AgentLogger.Info("Waiting for any runs in progress");
-            foreach (var jobController in this.JobControllers)
+            AgentLogger.Info("Waiting for any runs in progress");
+            foreach (var jobController in JobControllers)
             {
                 jobController.Wait();
             }
 
-            this.AgentLogger.Info("Agent stopped");
-            this.AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
+            AgentLogger.Info("Agent stopped");
+            AgentStatus = new AgentStatus { Status = AgentStatus.AgentStatuses.NotRunning };
         }
 
         public List<Run> GetQueuedRuns()
         {
-            List<Run> runs = new List<Run>();
+            var runs = new List<Run>();
 
-            foreach (var jobController in this.JobControllers)
+            foreach (var jobController in JobControllers)
             {
                 runs.AddRange(jobController.GetQueuedRuns());
             }

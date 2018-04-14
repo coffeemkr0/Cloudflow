@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Web;
 
 namespace Cloudflow.Web.Utility.HtmlHelpers
 {
@@ -21,9 +20,9 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         #region Constructors
         public PropertyCollection(object model, ResourceManager resourceManager)
         {
-            this.HiddenProperties = new List<PropertyInfo>();
-            this.UngroupedProperties = new List<PropertyInfo>();
-            this.GroupedProperties = new List<PropertyGroup>();
+            HiddenProperties = new List<PropertyInfo>();
+            UngroupedProperties = new List<PropertyInfo>();
+            GroupedProperties = new List<PropertyGroup>();
 
             var sortedProperties = GetSortedProperties(model.GetType());
 
@@ -31,7 +30,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             {
                 if (property.GetCustomAttribute(typeof(HiddenAttribute)) != null)
                 {
-                    this.HiddenProperties.Add(property);
+                    HiddenProperties.Add(property);
                 }
                 else
                 {
@@ -39,11 +38,11 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
                     if (string.IsNullOrWhiteSpace(propertyGroupText))
                     {
-                        this.UngroupedProperties.Add(property);
+                        UngroupedProperties.Add(property);
                     }
                     else
                     {
-                        var propertyGroup = this.GroupedProperties.FirstOrDefault(i => i.DisplayText == propertyGroupText);
+                        var propertyGroup = GroupedProperties.FirstOrDefault(i => i.DisplayText == propertyGroupText);
 
                         if (propertyGroup == null)
                         {
@@ -51,7 +50,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
                             {
                                 DisplayText = propertyGroupText
                             };
-                            this.GroupedProperties.Add(propertyGroup);
+                            GroupedProperties.Add(propertyGroup);
                         }
 
                         propertyGroup.Properties.Add(property);
@@ -64,7 +63,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
         #region Private Methods
         private List<PropertyInfo> GetSortedProperties(Type type)
         {
-            return type.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public).
+            return type.GetProperties(BindingFlags.Instance | BindingFlags.Public).
                 Select(i => new
                 {
                     Property = i,
@@ -101,8 +100,8 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             #region Constructors
             public PropertyGroup()
             {
-                this.GroupId = Guid.NewGuid();
-                this.Properties = new List<PropertyInfo>();
+                GroupId = Guid.NewGuid();
+                Properties = new List<PropertyInfo>();
             }
             #endregion
         }

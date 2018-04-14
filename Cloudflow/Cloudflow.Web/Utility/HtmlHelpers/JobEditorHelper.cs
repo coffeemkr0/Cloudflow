@@ -1,7 +1,5 @@
-﻿using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Extensions.ExtensionAttributes;
+﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
 using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
-using Cloudflow.Web.ViewModels.Jobs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,9 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using Cloudflow.Web.Controllers;
 using Cloudflow.Web.ViewModels.Shared;
 
 namespace Cloudflow.Web.Utility.HtmlHelpers
@@ -40,7 +36,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         #region Private Members
         private static readonly log4net.ILog _log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static HashSet<Type> _textTypes = new HashSet<Type>
         {
@@ -188,7 +184,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string ObjectEdit(HtmlHelper htmlHelper, object model, List<string> propertyNameParts)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var htmlStringBuilder = new StringBuilder();
 
             var resourceManager = LoadResources(model.GetType());
 
@@ -226,9 +222,9 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string PropertyEdit(HtmlHelper htmlHelper, object model, ResourceManager resourceManager, PropertyInfo propertyInfo, List<string> propertyNameParts)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var htmlStringBuilder = new StringBuilder();
 
-            List<string> thisPropertyNameParts = new List<string>();
+            var thisPropertyNameParts = new List<string>();
             thisPropertyNameParts.AddRange(propertyNameParts);
             thisPropertyNameParts.Add(propertyInfo.Name);
 
@@ -256,7 +252,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string Label(List<string> propertyNameParts, PropertyInfo propertyInfo, ResourceManager resourceManager)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var htmlStringBuilder = new StringBuilder();
 
             var tagBuilder = new TagBuilder("label");
             var name = string.Join(".", propertyNameParts);
@@ -345,7 +341,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string ObjectCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object collectionOwner, List<string> propertyNameParts, ResourceManager resourceManager)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var htmlStringBuilder = new StringBuilder();
 
             var model = new ObjectCollectionEditViewModel(propertyInfo)
             {
@@ -381,7 +377,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
 
         private static string StringCollectionEdit(HtmlHelper htmlHelper, PropertyInfo propertyInfo, object objectInstance, List<string> propertyNameParts, ResourceManager resourceManager)
         {
-            StringBuilder htmlStringBuilder = new StringBuilder();
+            var htmlStringBuilder = new StringBuilder();
 
             var model = new StringCollectionEditViewModel
             {
@@ -424,7 +420,7 @@ namespace Cloudflow.Web.Utility.HtmlHelpers
             if (attribute != null)
             {
                 var propertyNameParts = attribute.PropertyName.Split('.').ToList();
-                object value = model;
+                var value = model;
 
                 while (propertyNameParts.Count > 0)
                 {

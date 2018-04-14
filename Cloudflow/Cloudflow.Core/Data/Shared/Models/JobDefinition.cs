@@ -1,11 +1,6 @@
 ﻿using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
@@ -24,16 +19,16 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Constructors
         public JobDefinition()
         {
-            this.JobDefinitionId = Guid.NewGuid();
-            this.TriggerDefinitions = new List<TriggerDefinition>();
-            this.StepDefinitions = new List<StepDefinition>();
-            this.Version = 1;
+            JobDefinitionId = Guid.NewGuid();
+            TriggerDefinitions = new List<TriggerDefinition>();
+            StepDefinitions = new List<StepDefinition>();
+            Version = 1;
         }
         #endregion
 
         public static JobDefinition CreateTestItem(string extensionsAssemblyPath)
         {
-            JobDefinition jobDefinition = new JobDefinition()
+            var jobDefinition = new JobDefinition()
             {
                 ExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99"),
                 ExtensionAssemblyPath = extensionsAssemblyPath,

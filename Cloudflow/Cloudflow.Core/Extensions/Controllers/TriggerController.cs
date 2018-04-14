@@ -1,13 +1,8 @@
-﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions;
+﻿using Cloudflow.Core.Data.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
@@ -18,7 +13,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         public event TriggerFiredEventHandler TriggerFired;
         protected virtual void OnTriggerFired(Trigger trigger)
         {
-            TriggerFiredEventHandler temp = TriggerFired;
+            var temp = TriggerFired;
             if (temp != null)
             {
                 temp(trigger);
@@ -47,14 +42,14 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Constructors
         public TriggerController(TriggerDefinition triggerDefinition)
         {
-            this.TriggerDefinition = triggerDefinition;
-            this.TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerDefinition.TriggerDefinitionId}");
+            TriggerDefinition = triggerDefinition;
+            TriggerControllerLoger = log4net.LogManager.GetLogger($"TriggerController.{triggerDefinition.TriggerDefinitionId}");
 
             var triggerConfigurationController = new ExtensionConfigurationController(triggerDefinition.ConfigurationExtensionId,
                 triggerDefinition.ConfigurationExtensionAssemblyPath);
-            this.TriggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
+            TriggerConfiguration = triggerConfigurationController.Load(triggerDefinition.Configuration);
 
-            this.ConditionControllers = new List<ConditionController>();
+            ConditionControllers = new List<ConditionController>();
             foreach (var triggerConditionDefinition in triggerDefinition.TriggerConditionDefinitions)
             {
                 var conditionController = new ConditionController(triggerConditionDefinition.TriggerConditionDefinitionId,
@@ -62,29 +57,29 @@ namespace Cloudflow.Core.Extensions.Controllers
                     triggerConditionDefinition.ConfigurationExtensionId, triggerConditionDefinition.ConfigurationExtensionAssemblyPath,
                     triggerConditionDefinition.Configuration);
 
-                this.ConditionControllers.Add(conditionController);
+                ConditionControllers.Add(conditionController);
             }
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(triggerDefinition.ExtensionAssemblyPath));
             _triggersContainer = new CompositionContainer(catalog);
-            _triggersContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", this.TriggerConfiguration);
+            _triggersContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", TriggerConfiguration);
 
             try
             {
                 _triggersContainer.ComposeParts(this);
 
-                foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
+                foreach (var i in _extensions)
                 {
                     if (Guid.Parse(i.Metadata.ExtensionId) == triggerDefinition.ExtensionId)
                     {
-                        this.Trigger = (Trigger)i.Value;
+                        Trigger = (Trigger)i.Value;
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.TriggerControllerLoger.Error(ex);
+                TriggerControllerLoger.Error(ex);
             }
         }
         #endregion
@@ -93,7 +88,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         private void Trigger_Fired(Trigger trigger)
         {
             //Do not raise the TriggerFired event if any condition is not met
-            foreach (var conditionController in this.ConditionControllers)
+            foreach (var conditionController in ConditionControllers)
             {
                 if (!conditionController.CheckCondition()) return;
             }
@@ -105,14 +100,14 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Public Methods
         public void Start()
         {
-            this.Trigger.Fired += Trigger_Fired;
-            this.Trigger.Start();
+            Trigger.Fired += Trigger_Fired;
+            Trigger.Start();
         }
 
         public void Stop()
         {
-            this.Trigger.Fired -= Trigger_Fired;
-            this.Trigger.Stop();
+            Trigger.Fired -= Trigger_Fired;
+            Trigger.Stop();
         }
         #endregion
     }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -17,8 +13,8 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #region Constructors
         public CategorizedItemSelectorAttribute(string collectionId, string objectFactoryExtensionId)
         {
-            this.CollectionId = Guid.Parse(collectionId);
-            this.ObjectFactoryExtensionId = Guid.Parse(objectFactoryExtensionId);
+            CollectionId = Guid.Parse(collectionId);
+            ObjectFactoryExtensionId = Guid.Parse(objectFactoryExtensionId);
         }
         #endregion
     }

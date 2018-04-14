@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
@@ -15,7 +12,7 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public StringCollectionEditViewModel()
         {
-            this.Items = new List<StringCollectionEditItemViewModel>();
+            Items = new List<StringCollectionEditItemViewModel>();
         }
     }
 }

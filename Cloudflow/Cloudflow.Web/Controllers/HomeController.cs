@@ -1,14 +1,4 @@
-﻿using Cloudflow.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Cloudflow.Web.Utility;
-using Cloudflow.Web.ViewModels.Shared;
-using Cloudflow.Web.ViewModels.Home;
-using System.Drawing;
+﻿using System.Web.Mvc;
 
 namespace Cloudflow.Web.Controllers
 {

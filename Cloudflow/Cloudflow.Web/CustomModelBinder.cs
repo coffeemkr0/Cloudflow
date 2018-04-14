@@ -2,9 +2,6 @@
 using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Web.ViewModels.Jobs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Cloudflow.Web

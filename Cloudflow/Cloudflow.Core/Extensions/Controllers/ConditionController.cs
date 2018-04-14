@@ -1,13 +1,7 @@
-﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
@@ -29,7 +23,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         public ConditionController(Guid conditionDefinitionId, Guid extensionId, string extensionAssemblyPath,
             Guid configurationExtensionId, string configurationExtensionAssemblyPath, string configuration)
         {
-            this.ConditionControllerLoger = log4net.LogManager.GetLogger($"ConditionControllerLoger.{conditionDefinitionId}");
+            ConditionControllerLoger = log4net.LogManager.GetLogger($"ConditionControllerLoger.{conditionDefinitionId}");
 
             var triggerConditionConfigurationController = new ExtensionConfigurationController(configurationExtensionId,
                 configurationExtensionAssemblyPath);
@@ -44,17 +38,17 @@ namespace Cloudflow.Core.Extensions.Controllers
             {
                 _conditionsContainer.ComposeParts(this);
 
-                foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
+                foreach (var i in _extensions)
                 {
                     if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
                     {
-                        this.Condition = (Condition)i.Value;
+                        Condition = (Condition)i.Value;
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.ConditionControllerLoger.Error(ex);
+                ConditionControllerLoger.Error(ex);
             }
         }
         #endregion
@@ -62,7 +56,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Public Methods
         public bool CheckCondition()
         {
-            return this.Condition.CheckCondition();
+            return Condition.CheckCondition();
         }
         #endregion
     }

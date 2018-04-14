@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Web.ViewModels.Jobs;
-using System.IO;
 using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Web.Utility;
-using Cloudflow.Web.ViewModels.Shared;
 using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
 using Cloudflow.Web.Utility.HtmlHelpers;
 
@@ -50,10 +45,10 @@ namespace Cloudflow.Web.Controllers
                 }
             };
 
-            var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var navigationItem = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "_TriggerNavigationItem", triggerViewModel);
 
-            var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var itemEdit = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "_TriggerEdit", triggerViewModel);
 
             return Json(new { navigationItem, itemEdit });
@@ -74,10 +69,10 @@ namespace Cloudflow.Web.Controllers
                 }
             };
 
-            var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var navigationItem = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "_StepNavigationItem", stepViewModel);
 
-            var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var itemEdit = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "_StepEdit", stepViewModel);
 
             return Json(new { navigationItem, itemEdit });
@@ -100,10 +95,10 @@ namespace Cloudflow.Web.Controllers
                 }
             };
 
-            var navigationItem = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var navigationItem = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "_ConditionNavigationItem", conditionViewModel);
 
-            var itemEdit = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var itemEdit = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "_ConditionEdit", conditionViewModel);
 
             return Json(new { navigationItem, itemEdit });
@@ -137,7 +132,7 @@ namespace Cloudflow.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            var jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             if (jobDefinition == null)
             {
                 return HttpNotFound();
@@ -190,7 +185,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            var jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             if (jobDefinition == null)
             {
                 return HttpNotFound();
@@ -217,7 +212,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            var jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             if (jobDefinition == null)
             {
                 return HttpNotFound();
@@ -230,7 +225,7 @@ namespace Cloudflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            JobDefinition jobDefinition = _serverDbContext.JobDefinitions.Find(id);
+            var jobDefinition = _serverDbContext.JobDefinitions.Find(id);
             _serverDbContext.JobDefinitions.Remove(jobDefinition);
             _serverDbContext.SaveChanges();
             return RedirectToAction("Index");
@@ -242,10 +237,10 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            using (ServerDbContext serverDbContext = new ServerDbContext())
+            using (var serverDbContext = new ServerDbContext())
             {
                 serverDbContext.Configuration.ProxyCreationEnabled = false;
-                JobDefinition jobDefinition = serverDbContext.JobDefinitions.Where(i => i.JobDefinitionId == id).
+                var jobDefinition = serverDbContext.JobDefinitions.Where(i => i.JobDefinitionId == id).
                     Include(i => i.TriggerDefinitions).Include(i => i.StepDefinitions).FirstOrDefault();
                 if (jobDefinition == null)
                 {
@@ -271,10 +266,10 @@ namespace Cloudflow.Web.Controllers
                 Value = newItem
             };
 
-            var navigationItemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var navigationItemView = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "~/Views/ExtensionConfigurationEdits/ObjectCollectionNavigationItem.cshtml", model);
 
-            var itemView = ViewHelpers.RenderRazorViewToString(this.ControllerContext,
+            var itemView = ViewHelpers.RenderRazorViewToString(ControllerContext,
             "~/Views/ExtensionConfigurationEdits/ObjectCollectionItem.cshtml", model);
 
             return Json(new { navigationItemView, itemView });

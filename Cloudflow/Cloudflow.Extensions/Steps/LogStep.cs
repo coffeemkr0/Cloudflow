@@ -27,11 +27,11 @@ namespace Cloudflow.Extensions.Steps
         {
             try
             {
-                this.StepLogger.Info(((LogStepConfiguration)this.StepConfiguration).LogMessage);
+                StepLogger.Info(((LogStepConfiguration)StepConfiguration).LogMessage);
             }
             catch (Exception ex)
             {
-                this.StepLogger.Error(ex);
+                StepLogger.Error(ex);
                 OnStepOutput(OutputEventLevels.Error, ex.ToString());
             }
         }

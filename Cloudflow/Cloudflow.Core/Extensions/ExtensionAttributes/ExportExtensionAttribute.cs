@@ -1,10 +1,5 @@
-﻿using Cloudflow.Core.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -28,8 +23,8 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
             if (extensionType == null)
                 throw new ArgumentException("'extensionType' is required.", "extensionType");
 
-            this.ExtensionId = extensionId;
-            this.ExtensionType = extensionType;
+            ExtensionId = extensionId;
+            ExtensionType = extensionType;
         }
     }
 }

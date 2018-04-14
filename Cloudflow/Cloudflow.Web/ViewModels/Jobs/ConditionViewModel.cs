@@ -1,9 +1,5 @@
 ﻿using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -24,7 +20,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public ConditionViewModel()
         {
-            this.ExtensionConfiguration = new ExtensionConfigurationViewModel();
+            ExtensionConfiguration = new ExtensionConfigurationViewModel();
         }
         #endregion
 

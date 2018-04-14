@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Drawing;
-using System.IO;
 using System.Resources;
 using System.Linq;
 
@@ -27,26 +26,26 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
             if (string.IsNullOrWhiteSpace(extensionNameResource))
                 throw new ArgumentException("'extensionNameResource' is required.", "extensionNameResource");
 
-            this.ConfigurationExtensionId = configurationExtensionId;
+            ConfigurationExtensionId = configurationExtensionId;
 
             var defaultResources = extensionType.Assembly.GetManifestResourceNames().FirstOrDefault(i => i.Contains("Properties.Resources"));
 
             if (defaultResources != null)
             {
                 var resourceBaseName = defaultResources.Remove(defaultResources.LastIndexOf("."));
-                ResourceManager resourceManager = new ResourceManager(resourceBaseName, extensionType.Assembly);
+                var resourceManager = new ResourceManager(resourceBaseName, extensionType.Assembly);
 
-                this.ExtensionName = resourceManager.GetString(extensionNameResource);
-                this.ExtensionDescription = resourceManager.GetString(extensionDescriptionResource);
+                ExtensionName = resourceManager.GetString(extensionNameResource);
+                ExtensionDescription = resourceManager.GetString(extensionDescriptionResource);
 
                 var icon = resourceManager.GetObject(iconResource);
                 if(icon != null)
                 {
-                    this.Icon = (byte[])new ImageConverter().ConvertTo((Bitmap)icon, typeof(byte[]));
+                    Icon = (byte[])new ImageConverter().ConvertTo((Bitmap)icon, typeof(byte[]));
                 }
                 else
                 {
-                    this.Icon = (byte[])new ImageConverter().ConvertTo(Properties.Resources.GenericExtensionIcon, typeof(byte[]));
+                    Icon = (byte[])new ImageConverter().ConvertTo(Properties.Resources.GenericExtensionIcon, typeof(byte[]));
                 }
             }
             else

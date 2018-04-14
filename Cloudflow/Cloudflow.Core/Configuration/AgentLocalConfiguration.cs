@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Configuration
 {
@@ -12,10 +8,10 @@ namespace Cloudflow.Core.Configuration
         #region Public Methods
         public static System.Configuration.Configuration GetConfiguration()
         {
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                             "Cloudflow", "Agent", "Agent.config");
 
-            System.Configuration.Configuration agentConfiguration = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(
+            var agentConfiguration = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(
                 new System.Configuration.ExeConfigurationFileMap { ExeConfigFilename = path },
                 System.Configuration.ConfigurationUserLevel.None);
 

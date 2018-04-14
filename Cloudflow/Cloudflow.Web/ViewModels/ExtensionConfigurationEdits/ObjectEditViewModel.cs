@@ -1,8 +1,5 @@
 ﻿using Cloudflow.Web.Utility.HtmlHelpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
@@ -19,7 +16,7 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
         #region Constructors
         public ObjectEditViewModel()
         {
-            this.PropertyNameParts = new List<string>();
+            PropertyNameParts = new List<string>();
         }
         #endregion
     }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
@@ -24,7 +19,7 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Constructors
         public StepConditionDefinition()
         {
-            this.StepConditionDefinitionId = Guid.NewGuid();
+            StepConditionDefinitionId = Guid.NewGuid();
         }
         #endregion
     }

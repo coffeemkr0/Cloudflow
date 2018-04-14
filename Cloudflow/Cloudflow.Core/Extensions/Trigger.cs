@@ -1,11 +1,4 @@
-﻿using Cloudflow.Core.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cloudflow.Core.Extensions
+﻿namespace Cloudflow.Core.Extensions
 {
     public abstract class Trigger : ConfigurableExtension
     {
@@ -23,18 +16,18 @@ namespace Cloudflow.Core.Extensions
         #region Constructors
         public Trigger(ExtensionConfiguration triggerConfiguration) : base()
         {
-            this.TriggerConfiguration = triggerConfiguration;
-            this.TriggerLogger = log4net.LogManager.GetLogger($"Trigger.{triggerConfiguration.Name}");
+            TriggerConfiguration = triggerConfiguration;
+            TriggerLogger = log4net.LogManager.GetLogger($"Trigger.{triggerConfiguration.Name}");
         }
         #endregion
 
         #region Private Methods
         protected virtual void OnTriggerFired()
         {
-            TriggerFiredEventHandler temp = Fired;
+            var temp = Fired;
             if (temp != null)
             {
-                this.TriggerLogger.Info("Trigger fired");
+                TriggerLogger.Info("Trigger fired");
                 temp(this);
             }
         }

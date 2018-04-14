@@ -3,10 +3,7 @@ using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
 using Cloudflow.Web.ViewModels.Jobs;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ObjectFactories
 {
@@ -21,7 +18,7 @@ namespace Cloudflow.Web.ObjectFactories
 
         public override object CreateObject(string instanceData)
         {
-            var extensionLibraryPath = this.FactoryData;
+            var extensionLibraryPath = FactoryData;
 
             var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryPath);
             var extension = configurableExtensionBrowser.GetConfigurableExtension(Guid.Parse(instanceData));

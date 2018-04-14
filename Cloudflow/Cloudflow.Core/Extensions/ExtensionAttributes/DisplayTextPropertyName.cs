@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -24,7 +20,7 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #region Constructors
         public DisplayTextPropertyName(string propertyName)
         {
-            this.PropertyName = propertyName;
+            PropertyName = propertyName;
         }
         #endregion
     }

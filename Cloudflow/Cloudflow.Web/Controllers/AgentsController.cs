@@ -1,15 +1,11 @@
 ﻿using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Server.Models;
 using Cloudflow.Web.ViewModels.Agents;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Cloudflow.Web.Controllers
@@ -30,7 +26,7 @@ namespace Cloudflow.Web.Controllers
             _databaseContext = new ServerDbContext();
 #endif
 
-            IndexViewModel model = new IndexViewModel();
+            var model = new IndexViewModel();
 
             model.AgentConfigurations.AddRange(_serverDbContext.AgentConfigurations.ToList());
 
@@ -44,7 +40,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
+            var agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
             if (agentConfiguration == null)
             {
                 return HttpNotFound();
@@ -80,7 +76,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
+            var agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
             if (agentConfiguration == null)
             {
                 return HttpNotFound();
@@ -111,7 +107,7 @@ namespace Cloudflow.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
+            var agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
             if (agentConfiguration == null)
             {
                 return HttpNotFound();
@@ -124,7 +120,7 @@ namespace Cloudflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AgentConfiguration agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
+            var agentConfiguration = _serverDbContext.AgentConfigurations.Find(id);
             _serverDbContext.AgentConfigurations.Remove(agentConfiguration);
             _serverDbContext.SaveChanges();
             return Json(new { success = true });

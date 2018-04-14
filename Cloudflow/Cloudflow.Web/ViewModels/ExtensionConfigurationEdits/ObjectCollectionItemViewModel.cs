@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
@@ -19,8 +17,8 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 
         public ObjectCollectionItemViewModel()
         {
-            this.Id = Guid.NewGuid();
-            this.PropertyNameParts = new List<string>();
+            Id = Guid.NewGuid();
+            PropertyNameParts = new List<string>();
         }
     }
 }

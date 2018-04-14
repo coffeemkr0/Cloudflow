@@ -1,10 +1,6 @@
 ﻿using Cloudflow.Core.Data.Shared.Models;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Data.Shared
 {
@@ -22,10 +18,10 @@ namespace Cloudflow.Core.Data.Shared
 
         protected virtual void CreateTestData(string extensionsAssemblyPath)
         {
-            if (this.JobDefinitions.FirstOrDefault() == null)
+            if (JobDefinitions.FirstOrDefault() == null)
             {
-                this.JobDefinitions.Add(JobDefinition.CreateTestItem(extensionsAssemblyPath));
-                this.SaveChanges();
+                JobDefinitions.Add(JobDefinition.CreateTestItem(extensionsAssemblyPath));
+                SaveChanges();
             }
         }
     }

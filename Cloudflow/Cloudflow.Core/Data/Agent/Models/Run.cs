@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Data.Agent.Models
 {
@@ -39,7 +35,7 @@ namespace Cloudflow.Core.Data.Agent.Models
         #region Constructors
         public Run()
         {
-            this.Id = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
         #endregion
     }

@@ -1,10 +1,4 @@
-﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Runtime;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cloudflow.Core.Runtime;
 
 namespace Cloudflow.Core.Extensions
 {
@@ -15,7 +9,7 @@ namespace Cloudflow.Core.Extensions
         public event StepOutputEventHandler StepOutput;
         protected virtual void OnStepOutput(OutputEventLevels level, string message)
         {
-            StepOutputEventHandler temp = StepOutput;
+            var temp = StepOutput;
             if (temp != null)
             {
                 temp(this, level, message);
@@ -32,8 +26,8 @@ namespace Cloudflow.Core.Extensions
         #region Constructors
         public Step(ExtensionConfiguration stepConfiguration) : base()
         {
-            this.StepConfiguration = stepConfiguration;
-            this.StepLogger = log4net.LogManager.GetLogger($"Step.{this.StepConfiguration.Name}");
+            StepConfiguration = stepConfiguration;
+            StepLogger = log4net.LogManager.GetLogger($"Step.{StepConfiguration.Name}");
         }
         #endregion
 

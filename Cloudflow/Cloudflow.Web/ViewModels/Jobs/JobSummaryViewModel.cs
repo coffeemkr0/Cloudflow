@@ -2,9 +2,6 @@
 using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -19,11 +16,11 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public JobSummaryViewModel(JobDefinition jobDefinition)
         {
-            this.Id = jobDefinition.JobDefinitionId;
+            Id = jobDefinition.JobDefinitionId;
 
             var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
                 jobDefinition.ConfigurationExtensionAssemblyPath);
-            this.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
+            Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
         }
         #endregion
     }

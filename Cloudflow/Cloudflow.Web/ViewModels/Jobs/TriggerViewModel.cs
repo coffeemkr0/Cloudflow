@@ -1,10 +1,5 @@
 ﻿using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Extensions.Controllers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -25,7 +20,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public TriggerViewModel()
         {
-            this.Conditions = new ConditionCollectionViewModel();
+            Conditions = new ConditionCollectionViewModel();
         }
         #endregion
 

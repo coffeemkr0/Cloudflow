@@ -1,12 +1,6 @@
 ﻿using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
@@ -29,15 +23,15 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Constructors
         public StepDefinition()
         {
-            this.StepDefinitionId = Guid.NewGuid();
-            this.StepConditionDefinitions = new List<StepConditionDefinition>();
+            StepDefinitionId = Guid.NewGuid();
+            StepConditionDefinitions = new List<StepConditionDefinition>();
         }
         #endregion
 
         #region Public Methods
         public static StepDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index)
         {
-            StepDefinition stepDefinition = new StepDefinition()
+            var stepDefinition = new StepDefinition()
             {
                 Index = index,
                 ExtensionId = Guid.Parse("43D6FD16-0344-4204-AEE9-A09B3998C017"),

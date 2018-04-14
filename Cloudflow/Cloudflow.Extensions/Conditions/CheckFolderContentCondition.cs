@@ -1,12 +1,8 @@
 ﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Conditions
 {
@@ -16,7 +12,7 @@ namespace Cloudflow.Extensions.Conditions
     {
         private CheckFolderContentConditionConfiguration CheckFolderContentConditionConfiguration
         {
-            get { return (CheckFolderContentConditionConfiguration)this.ConditionConfiguration; }
+            get { return (CheckFolderContentConditionConfiguration)ConditionConfiguration; }
         }
 
         [ImportingConstructor]
@@ -27,9 +23,9 @@ namespace Cloudflow.Extensions.Conditions
 
         public override bool CheckCondition()
         {
-            foreach (var fileNameMask in this.CheckFolderContentConditionConfiguration.FileNameMasks)
+            foreach (var fileNameMask in CheckFolderContentConditionConfiguration.FileNameMasks)
             {
-                if (Directory.GetFiles(this.CheckFolderContentConditionConfiguration.Folder, fileNameMask, SearchOption.TopDirectoryOnly).Count() > 0)
+                if (Directory.GetFiles(CheckFolderContentConditionConfiguration.Folder, fileNameMask, SearchOption.TopDirectoryOnly).Count() > 0)
                 {
                     return true;
                 }

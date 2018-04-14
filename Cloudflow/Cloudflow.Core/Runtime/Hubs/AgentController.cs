@@ -5,7 +5,6 @@ using System.Linq;
 using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Data.Shared.Models;
-using System.Data.Entity;
 
 namespace Cloudflow.Core.Runtime.Hubs
 {
@@ -21,7 +20,7 @@ namespace Cloudflow.Core.Runtime.Hubs
         #region Private Methods
         private void LoadJobs()
         {
-            using (AgentDbContext agentDbContext = new AgentDbContext())
+            using (var agentDbContext = new AgentDbContext())
             {
                 foreach (var jobDefinition in agentDbContext.JobDefinitions)
                 {
@@ -68,7 +67,7 @@ namespace Cloudflow.Core.Runtime.Hubs
         {
             lock (_publishJobSynch)
             {
-                using (AgentDbContext agentDbContext = new AgentDbContext())
+                using (var agentDbContext = new AgentDbContext())
                 {
                     var existingJobDefinition = agentDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == jobDefinition.JobDefinitionId);
                     if (existingJobDefinition == null)
@@ -139,7 +138,7 @@ namespace Cloudflow.Core.Runtime.Hubs
 
         public List<Run> GetCompletedRuns(int startIndex, int pageSize)
         {
-            using (AgentDbContext agentDbContext = new AgentDbContext())
+            using (var agentDbContext = new AgentDbContext())
             {
                 return agentDbContext.Runs.Where(i => i.Status == Run.RunStatuses.Completed ||
                     i.Status == Run.RunStatuses.Completed || i.Status == Run.RunStatuses.Failed ||

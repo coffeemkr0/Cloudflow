@@ -1,14 +1,4 @@
-﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Runtime;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cloudflow.Core.Extensions
+﻿namespace Cloudflow.Core.Extensions
 {
     public abstract class Job : ConfigurableExtension
     {
@@ -21,8 +11,8 @@ namespace Cloudflow.Core.Extensions
         #region Constructors
         public Job(ExtensionConfiguration jobConfiguration) : base()
         {
-            this.JobConfiguration = jobConfiguration;
-            this.JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
+            JobConfiguration = jobConfiguration;
+            JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
         }
         #endregion
 

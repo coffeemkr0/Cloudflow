@@ -1,12 +1,6 @@
-﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Extensions;
+﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Triggers
 {
@@ -26,7 +20,7 @@ namespace Cloudflow.Extensions.Triggers
         #region Constructors
         public WatchFolderTriggerConfiguration()
         {
-            this.FileNameMasks = new List<string>();
+            FileNameMasks = new List<string>();
         }
         #endregion
     }

@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -21,7 +19,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public ExtensionBrowserViewModel()
         {
-            this.ExtensionLibraries = new List<ExtensionLibrary>();
+            ExtensionLibraries = new List<ExtensionLibrary>();
         }
         #endregion
 
@@ -87,7 +85,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             #region Constructors
             public ExtensionLibrary()
             {
-                this.Extensions = new List<Extension>();
+                Extensions = new List<Extension>();
             }
             #endregion
 

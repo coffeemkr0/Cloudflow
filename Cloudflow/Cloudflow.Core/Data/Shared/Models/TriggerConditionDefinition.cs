@@ -1,10 +1,5 @@
 ﻿using Cloudflow.Core.Extensions.Controllers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
@@ -25,14 +20,14 @@ namespace Cloudflow.Core.Data.Shared.Models
         #region Constructors
         public TriggerConditionDefinition()
         {
-            this.TriggerConditionDefinitionId = Guid.NewGuid();
+            TriggerConditionDefinitionId = Guid.NewGuid();
         }
         #endregion
 
         #region Public Methods
         public static TriggerConditionDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index)
         {
-            TriggerConditionDefinition conditionDefinition = new TriggerConditionDefinition()
+            var conditionDefinition = new TriggerConditionDefinition()
             {
                 Index = index,
                 ExtensionId = Guid.Parse("45C9872C-70DC-41E4-B769-3C27447F9E84"),

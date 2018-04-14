@@ -1,9 +1,5 @@
 ﻿using Cloudflow.Core.Data.Server.Models;
-using Cloudflow.Core.Data.Shared.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -18,8 +14,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public IndexViewModel()
         {
-            this.AgentConfigurations = new List<AgentConfiguration>();
-            this.JobSummaries = new List<JobSummaryViewModel>();
+            AgentConfigurations = new List<AgentConfiguration>();
+            JobSummaries = new List<JobSummaryViewModel>();
         }
         #endregion
     }

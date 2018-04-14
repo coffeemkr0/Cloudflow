@@ -1,5 +1,4 @@
 ﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
-using System.Drawing;
 using System.Linq;
 
 namespace Cloudflow.Core.Extensions
@@ -19,16 +18,16 @@ namespace Cloudflow.Core.Extensions
         #region Constructors
         public ConfigurableExtension() : base()
         {
-            var exportConfigurableExtensionAttribute = this.GetType().GetCustomAttributes(typeof(ExportConfigurableExtensionAttribute), true).
+            var exportConfigurableExtensionAttribute = GetType().GetCustomAttributes(typeof(ExportConfigurableExtensionAttribute), true).
                 Cast<ExportConfigurableExtensionAttribute>()
                 .SingleOrDefault();
 
             if (exportConfigurableExtensionAttribute != null)
             {
-                this.ExtensionName = exportConfigurableExtensionAttribute.ExtensionName;
-                this.ExtensionDescription = exportConfigurableExtensionAttribute.ExtensionDescription;
-                this.ConfigurationExtensionId = exportConfigurableExtensionAttribute.ConfigurationExtensionId;
-                this.Icon = exportConfigurableExtensionAttribute.Icon;
+                ExtensionName = exportConfigurableExtensionAttribute.ExtensionName;
+                ExtensionDescription = exportConfigurableExtensionAttribute.ExtensionDescription;
+                ConfigurationExtensionId = exportConfigurableExtensionAttribute.ConfigurationExtensionId;
+                Icon = exportConfigurableExtensionAttribute.Icon;
             }
         }
         #endregion

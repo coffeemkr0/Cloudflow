@@ -1,13 +1,4 @@
-﻿using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Extensions.ExtensionAttributes;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Web;
+﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
 
 namespace Cloudflow.Web.ViewModels.Shared
 {

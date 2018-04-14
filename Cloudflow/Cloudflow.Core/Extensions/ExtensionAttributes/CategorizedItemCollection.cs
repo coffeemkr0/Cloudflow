@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -33,10 +30,10 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #region Constructors
         public CategorizedItemCollection(Guid collectionId, string caption, string categoriesCaption)
         {
-            this.Id = collectionId;
-            this.Caption = categoriesCaption;
-            this.CategoriesCaption = categoriesCaption;
-            this.Categories = new List<Category>();
+            Id = collectionId;
+            Caption = categoriesCaption;
+            CategoriesCaption = categoriesCaption;
+            Categories = new List<Category>();
         }
         #endregion
 
@@ -61,7 +58,7 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
             #region Constructors
             public Category()
             {
-                this.Items = new List<Item>();
+                Items = new List<Item>();
             }
             #endregion
 

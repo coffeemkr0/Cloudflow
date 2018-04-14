@@ -1,11 +1,4 @@
-﻿using Cloudflow.Core.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cloudflow.Core.Extensions
+﻿namespace Cloudflow.Core.Extensions
 {
     public abstract class Condition : ConfigurableExtension
     {
@@ -18,8 +11,8 @@ namespace Cloudflow.Core.Extensions
         #region Constructors
         public Condition(ExtensionConfiguration conditionConfiguration) : base()
         {
-            this.ConditionConfiguration = conditionConfiguration;
-            this.ConditionLogger = log4net.LogManager.GetLogger($"Condition.{conditionConfiguration.Name}");
+            ConditionConfiguration = conditionConfiguration;
+            ConditionLogger = log4net.LogManager.GetLogger($"Condition.{conditionConfiguration.Name}");
         }
         #endregion
 

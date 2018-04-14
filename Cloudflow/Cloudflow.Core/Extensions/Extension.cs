@@ -14,14 +14,14 @@ namespace Cloudflow.Core.Extensions
 
         public Extension()
         {
-            var exportExtensionAttribute = this.GetType().GetCustomAttributes(typeof(ExportExtensionAttribute), true).
+            var exportExtensionAttribute = GetType().GetCustomAttributes(typeof(ExportExtensionAttribute), true).
                 Cast<ExportExtensionAttribute>()
                 .SingleOrDefault();
 
             if (exportExtensionAttribute != null)
             {
-                this.ExtensionId = exportExtensionAttribute.ExtensionId;
-                this.ExtensionType = exportExtensionAttribute.ExtensionType;
+                ExtensionId = exportExtensionAttribute.ExtensionId;
+                ExtensionType = exportExtensionAttribute.ExtensionType;
             }
         }
     }

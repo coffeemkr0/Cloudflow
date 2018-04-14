@@ -1,10 +1,6 @@
 ﻿using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Extensions.Conditions
 {
@@ -23,7 +19,7 @@ namespace Cloudflow.Extensions.Conditions
         #region Constructors
         public CheckFolderContentConditionConfiguration()
         {
-            this.FileNameMasks = new List<string>();
+            FileNameMasks = new List<string>();
         }
         #endregion
     }

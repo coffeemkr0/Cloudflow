@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Communication
 {
@@ -18,7 +14,7 @@ namespace Cloudflow.Core.Communication
             {
                 listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 0);
                 listener.Start();
-                int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+                var port = ((IPEndPoint)listener.LocalEndpoint).Port;
                 return port;
             }
             catch (Exception)
@@ -46,7 +42,7 @@ namespace Cloudflow.Core.Communication
 
         public static TcpListener GetListener(int port)
         {
-            TcpListener listener = new TcpListener(GetLocalIPAddress(), port);
+            var listener = new TcpListener(GetLocalIPAddress(), port);
             listener.Start();
             return listener;
         }

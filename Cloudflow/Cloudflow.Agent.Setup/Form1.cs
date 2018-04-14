@@ -1,17 +1,9 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Cloudflow.Agent.Setup
@@ -67,7 +59,7 @@ namespace Cloudflow.Agent.Setup
                 ExecuteNetshCommand("http delete urlacl http://+:" + port + "/CloudflowAgent/");
 
                 //Register the url with the correct user or group
-                string output = ExecuteNetshCommand("http add urlacl http://+:" + port + "/CloudflowAgent/ user=" + GetUser());
+                var output = ExecuteNetshCommand("http add urlacl http://+:" + port + "/CloudflowAgent/ user=" + GetUser());
 
                 if (output.Contains("Error"))
                 {
@@ -83,7 +75,7 @@ namespace Cloudflow.Agent.Setup
                 //Create desktop shortcut
                 if (chkCreateShortcut.Checked)
                 {
-                    string desktopAgentPath = Path.GetFullPath("Cloudflow.Agent.Desktop.exe");
+                    var desktopAgentPath = Path.GetFullPath("Cloudflow.Agent.Desktop.exe");
                     if (!File.Exists(desktopAgentPath))
                     {
                         desktopAgentPath = Path.GetFullPath("..\\..\\..\\Cloudflow.Agent.Desktop\\bin\\Debug\\Cloudflow.Agent.Desktop.exe");
@@ -102,7 +94,7 @@ namespace Cloudflow.Agent.Setup
 
         private string ExecuteNetshCommand(string commandText)
         {
-            Process command = new Process();
+            var command = new Process();
             command.StartInfo = new ProcessStartInfo("netsh");
             command.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             command.StartInfo.CreateNoWindow = true;
@@ -110,14 +102,14 @@ namespace Cloudflow.Agent.Setup
             command.StartInfo.RedirectStandardOutput = true;
             command.StartInfo.Arguments = commandText;
             command.Start();
-            string output = command.StandardOutput.ReadToEnd();
+            var output = command.StandardOutput.ReadToEnd();
             command.WaitForExit();
             return output;
         }
 
         private string GetUser()
         {
-            string user = "";
+            var user = "";
 
             if (chkUsers.Checked)
             {
@@ -136,11 +128,11 @@ namespace Cloudflow.Agent.Setup
 
         private void CreateApplicationShortcut(string shortcutLocation, string name, string target)
         {
-            Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
+            var t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
             dynamic shell = Activator.CreateInstance(t);
             try
             {
-                string shortcutPath = Path.Combine(shortcutLocation, name + ".lnk");
+                var shortcutPath = Path.Combine(shortcutLocation, name + ".lnk");
                 var lnk = shell.CreateShortcut(shortcutPath);
                 try
                 {

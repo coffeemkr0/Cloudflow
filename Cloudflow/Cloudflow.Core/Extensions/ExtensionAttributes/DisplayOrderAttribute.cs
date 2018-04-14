@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
+    /// <inheritdoc />
     /// <summary>
     /// Specifies the display order for a property
     /// </summary>
@@ -22,7 +19,7 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #region Constructors
         public DisplayOrderAttribute(int order)
         {
-            this.Order = order;
+            Order = order;
         }
         #endregion
     }

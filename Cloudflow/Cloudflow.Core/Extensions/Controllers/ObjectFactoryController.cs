@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
@@ -35,7 +31,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Public Methods
         public object CreateObject(string instanceData)
         {
-            foreach (Lazy<IExtension, IExtensionMetaData> i in _extensions)
+            foreach (var i in _extensions)
             {
                 if (Guid.Parse(i.Metadata.ExtensionId) == _extensionId)
                 {

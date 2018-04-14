@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cloudflow.Core.Extensions
+﻿namespace Cloudflow.Core.Extensions
 {
     /// <summary>
     /// A base class that an extension can inherit from to implement an object factory for
@@ -22,7 +16,7 @@ namespace Cloudflow.Core.Extensions
         #region Constructors
         public ObjectFactory(string factoryData) : base()
         {
-            this.FactoryData = factoryData;
+            FactoryData = factoryData;
         }
         #endregion
 

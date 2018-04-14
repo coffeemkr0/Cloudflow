@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
@@ -22,7 +18,7 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
         #region Constructors
         public LabelTextResourceAttribute(string resourceName)
         {
-            this.ResourceName = resourceName;
+            ResourceName = resourceName;
         }
         #endregion
     }

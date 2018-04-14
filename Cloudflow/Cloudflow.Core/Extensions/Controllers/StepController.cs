@@ -1,14 +1,9 @@
-﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions;
+﻿using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Core.Runtime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
@@ -19,7 +14,7 @@ namespace Cloudflow.Core.Extensions.Controllers
         public event StepOutputEventHandler StepOutput;
         protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
         {
-            StepOutputEventHandler temp = StepOutput;
+            var temp = StepOutput;
             if (temp != null)
             {
                 temp(step, level, message);
@@ -48,14 +43,14 @@ namespace Cloudflow.Core.Extensions.Controllers
         #region Constructors
         public StepController(StepDefinition stepDefinition)
         {
-            this.StepDefinition = stepDefinition;
-            this.StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepDefinition.StepDefinitionId}");
+            StepDefinition = stepDefinition;
+            StepControllerLogger = log4net.LogManager.GetLogger($"StepController.{stepDefinition.StepDefinitionId}");
 
             var stepConfigurationController = new ExtensionConfigurationController(stepDefinition.ConfigurationExtensionId,
                     stepDefinition.ConfigurationExtensionAssemblyPath);
-            this.StepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
+            StepConfiguration = stepConfigurationController.Load(stepDefinition.Configuration);
 
-            this.ConditionControllers = new List<ConditionController>();
+            ConditionControllers = new List<ConditionController>();
             foreach (var stepConditionDefinition in stepDefinition.StepConditionDefinitions)
             {
                 var conditionController = new ConditionController(stepConditionDefinition.StepConditionDefinitionId,
@@ -63,31 +58,31 @@ namespace Cloudflow.Core.Extensions.Controllers
                     stepConditionDefinition.ConfigurationExtensionId, stepConditionDefinition.ConfigurationExtensionAssemblyPath,
                     stepConditionDefinition.Configuration);
 
-                this.ConditionControllers.Add(conditionController);
+                ConditionControllers.Add(conditionController);
             }
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(stepDefinition.ExtensionAssemblyPath));
             _stepsContainer = new CompositionContainer(catalog);
-            _stepsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", this.StepConfiguration);
+            _stepsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", StepConfiguration);
 
             try
             {
                 _stepsContainer.ComposeParts(this);
 
-                foreach (Lazy<IConfigurableExtension, IConfigurableExtensionMetaData> i in _extensions)
+                foreach (var i in _extensions)
                 {
                     if (Guid.Parse(i.Metadata.ExtensionId) == stepDefinition.ExtensionId)
                     {
                         var step = (Step)i.Value;
                         step.StepOutput += Value_StepOutput;
-                        this.Step = step;
+                        Step = step;
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.StepControllerLogger.Error(ex);
+                StepControllerLogger.Error(ex);
             }
         }
         #endregion
@@ -105,16 +100,16 @@ namespace Cloudflow.Core.Extensions.Controllers
             try
             {
                 //Do not execute the step if any condition is not met
-                foreach (var conditionController in this.ConditionControllers)
+                foreach (var conditionController in ConditionControllers)
                 {
                     if (!conditionController.CheckCondition()) return;
                 }
 
-                this.Step.Execute();
+                Step.Execute();
             }
             catch (Exception ex)
             {
-                this.StepControllerLogger.Error(ex);
+                StepControllerLogger.Error(ex);
             }
         }
         #endregion

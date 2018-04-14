@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 
 namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
 {
@@ -23,8 +21,8 @@ namespace Cloudflow.Web.ViewModels.ExtensionConfigurationEdits
         #region Constructors
         public TabPaneViewModel()
         {
-            this.PropertyNameParts = new List<string>();
-            this.Properties = new List<PropertyInfo>();
+            PropertyNameParts = new List<string>();
+            Properties = new List<PropertyInfo>();
         }
         #endregion
     }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Data.Entity;
 using Cloudflow.Core.Data.Server.Models;
-using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Core.Data.Shared;
 
 namespace Cloudflow.Core.Data.Server
@@ -36,10 +31,10 @@ namespace Cloudflow.Core.Data.Server
         {
             base.CreateTestData(extensionsAssemblyPath);
 
-            if (this.AgentConfigurations.ToList().FirstOrDefault() == null)
+            if (AgentConfigurations.ToList().FirstOrDefault() == null)
             {
-                this.AgentConfigurations.Add(AgentConfiguration.CreateTestItem());
-                this.SaveChanges();
+                AgentConfigurations.Add(AgentConfiguration.CreateTestItem());
+                SaveChanges();
             }
         }
         #endregion
