@@ -3,6 +3,7 @@ using Cloudflow.Core.Runtime.Hubs;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Configuration;
+using Cloudflow.Agent.Desktop.Properties;
 
 namespace Cloudflow.Agent.Desktop
 {
@@ -29,9 +30,9 @@ namespace Cloudflow.Agent.Desktop
                 Log.Info($"Starting agent host at {url}");
 
                 var signalRHost = WebApp.Start<SignalRStartup>(url);
-                Log.Info(string.Format("The agent is hosted and can now be started", url));
+                Log.Info(string.Format("The agent is hosted and can now be started"));
 
-                Console.WriteLine("Press Ctrl+C or close this window to stop the agent host.");
+                Console.WriteLine(Resources.Program_Main_Press_Ctrl_C_or_close_this_window_to_stop_the_agent_host_);
                 var result = Console.ReadKey();
                 while (result.Modifiers != ConsoleModifiers.Control && result.Key != ConsoleKey.C)
                 {
