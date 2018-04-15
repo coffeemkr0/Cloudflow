@@ -408,7 +408,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\Shared\AgentControllerClient.js" />
+    <Content Include="Scripts\Shared\AgentHubClient.js" />
     <Content Include="Scripts\Shared\DialogHelper.js" />
     <Content Include="Scripts\Shared\CategorizedItemSelector.js" />
     <Content Include="Scripts\Shared\Layout.js" />

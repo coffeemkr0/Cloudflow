@@ -1,8 +1,8 @@
 ﻿
 $(function () {
-    AgentControllerClient.AgentConnected = AgentConnected;
-    AgentControllerClient.ConnectToAgents();
-    AgentControllerClient.AgentStatusUpdated = AgentStatusUpdated;
+    AgentHubClient.AgentConnected = AgentConnected;
+    AgentHubClient.ConnectToAgents();
+    AgentHubClient.AgentStatusUpdated = AgentStatusUpdated;
 
     $(".agentControlLink").each(function () {
         $(this).on("click", function (e) {
@@ -24,12 +24,12 @@ function AgentControlClicked(e) {
     var $item = $(e.target);
     var machineName = $item.attr("data-machinename");
     if ($item.text() === "Start") {
-        AgentControllerClient.StartAgent(machineName, function () {
+        AgentHubClient.StartAgent(machineName, function () {
             UpdateAgentStatus(machineName);
         });
     }
     else {
-        AgentControllerClient.StopAgent(machineName, function () {
+        AgentHubClient.StopAgent(machineName, function () {
             UpdateAgentStatus(machineName);
         });
     }
@@ -38,7 +38,7 @@ function AgentControlClicked(e) {
 }
 
 function StartAgent(machineName) {
-    AgentControllerClient.StartAgent(machineName, function () {
+    AgentHubClient.StartAgent(machineName, function () {
         SetAgentStatusText(machineName, status);
         SetAgentControlText(machineName, status);
     });
@@ -87,7 +87,7 @@ function SetAgentControlText(machineName, status) {
 }
 
 function UpdateAgentStatus(machineName) {
-    AgentControllerClient.GetAgentStatus(machineName, function (status) {
+    AgentHubClient.GetAgentStatus(machineName, function (status) {
         SetAgentStatusText(machineName, status);
         SetAgentControlText(machineName, status);
     });

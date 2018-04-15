@@ -22,11 +22,6 @@ namespace Cloudflow.Core.Agents
             AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
 
             _jobControllers = GetJobControllers();
-            foreach (var jobController in _jobControllers)
-            {
-                jobController.RunStatusChanged += JobController_RunStatusChanged;
-                jobController.StepOutput += JobController_StepOutput;
-            }
         }
 
         public AgentStatus AgentStatus
@@ -52,7 +47,7 @@ namespace Cloudflow.Core.Agents
                 {
                     Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
 
-                    var jobController = new JobController(jobDefinition);
+                    var jobController = new JobController(jobDefinition, _agentMonitor);
                     Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
 
                     jobControllers.Add(jobController);

@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agents\IJobMonitor.cs" />
     <Compile Include="Configuration\AgentLocalConfigurationSettings.cs" />
     <Compile Include="Data\Shared\Models\ConfigurableExtensionDefinition.cs" />
     <Compile Include="Data\Shared\Models\StepConditionDefinition.cs" />

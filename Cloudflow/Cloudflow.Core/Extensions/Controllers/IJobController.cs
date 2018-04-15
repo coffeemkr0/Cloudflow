@@ -14,9 +14,6 @@ namespace Cloudflow.Core.Extensions.Controllers
         List<StepController> StepControllers { get; }
         List<TriggerController> TriggerControllers { get; }
 
-        event JobController.RunStatusChangedEventHandler RunStatusChanged;
-        event JobController.StepOutputEventHandler StepOutput;
-
         List<Run> GetQueuedRuns();
         void Start();
         void Stop();

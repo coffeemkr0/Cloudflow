@@ -1,7 +1,7 @@
 ﻿
 $(function () {
     $(function () {
-        AgentControllerClient.ConnectToAgents();
+        AgentHubClient.ConnectToAgents();
 
         $(".jobs__publishButton").each(function () {
             $(this).on("click", function (e) {
@@ -20,7 +20,7 @@ function PublishJobClicked(e) {
         url: getJobDefinitionUrl,
         data: { id: jobid },
         success: function (jobDefinition) {
-            AgentControllerClient.PublishJob(jobDefinition, function () {
+            AgentHubClient.PublishJob(jobDefinition, function () {
                 console.log("Job published");
             });
         }

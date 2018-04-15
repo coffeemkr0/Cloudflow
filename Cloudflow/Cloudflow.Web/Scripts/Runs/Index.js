@@ -1,11 +1,11 @@
 ﻿
 $(function () {
     //Sign up for events from the agent controller client
-    AgentControllerClient.AgentConnected = AgentConnected;
-    AgentControllerClient.RunStatusChanged = RunStatusChanged;
+    AgentHubClient.AgentConnected = AgentConnected;
+    AgentHubClient.RunStatusChanged = RunStatusChanged;
 
     //Connect to the agents
-    AgentControllerClient.ConnectToAgents();
+    AgentHubClient.ConnectToAgents();
 
     $("#runGrids").on("click", ".runGrid__runEntry", function () {
         RunGridRowClicked($(this));
@@ -17,13 +17,13 @@ function RunGridRowClicked(e){
 }
 
 function AgentConnected(machineName) {
-    AgentControllerClient.GetQueuedRuns(machineName, function (runs) {
+    AgentHubClient.GetQueuedRuns(machineName, function (runs) {
         runs.forEach(function (run) {
             AddOrUpdateRunInProgress(run);
         });
     });
 
-    AgentControllerClient.GetCompletedRuns(machineName, 0, 100, function (runs) {
+    AgentHubClient.GetCompletedRuns(machineName, 0, 100, function (runs) {
         runs.forEach(function (run) {
             AppendCompletedRun(run);
         });

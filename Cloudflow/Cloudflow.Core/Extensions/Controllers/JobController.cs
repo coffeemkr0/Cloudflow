@@ -13,11 +13,14 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class JobController : IJobController
     {
+        private readonly IJobMonitor _jobMonitor;
+
         #region Constructors
 
-        public JobController(JobDefinition jobDefinition)
+        public JobController(JobDefinition jobDefinition, IJobMonitor jobMonitor)
         {
             JobDefinition = jobDefinition;
+            _jobMonitor = jobMonitor;
 
             _runControllers = new List<RunController>();
             _runTasks = new List<Task>();
@@ -66,30 +69,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             {
                 JobControllerLoger.Error(ex);
             }
-        }
-
-        #endregion
-
-        #region Events
-
-        public delegate void RunStatusChangedEventHandler(Run run);
-
-        public event RunStatusChangedEventHandler RunStatusChanged;
-
-        protected virtual void OnRunStatusChanged(Run run)
-        {
-            var temp = RunStatusChanged;
-            if (temp != null) temp(run);
-        }
-
-        public delegate void StepOutputEventHandler(Job job, Step step, OutputEventLevels level, string message);
-
-        public event StepOutputEventHandler StepOutput;
-
-        protected virtual void OnStepOutput(Job job, Step step, OutputEventLevels level, string message)
-        {
-            var temp = StepOutput;
-            if (temp != null) temp(job, step, level, message);
         }
 
         #endregion
@@ -158,12 +137,12 @@ namespace Cloudflow.Core.Extensions.Controllers
 
         private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
         {
-            OnStepOutput(Job, step, level, message);
+            _jobMonitor.StepOutput(Job, step, level, message);
         }
 
         private void RunController_RunStatusChanged(Run run)
         {
-            OnRunStatusChanged(run);
+            _jobMonitor.RunStatusChanged(run);
         }
 
         #endregion
