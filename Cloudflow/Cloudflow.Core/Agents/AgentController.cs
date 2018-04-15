@@ -1,26 +1,27 @@
-﻿using Microsoft.AspNet.SignalR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Data.Shared.Models;
-using log4net;
-using System.Reflection;
-using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Extensions.Controllers;
+using log4net;
+using Microsoft.AspNet.SignalR;
 
-namespace Cloudflow.Core.Runtime.Hubs
+namespace Cloudflow.Core.Agents
 {
     public class AgentController : Hub, IAgentMonitor
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static Agent _agent;
-        private static object _agentControlSynch = new object();
-        private static object _publishJobSynch = new object();
+        private static readonly object _agentControlSynch = new object();
+        private static readonly object _publishJobSynch = new object();
 
         #region Private Methods
+
         private List<IJobController> GetJobControllers()
         {
             var jobControllers = new List<IJobController>();
@@ -74,20 +75,20 @@ namespace Cloudflow.Core.Runtime.Hubs
                     throw new NotImplementedException();
             }
         }
+
         #endregion
 
         #region Public Methods
+
         public AgentStatus GetAgentStatus()
         {
             try
             {
-                if(_agent == null)
-                {
+                if (_agent == null)
                     return new AgentStatus
                     {
                         Status = AgentStatus.AgentStatuses.NotRunning
                     };
-                }
 
                 return _agent.AgentStatus;
             }
@@ -105,7 +106,9 @@ namespace Cloudflow.Core.Runtime.Hubs
             {
                 using (var agentDbContext = new AgentDbContext())
                 {
-                    var existingJobDefinition = agentDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == jobDefinition.JobDefinitionId);
+                    var existingJobDefinition =
+                        agentDbContext.JobDefinitions.FirstOrDefault(i =>
+                            i.JobDefinitionId == jobDefinition.JobDefinitionId);
                     if (existingJobDefinition == null)
                     {
                         agentDbContext.JobDefinitions.Add(jobDefinition);
@@ -119,7 +122,7 @@ namespace Cloudflow.Core.Runtime.Hubs
                     }
                 }
 
-                if(_agent != null)
+                if (_agent != null)
                 {
                     StopAgent();
                     StartAgent();
@@ -172,23 +175,21 @@ namespace Cloudflow.Core.Runtime.Hubs
             using (var agentDbContext = new AgentDbContext())
             {
                 return agentDbContext.Runs.Where(i => i.Status == Run.RunStatuses.Completed ||
-                    i.Status == Run.RunStatuses.Completed || i.Status == Run.RunStatuses.Failed ||
-                    i.Status == Run.RunStatuses.Canceled).OrderByDescending(i => i.DateEnded)
+                                                      i.Status == Run.RunStatuses.Completed ||
+                                                      i.Status == Run.RunStatuses.Failed ||
+                                                      i.Status == Run.RunStatuses.Canceled)
+                    .OrderByDescending(i => i.DateEnded)
                     .Skip(startIndex).Take(pageSize).ToList();
             }
         }
 
         public List<Run> GetQueuedRuns()
         {
-            if(_agent == null)
-            {
+            if (_agent == null)
                 return new List<Run>();
-            }
-            else
-            {
-                return _agent.GetQueuedRuns();
-            }
+            return _agent.GetQueuedRuns();
         }
+
         #endregion
     }
 }

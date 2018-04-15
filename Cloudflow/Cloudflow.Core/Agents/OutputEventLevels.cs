@@ -1,4 +1,4 @@
-﻿namespace Cloudflow.Core.Runtime
+﻿namespace Cloudflow.Core.Agents
 {
     public enum OutputEventLevels
     {

@@ -1,23 +1,31 @@
-﻿namespace Cloudflow.Core.Extensions
+﻿using log4net;
+
+namespace Cloudflow.Core.Extensions
 {
     public abstract class Condition : ConfigurableExtension
     {
-        #region Properties
-        public ExtensionConfiguration ConditionConfiguration { get; }
-
-        public log4net.ILog ConditionLogger { get; }
-        #endregion
-
         #region Constructors
-        public Condition(ExtensionConfiguration conditionConfiguration) : base()
+
+        public Condition(ExtensionConfiguration conditionConfiguration)
         {
             ConditionConfiguration = conditionConfiguration;
-            ConditionLogger = log4net.LogManager.GetLogger($"Condition.{conditionConfiguration.Name}");
+            ConditionLogger = LogManager.GetLogger($"Condition.{conditionConfiguration.Name}");
         }
+
         #endregion
 
         #region Public Methods
+
         public abstract bool CheckCondition();
+
+        #endregion
+
+        #region Properties
+
+        public ExtensionConfiguration ConditionConfiguration { get; }
+
+        public ILog ConditionLogger { get; }
+
         #endregion
     }
 }

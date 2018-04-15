@@ -7,6 +7,7 @@ namespace Cloudflow.Core.Communication
     public static class TcpIp
     {
         #region Public Methods
+
         public static int GetLocalAvailablePort()
         {
             TcpListener listener = null;
@@ -14,7 +15,7 @@ namespace Cloudflow.Core.Communication
             {
                 listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 0);
                 listener.Start();
-                var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+                var port = ((IPEndPoint) listener.LocalEndpoint).Port;
                 return port;
             }
             catch (Exception)
@@ -31,12 +32,8 @@ namespace Cloudflow.Core.Communication
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
-            {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
                     return ip;
-                }
-            }
             throw new Exception("Local IP Address Not Found!");
         }
 
@@ -46,6 +43,7 @@ namespace Cloudflow.Core.Communication
             listener.Start();
             return listener;
         }
+
         #endregion
     }
 }

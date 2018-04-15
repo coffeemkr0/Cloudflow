@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
 using log4net;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Agents
 {
     public class Agent
     {

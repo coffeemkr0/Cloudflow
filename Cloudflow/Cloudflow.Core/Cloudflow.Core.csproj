@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AgentLocalConfigurationSettings.cs" />
     <Compile Include="Data\Shared\Models\ConfigurableExtensionDefinition.cs" />
     <Compile Include="Data\Shared\Models\StepConditionDefinition.cs" />
     <Compile Include="Data\Shared\Models\TriggerConditionDefinition.cs" />
@@ -139,20 +140,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\AgentStatus.cs" />
+    <Compile Include="Agents\AgentStatus.cs" />
     <Compile Include="Communication\TcpIp.cs" />
-    <Compile Include="Configuration\AgentLocalConfiguration.cs" />
+    <Compile Include="Agents\IAgentConfigurationSettings.cs" />
     <Compile Include="Configuration\SignalRStartup.cs" />
     <Compile Include="Data\Agent\AgentDbContext.cs" />
     <Compile Include="Data\Agent\Models\Run.cs" />
     <Compile Include="Data\Server\ServerDbContext.cs" />
     <Compile Include="Data\Server\Models\AgentConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\IAgentMonitor.cs" />
-    <Compile Include="Runtime\OutputEventLevels.cs" />
+    <Compile Include="Agents\IAgentMonitor.cs" />
+    <Compile Include="Agents\OutputEventLevels.cs" />
     <Compile Include="Extensions\Controllers\RunController.cs" />
-    <Compile Include="Runtime\Agent.cs" />
-    <Compile Include="Runtime\Hubs\AgentController.cs" />
+    <Compile Include="Agents\Agent.cs" />
+    <Compile Include="Agents\AgentController.cs" />
     <Compile Include="Extensions\Controllers\ExtensionConfigurationController.cs" />
     <Compile Include="Extensions\Controllers\StepController.cs" />
     <Compile Include="Extensions\Controllers\TriggerController.cs" />

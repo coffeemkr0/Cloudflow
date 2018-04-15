@@ -1,37 +1,27 @@
-﻿using Cloudflow.Core.Extensions.Controllers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using Cloudflow.Core.Extensions.Controllers;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
     public class StepDefinition : ConfigurableExtensionDefinition
     {
-        #region Properties
-        public Guid StepDefinitionId { get; set; }
-
-        public int Index { get; set; }
-
-        public virtual ICollection<StepConditionDefinition> StepConditionDefinitions { get; set; }
-
-        public Guid JobDefinitionId { get; set; }
-
-        [ScriptIgnore]
-        public virtual JobDefinition JobDefinition { get; set; }
-        #endregion
-
         #region Constructors
+
         public StepDefinition()
         {
             StepDefinitionId = Guid.NewGuid();
             StepConditionDefinitions = new List<StepConditionDefinition>();
         }
+
         #endregion
 
         #region Public Methods
+
         public static StepDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index)
         {
-            var stepDefinition = new StepDefinition()
+            var stepDefinition = new StepDefinition
             {
                 Index = index,
                 ExtensionId = Guid.Parse("43D6FD16-0344-4204-AEE9-A09B3998C017"),
@@ -50,6 +40,21 @@ namespace Cloudflow.Core.Data.Shared.Models
 
             return stepDefinition;
         }
+
+        #endregion
+
+        #region Properties
+
+        public Guid StepDefinitionId { get; set; }
+
+        public int Index { get; set; }
+
+        public virtual ICollection<StepConditionDefinition> StepConditionDefinitions { get; set; }
+
+        public Guid JobDefinitionId { get; set; }
+
+        [ScriptIgnore] public virtual JobDefinition JobDefinition { get; set; }
+
         #endregion
     }
 }

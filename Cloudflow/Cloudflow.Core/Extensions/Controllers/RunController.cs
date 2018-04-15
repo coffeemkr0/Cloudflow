@@ -1,52 +1,18 @@
-﻿using Cloudflow.Core.Data.Agent;
+﻿using System;
+using Cloudflow.Core.Agents;
+using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
-using Cloudflow.Core.Runtime;
-using System;
+using log4net;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
     public class RunController
     {
-        #region Events
-        public delegate void RunStatusChangedEventHandler(Run run);
-        public event RunStatusChangedEventHandler RunStatusChanged;
-        protected virtual void OnRunStatusChanged()
-        {
-            var temp = RunStatusChanged;
-            if (temp != null)
-            {
-                temp(Run);
-            }
-        }
-
-        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
-        public event RunOutputEventHandler RunOutput;
-        protected virtual void OnRunOutput(OutputEventLevels level, string message)
-        {
-            var temp = RunOutput;
-            if (temp != null)
-            {
-                temp(Run, level, message);
-            }
-        }
-        #endregion
-
-        #region Properties
-        public string Name { get; }
-
-        public JobController JobController { get; }
-
-        public log4net.ILog RunLogger { get; }
-
-        public Run Run { get; set; }
-
-        public AgentDbContext AgentDbContext { get; set; }
-        #endregion
-
         #region Constructors
+
         public RunController(string name, JobController jobController)
         {
-            RunLogger = log4net.LogManager.GetLogger("RunController." + name);
+            RunLogger = LogManager.GetLogger("RunController." + name);
 
             Name = name;
             JobController = jobController;
@@ -65,9 +31,11 @@ namespace Cloudflow.Core.Extensions.Controllers
 
             OnRunStatusChanged();
         }
+
         #endregion
 
         #region Private Methods
+
         private void ExecuteSteps()
         {
             foreach (var stepController in JobController.StepControllers)
@@ -89,9 +57,11 @@ namespace Cloudflow.Core.Extensions.Controllers
                 }
             }
         }
+
         #endregion
 
         #region Public Methods
+
         public void ExecuteRun()
         {
             RunLogger.Info(string.Format("Starting run {0}", Name));
@@ -117,6 +87,45 @@ namespace Cloudflow.Core.Extensions.Controllers
             AgentDbContext.Dispose();
             OnRunStatusChanged();
         }
+
+        #endregion
+
+        #region Events
+
+        public delegate void RunStatusChangedEventHandler(Run run);
+
+        public event RunStatusChangedEventHandler RunStatusChanged;
+
+        protected virtual void OnRunStatusChanged()
+        {
+            var temp = RunStatusChanged;
+            if (temp != null) temp(Run);
+        }
+
+        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
+
+        public event RunOutputEventHandler RunOutput;
+
+        protected virtual void OnRunOutput(OutputEventLevels level, string message)
+        {
+            var temp = RunOutput;
+            if (temp != null) temp(Run, level, message);
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string Name { get; }
+
+        public JobController JobController { get; }
+
+        public ILog RunLogger { get; }
+
+        public Run Run { get; set; }
+
+        public AgentDbContext AgentDbContext { get; set; }
+
         #endregion
     }
 }

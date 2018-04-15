@@ -2,29 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using log4net;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
     public class ExtensionConfigurationController
     {
-        #region Private Members
-        [ImportMany]
-        IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
-
-        private CompositionContainer _container;
-        #endregion
-
-        #region Properties
-        public Guid ExtensionId { get; }
-
-        public log4net.ILog StepConfigurationControllerLogger { get; }
-        #endregion
-
         #region Constructors
+
         public ExtensionConfigurationController(Guid extensionId, string assemblyPath)
         {
             ExtensionId = extensionId;
-            StepConfigurationControllerLogger = log4net.LogManager.GetLogger($"ExtensionConfigurationController.{ExtensionId}");
+            StepConfigurationControllerLogger = LogManager.GetLogger($"ExtensionConfigurationController.{ExtensionId}");
 
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(assemblyPath));
@@ -39,18 +28,32 @@ namespace Cloudflow.Core.Extensions.Controllers
                 StepConfigurationControllerLogger.Error(ex);
             }
         }
+
+        #endregion
+
+        #region Private Members
+
+        [ImportMany] private readonly IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
+
+        private readonly CompositionContainer _container;
+
+        #endregion
+
+        #region Properties
+
+        public Guid ExtensionId { get; }
+
+        public ILog StepConfigurationControllerLogger { get; }
+
         #endregion
 
         #region Public Methods
+
         public Type GetConfigurationType()
         {
             foreach (var i in _extensions)
-            {
                 if (Guid.Parse(i.Metadata.ExtensionId) == ExtensionId)
-                {
                     return i.Metadata.ExtensionType;
-                }
-            }
 
             return null;
         }
@@ -58,12 +61,8 @@ namespace Cloudflow.Core.Extensions.Controllers
         public ExtensionConfiguration CreateNewConfiguration()
         {
             foreach (var i in _extensions)
-            {
                 if (Guid.Parse(i.Metadata.ExtensionId) == ExtensionId)
-                {
-                    return (ExtensionConfiguration)i.Value;
-                }
-            }
+                    return (ExtensionConfiguration) i.Value;
 
             return null;
         }
@@ -72,8 +71,9 @@ namespace Cloudflow.Core.Extensions.Controllers
         {
             var configurationType = GetConfigurationType();
             var configurationObject = ExtensionConfiguration.Load(GetConfigurationType(), configuration);
-            return (ExtensionConfiguration)configurationObject;
+            return (ExtensionConfiguration) configurationObject;
         }
+
         #endregion
     }
 }

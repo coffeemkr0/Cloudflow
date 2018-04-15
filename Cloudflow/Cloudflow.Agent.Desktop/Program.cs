@@ -1,9 +1,10 @@
 ﻿using Cloudflow.Core.Configuration;
-using Cloudflow.Core.Runtime.Hubs;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Configuration;
+using System.IO;
 using Cloudflow.Agent.Desktop.Properties;
+using Cloudflow.Core.Agents;
 
 namespace Cloudflow.Agent.Desktop
 {
@@ -11,21 +12,21 @@ namespace Cloudflow.Agent.Desktop
     {
         private static readonly log4net.ILog Log = 
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static Configuration _agentLocalConfiguration;
 
         private static void Main()
         {
             try
             {
                 //Load the local agent configuration
-                _agentLocalConfiguration = AgentLocalConfiguration.GetConfiguration();
+                var configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    "Cloudflow", "Agent", "Agent.config");
+                var agentConfigurationSettings = new AgentLocalConfigurationSettings(configFilePath);
 
                 //Load hubs from the Agent.Service assembly so that SignalR will pick them up
                 AppDomain.CurrentDomain.Load(typeof(AgentController).Assembly.FullName);
 
                 //Setup the SignalR messaging service first so that we can let clients know what is going on
-                var url = "http://+:" + _agentLocalConfiguration.AppSettings.Settings["Port"].Value +
-                    "/CloudflowAgent/";
+                var url = $"http://+:{agentConfigurationSettings.Port}/CloudflowAgent/";
 
                 Log.Info($"Starting agent host at {url}");
 

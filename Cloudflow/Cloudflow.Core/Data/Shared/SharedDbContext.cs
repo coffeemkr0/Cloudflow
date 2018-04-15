@@ -1,6 +1,6 @@
-﻿using Cloudflow.Core.Data.Shared.Models;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
+using Cloudflow.Core.Data.Shared.Models;
 
 namespace Cloudflow.Core.Data.Shared
 {

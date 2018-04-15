@@ -1,17 +1,19 @@
-﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
+﻿using System;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 using Newtonsoft.Json;
-using System;
 
 namespace Cloudflow.Core.Extensions
 {
     public abstract class ExtensionConfiguration : Extension
     {
         #region Properties
-        [DisplayOrder(-1)]
-        public string Name { get; set; }
+
+        [DisplayOrder(-1)] public string Name { get; set; }
+
         #endregion
 
         #region Public Methods
+
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this);
@@ -21,6 +23,7 @@ namespace Cloudflow.Core.Extensions
         {
             return JsonConvert.DeserializeObject(json, type);
         }
+
         #endregion
     }
 }

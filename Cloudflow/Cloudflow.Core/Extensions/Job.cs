@@ -1,25 +1,33 @@
-﻿namespace Cloudflow.Core.Extensions
+﻿using log4net;
+
+namespace Cloudflow.Core.Extensions
 {
     public abstract class Job : ConfigurableExtension
     {
-        #region Properties
-        public ExtensionConfiguration JobConfiguration { get; }
-
-        public log4net.ILog JobLogger { get; }
-        #endregion
-
         #region Constructors
-        public Job(ExtensionConfiguration jobConfiguration) : base()
+
+        public Job(ExtensionConfiguration jobConfiguration)
         {
             JobConfiguration = jobConfiguration;
-            JobLogger = log4net.LogManager.GetLogger($"Job.{jobConfiguration.Name}");
+            JobLogger = LogManager.GetLogger($"Job.{jobConfiguration.Name}");
         }
+
+        #endregion
+
+        #region Properties
+
+        public ExtensionConfiguration JobConfiguration { get; }
+
+        public ILog JobLogger { get; }
+
         #endregion
 
         #region Public Methods
+
         public abstract void Start();
 
         public abstract void Stop();
+
         #endregion
     }
 }

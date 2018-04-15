@@ -5,6 +5,7 @@ namespace Cloudflow.Core.Data.Agent.Models
     public class Run
     {
         #region Enums
+
         public enum RunStatuses
         {
             Queued,
@@ -14,9 +15,20 @@ namespace Cloudflow.Core.Data.Agent.Models
             Canceled,
             Failed
         }
+
+        #endregion
+
+        #region Constructors
+
+        public Run()
+        {
+            Id = Guid.NewGuid();
+        }
+
         #endregion
 
         #region Properties
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }
@@ -30,13 +42,7 @@ namespace Cloudflow.Core.Data.Agent.Models
         public DateTime? DateEnded { get; set; }
 
         public RunStatuses Status { get; set; }
-        #endregion
 
-        #region Constructors
-        public Run()
-        {
-            Id = Guid.NewGuid();
-        }
         #endregion
     }
 }

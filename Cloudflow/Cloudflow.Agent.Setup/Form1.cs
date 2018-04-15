@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Cloudflow.Core.Configuration;
 
 namespace Cloudflow.Agent.Setup
 {
@@ -12,8 +13,8 @@ namespace Cloudflow.Agent.Setup
     {
         #region Private Members
         private TcpListener _listener;
-        Configuration _agentLocalConfiguration;
-        KeyValueConfigurationElement _portSetting = null;
+        private AgentLocalConfigurationSettings _agentLocalConfigurationSettings;
+
         #endregion
 
         #region Initialization
@@ -26,19 +27,12 @@ namespace Cloudflow.Agent.Setup
         {
             try
             {
-                _agentLocalConfiguration = Core.Configuration.AgentLocalConfiguration.GetConfiguration();
+                var configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    "Cloudflow", "Agent", "Agent.config");
+                _agentLocalConfigurationSettings = new AgentLocalConfigurationSettings(configFilePath);
 
                 //Check to see if the agent has been configured previously and set the port
-                _portSetting = _agentLocalConfiguration.AppSettings.Settings["Port"];
-                if (_portSetting != null)
-                {
-                    numPort.Value = Convert.ToInt32(_portSetting.Value);
-                }
-                else
-                {
-                    _agentLocalConfiguration.AppSettings.Settings.Add("Port", numPort.Value.ToString());
-                    _portSetting = _agentLocalConfiguration.AppSettings.Settings["Port"];
-                }
+                numPort.Value = _agentLocalConfigurationSettings.Port;
             }
             catch (Exception ex)
             {
@@ -69,8 +63,8 @@ namespace Cloudflow.Agent.Setup
                 }
 
                 //Set the port value and save the local config
-                _portSetting.Value = numPort.Value.ToString();
-                _agentLocalConfiguration.Save();
+                _agentLocalConfigurationSettings.Port = (int)numPort.Value;
+                _agentLocalConfigurationSettings.Save();
 
                 //Create desktop shortcut
                 if (chkCreateShortcut.Checked)

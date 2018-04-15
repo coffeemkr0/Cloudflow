@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cloudflow.Core.Agents;
 using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cloudflow.Core.Tests.Agents

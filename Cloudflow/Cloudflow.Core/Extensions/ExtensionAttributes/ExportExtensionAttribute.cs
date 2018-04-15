@@ -3,17 +3,13 @@ using System.ComponentModel.Composition;
 
 namespace Cloudflow.Core.Extensions.ExtensionAttributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = true), MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class)]
+    [MetadataAttribute]
     public class ExportExtensionAttribute : ExportAttribute, IExtensionMetaData
     {
-        public string ExtensionId { get; set; }
-
-        public Type ExtensionType { get; set; }
-
-        public ExportExtensionAttribute(string extensionId, Type extensionType) : 
+        public ExportExtensionAttribute(string extensionId, Type extensionType) :
             this(extensionId, extensionType, typeof(IExtension))
         {
-
         }
 
         public ExportExtensionAttribute(string extensionId, Type extensionType, Type contractType) : base(contractType)
@@ -26,5 +22,9 @@ namespace Cloudflow.Core.Extensions.ExtensionAttributes
             ExtensionId = extensionId;
             ExtensionType = extensionType;
         }
+
+        public string ExtensionId { get; set; }
+
+        public Type ExtensionType { get; set; }
     }
 }

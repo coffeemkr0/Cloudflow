@@ -4,63 +4,17 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Threading.Tasks;
+using Cloudflow.Core.Agents;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Runtime;
+using log4net;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
     public class JobController : IJobController
     {
-        #region Events
-        public delegate void RunStatusChangedEventHandler(Run run);
-        public event RunStatusChangedEventHandler RunStatusChanged;
-        protected virtual void OnRunStatusChanged(Run run)
-        {
-            var temp = RunStatusChanged;
-            if (temp != null)
-            {
-                temp(run);
-            }
-        }
-
-        public delegate void StepOutputEventHandler(Job job, Step step, OutputEventLevels level, string message);
-        public event StepOutputEventHandler StepOutput;
-        protected virtual void OnStepOutput(Job job, Step step, OutputEventLevels level, string message)
-        {
-            var temp = StepOutput;
-            if (temp != null)
-            {
-                temp(job, step, level, message);
-            }
-        }
-        #endregion
-
-        #region Private Members
-        [ImportMany]
-        IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
-        private CompositionContainer _jobsContainer;
-
-        private int _runCounter = 1;
-        private List<RunController> _runControllers;
-        private List<Task> _runTasks;
-        #endregion
-
-        #region Properties
-        public JobDefinition JobDefinition { get; }
-
-        public ExtensionConfiguration JobConfiguration { get; }
-
-        public Job Job { get; }
-
-        public List<TriggerController> TriggerControllers { get; }
-
-        public List<StepController> StepControllers { get; }
-
-        public log4net.ILog JobControllerLoger { get; }
-        #endregion
-
         #region Constructors
+
         public JobController(JobDefinition jobDefinition)
         {
             JobDefinition = jobDefinition;
@@ -69,12 +23,13 @@ namespace Cloudflow.Core.Extensions.Controllers
             _runTasks = new List<Task>();
 
             //Load the job configuration
-            var jobConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
+            var jobConfigurationController = new ExtensionConfigurationController(
+                jobDefinition.ConfigurationExtensionId,
                 jobDefinition.ConfigurationExtensionAssemblyPath);
             JobConfiguration = jobConfigurationController.Load(jobDefinition.Configuration);
 
             //Create the logger for the controller
-            JobControllerLoger = log4net.LogManager.GetLogger($"JobController.{JobConfiguration.Name}");
+            JobControllerLoger = LogManager.GetLogger($"JobController.{JobConfiguration.Name}");
 
             //Load the triggers
             TriggerControllers = new List<TriggerController>();
@@ -97,28 +52,79 @@ namespace Cloudflow.Core.Extensions.Controllers
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(jobDefinition.ExtensionAssemblyPath));
             _jobsContainer = new CompositionContainer(catalog);
-            _jobsContainer.ComposeExportedValue<ExtensionConfiguration>("ExtensionConfiguration", JobConfiguration);
+            _jobsContainer.ComposeExportedValue("ExtensionConfiguration", JobConfiguration);
 
             try
             {
                 _jobsContainer.ComposeParts(this);
 
                 foreach (var i in _extensions)
-                {
                     if (Guid.Parse(i.Metadata.ExtensionId) == JobDefinition.ExtensionId)
-                    {
-                        Job = (Job)i.Value;
-                    }
-                }
+                        Job = (Job) i.Value;
             }
             catch (Exception ex)
             {
                 JobControllerLoger.Error(ex);
             }
         }
+
+        #endregion
+
+        #region Events
+
+        public delegate void RunStatusChangedEventHandler(Run run);
+
+        public event RunStatusChangedEventHandler RunStatusChanged;
+
+        protected virtual void OnRunStatusChanged(Run run)
+        {
+            var temp = RunStatusChanged;
+            if (temp != null) temp(run);
+        }
+
+        public delegate void StepOutputEventHandler(Job job, Step step, OutputEventLevels level, string message);
+
+        public event StepOutputEventHandler StepOutput;
+
+        protected virtual void OnStepOutput(Job job, Step step, OutputEventLevels level, string message)
+        {
+            var temp = StepOutput;
+            if (temp != null) temp(job, step, level, message);
+        }
+
+        #endregion
+
+        #region Private Members
+
+        [ImportMany]
+        private readonly IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
+
+        private readonly CompositionContainer _jobsContainer;
+
+        private int _runCounter = 1;
+        private readonly List<RunController> _runControllers;
+        private readonly List<Task> _runTasks;
+
+        #endregion
+
+        #region Properties
+
+        public JobDefinition JobDefinition { get; }
+
+        public ExtensionConfiguration JobConfiguration { get; }
+
+        public Job Job { get; }
+
+        public List<TriggerController> TriggerControllers { get; }
+
+        public List<StepController> StepControllers { get; }
+
+        public ILog JobControllerLoger { get; }
+
         #endregion
 
         #region Private Methods
+
         private void TriggerController_TriggerFired(Trigger trigger)
         {
             JobControllerLoger.Info("Trigger event accepted - creating a run controller");
@@ -159,9 +165,11 @@ namespace Cloudflow.Core.Extensions.Controllers
         {
             OnRunStatusChanged(run);
         }
+
         #endregion
 
         #region Public Methods
+
         public void Start()
         {
             JobControllerLoger.Info("Starting the job");
@@ -169,10 +177,7 @@ namespace Cloudflow.Core.Extensions.Controllers
             {
                 Job.Start();
 
-                foreach (var triggerController in TriggerControllers)
-                {
-                    triggerController.Start();
-                }
+                foreach (var triggerController in TriggerControllers) triggerController.Start();
             }
             catch (Exception ex)
             {
@@ -186,10 +191,7 @@ namespace Cloudflow.Core.Extensions.Controllers
 
             try
             {
-                foreach (var triggerController in TriggerControllers)
-                {
-                    triggerController.Stop();
-                }
+                foreach (var triggerController in TriggerControllers) triggerController.Stop();
 
                 Job.Stop();
             }
@@ -211,6 +213,7 @@ namespace Cloudflow.Core.Extensions.Controllers
                 return _runControllers.Select(i => i.Run).ToList();
             }
         }
+
         #endregion
     }
 }

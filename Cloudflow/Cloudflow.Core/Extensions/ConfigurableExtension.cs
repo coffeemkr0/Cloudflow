@@ -1,25 +1,17 @@
-﻿using Cloudflow.Core.Extensions.ExtensionAttributes;
-using System.Linq;
+﻿using System.Linq;
+using Cloudflow.Core.Extensions.ExtensionAttributes;
 
 namespace Cloudflow.Core.Extensions
 {
     public abstract class ConfigurableExtension : Extension, IConfigurableExtension
     {
-        #region Properties
-        public string ExtensionName { get; }
-
-        public string ExtensionDescription { get; }
-
-        public string ConfigurationExtensionId { get; }
-
-        public byte[] Icon { get; set; }
-        #endregion
-
         #region Constructors
-        public ConfigurableExtension() : base()
+
+        public ConfigurableExtension()
         {
-            var exportConfigurableExtensionAttribute = GetType().GetCustomAttributes(typeof(ExportConfigurableExtensionAttribute), true).
-                Cast<ExportConfigurableExtensionAttribute>()
+            var exportConfigurableExtensionAttribute = GetType()
+                .GetCustomAttributes(typeof(ExportConfigurableExtensionAttribute), true)
+                .Cast<ExportConfigurableExtensionAttribute>()
                 .SingleOrDefault();
 
             if (exportConfigurableExtensionAttribute != null)
@@ -30,6 +22,19 @@ namespace Cloudflow.Core.Extensions
                 Icon = exportConfigurableExtensionAttribute.Icon;
             }
         }
+
+        #endregion
+
+        #region Properties
+
+        public string ExtensionName { get; }
+
+        public string ExtensionDescription { get; }
+
+        public string ConfigurationExtensionId { get; }
+
+        public byte[] Icon { get; set; }
+
         #endregion
     }
 }

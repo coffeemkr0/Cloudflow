@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Agents
 {
     [DataContract]
     public class AgentStatus
@@ -13,16 +13,14 @@ namespace Cloudflow.Core.Runtime
             Stopping
         }
 
-        #region Properties
-        [DataMember]
-        public AgentStatuses Status { get; set; }
+        #region Constructors
+
         #endregion
 
-        #region Constructors
-        public AgentStatus()
-        {
+        #region Properties
 
-        }
+        [DataMember] public AgentStatuses Status { get; set; }
+
         #endregion
     }
 }

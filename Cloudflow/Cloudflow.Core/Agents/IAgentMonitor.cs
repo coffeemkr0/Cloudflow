@@ -1,7 +1,7 @@
 ﻿using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Extensions;
 
-namespace Cloudflow.Core.Runtime
+namespace Cloudflow.Core.Agents
 {
     public interface IAgentMonitor
     {
