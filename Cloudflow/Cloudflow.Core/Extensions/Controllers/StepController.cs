@@ -10,7 +10,12 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class StepController
     {
-        #region Constructors
+        public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
+
+        [ImportMany]
+        private IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
+
+        private readonly CompositionContainer _stepsContainer;
 
         public StepController(StepDefinition stepDefinition)
         {
@@ -57,18 +62,20 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
+        public StepDefinition StepDefinition { get; }
 
-        #region Private Methods
+        public ExtensionConfiguration StepConfiguration { get; }
+
+        public Step Step { get; }
+
+        public List<ConditionController> ConditionControllers { get; }
+
+        public ILog StepControllerLogger { get; }
 
         private void Value_StepOutput(Step step, OutputEventLevels level, string message)
         {
             OnStepOutput(step, level, message);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void Execute()
         {
@@ -87,12 +94,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
-
-        #region Events
-
-        public delegate void StepOutputEventHandler(Step step, OutputEventLevels level, string message);
-
         public event StepOutputEventHandler StepOutput;
 
         protected virtual void OnStepOutput(Step step, OutputEventLevels level, string message)
@@ -100,30 +101,5 @@ namespace Cloudflow.Core.Extensions.Controllers
             var temp = StepOutput;
             if (temp != null) temp(step, level, message);
         }
-
-        #endregion
-
-        #region Private Members
-
-        private readonly CompositionContainer _stepsContainer;
-
-        [ImportMany]
-        private readonly IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
-
-        #endregion
-
-        #region Properties
-
-        public StepDefinition StepDefinition { get; }
-
-        public ExtensionConfiguration StepConfiguration { get; }
-
-        public Step Step { get; }
-
-        public List<ConditionController> ConditionControllers { get; }
-
-        public ILog StepControllerLogger { get; }
-
-        #endregion
     }
 }

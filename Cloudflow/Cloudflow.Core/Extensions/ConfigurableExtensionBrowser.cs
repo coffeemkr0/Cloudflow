@@ -35,7 +35,7 @@ namespace Cloudflow.Core.Extensions
         #region Private Members
 
         [ImportMany]
-        private readonly IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
+        private IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
 
         private readonly CompositionContainer _container;
 

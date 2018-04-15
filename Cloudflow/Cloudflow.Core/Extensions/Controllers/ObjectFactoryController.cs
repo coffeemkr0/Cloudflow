@@ -7,7 +7,11 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class ObjectFactoryController
     {
-        #region Constructors
+        private readonly Guid _extensionId;
+
+        [ImportMany] private IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
+
+        private readonly CompositionContainer _extensionsContainer;
 
         public ObjectFactoryController(string objectFactoryAssemblyPath, Guid objectFactoryExtensionId,
             string factoryData)
@@ -22,10 +26,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             _extensionsContainer.ComposeParts(this);
         }
 
-        #endregion
-
-        #region Public Methods
-
         public object CreateObject(string instanceData)
         {
             foreach (var i in _extensions)
@@ -34,16 +34,5 @@ namespace Cloudflow.Core.Extensions.Controllers
 
             return null;
         }
-
-        #endregion
-
-        #region Private Members
-
-        [ImportMany] private readonly IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
-
-        private readonly CompositionContainer _extensionsContainer;
-        private readonly Guid _extensionId;
-
-        #endregion
     }
 }

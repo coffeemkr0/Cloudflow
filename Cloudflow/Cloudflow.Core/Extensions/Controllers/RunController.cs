@@ -8,7 +8,9 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class RunController
     {
-        #region Constructors
+        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
+
+        public delegate void RunStatusChangedEventHandler(Run run);
 
         public RunController(string name, JobController jobController)
         {
@@ -32,9 +34,15 @@ namespace Cloudflow.Core.Extensions.Controllers
             OnRunStatusChanged();
         }
 
-        #endregion
+        public string Name { get; }
 
-        #region Private Methods
+        public JobController JobController { get; }
+
+        public ILog RunLogger { get; }
+
+        public Run Run { get; set; }
+
+        public AgentDbContext AgentDbContext { get; set; }
 
         private void ExecuteSteps()
         {
@@ -57,10 +65,6 @@ namespace Cloudflow.Core.Extensions.Controllers
                 }
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void ExecuteRun()
         {
@@ -88,12 +92,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             OnRunStatusChanged();
         }
 
-        #endregion
-
-        #region Events
-
-        public delegate void RunStatusChangedEventHandler(Run run);
-
         public event RunStatusChangedEventHandler RunStatusChanged;
 
         protected virtual void OnRunStatusChanged()
@@ -102,8 +100,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             if (temp != null) temp(Run);
         }
 
-        public delegate void RunOutputEventHandler(Run run, OutputEventLevels level, string message);
-
         public event RunOutputEventHandler RunOutput;
 
         protected virtual void OnRunOutput(OutputEventLevels level, string message)
@@ -111,21 +107,5 @@ namespace Cloudflow.Core.Extensions.Controllers
             var temp = RunOutput;
             if (temp != null) temp(Run, level, message);
         }
-
-        #endregion
-
-        #region Properties
-
-        public string Name { get; }
-
-        public JobController JobController { get; }
-
-        public ILog RunLogger { get; }
-
-        public Run Run { get; set; }
-
-        public AgentDbContext AgentDbContext { get; set; }
-
-        #endregion
     }
 }

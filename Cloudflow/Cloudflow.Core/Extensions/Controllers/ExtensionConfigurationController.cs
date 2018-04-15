@@ -8,7 +8,8 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class ExtensionConfigurationController
     {
-        #region Constructors
+        private readonly CompositionContainer _container;
+        [ImportMany] private IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
 
         public ExtensionConfigurationController(Guid extensionId, string assemblyPath)
         {
@@ -29,25 +30,11 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
-
-        #region Private Members
-
-        [ImportMany] private readonly IEnumerable<Lazy<IExtension, IExtensionMetaData>> _extensions = null;
-
-        private readonly CompositionContainer _container;
-
-        #endregion
-
-        #region Properties
 
         public Guid ExtensionId { get; }
 
         public ILog StepConfigurationControllerLogger { get; }
 
-        #endregion
-
-        #region Public Methods
 
         public Type GetConfigurationType()
         {
@@ -73,7 +60,5 @@ namespace Cloudflow.Core.Extensions.Controllers
             var configurationObject = ExtensionConfiguration.Load(GetConfigurationType(), configuration);
             return (ExtensionConfiguration) configurationObject;
         }
-
-        #endregion
     }
 }

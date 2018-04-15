@@ -13,9 +13,16 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class JobController : IJobController
     {
+        [ImportMany]
+        private IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
+
         private readonly IJobMonitor _jobMonitor;
 
-        #region Constructors
+        private readonly CompositionContainer _jobsContainer;
+        private readonly List<RunController> _runControllers;
+        private readonly List<Task> _runTasks;
+
+        private int _runCounter = 1;
 
         public JobController(JobDefinition jobDefinition, IJobMonitor jobMonitor)
         {
@@ -71,23 +78,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
-
-        #region Private Members
-
-        [ImportMany]
-        private readonly IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
-
-        private readonly CompositionContainer _jobsContainer;
-
-        private int _runCounter = 1;
-        private readonly List<RunController> _runControllers;
-        private readonly List<Task> _runTasks;
-
-        #endregion
-
-        #region Properties
-
         public JobDefinition JobDefinition { get; }
 
         public ExtensionConfiguration JobConfiguration { get; }
@@ -99,55 +89,6 @@ namespace Cloudflow.Core.Extensions.Controllers
         public List<StepController> StepControllers { get; }
 
         public ILog JobControllerLoger { get; }
-
-        #endregion
-
-        #region Private Methods
-
-        private void TriggerController_TriggerFired(Trigger trigger)
-        {
-            JobControllerLoger.Info("Trigger event accepted - creating a run controller");
-            var runController = new RunController(string.Format("{0} Run {1}",
-                JobConfiguration.Name, _runCounter++), this);
-            runController.RunStatusChanged += RunController_RunStatusChanged;
-
-            var task = Task.Run(() =>
-            {
-                try
-                {
-                    JobControllerLoger.Info("Executing run");
-                    runController.ExecuteRun();
-                }
-                catch (Exception ex)
-                {
-                    JobControllerLoger.Error(ex);
-                }
-            });
-
-            _runTasks.Add(task);
-            _runControllers.Add(runController);
-
-            Task.Run(() =>
-            {
-                task.Wait();
-                _runTasks.Remove(task);
-                _runControllers.Remove(runController);
-            });
-        }
-
-        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
-        {
-            _jobMonitor.StepOutput(Job, step, level, message);
-        }
-
-        private void RunController_RunStatusChanged(Run run)
-        {
-            _jobMonitor.RunStatusChanged(run);
-        }
-
-        #endregion
-
-        #region Public Methods
 
         public void Start()
         {
@@ -193,6 +134,45 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
+        private void TriggerController_TriggerFired(Trigger trigger)
+        {
+            JobControllerLoger.Info("Trigger event accepted - creating a run controller");
+            var runController = new RunController(string.Format("{0} Run {1}",
+                JobConfiguration.Name, _runCounter++), this);
+            runController.RunStatusChanged += RunController_RunStatusChanged;
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    JobControllerLoger.Info("Executing run");
+                    runController.ExecuteRun();
+                }
+                catch (Exception ex)
+                {
+                    JobControllerLoger.Error(ex);
+                }
+            });
+
+            _runTasks.Add(task);
+            _runControllers.Add(runController);
+
+            Task.Run(() =>
+            {
+                task.Wait();
+                _runTasks.Remove(task);
+                _runControllers.Remove(runController);
+            });
+        }
+
+        private void StepController_StepOutput(Step step, OutputEventLevels level, string message)
+        {
+            _jobMonitor.StepOutput(Job, step, level, message);
+        }
+
+        private void RunController_RunStatusChanged(Run run)
+        {
+            _jobMonitor.RunStatusChanged(run);
+        }
     }
 }

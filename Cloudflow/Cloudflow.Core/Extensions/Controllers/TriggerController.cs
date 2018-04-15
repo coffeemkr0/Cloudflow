@@ -9,7 +9,12 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class TriggerController
     {
-        #region Constructors
+        public delegate void TriggerFiredEventHandler(Trigger trigger);
+
+        private readonly CompositionContainer _triggersContainer;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
 
         public TriggerController(TriggerDefinition triggerDefinition)
         {
@@ -53,9 +58,15 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
+        public TriggerDefinition TriggerDefinition { get; }
 
-        #region Private Methods
+        public ExtensionConfiguration TriggerConfiguration { get; }
+
+        public List<ConditionController> ConditionControllers { get; }
+
+        public ILog TriggerControllerLoger { get; }
+
+        public Trigger Trigger { get; }
 
         private void Trigger_Fired(Trigger trigger)
         {
@@ -67,12 +78,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             OnTriggerFired(trigger);
         }
 
-        #endregion
-
-        #region Events
-
-        public delegate void TriggerFiredEventHandler(Trigger trigger);
-
         public event TriggerFiredEventHandler TriggerFired;
 
         protected virtual void OnTriggerFired(Trigger trigger)
@@ -80,33 +85,6 @@ namespace Cloudflow.Core.Extensions.Controllers
             var temp = TriggerFired;
             if (temp != null) temp(trigger);
         }
-
-        #endregion
-
-        #region Private Members
-
-        private readonly CompositionContainer _triggersContainer;
-
-        [ImportMany]
-        private readonly IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
-
-        #endregion
-
-        #region Properties
-
-        public TriggerDefinition TriggerDefinition { get; }
-
-        public ExtensionConfiguration TriggerConfiguration { get; }
-
-        public List<ConditionController> ConditionControllers { get; }
-
-        public ILog TriggerControllerLoger { get; }
-
-        public Trigger Trigger { get; }
-
-        #endregion
-
-        #region Public Methods
 
         public void Start()
         {
@@ -119,7 +97,5 @@ namespace Cloudflow.Core.Extensions.Controllers
             Trigger.Fired -= Trigger_Fired;
             Trigger.Stop();
         }
-
-        #endregion
     }
 }

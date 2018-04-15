@@ -8,7 +8,10 @@ namespace Cloudflow.Core.Extensions.Controllers
 {
     public class ConditionController
     {
-        #region Constructors
+        private readonly CompositionContainer _conditionsContainer;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
 
         public ConditionController(Guid conditionDefinitionId, Guid extensionId, string extensionAssemblyPath,
             Guid configurationExtensionId, string configurationExtensionAssemblyPath, string configuration)
@@ -38,32 +41,13 @@ namespace Cloudflow.Core.Extensions.Controllers
             }
         }
 
-        #endregion
+        public ILog ConditionControllerLoger { get; }
 
-        #region Public Methods
+        public Condition Condition { get; }
 
         public bool CheckCondition()
         {
             return Condition.CheckCondition();
         }
-
-        #endregion
-
-        #region Private Members
-
-        private readonly CompositionContainer _conditionsContainer;
-
-        [ImportMany]
-        private readonly IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;
-
-        #endregion
-
-        #region Properties
-
-        public ILog ConditionControllerLoger { get; }
-
-        public Condition Condition { get; }
-
-        #endregion
     }
 }
