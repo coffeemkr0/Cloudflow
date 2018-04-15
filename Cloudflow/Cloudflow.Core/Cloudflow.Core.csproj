@@ -153,7 +153,7 @@
     <Compile Include="Agents\OutputEventLevels.cs" />
     <Compile Include="Extensions\Controllers\RunController.cs" />
     <Compile Include="Agents\Agent.cs" />
-    <Compile Include="Agents\AgentController.cs" />
+    <Compile Include="Agents\AgentHub.cs" />
     <Compile Include="Extensions\Controllers\ExtensionConfigurationController.cs" />
     <Compile Include="Extensions\Controllers\StepController.cs" />
     <Compile Include="Extensions\Controllers\TriggerController.cs" />

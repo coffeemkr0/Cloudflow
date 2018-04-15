@@ -12,35 +12,14 @@ using Microsoft.AspNet.SignalR;
 
 namespace Cloudflow.Core.Agents
 {
-    public class AgentController : Hub, IAgentMonitor
+    public class AgentHub : Hub, IAgentMonitor
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static Agent _agent;
-        private static readonly object _agentControlSynch = new object();
-        private static readonly object _publishJobSynch = new object();
+        private static readonly object AgentControlSynch = new object();
+        private static readonly object PublishJobSynch = new object();
 
         #region Private Methods
-
-        private List<IJobController> GetJobControllers()
-        {
-            var jobControllers = new List<IJobController>();
-
-            using (var agentDbContext = new AgentDbContext())
-            {
-                foreach (var jobDefinition in agentDbContext.JobDefinitions)
-                {
-                    Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
-
-                    var jobController = new JobController(jobDefinition);
-                    Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
-
-                    jobControllers.Add(jobController);
-                }
-            }
-
-            return jobControllers;
-        }
 
         public void AgentStatusChanged(AgentStatus status)
         {
@@ -84,13 +63,15 @@ namespace Cloudflow.Core.Agents
         {
             try
             {
-                if (_agent == null)
-                    return new AgentStatus
-                    {
-                        Status = AgentStatus.AgentStatuses.NotRunning
-                    };
-
-                return _agent.AgentStatus;
+                lock (AgentControlSynch)
+                {
+                    if (_agent == null)
+                        return new AgentStatus
+                        {
+                            Status = AgentStatus.AgentStatuses.NotRunning
+                        };
+                    return _agent.AgentStatus;
+                }
             }
             catch (Exception ex)
             {
@@ -102,7 +83,7 @@ namespace Cloudflow.Core.Agents
 
         public void PublishJob(JobDefinition jobDefinition)
         {
-            lock (_publishJobSynch)
+            lock (PublishJobSynch)
             {
                 using (var agentDbContext = new AgentDbContext())
                 {
@@ -134,13 +115,13 @@ namespace Cloudflow.Core.Agents
         {
             try
             {
-                lock (_agentControlSynch)
+                lock (AgentControlSynch)
                 {
                     if (_agent == null)
                     {
                         Logger.Info("Starting agent");
 
-                        _agent = new Agent(GetJobControllers(), this);
+                        _agent = new Agent(this);
                         _agent.Start();
                     }
                 }
@@ -155,7 +136,7 @@ namespace Cloudflow.Core.Agents
         {
             try
             {
-                lock (_agentControlSynch)
+                lock (AgentControlSynch)
                 {
                     if (_agent != null)
                     {
@@ -185,9 +166,12 @@ namespace Cloudflow.Core.Agents
 
         public List<Run> GetQueuedRuns()
         {
-            if (_agent == null)
-                return new List<Run>();
-            return _agent.GetQueuedRuns();
+            lock (AgentControlSynch)
+            {
+                if (_agent == null)
+                    return new List<Run>();
+                return _agent.GetQueuedRuns();
+            }
         }
 
         #endregion

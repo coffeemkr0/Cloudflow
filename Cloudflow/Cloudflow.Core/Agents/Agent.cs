@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
@@ -9,35 +10,24 @@ namespace Cloudflow.Core.Agents
 {
     public class Agent
     {
-        #region Constructors
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly IAgentMonitor _agentMonitor;
+        private AgentStatus _agentStatus;
+        private readonly List<IJobController> _jobControllers;
 
-        public Agent(List<IJobController> jobControllers, IAgentMonitor agentNotificationService)
+        public Agent(IAgentMonitor agentMonitor)
         {
-            _jobControllers = jobControllers;
-            _agentMonitor = agentNotificationService;
+            _agentMonitor = agentMonitor;
 
             AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
 
+            _jobControllers = GetJobControllers();
             foreach (var jobController in _jobControllers)
             {
                 jobController.RunStatusChanged += JobController_RunStatusChanged;
                 jobController.StepOutput += JobController_StepOutput;
             }
         }
-
-        #endregion
-
-        #region Private Members
-
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly List<IJobController> _jobControllers;
-        private readonly IAgentMonitor _agentMonitor;
-
-        #endregion
-
-        #region Properties
-
-        private AgentStatus _agentStatus;
 
         public AgentStatus AgentStatus
         {
@@ -52,9 +42,26 @@ namespace Cloudflow.Core.Agents
             }
         }
 
-        #endregion
+        private List<IJobController> GetJobControllers()
+        {
+            var jobControllers = new List<IJobController>();
 
-        #region Private Methods
+            using (var agentDbContext = new AgentDbContext())
+            {
+                foreach (var jobDefinition in agentDbContext.JobDefinitions)
+                {
+                    Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
+
+                    var jobController = new JobController(jobDefinition);
+                    Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
+
+                    jobControllers.Add(jobController);
+                }
+            }
+
+            return jobControllers;
+        }
+
 
         private void JobController_RunStatusChanged(Run run)
         {
@@ -66,9 +73,6 @@ namespace Cloudflow.Core.Agents
             _agentMonitor.StepOutput(job, step, level, message);
         }
 
-        #endregion
-
-        #region Public Methods
 
         public void Start()
         {
@@ -102,7 +106,5 @@ namespace Cloudflow.Core.Agents
 
             return runs;
         }
-
-        #endregion
     }
 }

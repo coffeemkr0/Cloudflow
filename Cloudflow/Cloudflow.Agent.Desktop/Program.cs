@@ -22,7 +22,7 @@ namespace Cloudflow.Agent.Desktop
                     "Cloudflow", "Agent", "Agent.config");
                 var agentConfigurationSettings = new AgentLocalConfigurationSettings(configFilePath);
 
-                //Load hubs from the Agent.Service assembly so that SignalR will pick them up
+                //Load hubs from the Agent assembly so that SignalR will pick them up
                 AppDomain.CurrentDomain.Load(typeof(AgentController).Assembly.FullName);
 
                 //Setup the SignalR messaging service first so that we can let clients know what is going on
