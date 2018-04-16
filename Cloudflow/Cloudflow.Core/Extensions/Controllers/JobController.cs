@@ -11,7 +11,7 @@ using log4net;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
-    public class JobController : IJobController
+    public class JobController : IJobController, IJobControllerData
     {
         [ImportMany]
         private IEnumerable<Lazy<IConfigurableExtension, IConfigurableExtensionMetaData>> _extensions = null;

@@ -9,14 +9,16 @@ namespace Cloudflow.Core.Tests.Agents
     [TestClass]
     public class AgentTests
     {
+        private TestJobControllerService _jobControllerService;
         private TestAgentMonitor _agentMonitor;
         private Agent _agent;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _jobControllerService = new TestJobControllerService();
             _agentMonitor = new TestAgentMonitor();
-            _agent = new Agent(new List<IJobController>(), _agentMonitor);
+            _agent = new Agent(_jobControllerService, _agentMonitor);
         }
 
         [TestMethod]

@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using Cloudflow.Core.Data.Agent.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Cloudflow.Core.Data.Shared.Models;
 using log4net;
 
 namespace Cloudflow.Core.Extensions.Controllers
 {
-    public interface IJobController
+    interface IJobControllerData
     {
         Job Job { get; }
         ExtensionConfiguration JobConfiguration { get; }
@@ -13,10 +16,5 @@ namespace Cloudflow.Core.Extensions.Controllers
         JobDefinition JobDefinition { get; }
         List<StepController> StepControllers { get; }
         List<TriggerController> TriggerControllers { get; }
-
-        List<Run> GetQueuedRuns();
-        void Start();
-        void Stop();
-        void Wait();
     }
 }

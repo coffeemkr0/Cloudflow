@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Agents\AgentTests.cs" />
     <Compile Include="Agents\TestAgentMonitor.cs" />
+    <Compile Include="Agents\TestJobController.cs" />
+    <Compile Include="Agents\TestJobControllerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -110,7 +110,8 @@
     <Compile Include="Extensions\ConfigurableExtension.cs" />
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
     <Compile Include="Extensions\Controllers\ConditionController.cs" />
-    <Compile Include="Extensions\Controllers\IJobController.cs" />
+    <Compile Include="Agents\IJobController.cs" />
+    <Compile Include="Extensions\Controllers\IJobControllerData.cs" />
     <Compile Include="Extensions\Controllers\JobControllerService.cs" />
     <Compile Include="Data\Agent\JobDefinitionService.cs" />
     <Compile Include="Extensions\Controllers\ObjectFactoryController.cs" />
