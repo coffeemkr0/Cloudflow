@@ -99,6 +99,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agents\IJobControllerService.cs" />
+    <Compile Include="Agents\IJobDefinitionService.cs" />
     <Compile Include="Agents\IJobMonitor.cs" />
     <Compile Include="Configuration\AgentLocalConfigurationSettings.cs" />
     <Compile Include="Data\Shared\Models\ConfigurableExtensionDefinition.cs" />
@@ -109,6 +111,8 @@
     <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
     <Compile Include="Extensions\Controllers\ConditionController.cs" />
     <Compile Include="Extensions\Controllers\IJobController.cs" />
+    <Compile Include="Extensions\Controllers\JobControllerService.cs" />
+    <Compile Include="Data\Agent\JobDefinitionService.cs" />
     <Compile Include="Extensions\Controllers\ObjectFactoryController.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemCollection.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemSelectorAttribute.cs" />

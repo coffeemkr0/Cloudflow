@@ -16,7 +16,7 @@ namespace Cloudflow.Core.Tests.Agents
         public void TestInitialize()
         {
             _agentMonitor = new TestAgentMonitor();
-            _agent = new Agent(_agentMonitor);
+            _agent = new Agent(new List<IJobController>(), _agentMonitor);
         }
 
         [TestMethod]

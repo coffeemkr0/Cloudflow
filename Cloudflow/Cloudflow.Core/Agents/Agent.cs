@@ -13,15 +13,14 @@ namespace Cloudflow.Core.Agents
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IAgentMonitor _agentMonitor;
         private AgentStatus _agentStatus;
-        private readonly List<IJobController> _jobControllers;
+        private readonly IEnumerable<IJobController> _jobControllers;
 
-        public Agent(IAgentMonitor agentMonitor)
+        public Agent(IJobControllerService jobControllerService, IAgentMonitor agentMonitor)
         {
+            _jobControllers = jobControllerService.GetJobControllers(agentMonitor);
             _agentMonitor = agentMonitor;
 
             AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
-
-            _jobControllers = GetJobControllers();
         }
 
         public AgentStatus AgentStatus
@@ -36,27 +35,6 @@ namespace Cloudflow.Core.Agents
                 }
             }
         }
-
-        private List<IJobController> GetJobControllers()
-        {
-            var jobControllers = new List<IJobController>();
-
-            using (var agentDbContext = new AgentDbContext())
-            {
-                foreach (var jobDefinition in agentDbContext.JobDefinitions)
-                {
-                    Logger.Info($"Add job {jobDefinition.JobDefinitionId}");
-
-                    var jobController = new JobController(jobDefinition, _agentMonitor);
-                    Logger.Info($"Loading job {jobController.JobConfiguration.Name}");
-
-                    jobControllers.Add(jobController);
-                }
-            }
-
-            return jobControllers;
-        }
-
 
         private void JobController_RunStatusChanged(Run run)
         {

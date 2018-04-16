@@ -19,8 +19,6 @@ namespace Cloudflow.Core.Agents
         private static readonly object AgentControlSynch = new object();
         private static readonly object PublishJobSynch = new object();
 
-        #region Private Methods
-
         public void AgentStatusChanged(AgentStatus status)
         {
             Clients.All.updateStatus(status);
@@ -54,10 +52,6 @@ namespace Cloudflow.Core.Agents
                     throw new NotImplementedException();
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public AgentStatus GetAgentStatus()
         {
@@ -119,9 +113,18 @@ namespace Cloudflow.Core.Agents
                 {
                     if (_agent == null)
                     {
-                        Logger.Info("Starting agent");
+                        //TODO:This should be injected as a dependency but SignalR makes it difficult to do this in the AgentHub constructor
+                        //Using the first method in this article cause an exception whenever the client tried to connect to the Hub
+                        //https://docs.microsoft.com/en-us/aspnet/signalr/overview/advanced/dependency-injection
+                        using (AgentDbContext agentDbContext = new AgentDbContext())
+                        {
+                            var jobControllerService = new JobControllerService(new JobDefinitionService((agentDbContext)));
+                            _agent = new Agent(jobControllerService, this);
+                        }
+                    }
 
-                        _agent = new Agent(this);
+                    if (_agent.AgentStatus.Status == AgentStatus.AgentStatuses.NotRunning)
+                    {
                         _agent.Start();
                     }
                 }
@@ -138,10 +141,9 @@ namespace Cloudflow.Core.Agents
             {
                 lock (AgentControlSynch)
                 {
-                    if (_agent != null)
+                    if (_agent.AgentStatus.Status == AgentStatus.AgentStatuses.Running)
                     {
                         _agent.Stop();
-                        _agent = null;
                     }
                 }
             }
@@ -173,7 +175,5 @@ namespace Cloudflow.Core.Agents
                 return _agent.GetQueuedRuns();
             }
         }
-
-        #endregion
     }
 }
