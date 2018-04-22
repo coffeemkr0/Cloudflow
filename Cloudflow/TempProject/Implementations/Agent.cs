@@ -6,8 +6,8 @@ namespace TempProject.Implementations
 {
     public class Agent : IAgent, IJobMonitor
     {
-        private IAgentMonitor _agentMonitor;
         private readonly IEnumerable<IJob> _jobs;
+        private IAgentMonitor _agentMonitor;
 
         public Agent(IEnumerable<IJob> jobs)
         {
@@ -19,18 +19,12 @@ namespace TempProject.Implementations
             _agentMonitor = agentMonitor;
             _agentMonitor.OnAgentStarted(this);
 
-            foreach (var job in _jobs)
-            {
-                job.Start(this);
-            }
+            foreach (var job in _jobs) job.Start(this);
         }
 
         public void Stop()
         {
-            foreach (var job in _jobs)
-            {
-                job.Stop();
-            }
+            foreach (var job in _jobs) job.Stop();
 
             _agentMonitor.OnAgentStopped(this);
         }

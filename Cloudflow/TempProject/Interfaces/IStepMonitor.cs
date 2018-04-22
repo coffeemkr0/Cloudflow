@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TempProject.Interfaces
+﻿namespace TempProject.Interfaces
 {
     public interface IStepMonitor
     {

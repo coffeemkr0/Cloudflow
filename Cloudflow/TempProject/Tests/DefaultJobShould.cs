@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
 using TempProject.Interfaces;
@@ -12,8 +9,8 @@ namespace TempProject.Tests
     public class DefaultJobShould
     {
         private JobMonitor _jobMonitor;
-        private List<ITrigger> _triggers;
         private List<IStep> _steps;
+        private List<ITrigger> _triggers;
 
         [TestInitialize]
         public void InitializeTest()

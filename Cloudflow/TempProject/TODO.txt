@@ -1,6 +1,7 @@
 ﻿
 
 Make the Jobs, Steps and Triggers extensions
+	MAke the constructors for steps take a generic configuration object that can be composed by MEF
 Add configurations to the jobs, steps and triggers
 Make the configurations extensible
 Transfer everything back to Core.

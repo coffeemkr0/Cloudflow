@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
 using TempProject.Interfaces;
 
 namespace TempProject.Implementations

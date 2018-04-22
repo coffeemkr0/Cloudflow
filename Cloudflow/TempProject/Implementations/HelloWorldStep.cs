@@ -4,17 +4,17 @@ using TempProject.Interfaces;
 
 namespace TempProject.Implementations
 {
-    [Export(typeof(IStep))]  
-    [ExportMetadata("ExtensionId", ExtensionId)]  
+    [Export(typeof(IStep))]
+    [ExportMetadata("ExtensionId", ExtensionId)]
     public class HelloWorldStep : IStep
     {
         public const string ExtensionId = "44415043-65F0-4A8D-B438-3EC5ADC2C770";
-
-        private IStepMonitor _stepMonitor;
         private string _message;
 
+        private IStepMonitor _stepMonitor;
+
         [ImportingConstructor]
-        public HelloWorldStep([Import("ExtensionConfiguration")]string message)
+        public HelloWorldStep([Import("ExtensionConfiguration")] string message)
         {
             _message = message;
         }

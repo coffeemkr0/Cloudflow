@@ -6,9 +6,9 @@ namespace TempProject.Implementations
 {
     public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor
     {
-        private IJobMonitor _jobMonitor;
         private readonly IEnumerable<IStep> _steps;
         private readonly IEnumerable<ITrigger> _triggers;
+        private IJobMonitor _jobMonitor;
 
         public DefaultJob(IEnumerable<ITrigger> triggers, IEnumerable<IStep> steps)
         {
@@ -57,7 +57,6 @@ namespace TempProject.Implementations
             _jobMonitor.OnJobActivity(this, "Trigger fired");
 
             foreach (var step in _steps)
-            {
                 try
                 {
                     step.Execute(this);
@@ -66,7 +65,6 @@ namespace TempProject.Implementations
                 {
                     _jobMonitor.OnException(this, e);
                 }
-            }
         }
 
         public void OnTriggerStarted(ITrigger trigger)

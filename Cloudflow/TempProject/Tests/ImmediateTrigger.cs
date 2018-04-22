@@ -8,7 +8,6 @@ namespace TempProject.Tests
 
         public void Dispose()
         {
-
         }
 
         public void Start(ITriggerMonitor triggerMonitor)

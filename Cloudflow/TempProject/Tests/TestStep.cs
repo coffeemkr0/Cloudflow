@@ -3,8 +3,8 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests
 {
-    [Export(typeof(IStep))]  
-    [ExportMetadata("ExtensionId", ExtensionId)]  
+    [Export(typeof(IStep))]
+    [ExportMetadata("ExtensionId", ExtensionId)]
     public class TestStep : IStep
     {
         public const string ExtensionId = "{5AA0FAE3-0703-438D-AE86-209ABA558C16}";
@@ -13,7 +13,6 @@ namespace TempProject.Tests
 
         public void Dispose()
         {
-            
         }
 
         public void Execute(IStepMonitor stepMonitor)
