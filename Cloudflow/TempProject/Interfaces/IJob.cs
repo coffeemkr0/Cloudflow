@@ -4,7 +4,7 @@ namespace TempProject.Interfaces
 {
     public interface IJob : IDisposable
     {
-        void Start();
+        void Start(IJobMonitor jobMonitor);
 
         void Stop();
     }

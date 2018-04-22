@@ -12,7 +12,7 @@ namespace TempProject.Tests
 
         public void Execute(IStepMonitor stepMonitor)
         {
-            throw new NotImplementedException();
+            throw new Exception("Test exception from inside the Execute method of the step.");
         }
     }
 }

@@ -6,13 +6,12 @@ namespace TempProject.Implementations
 {
     public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor
     {
-        private readonly IJobMonitor _jobMonitor;
+        private IJobMonitor _jobMonitor;
         private readonly IEnumerable<IStep> _steps;
         private readonly IEnumerable<ITrigger> _triggers;
 
-        public DefaultJob(IJobMonitor jobMonitor, IEnumerable<ITrigger> triggers, IEnumerable<IStep> steps)
+        public DefaultJob(IEnumerable<ITrigger> triggers, IEnumerable<IStep> steps)
         {
-            _jobMonitor = jobMonitor;
             _triggers = triggers;
             _steps = steps;
         }
@@ -29,8 +28,10 @@ namespace TempProject.Implementations
             foreach (var trigger in _triggers) trigger.Dispose();
         }
 
-        public void Start()
+        public void Start(IJobMonitor jobMonitor)
         {
+            _jobMonitor = jobMonitor;
+
             foreach (var trigger in _triggers) trigger.Start(this);
 
             _jobMonitor.OnJobStarted(this);

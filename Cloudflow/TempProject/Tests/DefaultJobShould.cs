@@ -33,16 +33,16 @@ namespace TempProject.Tests
         [TestMethod]
         public void Start()
         {
-            var job = new DefaultJob(_jobMonitor, _triggers, _steps);
-            job.Start();
+            var job = new DefaultJob(_triggers, _steps);
+            job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobStartedCalled);
         }
 
         [TestMethod]
         public void Stop()
         {
-            var job = new DefaultJob(_jobMonitor, _triggers, _steps);
-            job.Start();
+            var job = new DefaultJob(_triggers, _steps);
+            job.Start(_jobMonitor);
             job.Stop();
             Assert.IsTrue(_jobMonitor.OnJobStoppedCalled);
         }
@@ -50,17 +50,17 @@ namespace TempProject.Tests
         [TestMethod]
         public void PostActivityWhenTriggerFires()
         {
-            var job = new DefaultJob(_jobMonitor, _triggers, _steps);
-            job.Start();
+            var job = new DefaultJob(_triggers, _steps);
+            job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobActivityCalled);
         }
 
         [TestMethod]
         public void PostActivityWhenStepExecutes()
         {
-            var job = new DefaultJob(_jobMonitor, _triggers, _steps);
+            var job = new DefaultJob(_triggers, _steps);
 
-            job.Start();
+            job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobActivityCalled);
         }
 
@@ -68,17 +68,17 @@ namespace TempProject.Tests
         public void PostActivityWhenStepThrowsException()
         {
             _steps.Add(new ExceptionTestStep());
-            var job = new DefaultJob(_jobMonitor, _triggers, _steps);
+            var job = new DefaultJob(_triggers, _steps);
 
-            job.Start();
+            job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobExceptionCalled);
         }
 
         [TestMethod]
         public void DisposeAndNotThrowException()
         {
-            var job = new DefaultJob(_jobMonitor, _triggers, _steps);
-            job.Start();
+            var job = new DefaultJob(_triggers, _steps);
+            job.Start(_jobMonitor);
             job.Stop();
             job.Dispose();
         }
