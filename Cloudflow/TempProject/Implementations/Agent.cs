@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TempProject.Interfaces;
 
-namespace TempProject
+namespace TempProject.Implementations
 {
     public class Agent : IAgent, IJobMonitor
     {

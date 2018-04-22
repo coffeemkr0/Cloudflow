@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agent.cs" />
+    <Compile Include="Implementations\Agent.cs" />
     <Compile Include="Implementations\DefaultJob.cs" />
     <Compile Include="Implementations\HelloWorldStep.cs" />
     <Compile Include="Implementations\ITimer.cs" />
