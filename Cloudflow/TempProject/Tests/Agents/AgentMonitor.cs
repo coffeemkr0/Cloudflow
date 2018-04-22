@@ -1,7 +1,7 @@
 ﻿using System;
 using TempProject.Interfaces;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Agents
 {
     public class AgentMonitor : IAgentMonitor
     {

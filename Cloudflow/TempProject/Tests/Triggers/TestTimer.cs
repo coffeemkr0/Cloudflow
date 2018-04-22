@@ -1,7 +1,7 @@
 ﻿using System.Timers;
 using TempProject.Implementations;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Triggers
 {
     public class TestTimer : ITimer
     {

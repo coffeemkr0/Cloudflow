@@ -1,6 +1,6 @@
 ﻿using TempProject.Interfaces;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Triggers
 {
     public class ImmediateTrigger : ITrigger
     {

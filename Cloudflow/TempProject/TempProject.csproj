@@ -72,19 +72,19 @@
     <Compile Include="Interfaces\ITriggerMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Implementations\TimerTrigger.cs" />
-    <Compile Include="Tests\AgentMonitor.cs" />
-    <Compile Include="Tests\AgentShould.cs" />
-    <Compile Include="Tests\ConfigurableTestStep.cs" />
-    <Compile Include="Tests\DefaultJobShould.cs" />
-    <Compile Include="Tests\ExceptionTestStep.cs" />
-    <Compile Include="Tests\StepExtensionServiceShould.cs" />
-    <Compile Include="Tests\ImmediateTrigger.cs" />
-    <Compile Include="Tests\JobMonitor.cs" />
-    <Compile Include="Tests\StepMonitor.cs" />
-    <Compile Include="Tests\TestStep.cs" />
-    <Compile Include="Tests\TestTimer.cs" />
-    <Compile Include="Tests\TimerTriggerShould.cs" />
-    <Compile Include="Tests\TriggerMonitor.cs" />
+    <Compile Include="Tests\Agents\AgentMonitor.cs" />
+    <Compile Include="Tests\Agents\AgentShould.cs" />
+    <Compile Include="Tests\Steps\ConfigurableTestStep.cs" />
+    <Compile Include="Tests\Job\DefaultJobShould.cs" />
+    <Compile Include="Tests\Steps\ExceptionTestStep.cs" />
+    <Compile Include="Tests\Steps\StepExtensionServiceShould.cs" />
+    <Compile Include="Tests\Triggers\ImmediateTrigger.cs" />
+    <Compile Include="Tests\Job\JobMonitor.cs" />
+    <Compile Include="Tests\Steps\StepMonitor.cs" />
+    <Compile Include="Tests\Steps\TestStep.cs" />
+    <Compile Include="Tests\Triggers\TestTimer.cs" />
+    <Compile Include="Tests\Triggers\TimerTriggerShould.cs" />
+    <Compile Include="Tests\Triggers\TriggerMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

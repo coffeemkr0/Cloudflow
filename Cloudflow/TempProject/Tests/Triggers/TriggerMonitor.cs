@@ -1,7 +1,7 @@
 ﻿using System;
 using TempProject.Interfaces;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Triggers
 {
     public class TriggerMonitor : ITriggerMonitor
     {

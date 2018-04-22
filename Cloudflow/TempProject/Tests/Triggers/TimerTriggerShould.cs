@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Triggers
 {
     [TestClass]
     public class TimerTriggerShould

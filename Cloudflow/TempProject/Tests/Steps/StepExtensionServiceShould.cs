@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
 using TempProject.Interfaces;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Steps
 {
     [TestClass]
     public class StepExtensionServiceShould

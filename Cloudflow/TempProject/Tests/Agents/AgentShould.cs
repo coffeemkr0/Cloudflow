@@ -2,8 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
 using TempProject.Interfaces;
+using TempProject.Tests.Steps;
+using TempProject.Tests.Triggers;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Agents
 {
     [TestClass]
     public class AgentShould

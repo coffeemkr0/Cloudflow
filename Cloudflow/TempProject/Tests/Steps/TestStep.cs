@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using TempProject.Interfaces;
 
-namespace TempProject.Tests
+namespace TempProject.Tests.Steps
 {
     [Export(typeof(IStep))]
     [ExportMetadata("ExtensionId", ExtensionId)]
