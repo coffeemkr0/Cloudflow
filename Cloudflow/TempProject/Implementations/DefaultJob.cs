@@ -4,13 +4,13 @@ using TempProject.Interfaces;
 
 namespace TempProject.Implementations
 {
-    public abstract class DefaultJob : IJob, ITriggerMonitor, IStepMonitor
+    public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor
     {
         private readonly IJobMonitor _jobMonitor;
         private readonly IEnumerable<IStep> _steps;
         private readonly IEnumerable<ITrigger> _triggers;
 
-        protected DefaultJob(IJobMonitor jobMonitor, IEnumerable<ITrigger> triggers, IEnumerable<IStep> steps)
+        public DefaultJob(IJobMonitor jobMonitor, IEnumerable<ITrigger> triggers, IEnumerable<IStep> steps)
         {
             _jobMonitor = jobMonitor;
             _triggers = triggers;
@@ -31,7 +31,7 @@ namespace TempProject.Implementations
 
         public void Start()
         {
-            foreach (var trigger in _triggers) trigger.Start();
+            foreach (var trigger in _triggers) trigger.Start(this);
 
             _jobMonitor.OnJobStarted(this);
         }
@@ -59,18 +59,13 @@ namespace TempProject.Implementations
             {
                 try
                 {
-                    step.Execute();
+                    step.Execute(this);
                 }
                 catch (Exception e)
                 {
                     _jobMonitor.OnException(this, e);
                 }
             }
-        }
-
-        public void OnTriggerDisposed(ITrigger trigger)
-        {
-            _jobMonitor.OnJobActivity(this, "Trigger disposed");
         }
 
         public void OnTriggerStarted(ITrigger trigger)
@@ -81,11 +76,6 @@ namespace TempProject.Implementations
         public void OnTriggerStopped(ITrigger trigger)
         {
             _jobMonitor.OnJobActivity(this, "Trigger stopped");
-        }
-
-        public void OnStepDisposing(IStep step)
-        {
-            _jobMonitor.OnJobActivity(this, "Disposing step");
         }
     }
 }

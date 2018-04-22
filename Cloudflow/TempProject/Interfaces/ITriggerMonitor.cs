@@ -6,8 +6,6 @@
 
         void OnTriggerStopped(ITrigger trigger);
 
-        void OnTriggerDisposed(ITrigger trigger);
-
         void OnTriggerFired(ITrigger trigger);
     }
 }

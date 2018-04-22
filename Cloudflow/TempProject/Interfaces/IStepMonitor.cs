@@ -9,7 +9,5 @@ namespace TempProject.Interfaces
         void OnStepActivity(IStep step, string activity);
 
         void OnStepCompleted(IStep step);
-
-        void OnStepDisposing(IStep step);
     }
 }
