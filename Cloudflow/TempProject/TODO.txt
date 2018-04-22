@@ -1,0 +1,6 @@
+﻿
+
+Make the Jobs, Steps and Triggers extensions
+Add configurations to the jobs, steps and triggers
+Make the configurations extensible
+Transfer everything back to Core.
