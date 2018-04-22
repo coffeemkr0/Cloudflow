@@ -40,6 +40,7 @@
       <HintPath>..\packages\MSTest.TestFramework.1.2.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,15 +54,18 @@
     <Compile Include="Implementations\DefaultJob.cs" />
     <Compile Include="Implementations\HelloWorldStep.cs" />
     <Compile Include="Implementations\ITimer.cs" />
+    <Compile Include="Implementations\StepExtensionService.cs" />
     <Compile Include="Implementations\TimerTriggerTimer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Interfaces\IAgent.cs" />
     <Compile Include="Interfaces\IAgentMonitor.cs" />
     <Compile Include="Interfaces\ICondition.cs" />
+    <Compile Include="Interfaces\IExtensionMetaData.cs" />
     <Compile Include="Interfaces\IJob.cs" />
     <Compile Include="Interfaces\IJobMonitor.cs" />
     <Compile Include="Interfaces\IStep.cs" />
+    <Compile Include="Interfaces\IStepExtensionService.cs" />
     <Compile Include="Interfaces\IStepMonitor.cs" />
     <Compile Include="Interfaces\ITrigger.cs" />
     <Compile Include="Interfaces\ITriggerMonitor.cs" />
@@ -71,6 +75,7 @@
     <Compile Include="Tests\AgentShould.cs" />
     <Compile Include="Tests\DefaultJobShould.cs" />
     <Compile Include="Tests\ExceptionTestStep.cs" />
+    <Compile Include="Tests\StepExtensionServiceShould.cs" />
     <Compile Include="Tests\HelloWorldStepShould.cs" />
     <Compile Include="Tests\ImmediateTrigger.cs" />
     <Compile Include="Tests\JobMonitor.cs" />
