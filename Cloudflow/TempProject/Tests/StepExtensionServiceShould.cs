@@ -24,11 +24,27 @@ namespace TempProject.Tests
         }
 
         [TestMethod]
+        public void ReturnNullForInvalidExtensionId()
+        {
+            var step = _stepExtensionService.GetStep(Guid.Empty);
+
+            Assert.IsNull(step);
+        }
+
+        [TestMethod]
         public void GetHelloWorldStep()
         {
             var step = _stepExtensionService.GetStep(Guid.Parse(HelloWorldStep.ExtensionId));
 
             Assert.AreEqual(step.GetClassName(), "HelloWorldStep");
+        }
+
+        [TestMethod]
+        public void GetTestStep()
+        {
+            var step = _stepExtensionService.GetStep(Guid.Parse(TestStep.ExtensionId));
+
+            Assert.AreEqual(step.GetClassName(), "TestStep");
         }
     }
 }
