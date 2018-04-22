@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Interfaces\IAgent.cs" />
     <Compile Include="Interfaces\IAgentMonitor.cs" />
+    <Compile Include="Interfaces\ICatalogProvider.cs" />
     <Compile Include="Interfaces\ICondition.cs" />
     <Compile Include="Interfaces\IExtensionMetaData.cs" />
     <Compile Include="Interfaces\IJob.cs" />

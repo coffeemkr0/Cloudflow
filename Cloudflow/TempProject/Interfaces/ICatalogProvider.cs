@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace TempProject.Interfaces
 {
-    public interface IExtensionMetaData
+    interface ICatalogProvider
     {
-        string ExtensionId { get; }
     }
 }

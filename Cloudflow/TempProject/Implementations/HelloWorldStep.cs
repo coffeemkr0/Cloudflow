@@ -1,14 +1,20 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using TempProject.Interfaces;
 
 namespace TempProject.Implementations
 {
+    [Export(typeof(IStep))]  
+    [ExportMetadata("ExtensionId", ExtensionId)]  
     public class HelloWorldStep : IStep
     {
+        public const string ExtensionId = "44415043-65F0-4A8D-B438-3EC5ADC2C770";
+
         private IStepMonitor _stepMonitor;
         private string _message;
 
-        public HelloWorldStep(string message)
+        [ImportingConstructor]
+        public HelloWorldStep([Import("ExtensionConfiguration")]string message)
         {
             _message = message;
         }

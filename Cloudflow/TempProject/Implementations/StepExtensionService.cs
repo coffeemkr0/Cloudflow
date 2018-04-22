@@ -17,10 +17,14 @@ namespace TempProject.Implementations
             var catalog = new AggregateCatalog();
 
             //Adds all the parts found in the calling assembly
-            catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetCallingAssembly()));
-
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetCallingAssembly());
+            catalog.Catalogs.Add(assemblyCatalog);
+            
             //Create the CompositionContainer with the parts in the catalog  
             var container = new CompositionContainer(catalog);
+
+            //Set the constructor parameter for Step extensions
+            container.ComposeExportedValue("ExtensionConfiguration", "Hello World!");
 
             //Fill the StepExtensions imports
             container.ComposeParts(this);
@@ -29,7 +33,7 @@ namespace TempProject.Implementations
         public IStep GetStep(Guid stepExtensionId)
         {
             foreach (var i in StepExtensions)
-                if (i.Metadata.ExtensionId == stepExtensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == stepExtensionId)
                     return i.Value;
 
             return null;

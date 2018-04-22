@@ -20,11 +20,11 @@ namespace TempProject.Tests
         }
 
         [TestMethod]
-        public void GetStep()
+        public void GetHelloWorldStep()
         {
-            var step = _stepExtensionService.GetStep(Guid.Empty);
+            var step = _stepExtensionService.GetStep(Guid.Parse(HelloWorldStep.ExtensionId));
 
-            Assert.IsNull(step);
+            Assert.IsNotNull(step);
         }
     }
 }
