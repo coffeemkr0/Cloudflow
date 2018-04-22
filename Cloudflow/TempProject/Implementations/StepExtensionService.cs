@@ -11,17 +11,10 @@ namespace TempProject.Implementations
     {
         [ImportMany] protected IEnumerable<Lazy<IStep, IExtensionMetaData>> StepExtensions = null;
 
-        public StepExtensionService()
+        public StepExtensionService(ICatalogProvider catalogProvider)
         {
-            //An aggregate catalog that combines multiple catalogs  
-            var catalog = new AggregateCatalog();
-
-            //Adds all the parts found in the calling assembly
-            var assemblyCatalog = new AssemblyCatalog(Assembly.GetCallingAssembly());
-            catalog.Catalogs.Add(assemblyCatalog);
-            
             //Create the CompositionContainer with the parts in the catalog  
-            var container = new CompositionContainer(catalog);
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
 
             //Set the constructor parameter for Step extensions
             container.ComposeExportedValue("ExtensionConfiguration", "Hello World!");

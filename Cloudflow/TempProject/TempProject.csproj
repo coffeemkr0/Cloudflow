@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\Agent.cs" />
+    <Compile Include="Implementations\AssemblyCatalogProvider.cs" />
     <Compile Include="Implementations\DefaultJob.cs" />
     <Compile Include="Implementations\HelloWorldStep.cs" />
     <Compile Include="Implementations\ITimer.cs" />
