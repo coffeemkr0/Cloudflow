@@ -10,13 +10,13 @@ namespace TempProject.Implementations
     {
         [ImportMany] protected IEnumerable<Lazy<IStep, IExtensionMetaData>> StepExtensions = null;
 
-        public StepExtensionService(ICatalogProvider catalogProvider)
+        public StepExtensionService(ICatalogProvider catalogProvider, object stepConfiguration)
         {
             //Create the CompositionContainer with the parts in the catalog  
             var container = new CompositionContainer(catalogProvider.GetCatalog());
 
             //Set the constructor parameter for Step extensions
-            container.ComposeExportedValue("ExtensionConfiguration", "Hello World!");
+            container.ComposeExportedValue("Configuration", stepConfiguration);
 
             //Fill the StepExtensions imports
             container.ComposeParts(this);

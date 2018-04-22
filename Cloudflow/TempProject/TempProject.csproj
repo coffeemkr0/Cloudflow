@@ -53,7 +53,6 @@
     <Compile Include="Implementations\Agent.cs" />
     <Compile Include="Implementations\AssemblyCatalogProvider.cs" />
     <Compile Include="Implementations\DefaultJob.cs" />
-    <Compile Include="Implementations\HelloWorldStep.cs" />
     <Compile Include="Implementations\ITimer.cs" />
     <Compile Include="Implementations\StepExtensionService.cs" />
     <Compile Include="Implementations\TimerTriggerTimer.cs">
@@ -75,10 +74,10 @@
     <Compile Include="Implementations\TimerTrigger.cs" />
     <Compile Include="Tests\AgentMonitor.cs" />
     <Compile Include="Tests\AgentShould.cs" />
+    <Compile Include="Tests\ConfigurableTestStep.cs" />
     <Compile Include="Tests\DefaultJobShould.cs" />
     <Compile Include="Tests\ExceptionTestStep.cs" />
     <Compile Include="Tests\StepExtensionServiceShould.cs" />
-    <Compile Include="Tests\HelloWorldStepShould.cs" />
     <Compile Include="Tests\ImmediateTrigger.cs" />
     <Compile Include="Tests\JobMonitor.cs" />
     <Compile Include="Tests\StepMonitor.cs" />

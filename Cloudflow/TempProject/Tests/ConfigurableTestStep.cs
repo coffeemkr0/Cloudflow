@@ -1,27 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TempProject.Interfaces;
 
-namespace TempProject.Implementations
+namespace TempProject.Tests
 {
     [Export(typeof(IStep))]
     [ExportMetadata("ExtensionId", ExtensionId)]
-    public class HelloWorldStep : IStep
+    public class ConfigurableTestStep : IStep
     {
-        public const string ExtensionId = "44415043-65F0-4A8D-B438-3EC5ADC2C770";
-        private string _message;
+        public const string ExtensionId = "{FB3EC0D5-4918-4B20-81AA-BD64864048E5}";
 
         private IStepMonitor _stepMonitor;
+        private readonly string _message;
 
         [ImportingConstructor]
-        public HelloWorldStep([Import("ExtensionConfiguration")] string message)
+        public ConfigurableTestStep([Import("Configuration")] object configuration)
         {
-            _message = message;
+            _message = configuration.ToString();
         }
 
         public void Dispose()
         {
-            _message = null;
         }
 
         public void Execute(IStepMonitor stepMonitor)
@@ -31,7 +34,6 @@ namespace TempProject.Implementations
             _stepMonitor.OnStepStarted(this);
 
             _stepMonitor.OnStepActivity(this, _message);
-            Console.WriteLine(_message);
 
             _stepMonitor.OnStepCompleted(this);
         }

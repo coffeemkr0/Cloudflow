@@ -14,32 +14,34 @@ namespace TempProject.Tests
         [TestInitialize]
         public void InitializeTest()
         {
-            _assemblyCatalogProvider = new AssemblyCatalogProvider(typeof(HelloWorldStep).Assembly.CodeBase);
-            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider);
+            _assemblyCatalogProvider = new AssemblyCatalogProvider(this.GetType().Assembly.CodeBase);
         }
 
         [TestMethod]
         public void ReturnNullForInvalidExtensionId()
         {
+            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, null);
             var step = _stepExtensionService.GetStep(Guid.Empty);
 
             Assert.IsNull(step);
         }
 
         [TestMethod]
-        public void GetHelloWorldStep()
+        public void GetTestStepThatExecutes()
         {
-            var step = _stepExtensionService.GetStep(Guid.Parse(HelloWorldStep.ExtensionId));
-
-            Assert.AreEqual(step.GetClassName(), "HelloWorldStep");
+            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, null);
+            var step = _stepExtensionService.GetStep(Guid.Parse(TestStep.ExtensionId));
+            step.Execute(new StepMonitor());
+            Assert.AreEqual(step.GetClassName(), typeof(TestStep).Name);
         }
 
         [TestMethod]
-        public void GetTestStep()
+        public void GetConfigurableTestStepThatExecutes()
         {
-            var step = _stepExtensionService.GetStep(Guid.Parse(TestStep.ExtensionId));
-
-            Assert.AreEqual(step.GetClassName(), "TestStep");
+            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, "Test configuration");
+            var step = _stepExtensionService.GetStep(Guid.Parse(ConfigurableTestStep.ExtensionId));
+            step.Execute(new StepMonitor());
+            Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);
         }
     }
 }
