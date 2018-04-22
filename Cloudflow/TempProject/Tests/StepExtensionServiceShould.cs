@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
+using TempProject.Interfaces;
 
 namespace TempProject.Tests
 {
@@ -24,7 +25,7 @@ namespace TempProject.Tests
         {
             var step = _stepExtensionService.GetStep(Guid.Parse(HelloWorldStep.ExtensionId));
 
-            Assert.IsNotNull(step);
+            Assert.AreEqual(step.GetClassName(), "HelloWorldStep");
         }
     }
 }
