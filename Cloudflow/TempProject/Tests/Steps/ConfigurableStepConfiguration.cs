@@ -3,11 +3,11 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Steps
 {
-    [Export(typeof(IStepConfiguration))]
+    [Export(typeof(IExtension))]
     [ExportMetadata("ExtensionId", ExtensionId)]
-    public class ConfigurableStepConfiguration : IStepConfiguration
+    public class ConfigurableStepConfiguration : IExtension
     {
-        public const string ExtensionId = "{5AA0FAE3-0703-438D-AE86-209ABA558C16}";
+        public const string ExtensionId = "{B62A0AA1-B220-449A-85DC-C31E4FCABA0D}";
 
         public string Message { get; set; }
     }

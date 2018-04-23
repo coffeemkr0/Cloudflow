@@ -18,32 +18,23 @@ namespace TempProject.Tests
         private Agent _agent;
         private AgentMonitor _agentMonitor;
 
-        private List<ITrigger> GetTestTriggers()
-        {
-            var triggers = new List<ITrigger>();
-
-            
-
-            return triggers;
-        }
-
         [TestInitialize]
         public void InitializeTest()
         {
             var assemblyCatalogProvider = new AssemblyCatalogProvider(this.GetType().Assembly.CodeBase);
 
-            var stepConfigurationExtensionService = new StepConfigurationExtensionService(assemblyCatalogProvider);
+            var stepConfigurationExtensionService = new ExtensionService(assemblyCatalogProvider);
             var stepConfiguration =
-                (ConfigurableStepConfiguration)stepConfigurationExtensionService.GetConfiguration(
+                (ConfigurableStepConfiguration)stepConfigurationExtensionService.GetExtension(
                     Guid.Parse(ConfigurableStepConfiguration.ExtensionId));
             stepConfiguration.Message = "Integration test";
 
-            var stepExtensionService = new StepExtensionService(assemblyCatalogProvider, stepConfiguration);
+            var stepExtensionService = new ExtensionService(assemblyCatalogProvider, stepConfiguration);
 
             var steps = new List<IStep>
             {
-                stepExtensionService.GetStep(Guid.Parse(ConfigurableTestStep.ExtensionId)),
-                stepExtensionService.GetStep(Guid.Parse(TestStep.ExtensionId))
+                (IStep)stepExtensionService.GetExtension(Guid.Parse(ConfigurableTestStep.ExtensionId)),
+                (IStep)stepExtensionService.GetExtension(Guid.Parse(TestStep.ExtensionId))
             };
 
             var triggers = new List<ITrigger>

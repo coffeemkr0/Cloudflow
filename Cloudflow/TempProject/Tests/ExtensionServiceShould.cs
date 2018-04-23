@@ -2,14 +2,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
 using TempProject.Interfaces;
+using TempProject.Tests.Steps;
 
-namespace TempProject.Tests.Steps
+namespace TempProject.Tests
 {
     [TestClass]
-    public class StepExtensionServiceShould
+    public class ExtensionServiceShould
     {
         private AssemblyCatalogProvider _assemblyCatalogProvider;
-        private StepExtensionService _stepExtensionService;
+        private ExtensionService _extensionService;
 
         [TestInitialize]
         public void InitializeTest()
@@ -20,17 +21,17 @@ namespace TempProject.Tests.Steps
         [TestMethod]
         public void ReturnNullForInvalidExtensionId()
         {
-            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, null);
-            var step = _stepExtensionService.GetStep(Guid.Empty);
+            _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
+            var extension = _extensionService.GetExtension(Guid.Empty);
 
-            Assert.IsNull(step);
+            Assert.IsNull(extension);
         }
 
         [TestMethod]
         public void GetTestStepThatExecutes()
         {
-            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, null);
-            var step = _stepExtensionService.GetStep(Guid.Parse(TestStep.ExtensionId));
+            _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
+            var step = (IStep)_extensionService.GetExtension(Guid.Parse(TestStep.ExtensionId));
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(TestStep).Name);
         }
@@ -39,8 +40,8 @@ namespace TempProject.Tests.Steps
         public void GetConfigurableTestStepThatExecutes()
         {
             var configuration = new ConfigurableStepConfiguration {Message = "Test configuration"};
-            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, configuration);
-            var step = _stepExtensionService.GetStep(Guid.Parse(ConfigurableTestStep.ExtensionId));
+            _extensionService = new ExtensionService(_assemblyCatalogProvider, configuration);
+            var step = (IStep)_extensionService.GetExtension(Guid.Parse(ConfigurableTestStep.ExtensionId));
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);
         }
