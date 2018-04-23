@@ -76,6 +76,7 @@
     <Compile Include="Implementations\TimerTrigger.cs" />
     <Compile Include="Tests\Agents\AgentMonitor.cs" />
     <Compile Include="Tests\Agents\AgentShould.cs" />
+    <Compile Include="Tests\IntegrationTests.cs" />
     <Compile Include="Tests\Steps\ConfigurableStepConfiguration.cs" />
     <Compile Include="Tests\Steps\ConfigurableTestStep.cs" />
     <Compile Include="Tests\Job\DefaultJobShould.cs" />

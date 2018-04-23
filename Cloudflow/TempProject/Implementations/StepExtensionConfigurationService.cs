@@ -7,7 +7,7 @@ using TempProject.Tests.Steps;
 
 namespace TempProject.Implementations
 {
-    public class StepConfigurationExtensionService : StepConfigurationExtensionServiceShould
+    public class StepConfigurationExtensionService : IStepConfigurationExtensionService
     {
         [ImportMany] protected IEnumerable<Lazy<IStepConfiguration, IExtensionMetaData>> Extensions = null;
 
