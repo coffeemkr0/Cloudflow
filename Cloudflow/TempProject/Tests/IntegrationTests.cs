@@ -22,24 +22,24 @@ namespace TempProject.Tests
         public void InitializeTest()
         {
             var assemblyCatalogProvider = new AssemblyCatalogProvider(this.GetType().Assembly.CodeBase);
+            var extensionService = new ExtensionService(assemblyCatalogProvider);
 
-            var stepConfigurationExtensionService = new ExtensionService(assemblyCatalogProvider);
+            var triggers = new List<ITrigger>
+            {
+                (ITrigger)extensionService.GetExtension(ImmediateTrigger.ExtensionId)
+            };
+
             var stepConfiguration =
-                (ConfigurableStepConfiguration)stepConfigurationExtensionService.GetExtension(
-                    Guid.Parse(ConfigurableStepConfiguration.ExtensionId));
+                (ConfigurableStepConfiguration) extensionService.GetExtension(ConfigurableStepConfiguration
+                    .ExtensionId);
             stepConfiguration.Message = "Integration test";
 
             var stepExtensionService = new ExtensionService(assemblyCatalogProvider, stepConfiguration);
 
             var steps = new List<IStep>
             {
-                (IStep)stepExtensionService.GetExtension(Guid.Parse(ConfigurableTestStep.ExtensionId)),
-                (IStep)stepExtensionService.GetExtension(Guid.Parse(TestStep.ExtensionId))
-            };
-
-            var triggers = new List<ITrigger>
-            {
-                new ImmediateTrigger()
+                (IStep)stepExtensionService.GetExtension(ConfigurableTestStep.ExtensionId),
+                (IStep)stepExtensionService.GetExtension(TestStep.ExtensionId)
             };
 
             var jobs = new List<IJob>

@@ -8,6 +8,6 @@ namespace TempProject.Interfaces
 {
     public interface IExtensionService
     {
-        IExtension GetExtension(Guid extensionId);
+        IExtension GetExtension(string extensionId);
     }
 }

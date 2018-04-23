@@ -24,10 +24,10 @@ namespace TempProject.Implementations
             container.ComposeParts(this);
         }
 
-        public IExtension GetExtension(Guid extensionId)
+        public IExtension GetExtension(string extensionId)
         {
             foreach (var i in Extensions)
-                if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
+                if (i.Metadata.ExtensionId == extensionId)
                     return i.Value;
 
             return null;
