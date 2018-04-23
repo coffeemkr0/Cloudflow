@@ -46,9 +46,11 @@ namespace TempProject.Tests
             jobConfiguration.Triggers = triggers;
             jobConfiguration.Steps = steps;
 
+            var jobExtensionService = new ExtensionService(assemblyCatalogProvider, jobConfiguration);
+            var job = (IJob)jobExtensionService.GetExtension(DefaultJob.ExtensionId);
             var jobs = new List<IJob>
             {
-                new DefaultJob(jobConfiguration)
+                job
             };
 
             _agent = new Agent(jobs);

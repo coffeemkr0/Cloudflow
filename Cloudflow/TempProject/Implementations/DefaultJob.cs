@@ -18,9 +18,9 @@ namespace TempProject.Implementations
         private IJobMonitor _jobMonitor;
 
         [ImportingConstructor]
-        public DefaultJob([Import("Configuration")]DefaultJobConfiguration configuration)
+        public DefaultJob([Import("Configuration")]IExtension configuration)
         {
-            _configuration = configuration;
+            _configuration = (DefaultJobConfiguration)configuration;
         }
 
         public void Stop()
