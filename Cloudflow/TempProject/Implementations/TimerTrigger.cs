@@ -1,5 +1,6 @@
 ﻿using System.Timers;
 using TempProject.Interfaces;
+using TempProject.Tests.Triggers;
 
 namespace TempProject.Implementations
 {

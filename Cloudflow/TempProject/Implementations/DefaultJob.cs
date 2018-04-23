@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using TempProject.Interfaces;
+using TempProject.Tests.Job;
+using TempProject.Tests.Steps;
+using TempProject.Tests.Triggers;
 
 namespace TempProject.Implementations
 {

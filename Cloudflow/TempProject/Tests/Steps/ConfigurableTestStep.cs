@@ -8,14 +8,14 @@ namespace TempProject.Tests.Steps
     public class ConfigurableTestStep : IStep
     {
         public const string ExtensionId = "{FB3EC0D5-4918-4B20-81AA-BD64864048E5}";
+        private readonly ConfigurableStepConfiguration _configuration;
 
         private IStepMonitor _stepMonitor;
-        private readonly string _message;
 
         [ImportingConstructor]
-        public ConfigurableTestStep([Import("Configuration")] object configuration)
+        public ConfigurableTestStep([Import("Configuration")] IStepConfiguration configuration)
         {
-            _message = configuration.ToString();
+            _configuration = (ConfigurableStepConfiguration) configuration;
         }
 
         public void Dispose()
@@ -28,7 +28,7 @@ namespace TempProject.Tests.Steps
 
             _stepMonitor.OnStepStarted(this);
 
-            _stepMonitor.OnStepActivity(this, _message);
+            _stepMonitor.OnStepActivity(this, _configuration.Message);
 
             _stepMonitor.OnStepCompleted(this);
         }

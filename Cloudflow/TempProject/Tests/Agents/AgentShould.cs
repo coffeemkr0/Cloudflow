@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Implementations;
 using TempProject.Interfaces;
+using TempProject.Tests.Job;
 using TempProject.Tests.Steps;
 using TempProject.Tests.Triggers;
 

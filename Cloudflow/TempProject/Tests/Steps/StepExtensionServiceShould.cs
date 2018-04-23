@@ -14,7 +14,7 @@ namespace TempProject.Tests.Steps
         [TestInitialize]
         public void InitializeTest()
         {
-            _assemblyCatalogProvider = new AssemblyCatalogProvider(this.GetType().Assembly.CodeBase);
+            _assemblyCatalogProvider = new AssemblyCatalogProvider(GetType().Assembly.CodeBase);
         }
 
         [TestMethod]
@@ -38,7 +38,8 @@ namespace TempProject.Tests.Steps
         [TestMethod]
         public void GetConfigurableTestStepThatExecutes()
         {
-            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, "Test configuration");
+            var configuration = new ConfigurableStepConfiguration {Message = "Test configuration"};
+            _stepExtensionService = new StepExtensionService(_assemblyCatalogProvider, configuration);
             var step = _stepExtensionService.GetStep(Guid.Parse(ConfigurableTestStep.ExtensionId));
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);

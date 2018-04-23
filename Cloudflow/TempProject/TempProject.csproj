@@ -54,6 +54,7 @@
     <Compile Include="Implementations\AssemblyCatalogProvider.cs" />
     <Compile Include="Implementations\DefaultJob.cs" />
     <Compile Include="Implementations\ITimer.cs" />
+    <Compile Include="Implementations\StepExtensionConfigurationService.cs" />
     <Compile Include="Implementations\StepExtensionService.cs" />
     <Compile Include="Implementations\TimerTriggerTimer.cs">
       <SubType>Component</SubType>
@@ -61,11 +62,12 @@
     <Compile Include="Interfaces\IAgent.cs" />
     <Compile Include="Interfaces\IAgentMonitor.cs" />
     <Compile Include="Interfaces\ICatalogProvider.cs" />
-    <Compile Include="Interfaces\ICondition.cs" />
     <Compile Include="Interfaces\IExtensionMetaData.cs" />
     <Compile Include="Interfaces\IJob.cs" />
     <Compile Include="Interfaces\IJobMonitor.cs" />
     <Compile Include="Interfaces\IStep.cs" />
+    <Compile Include="Interfaces\IStepConfiguration.cs" />
+    <Compile Include="Interfaces\IStepConfigurationExtensionService.cs" />
     <Compile Include="Interfaces\IStepExtensionService.cs" />
     <Compile Include="Interfaces\IStepMonitor.cs" />
     <Compile Include="Interfaces\ITrigger.cs" />
@@ -74,9 +76,11 @@
     <Compile Include="Implementations\TimerTrigger.cs" />
     <Compile Include="Tests\Agents\AgentMonitor.cs" />
     <Compile Include="Tests\Agents\AgentShould.cs" />
+    <Compile Include="Tests\Steps\ConfigurableStepConfiguration.cs" />
     <Compile Include="Tests\Steps\ConfigurableTestStep.cs" />
     <Compile Include="Tests\Job\DefaultJobShould.cs" />
     <Compile Include="Tests\Steps\ExceptionTestStep.cs" />
+    <Compile Include="Tests\Steps\StepConfigurationExtensionServiceShould.cs" />
     <Compile Include="Tests\Steps\StepExtensionServiceShould.cs" />
     <Compile Include="Tests\Triggers\ImmediateTrigger.cs" />
     <Compile Include="Tests\Job\JobMonitor.cs" />

@@ -4,6 +4,6 @@ namespace TempProject.Interfaces
 {
     public interface IStepExtensionService
     {
-        IStep GetStep(Guid stepExtensionId);
+        IStep GetStep(Guid extensionId);
     }
 }
