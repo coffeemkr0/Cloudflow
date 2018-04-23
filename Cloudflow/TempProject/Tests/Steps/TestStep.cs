@@ -3,9 +3,9 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Steps
 {
-    [Export(typeof(IExtension))]
+    [Export(typeof(IStep))]
     [ExportMetadata("ExtensionId", ExtensionId)]
-    public class TestStep : IStep, IExtension
+    public class TestStep : IStep
     {
         public const string ExtensionId = "{5AA0FAE3-0703-438D-AE86-209ABA558C16}";
 

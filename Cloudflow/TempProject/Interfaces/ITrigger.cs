@@ -2,7 +2,7 @@
 
 namespace TempProject.Interfaces
 {
-    public interface ITrigger : IDisposable
+    public interface ITrigger : IDisposable, IExtension
     {
         void Start(ITriggerMonitor triggerMonitor);
 

@@ -3,7 +3,7 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Triggers
 {
-    [Export(typeof(IExtension))]
+    [Export(typeof(ITrigger))]
     [ExportMetadata("ExtensionId", ExtensionId)]
     public class ImmediateTrigger : ITrigger, IExtension
     {

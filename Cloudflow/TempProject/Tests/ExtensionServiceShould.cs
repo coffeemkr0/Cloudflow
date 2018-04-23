@@ -31,7 +31,7 @@ namespace TempProject.Tests
         public void GetTestStepThatExecutes()
         {
             _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
-            var step = (IStep)_extensionService.GetExtension(TestStep.ExtensionId);
+            var step = _extensionService.GetStep(TestStep.ExtensionId);
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(TestStep).Name);
         }
@@ -41,7 +41,7 @@ namespace TempProject.Tests
         {
             var configuration = new ConfigurableStepConfiguration {Message = "Test configuration"};
             _extensionService = new ExtensionService(_assemblyCatalogProvider, configuration);
-            var step = (IStep)_extensionService.GetExtension(ConfigurableTestStep.ExtensionId);
+            var step = _extensionService.GetStep(ConfigurableTestStep.ExtensionId);
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);
         }

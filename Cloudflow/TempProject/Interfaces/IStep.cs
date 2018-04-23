@@ -2,7 +2,7 @@
 
 namespace TempProject.Interfaces
 {
-    public interface IStep : IDisposable
+    public interface IStep : IDisposable, IExtension
     {
         void Execute(IStepMonitor stepMonitor);
     }

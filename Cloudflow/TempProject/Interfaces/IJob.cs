@@ -2,7 +2,7 @@
 
 namespace TempProject.Interfaces
 {
-    public interface IJob : IDisposable
+    public interface IJob : IDisposable, IExtension
     {
         void Start(IJobMonitor jobMonitor);
 

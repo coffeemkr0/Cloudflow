@@ -8,7 +8,7 @@ using TempProject.Tests.Triggers;
 
 namespace TempProject.Implementations
 {
-    [Export(typeof(IExtension))]
+    [Export(typeof(IJob))]
     [ExportMetadata("ExtensionId", ExtensionId)]
     public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor, IExtension
     {

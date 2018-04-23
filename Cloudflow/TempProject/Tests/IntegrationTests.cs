@@ -26,7 +26,7 @@ namespace TempProject.Tests
 
             var triggers = new List<ITrigger>
             {
-                (ITrigger)extensionService.GetExtension(ImmediateTrigger.ExtensionId)
+                extensionService.GetTrigger(ImmediateTrigger.ExtensionId)
             };
 
             var stepConfiguration =
@@ -38,8 +38,8 @@ namespace TempProject.Tests
 
             var steps = new List<IStep>
             {
-                (IStep)stepExtensionService.GetExtension(ConfigurableTestStep.ExtensionId),
-                (IStep)stepExtensionService.GetExtension(TestStep.ExtensionId)
+                stepExtensionService.GetStep(ConfigurableTestStep.ExtensionId),
+                stepExtensionService.GetStep(TestStep.ExtensionId)
             };
 
             var jobConfiguration = (DefaultJobConfiguration)extensionService.GetExtension(DefaultJobConfiguration.ExtensionId);
@@ -47,7 +47,7 @@ namespace TempProject.Tests
             jobConfiguration.Steps = steps;
 
             var jobExtensionService = new ExtensionService(assemblyCatalogProvider, jobConfiguration);
-            var job = (IJob)jobExtensionService.GetExtension(DefaultJob.ExtensionId);
+            var job = jobExtensionService.GetJob(DefaultJob.ExtensionId);
             var jobs = new List<IJob>
             {
                 job
