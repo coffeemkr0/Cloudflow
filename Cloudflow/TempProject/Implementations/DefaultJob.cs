@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using TempProject.Interfaces;
 using TempProject.Tests.Job;
 using TempProject.Tests.Steps;
@@ -7,35 +8,38 @@ using TempProject.Tests.Triggers;
 
 namespace TempProject.Implementations
 {
-    public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor
+    [Export(typeof(IExtension))]
+    [ExportMetadata("ExtensionId", ExtensionId)]
+    public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor, IExtension
     {
-        private readonly IEnumerable<IStep> _steps;
-        private readonly IEnumerable<ITrigger> _triggers;
+        public const string ExtensionId = "{8BFDC5EA-9890-463E-822F-5A0704846660}";
+
+        private readonly DefaultJobConfiguration _configuration;
         private IJobMonitor _jobMonitor;
 
-        public DefaultJob(IEnumerable<ITrigger> triggers, IEnumerable<IStep> steps)
+        [ImportingConstructor]
+        public DefaultJob([Import("Configuration")]DefaultJobConfiguration configuration)
         {
-            _triggers = triggers;
-            _steps = steps;
+            _configuration = configuration;
         }
 
         public void Stop()
         {
-            foreach (var trigger in _triggers) trigger.Stop();
+            foreach (var trigger in _configuration.Triggers) trigger.Stop();
 
             _jobMonitor.OnJobStopped(this);
         }
 
         public void Dispose()
         {
-            foreach (var trigger in _triggers) trigger.Dispose();
+            foreach (var trigger in _configuration.Triggers) trigger.Dispose();
         }
 
         public void Start(IJobMonitor jobMonitor)
         {
             _jobMonitor = jobMonitor;
 
-            foreach (var trigger in _triggers) trigger.Start(this);
+            foreach (var trigger in _configuration.Triggers) trigger.Start(this);
 
             _jobMonitor.OnJobStarted(this);
         }
@@ -59,7 +63,7 @@ namespace TempProject.Implementations
         {
             _jobMonitor.OnJobActivity(this, "Trigger fired");
 
-            foreach (var step in _steps)
+            foreach (var step in _configuration.Steps)
                 try
                 {
                     step.Execute(this);

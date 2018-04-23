@@ -42,9 +42,13 @@ namespace TempProject.Tests
                 (IStep)stepExtensionService.GetExtension(TestStep.ExtensionId)
             };
 
+            var jobConfiguration = (DefaultJobConfiguration)extensionService.GetExtension(DefaultJobConfiguration.ExtensionId);
+            jobConfiguration.Triggers = triggers;
+            jobConfiguration.Steps = steps;
+
             var jobs = new List<IJob>
             {
-                new DefaultJob(triggers, steps)
+                new DefaultJob(jobConfiguration)
             };
 
             _agent = new Agent(jobs);

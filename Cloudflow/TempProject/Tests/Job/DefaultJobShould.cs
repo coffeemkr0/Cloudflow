@@ -11,19 +11,20 @@ namespace TempProject.Tests.Job
     public class DefaultJobShould
     {
         private JobMonitor _jobMonitor;
-        private List<IStep> _steps;
-        private List<ITrigger> _triggers;
+        private DefaultJobConfiguration _jobConfiguration;
+
 
         [TestInitialize]
         public void InitializeTest()
         {
             _jobMonitor = new JobMonitor();
+            _jobConfiguration = new DefaultJobConfiguration();
 
-            _triggers = new List<ITrigger>
+            _jobConfiguration.Triggers = new List<ITrigger>
             {
                 new ImmediateTrigger()
             };
-            _steps = new List<IStep>
+            _jobConfiguration.Steps = new List<IStep>
             {
                 new TestStep()
             };
@@ -32,7 +33,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void Start()
         {
-            var job = new DefaultJob(_triggers, _steps);
+            var job = new DefaultJob(_jobConfiguration);
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobStartedCalled);
         }
@@ -40,7 +41,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void Stop()
         {
-            var job = new DefaultJob(_triggers, _steps);
+            var job = new DefaultJob(_jobConfiguration);
             job.Start(_jobMonitor);
             job.Stop();
             Assert.IsTrue(_jobMonitor.OnJobStoppedCalled);
@@ -49,7 +50,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void PostActivityWhenTriggerFires()
         {
-            var job = new DefaultJob(_triggers, _steps);
+            var job = new DefaultJob(_jobConfiguration);
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobActivityCalled);
         }
@@ -57,7 +58,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void PostActivityWhenStepExecutes()
         {
-            var job = new DefaultJob(_triggers, _steps);
+            var job = new DefaultJob(_jobConfiguration);
 
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobActivityCalled);
@@ -66,8 +67,8 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void PostActivityWhenStepThrowsException()
         {
-            _steps.Add(new ExceptionTestStep());
-            var job = new DefaultJob(_triggers, _steps);
+            _jobConfiguration.Steps.Add(new ExceptionTestStep());
+            var job = new DefaultJob(_jobConfiguration);
 
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobExceptionCalled);
@@ -76,7 +77,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void DisposeAndNotThrowException()
         {
-            var job = new DefaultJob(_triggers, _steps);
+            var job = new DefaultJob(_jobConfiguration);
             job.Start(_jobMonitor);
             job.Stop();
             job.Dispose();
