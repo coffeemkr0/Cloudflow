@@ -10,6 +10,8 @@ namespace TempProject.Implementations
 {
     public class JobConfiguration
     {
+        public string Name { get; set; }
+
         public List<ITrigger> Triggers { get; set; }
 
         public List<IStep> Steps { get; set; }

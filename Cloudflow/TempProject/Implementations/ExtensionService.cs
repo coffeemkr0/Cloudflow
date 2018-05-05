@@ -27,37 +27,37 @@ namespace TempProject.Implementations
             container.ComposeParts(this);
         }
 
-        public IExtension GetExtension(string extensionId)
+        public IExtension GetExtension(Guid extensionId)
         {
             foreach (var i in Extensions)
-                if (i.Metadata.ExtensionId == extensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
                     return i.Value;
 
             return null;
         }
 
-        public IJob GetJob(string extensionId)
+        public IJob GetJob(Guid extensionId)
         {
             foreach (var i in Jobs)
-                if (i.Metadata.ExtensionId == extensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
                     return i.Value;
 
             return null;
         }
 
-        public IStep GetStep(string extensionId)
+        public IStep GetStep(Guid extensionId)
         {
             foreach (var i in Steps)
-                if (i.Metadata.ExtensionId == extensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
                     return i.Value;
 
             return null;
         }
 
-        public ITrigger GetTrigger(string extensionId)
+        public ITrigger GetTrigger(Guid extensionId)
         {
             foreach (var i in Triggers)
-                if (i.Metadata.ExtensionId == extensionId)
+                if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
                     return i.Value;
 
             return null;

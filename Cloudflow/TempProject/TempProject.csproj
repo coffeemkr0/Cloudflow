@@ -56,9 +56,13 @@
     <Compile Include="Implementations\JobConfiguration.cs" />
     <Compile Include="Implementations\ExtensionService.cs" />
     <Compile Include="Implementations\ITimer.cs" />
+    <Compile Include="Implementations\JobConfigurationFactory.cs" />
+    <Compile Include="Implementations\JobDefinition.cs" />
     <Compile Include="Implementations\TimerTriggerTimer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Implementations\StepDefinition.cs" />
+    <Compile Include="Implementations\TriggerDefinition.cs" />
     <Compile Include="Interfaces\IAgent.cs" />
     <Compile Include="Interfaces\IAgentMonitor.cs" />
     <Compile Include="Interfaces\ICatalogProvider.cs" />

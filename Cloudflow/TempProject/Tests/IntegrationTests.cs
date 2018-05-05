@@ -26,20 +26,20 @@ namespace TempProject.Tests
 
             var triggers = new List<ITrigger>
             {
-                extensionService.GetTrigger(ImmediateTrigger.ExtensionId)
+                extensionService.GetTrigger(Guid.Parse(ImmediateTrigger.ExtensionId))
             };
 
             var stepConfiguration =
-                (ConfigurableStepConfiguration) extensionService.GetExtension(ConfigurableStepConfiguration
-                    .ExtensionId);
+                (ConfigurableStepConfiguration) extensionService.GetExtension(Guid.Parse(ConfigurableStepConfiguration
+                    .ExtensionId));
             stepConfiguration.Message = "Integration test";
 
             var stepExtensionService = new ExtensionService(assemblyCatalogProvider, stepConfiguration);
 
             var steps = new List<IStep>
             {
-                stepExtensionService.GetStep(ConfigurableTestStep.ExtensionId),
-                stepExtensionService.GetStep(TestStep.ExtensionId)
+                stepExtensionService.GetStep(Guid.Parse(ConfigurableTestStep.ExtensionId)),
+                stepExtensionService.GetStep(Guid.Parse(TestStep.ExtensionId))
             };
 
             var jobConfiguration = new JobConfiguration

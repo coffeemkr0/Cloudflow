@@ -8,12 +8,12 @@ namespace TempProject.Interfaces
 {
     public interface IExtensionService
     {
-        IExtension GetExtension(string extensionId);
+        IExtension GetExtension(Guid extensionId);
 
-        IJob GetJob(string extensionId);
+        IJob GetJob(Guid extensionId);
 
-        ITrigger GetTrigger(string extensionId);
+        ITrigger GetTrigger(Guid extensionId);
 
-        IStep GetStep(string extensionId);
+        IStep GetStep(Guid extensionId);
     }
 }
