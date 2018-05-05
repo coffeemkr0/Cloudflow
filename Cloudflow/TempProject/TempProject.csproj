@@ -52,8 +52,8 @@
   <ItemGroup>
     <Compile Include="Implementations\Agent.cs" />
     <Compile Include="Implementations\AssemblyCatalogProvider.cs" />
-    <Compile Include="Implementations\DefaultJob.cs" />
-    <Compile Include="Implementations\DefaultJobConfiguration.cs" />
+    <Compile Include="Implementations\Job.cs" />
+    <Compile Include="Implementations\JobConfiguration.cs" />
     <Compile Include="Implementations\ExtensionService.cs" />
     <Compile Include="Implementations\ITimer.cs" />
     <Compile Include="Implementations\TimerTriggerTimer.cs">

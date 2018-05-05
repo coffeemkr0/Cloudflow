@@ -8,19 +8,14 @@ using TempProject.Tests.Triggers;
 
 namespace TempProject.Implementations
 {
-    [Export(typeof(IJob))]
-    [ExportMetadata("ExtensionId", ExtensionId)]
-    public class DefaultJob : IJob, ITriggerMonitor, IStepMonitor, IExtension
+    public class Job : IJob, ITriggerMonitor, IStepMonitor
     {
-        public const string ExtensionId = "{8BFDC5EA-9890-463E-822F-5A0704846660}";
-
-        private readonly DefaultJobConfiguration _configuration;
+        private readonly JobConfiguration _configuration;
         private IJobMonitor _jobMonitor;
 
-        [ImportingConstructor]
-        public DefaultJob([Import("Configuration")]IExtension configuration)
+        public Job(JobConfiguration configuration)
         {
-            _configuration = (DefaultJobConfiguration)configuration;
+            _configuration = configuration;
         }
 
         public void Stop()

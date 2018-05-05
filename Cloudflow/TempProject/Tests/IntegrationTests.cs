@@ -42,12 +42,13 @@ namespace TempProject.Tests
                 stepExtensionService.GetStep(TestStep.ExtensionId)
             };
 
-            var jobConfiguration = (DefaultJobConfiguration)extensionService.GetExtension(DefaultJobConfiguration.ExtensionId);
-            jobConfiguration.Triggers = triggers;
-            jobConfiguration.Steps = steps;
+            var jobConfiguration = new JobConfiguration
+            {
+                Triggers = triggers,
+                Steps = steps
+            };
 
-            var jobExtensionService = new ExtensionService(assemblyCatalogProvider, jobConfiguration);
-            var job = jobExtensionService.GetJob(DefaultJob.ExtensionId);
+            var job = new Implementations.Job(jobConfiguration);
             var jobs = new List<IJob>
             {
                 job

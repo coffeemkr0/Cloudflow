@@ -26,13 +26,13 @@ namespace TempProject.Tests.Agents
                 new TestStep()
             };
 
-            var jobConfiguration = new DefaultJobConfiguration
+            var jobConfiguration = new JobConfiguration
             {
                 Triggers = triggers,
                 Steps = steps
             };
 
-            return new DefaultJob(jobConfiguration);
+            return new Implementations.Job(jobConfiguration);
         }
 
         private IJob GetExceptionJob()
@@ -47,13 +47,13 @@ namespace TempProject.Tests.Agents
                 new ExceptionTestStep()
             };
 
-            var jobConfiguration = new DefaultJobConfiguration
+            var jobConfiguration = new JobConfiguration
             {
                 Triggers = triggers,
                 Steps = steps
             };
 
-            return new DefaultJob(jobConfiguration);
+            return new Implementations.Job(jobConfiguration);
         }
 
         [TestInitialize]
