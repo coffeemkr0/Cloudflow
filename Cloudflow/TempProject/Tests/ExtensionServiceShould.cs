@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TempProject.Implementations;
-using TempProject.Interfaces;
+using TempProject.Exceptions;
+using TempProject.ExtensionService;
+using TempProject.Steps;
 using TempProject.Tests.Steps;
 
 namespace TempProject.Tests
@@ -10,13 +11,13 @@ namespace TempProject.Tests
     public class ExtensionServiceShould
     {
         private AssemblyCatalogProvider _assemblyCatalogProvider;
-        private ExtensionService _extensionService;
+        private ExtensionService.ExtensionService _extensionService;
 
         [TestInitialize]
         public void InitializeTest()
         {
             _assemblyCatalogProvider = new AssemblyCatalogProvider(GetType().Assembly.CodeBase);
-            _extensionService = new ExtensionService();
+            _extensionService = new ExtensionService.ExtensionService();
         }
 
         [TestMethod]

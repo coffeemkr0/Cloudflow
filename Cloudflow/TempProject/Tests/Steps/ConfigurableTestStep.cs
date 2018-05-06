@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using TempProject.Interfaces;
+using TempProject.Steps;
 
 namespace TempProject.Tests.Steps
 {

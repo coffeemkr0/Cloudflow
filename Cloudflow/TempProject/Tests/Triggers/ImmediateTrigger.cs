@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using TempProject.Interfaces;
+using TempProject.Triggers;
 
 namespace TempProject.Tests.Triggers
 {

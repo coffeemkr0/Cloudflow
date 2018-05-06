@@ -1,5 +1,5 @@
 ﻿using System.Timers;
-using TempProject.Implementations;
+using TempProject.Extensions;
 
 namespace TempProject.Tests.Triggers
 {

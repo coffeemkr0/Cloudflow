@@ -1,5 +1,5 @@
 ﻿using System;
-using TempProject.Interfaces;
+using TempProject.Jobs;
 
 namespace TempProject.Tests.Job
 {

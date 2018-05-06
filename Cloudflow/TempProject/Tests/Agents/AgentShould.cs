@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TempProject.Implementations;
-using TempProject.Interfaces;
+using TempProject.Agents;
+using TempProject.Jobs;
+using TempProject.Steps;
 using TempProject.Tests.Job;
 using TempProject.Tests.Steps;
 using TempProject.Tests.Triggers;
+using TempProject.Triggers;
 
 namespace TempProject.Tests.Agents
 {
@@ -32,7 +34,7 @@ namespace TempProject.Tests.Agents
                 Steps = steps
             };
 
-            return new Implementations.Job(jobConfiguration);
+            return new Jobs.Job(jobConfiguration);
         }
 
         private IJob GetExceptionJob()
@@ -53,7 +55,7 @@ namespace TempProject.Tests.Agents
                 Steps = steps
             };
 
-            return new Implementations.Job(jobConfiguration);
+            return new Jobs.Job(jobConfiguration);
         }
 
         [TestInitialize]

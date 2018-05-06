@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TempProject.Implementations;
-using TempProject.Interfaces;
+using TempProject.Agents;
+using TempProject.Jobs;
+using TempProject.Steps;
 using TempProject.Tests.Agents;
 using TempProject.Tests.Steps;
 using TempProject.Tests.Triggers;
+using TempProject.Triggers;
 
 namespace TempProject.Tests
 {
@@ -48,11 +50,11 @@ namespace TempProject.Tests
                 Name = "Configurable Test Step"
             });
 
-            var extensionService = new ExtensionService();
+            var extensionService = new ExtensionService.ExtensionService();
             var jobConfigurationFactory = new JobConfigurationFactory(jobDefinition, extensionService);
             var jobConfiguration = jobConfigurationFactory.CreateJobConfiguration();
 
-            var job = new Implementations.Job(jobConfiguration);
+            var job = new Jobs.Job(jobConfiguration);
             var jobs = new List<IJob>
             {
                 job

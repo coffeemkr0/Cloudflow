@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TempProject.Interfaces;
+using TempProject.Steps;
 
 namespace TempProject.Tests.Steps
 {

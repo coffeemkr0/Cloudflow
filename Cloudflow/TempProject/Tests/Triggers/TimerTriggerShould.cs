@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TempProject.Implementations;
+using TempProject.Extensions;
 
 namespace TempProject.Tests.Triggers
 {

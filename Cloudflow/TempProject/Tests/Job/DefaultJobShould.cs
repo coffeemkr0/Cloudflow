@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TempProject.Implementations;
-using TempProject.Interfaces;
+using TempProject.Jobs;
+using TempProject.Steps;
 using TempProject.Tests.Steps;
 using TempProject.Tests.Triggers;
+using TempProject.Triggers;
 
 namespace TempProject.Tests.Job
 {
@@ -34,7 +35,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void Start()
         {
-            var job = new Implementations.Job(_jobConfiguration);
+            var job = new Jobs.Job(_jobConfiguration);
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobStartedCalled);
         }
@@ -42,7 +43,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void Stop()
         {
-            var job = new Implementations.Job(_jobConfiguration);
+            var job = new Jobs.Job(_jobConfiguration);
             job.Start(_jobMonitor);
             job.Stop();
             Assert.IsTrue(_jobMonitor.OnJobStoppedCalled);
@@ -51,7 +52,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void PostActivityWhenTriggerFires()
         {
-            var job = new Implementations.Job(_jobConfiguration);
+            var job = new Jobs.Job(_jobConfiguration);
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobActivityCalled);
         }
@@ -59,7 +60,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void PostActivityWhenStepExecutes()
         {
-            var job = new Implementations.Job(_jobConfiguration);
+            var job = new Jobs.Job(_jobConfiguration);
 
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobActivityCalled);
@@ -69,7 +70,7 @@ namespace TempProject.Tests.Job
         public void PostActivityWhenStepThrowsException()
         {
             _jobConfiguration.Steps.Add(new ExceptionTestStep());
-            var job = new Implementations.Job(_jobConfiguration);
+            var job = new Jobs.Job(_jobConfiguration);
 
             job.Start(_jobMonitor);
             Assert.IsTrue(_jobMonitor.OnJobExceptionCalled);
@@ -78,7 +79,7 @@ namespace TempProject.Tests.Job
         [TestMethod]
         public void DisposeAndNotThrowException()
         {
-            var job = new Implementations.Job(_jobConfiguration);
+            var job = new Jobs.Job(_jobConfiguration);
             job.Start(_jobMonitor);
             job.Stop();
             job.Dispose();

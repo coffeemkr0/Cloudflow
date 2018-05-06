@@ -53,40 +53,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\Agent.cs" />
-    <Compile Include="Implementations\AssemblyCatalogProvider.cs" />
-    <Compile Include="Implementations\ExtensionNotFoundException.cs" />
-    <Compile Include="Implementations\Job.cs" />
-    <Compile Include="Implementations\JobConfiguration.cs" />
-    <Compile Include="Implementations\ExtensionService.cs" />
-    <Compile Include="Implementations\ITimer.cs" />
-    <Compile Include="Implementations\JobConfigurationFactory.cs" />
-    <Compile Include="Implementations\JobDefinition.cs" />
-    <Compile Include="Implementations\TimerTriggerTimer.cs">
+    <Compile Include="Agents\Agent.cs" />
+    <Compile Include="ExtensionService\AssemblyCatalogProvider.cs" />
+    <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
+    <Compile Include="Jobs\Job.cs" />
+    <Compile Include="Jobs\JobConfiguration.cs" />
+    <Compile Include="ExtensionService\ExtensionService.cs" />
+    <Compile Include="Extensions\ITimer.cs" />
+    <Compile Include="Jobs\JobConfigurationFactory.cs" />
+    <Compile Include="Jobs\JobDefinition.cs" />
+    <Compile Include="Extensions\TimerTriggerTimer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Implementations\StepDefinition.cs" />
-    <Compile Include="Implementations\TriggerDefinition.cs" />
-    <Compile Include="Interfaces\IAgent.cs" />
-    <Compile Include="Interfaces\IAgentMonitor.cs" />
-    <Compile Include="Interfaces\ICatalogProvider.cs" />
-    <Compile Include="Interfaces\IStepConfiguration.cs" />
-    <Compile Include="Interfaces\ITriggerConfiguration.cs" />
-    <Compile Include="Interfaces\IConfigurationMetaData.cs" />
-    <Compile Include="Interfaces\IDescriptorMetaData.cs" />
-    <Compile Include="Interfaces\IStepDescriptor.cs" />
-    <Compile Include="Interfaces\IStepMetaData.cs" />
-    <Compile Include="Interfaces\ITriggerDescriptor.cs" />
-    <Compile Include="Interfaces\IExtensionService.cs" />
-    <Compile Include="Interfaces\IJob.cs" />
-    <Compile Include="Interfaces\IJobMonitor.cs" />
-    <Compile Include="Interfaces\IStep.cs" />
-    <Compile Include="Interfaces\IStepMonitor.cs" />
-    <Compile Include="Interfaces\ITrigger.cs" />
-    <Compile Include="Interfaces\ITriggerMetaData.cs" />
-    <Compile Include="Interfaces\ITriggerMonitor.cs" />
+    <Compile Include="Steps\StepDefinition.cs" />
+    <Compile Include="Triggers\TriggerDefinition.cs" />
+    <Compile Include="Agents\IAgent.cs" />
+    <Compile Include="Agents\IAgentMonitor.cs" />
+    <Compile Include="ExtensionService\ICatalogProvider.cs" />
+    <Compile Include="Steps\IStepConfiguration.cs" />
+    <Compile Include="Triggers\ITriggerConfiguration.cs" />
+    <Compile Include="ExtensionService\IConfigurationMetaData.cs" />
+    <Compile Include="ExtensionService\IDescriptorMetaData.cs" />
+    <Compile Include="Steps\IStepDescriptor.cs" />
+    <Compile Include="Steps\IStepMetaData.cs" />
+    <Compile Include="Triggers\ITriggerDescriptor.cs" />
+    <Compile Include="ExtensionService\IExtensionService.cs" />
+    <Compile Include="Jobs\IJob.cs" />
+    <Compile Include="Jobs\IJobMonitor.cs" />
+    <Compile Include="Steps\IStep.cs" />
+    <Compile Include="Steps\IStepMonitor.cs" />
+    <Compile Include="Triggers\ITrigger.cs" />
+    <Compile Include="Triggers\ITriggerMetaData.cs" />
+    <Compile Include="Triggers\ITriggerMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Implementations\TimerTrigger.cs" />
+    <Compile Include="Extensions\TimerTrigger.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
