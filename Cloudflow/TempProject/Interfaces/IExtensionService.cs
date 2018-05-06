@@ -8,10 +8,11 @@ namespace TempProject.Interfaces
 {
     public interface IExtensionService
     {
-        T CreateNewConfiguration<T>(ICatalogProvider catalogProvider, Guid extensionId);
-
-        T LoadConfiguration<T>(ICatalogProvider catalogProvider, Guid extensionId, string configuration);
-
-        T LoadConfigurableExtension<T>(ICatalogProvider catalogProvider, Guid extensionId, IExtension configuration);
+        ITriggerConfiguration LoadTriggerConfiguration(ICatalogProvider catalogProvider, Guid extensionId, string configuration);
+        ITrigger LoadTrigger(ICatalogProvider catalogProvider, Guid extensionId, ITriggerConfiguration configuration);
+        IStep LoadStep(ICatalogProvider catalogProvider, Guid extensionId, IStepConfiguration configuration);
+        IStepConfiguration LoadStepConfiguration(ICatalogProvider catalogProvider, Guid extensionId, string configuration);
+        ITriggerConfiguration CreateNewTriggerConfiguration(ICatalogProvider catalogProvider, Guid extensionId);
+        IStepConfiguration CreateNewStepConfiguration(ICatalogProvider catalogProvider, Guid extensionId);
     }
 }

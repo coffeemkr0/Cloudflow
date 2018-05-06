@@ -3,13 +3,10 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Triggers
 {
-    [Export(typeof(IExtension))]
-    [ExportMetadata("ExtensionId", ExtensionId)]
-    [ExportMetadata("ExtensionType", typeof(ImmediateTrigger))]
+    [Export(typeof(ITrigger))]
+    [ExportMetadata("Type", typeof(ImmediateTrigger))]
     public class ImmediateTrigger : ITrigger
     {
-        public const string ExtensionId = "{67B2EEA0-B255-4A62-9F45-3D440289ADC6}";
-
         private ITriggerMonitor _triggerMonitor;
 
         public void Dispose()

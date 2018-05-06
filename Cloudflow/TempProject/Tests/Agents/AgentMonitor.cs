@@ -8,6 +8,7 @@ namespace TempProject.Tests.Agents
         public bool OnAgentStartedCalled { get; set; }
         public bool OnAgentStopCalled { get; set; }
         public bool OnAgentActivityCalled { get; set; }
+        public bool ExceptionOccurred { get; set; }
 
         public void OnAgentStarted(IAgent agent)
         {
@@ -25,6 +26,8 @@ namespace TempProject.Tests.Agents
         {
             OnAgentActivityCalled = true;
             Console.WriteLine($"[{agent.GetClassName()}] Agent activity - {activity}");
+
+            if(activity.Contains("Exception")) ExceptionOccurred = true;
         }
     }
 }

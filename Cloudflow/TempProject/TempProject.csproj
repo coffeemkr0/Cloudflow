@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Implementations\Agent.cs" />
     <Compile Include="Implementations\AssemblyCatalogProvider.cs" />
+    <Compile Include="Implementations\ExtensionNotFoundException.cs" />
     <Compile Include="Implementations\Job.cs" />
     <Compile Include="Implementations\JobConfiguration.cs" />
     <Compile Include="Implementations\ExtensionService.cs" />
@@ -69,29 +70,43 @@
     <Compile Include="Interfaces\IAgent.cs" />
     <Compile Include="Interfaces\IAgentMonitor.cs" />
     <Compile Include="Interfaces\ICatalogProvider.cs" />
-    <Compile Include="Interfaces\IExtension.cs" />
-    <Compile Include="Interfaces\IExtensionMetaData.cs" />
+    <Compile Include="Interfaces\IStepConfiguration.cs" />
+    <Compile Include="Interfaces\ITriggerConfiguration.cs" />
+    <Compile Include="Interfaces\IConfigurationMetaData.cs" />
+    <Compile Include="Interfaces\IDescriptorMetaData.cs" />
+    <Compile Include="Interfaces\IStepDescriptor.cs" />
+    <Compile Include="Interfaces\IStepMetaData.cs" />
+    <Compile Include="Interfaces\ITriggerDescriptor.cs" />
     <Compile Include="Interfaces\IExtensionService.cs" />
     <Compile Include="Interfaces\IJob.cs" />
     <Compile Include="Interfaces\IJobMonitor.cs" />
     <Compile Include="Interfaces\IStep.cs" />
     <Compile Include="Interfaces\IStepMonitor.cs" />
     <Compile Include="Interfaces\ITrigger.cs" />
+    <Compile Include="Interfaces\ITriggerMetaData.cs" />
     <Compile Include="Interfaces\ITriggerMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Implementations\TimerTrigger.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tests\Agents\AgentMonitor.cs" />
     <Compile Include="Tests\Agents\AgentShould.cs" />
     <Compile Include="Tests\IntegrationTests.cs" />
     <Compile Include="Tests\Steps\ConfigurableStepConfiguration.cs" />
     <Compile Include="Tests\Steps\ConfigurableTestStep.cs" />
     <Compile Include="Tests\Job\DefaultJobShould.cs" />
+    <Compile Include="Tests\Steps\TestStepDescriptor.cs" />
+    <Compile Include="Tests\Steps\ConfigurableTestStepDescriptor.cs" />
     <Compile Include="Tests\Steps\ExceptionTestStep.cs" />
     <Compile Include="Tests\ExtensionServiceShould.cs" />
     <Compile Include="Tests\Triggers\ImmediateTrigger.cs" />
     <Compile Include="Tests\Job\JobMonitor.cs" />
     <Compile Include="Tests\Steps\StepMonitor.cs" />
     <Compile Include="Tests\Steps\TestStep.cs" />
+    <Compile Include="Tests\Triggers\ImmediateTriggerDescriptor.cs" />
     <Compile Include="Tests\Triggers\TestTimer.cs" />
     <Compile Include="Tests\Triggers\TimerTriggerShould.cs" />
     <Compile Include="Tests\Triggers\TriggerMonitor.cs" />
@@ -104,6 +119,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

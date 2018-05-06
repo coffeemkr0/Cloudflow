@@ -9,62 +9,162 @@ namespace TempProject.Implementations
 {
     public class ExtensionService : IExtensionService
     {
-        [ImportMany] protected IEnumerable<Lazy<IExtension, IExtensionMetaData>> Extensions = null;
+        [ImportMany] protected IEnumerable<Lazy<ITrigger, ITriggerMetaData>> Triggers = null;
+        [ImportMany] protected IEnumerable<Lazy<ITriggerDescriptor, IDescriptorMetaData>> TriggerDescriptors = null;
+        [ImportMany] protected IEnumerable<Lazy<ITriggerConfiguration, IConfigurationMetaData>> TriggerConfigurations = null;
 
-        private T GetExtensionInstance<T>(Guid extensionId)
+        [ImportMany] protected IEnumerable<Lazy<IStep, ITriggerMetaData>> Steps = null;
+        [ImportMany] protected IEnumerable<Lazy<IStepDescriptor, IDescriptorMetaData>> StepDescriptors = null;
+        [ImportMany] protected IEnumerable<Lazy<IStepConfiguration, IConfigurationMetaData>> StepConfigurations = null;
+
+        private ITriggerDescriptor GetTriggerDescriptor(Guid extensionId)
         {
-            foreach (var i in Extensions)
+            foreach (var i in TriggerDescriptors)
                 if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
-                    return (T)i.Value;
+                    return i.Value;
 
-            return default(T);
+            throw new ExtensionNotFoundException(extensionId);
         }
 
-        private Type GetExtensionType(Guid extensionId)
+        private IStepDescriptor GetStepDescriptor(Guid extensionId)
         {
-            foreach (var i in Extensions)
+            foreach (var i in StepDescriptors)
                 if (Guid.Parse(i.Metadata.ExtensionId) == extensionId)
-                    return i.Metadata.ExtensionType;
+                    return i.Value;
 
-            return null;
+            throw new ExtensionNotFoundException(extensionId);
         }
 
-        public T LoadConfiguration<T>(ICatalogProvider catalogProvider, Guid extensionId, string configuration)
+        public ITrigger LoadTrigger(ICatalogProvider catalogProvider, Guid extensionId, ITriggerConfiguration configuration)
         {
             var container = new CompositionContainer(catalogProvider.GetCatalog());
 
-            container.ComposeParts(this);
-
-            //TODO:This deserialization should not be implemented in this service - abstract this out to a dependency
-            if (string.IsNullOrEmpty(configuration))
-            {
-                return GetExtensionInstance<T>(extensionId);
-            }
-            else
-            {
-                return (T) JsonConvert.DeserializeObject(configuration, GetExtensionType(extensionId));
-            }
-        }
-
-        public T LoadConfigurableExtension<T>(ICatalogProvider catalogProvider, Guid extensionId, IExtension configuration)
-        {
-            var container = new CompositionContainer(catalogProvider.GetCatalog());
-
-            //Set the constructor parameter for extensions that have a configuration parameter in their constructor
             container.ComposeExportedValue("Configuration", configuration);
 
             container.ComposeParts(this);
 
-            return GetExtensionInstance<T>(extensionId);
+            var triggerDescriptor = GetTriggerDescriptor(extensionId);
+
+            foreach (var trigger in Triggers)
+            {
+                if (trigger.Metadata.Type == triggerDescriptor.ExtensionType)
+                {
+                    return trigger.Value;
+                }
+            }
+
+            throw new ExtensionNotFoundException(extensionId);
         }
 
-        public T CreateNewConfiguration<T>(ICatalogProvider catalogProvider, Guid extensionId)
+        public ITriggerConfiguration LoadTriggerConfiguration(ICatalogProvider catalogProvider, Guid extensionId, string configuration)
         {
             var container = new CompositionContainer(catalogProvider.GetCatalog());
 
             container.ComposeParts(this);
 
-            return GetExtensionInstance<T>(extensionId);
+            var triggerDescriptor = GetTriggerDescriptor(extensionId);
+
+            if (!string.IsNullOrEmpty(configuration))
+            {
+                //TODO:This deserialization should not be implemented in this service - abstract this out to a dependency
+                return (ITriggerConfiguration) JsonConvert.DeserializeObject(configuration,
+                    triggerDescriptor.ConfigurationType);
+            }
+
+            foreach (var triggerConfiguration in TriggerConfigurations)
+            {
+                if (triggerConfiguration.Metadata.Type == triggerDescriptor.ConfigurationType)
+                {
+                    return triggerConfiguration.Value;
+                }
+            }
+
+            return null;
+        }
+
+        public IStep LoadStep(ICatalogProvider catalogProvider, Guid extensionId, IStepConfiguration configuration)
+        {
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
+
+            container.ComposeExportedValue("Configuration", configuration);
+
+            container.ComposeParts(this);
+
+            var stepDescriptor = GetStepDescriptor(extensionId);
+
+            foreach (var step in Steps)
+            {
+                if (step.Metadata.Type == stepDescriptor.ExtensionType)
+                {
+                    return step.Value;
+                }
+            }
+            
+            throw new ExtensionNotFoundException(extensionId);
+        }
+
+        public IStepConfiguration LoadStepConfiguration(ICatalogProvider catalogProvider, Guid extensionId, string configuration)
+        {
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
+
+            container.ComposeParts(this);
+
+            var stepDescriptor = GetStepDescriptor(extensionId);
+
+            if (!string.IsNullOrEmpty(configuration))
+            {
+                //TODO:This deserialization should not be implemented in this service - abstract this out to a dependency
+                return (IStepConfiguration) JsonConvert.DeserializeObject(configuration,
+                    stepDescriptor.ConfigurationType);
+            }
+
+            foreach (var stepConfiguration in StepConfigurations)
+            {
+                if (stepConfiguration.Metadata.Type == stepDescriptor.ConfigurationType)
+                {
+                    return stepConfiguration.Value;
+                }
+            }
+
+            return null;
+        }
+
+        public ITriggerConfiguration CreateNewTriggerConfiguration(ICatalogProvider catalogProvider, Guid extensionId)
+        {
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
+
+            container.ComposeParts(this);
+
+            var triggerDescriptor = GetTriggerDescriptor(extensionId);
+
+            foreach (var triggerConfiguration in TriggerConfigurations)
+            {
+                if (triggerConfiguration.Metadata.Type == triggerDescriptor.ConfigurationType)
+                {
+                    return triggerConfiguration.Value;
+                }
+            }
+
+            throw new ExtensionNotFoundException(extensionId);
+        }
+
+        public IStepConfiguration CreateNewStepConfiguration(ICatalogProvider catalogProvider, Guid extensionId)
+        {
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
+
+            container.ComposeParts(this);
+
+            var stepDescriptor = GetStepDescriptor(extensionId);
+
+            foreach (var stepConfiguration in StepConfigurations)
+            {
+                if (stepConfiguration.Metadata.Type == stepDescriptor.ConfigurationType)
+                {
+                    return stepConfiguration.Value;
+                }
+            }
+
+            throw new ExtensionNotFoundException(extensionId);
         }
     }
 }

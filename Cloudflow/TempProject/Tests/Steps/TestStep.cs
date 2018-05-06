@@ -3,13 +3,10 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Steps
 {
-    [Export(typeof(IExtension))]
-    [ExportMetadata("ExtensionId", ExtensionId)]
-    [ExportMetadata("ExtensionType", typeof(TestStep))]
+    [Export(typeof(IStep))]
+    [ExportMetadata("Type", typeof(TestStep))]
     public class TestStep : IStep
     {
-        public const string ExtensionId = "{5AA0FAE3-0703-438D-AE86-209ABA558C16}";
-
         private IStepMonitor _stepMonitor;
 
         public void Dispose()

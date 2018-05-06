@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TempProject.Interfaces
 {
-    public interface IExtension
+    public interface ITriggerMetaData
     {
-
+        Type Type { get; }
     }
 }

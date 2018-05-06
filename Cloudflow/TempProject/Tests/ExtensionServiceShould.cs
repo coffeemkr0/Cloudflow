@@ -20,19 +20,28 @@ namespace TempProject.Tests
         }
 
         [TestMethod]
-        public void ReturnNullForInvalidExtensionId()
+        public void ThrowsCorrectExceptionForInvalidTriggerId()
         {
-            var extension =
-                _extensionService.LoadConfigurableExtension<IExtension>(_assemblyCatalogProvider, Guid.Empty, null);
+            bool correctExceptionThrown = false;
+            try
+            {
+                var extension =
+                    _extensionService.LoadTrigger(_assemblyCatalogProvider, Guid.Empty, null);
+            }
+            catch (ExtensionNotFoundException e)
+            {
+                Assert.IsNotNull(e);
+                correctExceptionThrown = true;
+            }
 
-            Assert.IsNull(extension);
+            Assert.IsTrue(correctExceptionThrown);
         }
 
         [TestMethod]
         public void GetTestStepThatExecutes()
         {
-            var step = _extensionService.LoadConfigurableExtension<IStep>(_assemblyCatalogProvider,
-                Guid.Parse(TestStep.ExtensionId), null);
+            var step = _extensionService.LoadStep(_assemblyCatalogProvider,
+                Guid.Parse(TestStepDescriptor.Id), null);
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(TestStep).Name);
         }
@@ -41,8 +50,8 @@ namespace TempProject.Tests
         public void GetConfigurableTestStepThatExecutes()
         {
             var configuration = new ConfigurableStepConfiguration {Message = "Test configuration"};
-            var step = _extensionService.LoadConfigurableExtension<IStep>(_assemblyCatalogProvider,
-                Guid.Parse(ConfigurableTestStep.ExtensionId), configuration);
+            var step = _extensionService.LoadStep(_assemblyCatalogProvider,
+                Guid.Parse(ConfigurableTestStepDescriptor.Id), configuration);
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);
         }

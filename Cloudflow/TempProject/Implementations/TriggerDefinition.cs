@@ -14,8 +14,6 @@ namespace TempProject.Implementations
 
         public Guid ExtensionId { get; set; }
 
-        public Guid ConfigurationExtensionId { get; set; }
-
         public string Configuration { get; set; }
     }
 }

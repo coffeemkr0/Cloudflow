@@ -29,22 +29,21 @@ namespace TempProject.Tests
             jobDefinition.TriggerDefinitions.Add(new TriggerDefinition
             {
                 AssemblyPath = this.GetType().Assembly.CodeBase,
-                ExtensionId = Guid.Parse(ImmediateTrigger.ExtensionId),
+                ExtensionId = Guid.Parse(ImmediateTriggerDescriptor.Id),
                 Name = "Immediate Trigger"
             });
 
             jobDefinition.StepDefinitions.Add(new StepDefinition
             {
                 AssemblyPath = this.GetType().Assembly.CodeBase,
-                ExtensionId = Guid.Parse(TestStep.ExtensionId),
+                ExtensionId = Guid.Parse(TestStepDescriptor.Id),
                 Name = "Test Step"
             });
 
             jobDefinition.StepDefinitions.Add(new StepDefinition
             {
                 AssemblyPath = this.GetType().Assembly.CodeBase,
-                ExtensionId = Guid.Parse(ConfigurableTestStep.ExtensionId),
-                ConfigurationExtensionId = Guid.Parse(ConfigurableStepConfiguration.ExtensionId),
+                ExtensionId = Guid.Parse(ConfigurableTestStepDescriptor.Id),
                 Configuration = "{\"Message\":\"Integration Test\"}",
                 Name = "Configurable Test Step"
             });
@@ -73,6 +72,7 @@ namespace TempProject.Tests
             Assert.IsTrue(_agentMonitor.OnAgentStartedCalled);
             Assert.IsTrue(_agentMonitor.OnAgentActivityCalled);
             Assert.IsTrue(_agentMonitor.OnAgentStopCalled);
+            Assert.IsFalse(_agentMonitor.ExceptionOccurred);
         }
     }
 }

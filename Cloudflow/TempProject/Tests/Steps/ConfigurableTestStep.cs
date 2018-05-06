@@ -3,18 +3,16 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Steps
 {
-    [Export(typeof(IExtension))]
-    [ExportMetadata("ExtensionId", ExtensionId)]
-    [ExportMetadata("ExtensionType", typeof(ConfigurableTestStep))]
-    public class ConfigurableTestStep : IStep, IExtension
+    [Export(typeof(IStep))]
+    [ExportMetadata("Type", typeof(ConfigurableTestStep))]
+    public class ConfigurableTestStep : IStep
     {
-        public const string ExtensionId = "{FB3EC0D5-4918-4B20-81AA-BD64864048E5}";
         private readonly ConfigurableStepConfiguration _configuration;
 
         private IStepMonitor _stepMonitor;
 
         [ImportingConstructor]
-        public ConfigurableTestStep([Import("Configuration")] IExtension configuration)
+        public ConfigurableTestStep([Import("Configuration")] IStepConfiguration configuration)
         {
             _configuration = (ConfigurableStepConfiguration)configuration;
         }
