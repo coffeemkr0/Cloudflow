@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using TempProject.Exceptions;
 using TempProject.Steps;
 using TempProject.Triggers;
+using System.Linq;
 
 namespace TempProject.ExtensionService
 {
@@ -143,6 +144,24 @@ namespace TempProject.ExtensionService
                     return i.Value;
 
             throw new ExtensionNotFoundException(extensionId);
+        }
+
+        public IEnumerable<ITriggerDescriptor> GetTriggerDescriptors(ICatalogProvider catalogProvider)
+        {
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
+
+            container.ComposeParts(this);
+
+            return TriggerDescriptors.Select(i => i.Value);
+        }
+
+        public IEnumerable<IStepDescriptor> GetStepDescriptors(ICatalogProvider catalogProvider)
+        {
+            var container = new CompositionContainer(catalogProvider.GetCatalog());
+
+            container.ComposeParts(this);
+
+            return StepDescriptors.Select(i => i.Value);
         }
     }
 }

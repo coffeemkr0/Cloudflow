@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TempProject.Steps;
 using TempProject.Triggers;
 
@@ -17,5 +18,7 @@ namespace TempProject.ExtensionService
 
         ITriggerConfiguration CreateNewTriggerConfiguration(ICatalogProvider catalogProvider, Guid extensionId);
         IStepConfiguration CreateNewStepConfiguration(ICatalogProvider catalogProvider, Guid extensionId);
+        IEnumerable<ITriggerDescriptor> GetTriggerDescriptors(ICatalogProvider catalogProvider);
+        IEnumerable<IStepDescriptor> GetStepDescriptors(ICatalogProvider catalogProvider);
     }
 }
