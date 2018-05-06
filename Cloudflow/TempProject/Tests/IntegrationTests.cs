@@ -21,34 +21,37 @@ namespace TempProject.Tests
         [TestInitialize]
         public void InitializeTest()
         {
-            var assemblyCatalogProvider = new AssemblyCatalogProvider(this.GetType().Assembly.CodeBase);
+            var jobDefinition = new JobDefinition
+            {
+                Name = "Integration Test Job"
+            };
+
+            jobDefinition.TriggerDefinitions.Add(new TriggerDefinition
+            {
+                AssemblyPath = this.GetType().Assembly.CodeBase,
+                ExtensionId = Guid.Parse(ImmediateTrigger.ExtensionId),
+                Name = "Immediate Trigger"
+            });
+
+            jobDefinition.StepDefinitions.Add(new StepDefinition
+            {
+                AssemblyPath = this.GetType().Assembly.CodeBase,
+                ExtensionId = Guid.Parse(TestStep.ExtensionId),
+                Name = "Test Step"
+            });
+
+            jobDefinition.StepDefinitions.Add(new StepDefinition
+            {
+                AssemblyPath = this.GetType().Assembly.CodeBase,
+                ExtensionId = Guid.Parse(ConfigurableTestStep.ExtensionId),
+                ConfigurationExtensionId = Guid.Parse(ConfigurableStepConfiguration.ExtensionId),
+                Configuration = "{\"Message\":\"Integration Test\"}",
+                Name = "Configurable Test Step"
+            });
+
             var extensionService = new ExtensionService();
-
-            var triggers = new List<ITrigger>
-            {
-                extensionService.LoadConfigurableExtension<ITrigger>(assemblyCatalogProvider,
-                    Guid.Parse(ImmediateTrigger.ExtensionId), null)
-            };
-
-            var stepConfiguration =
-                (ConfigurableStepConfiguration) extensionService.CreateNewConfiguration<IExtension>(assemblyCatalogProvider,
-                    Guid.Parse(ConfigurableStepConfiguration
-                        .ExtensionId));
-            stepConfiguration.Message = "Integration test";
-
-            var steps = new List<IStep>
-            {
-                extensionService.LoadConfigurableExtension<IStep>(assemblyCatalogProvider,
-                    Guid.Parse(ConfigurableTestStep.ExtensionId), stepConfiguration),
-                extensionService.LoadConfigurableExtension<IStep>(assemblyCatalogProvider,
-                    Guid.Parse(TestStep.ExtensionId), null)
-            };
-
-            var jobConfiguration = new JobConfiguration
-            {
-                Triggers = triggers,
-                Steps = steps
-            };
+            var jobConfigurationFactory = new JobConfigurationFactory(jobDefinition, extensionService);
+            var jobConfiguration = jobConfigurationFactory.CreateJobConfiguration();
 
             var job = new Implementations.Job(jobConfiguration);
             var jobs = new List<IJob>

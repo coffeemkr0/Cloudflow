@@ -36,9 +36,14 @@ namespace TempProject.Implementations
             container.ComposeParts(this);
 
             //TODO:This deserialization should not be implemented in this service - abstract this out to a dependency
-            var configurationObject = JsonConvert.DeserializeObject(configuration, GetExtensionType(extensionId));
-
-            return (T) configurationObject;
+            if (string.IsNullOrEmpty(configuration))
+            {
+                return GetExtensionInstance<T>(extensionId);
+            }
+            else
+            {
+                return (T) JsonConvert.DeserializeObject(configuration, GetExtensionType(extensionId));
+            }
         }
 
         public T LoadConfigurableExtension<T>(ICatalogProvider catalogProvider, Guid extensionId, IExtension configuration)
