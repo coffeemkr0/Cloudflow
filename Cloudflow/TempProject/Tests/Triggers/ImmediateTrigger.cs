@@ -5,7 +5,8 @@ namespace TempProject.Tests.Triggers
 {
     [Export(typeof(IExtension))]
     [ExportMetadata("ExtensionId", ExtensionId)]
-    public class ImmediateTrigger : ITrigger, IExtension
+    [ExportMetadata("ExtensionType", typeof(ImmediateTrigger))]
+    public class ImmediateTrigger : ITrigger
     {
         public const string ExtensionId = "{67B2EEA0-B255-4A62-9F45-3D440289ADC6}";
 

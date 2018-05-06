@@ -18,15 +18,16 @@ namespace TempProject.Tests.Job
         public void InitializeTest()
         {
             _jobMonitor = new JobMonitor();
-            _jobConfiguration = new JobConfiguration();
-
-            _jobConfiguration.Triggers = new List<ITrigger>
+            _jobConfiguration = new JobConfiguration
             {
-                new ImmediateTrigger()
-            };
-            _jobConfiguration.Steps = new List<IStep>
-            {
-                new TestStep()
+                Triggers = new List<ITrigger>
+                {
+                    new ImmediateTrigger()
+                },
+                Steps = new List<IStep>
+                {
+                    new TestStep()
+                }
             };
         }
 

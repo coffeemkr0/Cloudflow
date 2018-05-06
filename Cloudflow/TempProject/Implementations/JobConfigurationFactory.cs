@@ -28,14 +28,24 @@ namespace TempProject.Implementations
 
             foreach (var triggerDefinition in _jobDefinition.TriggerDefinitions)
             {
-                triggers.Add(_extensionService.GetExtension<ITrigger>(triggerDefinition.ExtensionId));
+                var catalogProvider = new AssemblyCatalogProvider(triggerDefinition.AssemblyPath);
+                var triggerConfiguration =
+                    _extensionService.LoadConfiguration<IExtension>(catalogProvider,
+                        triggerDefinition.ConfigurationExtensionId, triggerDefinition.Configuration);
+                triggers.Add(_extensionService.LoadConfigurableExtension<ITrigger>(catalogProvider,
+                    triggerDefinition.ExtensionId, triggerConfiguration));
             }
 
             var steps = new List<IStep>();
 
             foreach (var stepDefinition in _jobDefinition.StepDefinitions)
             {
-                steps.Add(_extensionService.GetExtension<IStep>(stepDefinition.ExtensionId));
+                var catalogProvider = new AssemblyCatalogProvider(stepDefinition.AssemblyPath);
+                var stepConfiguration =
+                    _extensionService.LoadConfiguration<IExtension>(catalogProvider,
+                        stepDefinition.ConfigurationExtensionId, stepDefinition.Configuration);
+                steps.Add(_extensionService.LoadConfigurableExtension<IStep>(catalogProvider, stepDefinition.ExtensionId,
+                    stepConfiguration));
             }
 
             jobConfiguration.Steps = steps;

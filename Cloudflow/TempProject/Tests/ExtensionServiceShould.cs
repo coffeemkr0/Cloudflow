@@ -16,13 +16,14 @@ namespace TempProject.Tests
         public void InitializeTest()
         {
             _assemblyCatalogProvider = new AssemblyCatalogProvider(GetType().Assembly.CodeBase);
+            _extensionService = new ExtensionService();
         }
 
         [TestMethod]
         public void ReturnNullForInvalidExtensionId()
         {
-            _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
-            var extension = _extensionService.GetExtension<IExtension>(Guid.Empty);
+            var extension =
+                _extensionService.LoadConfigurableExtension<IExtension>(_assemblyCatalogProvider, Guid.Empty, null);
 
             Assert.IsNull(extension);
         }
@@ -30,8 +31,8 @@ namespace TempProject.Tests
         [TestMethod]
         public void GetTestStepThatExecutes()
         {
-            _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
-            var step = _extensionService.GetExtension<IStep>(Guid.Parse(TestStep.ExtensionId));
+            var step = _extensionService.LoadConfigurableExtension<IStep>(_assemblyCatalogProvider,
+                Guid.Parse(TestStep.ExtensionId), null);
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(TestStep).Name);
         }
@@ -40,8 +41,8 @@ namespace TempProject.Tests
         public void GetConfigurableTestStepThatExecutes()
         {
             var configuration = new ConfigurableStepConfiguration {Message = "Test configuration"};
-            _extensionService = new ExtensionService(_assemblyCatalogProvider, configuration);
-            var step = _extensionService.GetExtension<IStep>(Guid.Parse(ConfigurableTestStep.ExtensionId));
+            var step = _extensionService.LoadConfigurableExtension<IStep>(_assemblyCatalogProvider,
+                Guid.Parse(ConfigurableTestStep.ExtensionId), configuration);
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);
         }

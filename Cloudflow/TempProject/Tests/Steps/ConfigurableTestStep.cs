@@ -5,6 +5,7 @@ namespace TempProject.Tests.Steps
 {
     [Export(typeof(IExtension))]
     [ExportMetadata("ExtensionId", ExtensionId)]
+    [ExportMetadata("ExtensionType", typeof(ConfigurableTestStep))]
     public class ConfigurableTestStep : IStep, IExtension
     {
         public const string ExtensionId = "{FB3EC0D5-4918-4B20-81AA-BD64864048E5}";
