@@ -11,8 +11,8 @@ namespace TempProject.Tests.Job
     [TestClass]
     public class DefaultJobShould
     {
-        private JobMonitor _jobMonitor;
         private JobConfiguration _jobConfiguration;
+        private JobMonitor _jobMonitor;
 
 
         [TestInitialize]

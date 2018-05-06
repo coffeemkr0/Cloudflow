@@ -23,7 +23,7 @@ namespace TempProject.Tests
         [TestMethod]
         public void ThrowsCorrectExceptionForInvalidTriggerId()
         {
-            bool correctExceptionThrown = false;
+            var correctExceptionThrown = false;
             try
             {
                 var extension =

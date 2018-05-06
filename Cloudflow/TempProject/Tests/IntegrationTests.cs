@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Agents;
 using TempProject.Jobs;
@@ -30,21 +27,21 @@ namespace TempProject.Tests
 
             jobDefinition.TriggerDefinitions.Add(new TriggerDefinition
             {
-                AssemblyPath = this.GetType().Assembly.CodeBase,
+                AssemblyPath = GetType().Assembly.CodeBase,
                 ExtensionId = Guid.Parse(ImmediateTriggerDescriptor.Id),
                 Name = "Immediate Trigger"
             });
 
             jobDefinition.StepDefinitions.Add(new StepDefinition
             {
-                AssemblyPath = this.GetType().Assembly.CodeBase,
+                AssemblyPath = GetType().Assembly.CodeBase,
                 ExtensionId = Guid.Parse(TestStepDescriptor.Id),
                 Name = "Test Step"
             });
 
             jobDefinition.StepDefinitions.Add(new StepDefinition
             {
-                AssemblyPath = this.GetType().Assembly.CodeBase,
+                AssemblyPath = GetType().Assembly.CodeBase,
                 ExtensionId = Guid.Parse(ConfigurableTestStepDescriptor.Id),
                 Configuration = "{\"Message\":\"Integration Test\"}",
                 Name = "Configurable Test Step"

@@ -7,8 +7,8 @@ namespace TempProject.Jobs
 {
     public class JobConfigurationFactory
     {
-        private readonly JobDefinition _jobDefinition;
         private readonly IExtensionService _extensionService;
+        private readonly JobDefinition _jobDefinition;
 
         public JobConfigurationFactory(JobDefinition jobDefinition, IExtensionService extensionService)
         {
@@ -31,7 +31,8 @@ namespace TempProject.Jobs
                     _extensionService.LoadTriggerConfiguration(catalogProvider,
                         triggerDefinition.ExtensionId, triggerDefinition.Configuration);
 
-                triggers.Add(_extensionService.LoadTrigger(catalogProvider, triggerDefinition.ExtensionId, triggerConfiguration));
+                triggers.Add(_extensionService.LoadTrigger(catalogProvider, triggerDefinition.ExtensionId,
+                    triggerConfiguration));
             }
 
             var steps = new List<IStep>();

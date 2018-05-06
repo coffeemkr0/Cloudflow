@@ -27,7 +27,7 @@ namespace TempProject.Tests.Agents
             OnAgentActivityCalled = true;
             Console.WriteLine($"[{agent.GetClassName()}] Agent activity - {activity}");
 
-            if(activity.Contains("Exception")) ExceptionOccurred = true;
+            if (activity.Contains("Exception")) ExceptionOccurred = true;
         }
     }
 }

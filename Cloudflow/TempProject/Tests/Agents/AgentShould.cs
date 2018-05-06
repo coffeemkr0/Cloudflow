@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Agents;
 using TempProject.Jobs;
 using TempProject.Steps;
-using TempProject.Tests.Job;
 using TempProject.Tests.Steps;
 using TempProject.Tests.Triggers;
 using TempProject.Triggers;

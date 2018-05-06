@@ -14,7 +14,7 @@ namespace TempProject.Tests.Steps
         [ImportingConstructor]
         public ConfigurableTestStep([Import("Configuration")] IStepConfiguration configuration)
         {
-            _configuration = (ConfigurableStepConfiguration)configuration;
+            _configuration = (ConfigurableStepConfiguration) configuration;
         }
 
         public void Dispose()
