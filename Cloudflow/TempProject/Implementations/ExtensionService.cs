@@ -35,6 +35,7 @@ namespace TempProject.Implementations
 
             container.ComposeParts(this);
 
+            //TODO:This deserialization should not be implemented in this service - abstract this out to a dependency
             var configurationObject = JsonConvert.DeserializeObject(configuration, GetExtensionType(extensionId));
 
             return (T) configurationObject;
