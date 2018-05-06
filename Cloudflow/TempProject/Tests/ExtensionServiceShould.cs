@@ -22,7 +22,7 @@ namespace TempProject.Tests
         public void ReturnNullForInvalidExtensionId()
         {
             _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
-            var extension = _extensionService.GetExtension(Guid.Empty);
+            var extension = _extensionService.GetExtension<IExtension>(Guid.Empty);
 
             Assert.IsNull(extension);
         }
@@ -31,7 +31,7 @@ namespace TempProject.Tests
         public void GetTestStepThatExecutes()
         {
             _extensionService = new ExtensionService(_assemblyCatalogProvider, null);
-            var step = _extensionService.GetStep(Guid.Parse(TestStep.ExtensionId));
+            var step = _extensionService.GetExtension<IStep>(Guid.Parse(TestStep.ExtensionId));
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(TestStep).Name);
         }
@@ -41,7 +41,7 @@ namespace TempProject.Tests
         {
             var configuration = new ConfigurableStepConfiguration {Message = "Test configuration"};
             _extensionService = new ExtensionService(_assemblyCatalogProvider, configuration);
-            var step = _extensionService.GetStep(Guid.Parse(ConfigurableTestStep.ExtensionId));
+            var step = _extensionService.GetExtension<IStep>(Guid.Parse(ConfigurableTestStep.ExtensionId));
             step.Execute(new StepMonitor());
             Assert.AreEqual(step.GetClassName(), typeof(ConfigurableTestStep).Name);
         }

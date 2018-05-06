@@ -28,14 +28,14 @@ namespace TempProject.Implementations
 
             foreach (var triggerDefinition in _jobDefinition.TriggerDefinitions)
             {
-                triggers.Add(_extensionService.GetTrigger(triggerDefinition.ExtensionId));
+                triggers.Add(_extensionService.GetExtension<ITrigger>(triggerDefinition.ExtensionId));
             }
 
             var steps = new List<IStep>();
 
             foreach (var stepDefinition in _jobDefinition.StepDefinitions)
             {
-                steps.Add(_extensionService.GetStep(stepDefinition.ExtensionId));
+                steps.Add(_extensionService.GetExtension<IStep>(stepDefinition.ExtensionId));
             }
 
             jobConfiguration.Steps = steps;

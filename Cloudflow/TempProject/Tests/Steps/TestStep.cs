@@ -3,7 +3,7 @@ using TempProject.Interfaces;
 
 namespace TempProject.Tests.Steps
 {
-    [Export(typeof(IStep))]
+    [Export(typeof(IExtension))]
     [ExportMetadata("ExtensionId", ExtensionId)]
     public class TestStep : IStep
     {
