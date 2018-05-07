@@ -1,6 +1,5 @@
 ﻿using Cloudflow.Core.Agents;
 using Cloudflow.Core.Data.Agent;
-using Cloudflow.Core.Extensions.Controllers;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Cors;
 using Owin;

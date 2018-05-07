@@ -198,8 +198,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ObjectFactories\ConditionViewModelFactory.cs" />
-    <Compile Include="ObjectFactories\StepViewModelFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

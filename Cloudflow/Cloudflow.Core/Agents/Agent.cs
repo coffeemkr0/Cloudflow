@@ -1,83 +1,66 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using Cloudflow.Core.Data.Agent;
+﻿using System;
+using System.Collections.Generic;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Extensions.Controllers;
-using log4net;
+using Cloudflow.Core.Jobs;
 
 namespace Cloudflow.Core.Agents
 {
-    public class Agent
+    public class Agent : IAgent, IJobMonitor
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly IAgentMonitor _agentMonitor;
-        private AgentStatus _agentStatus;
-        private readonly IEnumerable<IJobController> _jobControllers;
+        private readonly IEnumerable<IJob> _jobs;
+        private IAgentMonitor _agentMonitor;
 
-        public Agent(IJobControllerService jobControllerService, IAgentMonitor agentMonitor)
+        private readonly AgentStatus _agentStatus;
+        public AgentStatus AgentStatus => _agentStatus;
+
+        public Agent(IEnumerable<IJob> jobs)
         {
-            _jobControllers = jobControllerService.GetJobControllers(agentMonitor);
+            _jobs = jobs;
+            _agentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
+        }
+
+        public void Start(IAgentMonitor agentMonitor)
+        {
+            _agentStatus.Status = AgentStatus.AgentStatuses.Starting;
+
             _agentMonitor = agentMonitor;
+            _agentMonitor.OnAgentStarted(this);
 
-            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
-        }
+            foreach (var job in _jobs) job.Start(this);
 
-        public AgentStatus AgentStatus
-        {
-            get => _agentStatus;
-            set
-            {
-                if (_agentStatus != value)
-                {
-                    _agentStatus = value;
-                    _agentMonitor.AgentStatusChanged(value);
-                }
-            }
-        }
-
-        private void JobController_RunStatusChanged(Run run)
-        {
-            _agentMonitor.RunStatusChanged(run);
-        }
-
-        private void JobController_StepOutput(Job job, Step step, OutputEventLevels level, string message)
-        {
-            _agentMonitor.StepOutput(job, step, level, message);
-        }
-
-
-        public void Start()
-        {
-            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.Starting};
-
-            foreach (var jobController in _jobControllers) jobController.Start();
-
-            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.Running};
+            _agentStatus.Status = AgentStatus.AgentStatuses.Running;
         }
 
         public void Stop()
         {
-            Logger.Info("Stopping agent");
+            _agentStatus.Status = AgentStatus.AgentStatuses.Stopping;
 
-            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.Stopping};
+            foreach (var job in _jobs) job.Stop();
 
-            foreach (var jobController in _jobControllers) jobController.Stop();
+            _agentMonitor.OnAgentStopped(this);
 
-            Logger.Info("Waiting for any runs in progress");
-            foreach (var jobController in _jobControllers) jobController.Wait();
-
-            Logger.Info("Agent stopped");
-            AgentStatus = new AgentStatus {Status = AgentStatus.AgentStatuses.NotRunning};
+            _agentStatus.Status = AgentStatus.AgentStatuses.NotRunning;
         }
 
-        public List<Run> GetQueuedRuns()
+        public void OnJobStarted(IJob job)
         {
-            var runs = new List<Run>();
+            _agentMonitor.OnAgentActivity(this, $"[{job.GetClassName()}] Job started");
+        }
 
-            foreach (var jobController in _jobControllers) runs.AddRange(jobController.GetQueuedRuns());
+        public void OnJobActivity(IJob job, string activity)
+        {
+            _agentMonitor.OnAgentActivity(this, $"[{job.GetClassName()}] {activity}");
+        }
 
-            return runs;
+        public void OnJobStopped(IJob job)
+        {
+            _agentMonitor.OnAgentActivity(this, $"[{job.GetClassName()}] Job stopped");
+        }
+
+        public void OnException(IJob job, Exception e)
+        {
+            _agentMonitor.OnAgentActivity(this, $"[{job.GetClassName()}] Exception - {e}");
         }
     }
 }

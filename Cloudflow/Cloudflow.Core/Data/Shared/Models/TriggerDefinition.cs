@@ -1,54 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
-using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.ExtensionManagement;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
-    public class TriggerDefinition : ConfigurableExtensionDefinition
+    public class TriggerDefinition
     {
-        #region Constructors
-
         public TriggerDefinition()
         {
             TriggerDefinitionId = Guid.NewGuid();
             TriggerConditionDefinitions = new List<TriggerConditionDefinition>();
         }
 
-        #endregion
+        public string Name { get; set; }
 
-        #region Public Methods
+        public string AssemblyPath { get; set; }
 
-        public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index)
-        {
-            var triggerDefinition = new TriggerDefinition
-            {
-                Index = index,
-                ExtensionId = Guid.Parse("DABF8963-4B59-448E-BE5A-143EBDF123EF"),
-                ExtensionAssemblyPath = extensionsAssemblyPath,
-                ConfigurationExtensionId = Guid.Parse("E325CD29-053E-4422-97CF-C1C187760E88"),
-                ConfigurationExtensionAssemblyPath = extensionsAssemblyPath
-            };
+        public Guid ExtensionId { get; set; }
 
-            var triggerConfigurationController = new ExtensionConfigurationController(
-                triggerDefinition.ConfigurationExtensionId, extensionsAssemblyPath);
-
-            var timerConfiguration = triggerConfigurationController.CreateNewConfiguration();
-            timerConfiguration.Name = name;
-            timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
-            triggerDefinition.Configuration = timerConfiguration.ToJson();
-
-            triggerDefinition.TriggerConditionDefinitions.Add(
-                TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 1", 0));
-            triggerDefinition.TriggerConditionDefinitions.Add(
-                TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 2", 1));
-
-            return triggerDefinition;
-        }
-
-        #endregion
-
-        #region Properties
+        public string Configuration { get; set; }
 
         public Guid TriggerDefinitionId { get; set; }
 
@@ -60,6 +31,32 @@ namespace Cloudflow.Core.Data.Shared.Models
 
         [ScriptIgnore] public virtual JobDefinition JobDefinition { get; set; }
 
-        #endregion
+
+        public static TriggerDefinition CreateTestItem(string extensionsAssemblyPath, string name, int index,
+            IConfigurationSerializer configurationSerializer)
+        {
+            var triggerDefinition = new TriggerDefinition
+            {
+                Name = name,
+                Index = index,
+                ExtensionId = Guid.Parse("DABF8963-4B59-448E-BE5A-143EBDF123EF"),
+                AssemblyPath = extensionsAssemblyPath
+            };
+
+            var extensionService = new ExtensionService(configurationSerializer);
+            var testCatalogProvider = new AssemblyCatalogProvider(extensionsAssemblyPath);
+
+            var timerConfiguration =
+                extensionService.CreateNewTriggerConfiguration(testCatalogProvider, triggerDefinition.ExtensionId);
+            timerConfiguration.GetType().GetProperty("Interval").SetValue(timerConfiguration, 5000);
+            triggerDefinition.Configuration = configurationSerializer.SerializeToString(timerConfiguration);
+
+            //triggerDefinition.TriggerConditionDefinitions.Add(
+            //    TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 1", 0));
+            //triggerDefinition.TriggerConditionDefinitions.Add(
+            //    TriggerConditionDefinition.CreateTestItem(extensionsAssemblyPath, "Condition 2", 1));
+
+            return triggerDefinition;
+        }
     }
 }

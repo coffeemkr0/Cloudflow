@@ -1,13 +1,15 @@
-﻿using Cloudflow.Core.Extensions;
+﻿using System.ComponentModel.Composition;
+using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
+using Cloudflow.Core.Triggers;
+using Cloudflow.Extensions.Steps;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [ExportExtension("E325CD29-053E-4422-97CF-C1C187760E88", typeof(TimerTriggerConfiguration))]
-    public class TimerTriggerConfiguration : ExtensionConfiguration
+    [Export(typeof(ITriggerConfiguration))]
+    [ExportMetadata("Type", typeof(TimerTriggerConfiguration))]
+    public class TimerTriggerConfiguration : ITriggerConfiguration
     {
-        #region Properties
         public double Interval { get; set; }
-        #endregion
     }
 }

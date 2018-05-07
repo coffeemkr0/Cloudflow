@@ -2,35 +2,45 @@
 using System.ComponentModel.Composition;
 using System.Timers;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
+using Cloudflow.Core.Triggers;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [ExportConfigurableExtension("DABF8963-4B59-448E-BE5A-143EBDF123EF", typeof(TimerTrigger), "E325CD29-053E-4422-97CF-C1C187760E88",
-        "TimerTriggerName", "TimerTriggerDescription", "TimerTriggerIcon")]
-    public class TimerTrigger : Trigger
+    [Export(typeof(ITrigger))]
+    [ExportMetadata("Type", typeof(TimerTrigger))]
+    public class TimerTrigger : ITrigger
     {
-        private Timer _timer;
+        private readonly Timer _timer;
+        private ITriggerMonitor _triggerMonitor;
 
         [ImportingConstructor]
-        public TimerTrigger([Import("ExtensionConfiguration")]ExtensionConfiguration triggerConfiguration) : base(triggerConfiguration)
+        public TimerTrigger([Import("Configuration")] ITriggerConfiguration configuration)
         {
-            _timer = new Timer(((TimerTriggerConfiguration)triggerConfiguration).Interval);
+            _timer = new Timer(((TimerTriggerConfiguration)configuration).Interval);
             _timer.Elapsed += _timer_Elapsed;
         }
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            OnTriggerFired();
+            _triggerMonitor.OnTriggerFired(this);
         }
 
-        public override void Start()
+        public void Start(ITriggerMonitor triggerMonitor)
         {
-            _timer.Enabled = true;
+            _triggerMonitor = triggerMonitor;
+            _timer.Start();
+            _triggerMonitor.OnTriggerStarted(this);
         }
 
-        public override void Stop()
+        public void Stop()
         {
-            _timer.Enabled = false;
+            _timer.Stop();
+            _triggerMonitor.OnTriggerStopped(this);
+        }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
         }
     }
 }

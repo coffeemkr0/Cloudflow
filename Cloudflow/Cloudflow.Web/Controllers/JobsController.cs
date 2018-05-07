@@ -8,6 +8,7 @@ using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Web.ViewModels.Jobs;
 using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Steps;
 using Cloudflow.Web.Utility;
 using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
 using Cloudflow.Web.Utility.HtmlHelpers;
@@ -54,17 +55,15 @@ namespace Cloudflow.Web.Controllers
             return Json(new { navigationItem, itemEdit });
         }
 
-        private JsonResult GetNewStepResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, ExtensionConfiguration configuration)
+        private JsonResult GetNewStepResult(Guid extensionId, string extensionAssemblyPath, IStepConfiguration configuration)
         {
             var stepViewModel = new StepViewModel
             {
                 StepDefinitionId = Guid.NewGuid(),
                 ExtensionConfiguration = new ExtensionConfigurationViewModel
                 {
-                    ExtensionId = Guid.Parse(extension.ExtensionId),
+                    ExtensionId = extensionId,
                     ExtensionAssemblyPath = extensionAssemblyPath,
-                    ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
-                    ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
                     Configuration = configuration
                 }
             };
@@ -249,30 +248,6 @@ namespace Cloudflow.Web.Controllers
 
                 return Json(jobDefinition, JsonRequestBehavior.AllowGet);
             }
-        }
-
-        [HttpPost]
-        public JsonResult CreateObjectCollectionItem(string propertyName, string objectFactoryAssemblyPath, string objectFactoryExtensionId,
-            string factoryData, string instanceData)
-        {
-            var objectFactoryController = new ObjectFactoryController(objectFactoryAssemblyPath,
-                Guid.Parse(objectFactoryExtensionId), factoryData);
-            var newItem = objectFactoryController.CreateObject(instanceData);
-
-            var model = new ObjectCollectionItemViewModel
-            {
-                DisplayText = JobEditorHelper.GetDisplayText(newItem),
-                PropertyNameParts = (propertyName + "[0]").Split('.').ToList(),
-                Value = newItem
-            };
-
-            var navigationItemView = ViewHelpers.RenderRazorViewToString(ControllerContext,
-            "~/Views/ExtensionConfigurationEdits/ObjectCollectionNavigationItem.cshtml", model);
-
-            var itemView = ViewHelpers.RenderRazorViewToString(ControllerContext,
-            "~/Views/ExtensionConfigurationEdits/ObjectCollectionItem.cshtml", model);
-
-            return Json(new { navigationItemView, itemView });
         }
 
         [HttpPost]

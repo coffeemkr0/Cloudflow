@@ -6,26 +6,20 @@ using System.Linq;
 
 namespace Cloudflow.Extensions.Conditions
 {
-    [ExportConfigurableExtension("45C9872C-70DC-41E4-B769-3C27447F9E84", typeof(CheckFolderContentCondition), "2822B8DB-56BF-42C2-869D-C4C658CF8A34",
-    "CheckFolderContentName", "CheckFolderContentDescription", "Folder")]
-    public class CheckFolderContentCondition : Condition
+   public class CheckFolderContentCondition
     {
-        private CheckFolderContentConditionConfiguration CheckFolderContentConditionConfiguration
+        readonly CheckFolderContentConditionConfiguration _configuration;
+
+        public CheckFolderContentCondition(CheckFolderContentConditionConfiguration configuration)
         {
-            get { return (CheckFolderContentConditionConfiguration)ConditionConfiguration; }
+            _configuration = configuration;
         }
 
-        [ImportingConstructor]
-        public CheckFolderContentCondition([Import("ExtensionConfiguration")]ExtensionConfiguration conditionConfiguration) : base(conditionConfiguration)
+        public bool CheckCondition()
         {
-            
-        }
-
-        public override bool CheckCondition()
-        {
-            foreach (var fileNameMask in CheckFolderContentConditionConfiguration.FileNameMasks)
+            foreach (var fileNameMask in _configuration.FileNameMasks)
             {
-                if (Directory.GetFiles(CheckFolderContentConditionConfiguration.Folder, fileNameMask, SearchOption.TopDirectoryOnly).Count() > 0)
+                if (Directory.GetFiles(_configuration.Folder, fileNameMask, SearchOption.TopDirectoryOnly).Any())
                 {
                     return true;
                 }

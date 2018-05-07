@@ -3,6 +3,7 @@ using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.Controllers;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
+using Cloudflow.Core.Steps;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -20,7 +21,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         [Hidden]
         public string ConfigurationExtensionAssemblyPath { get; set; }
 
-        public ExtensionConfiguration Configuration { get; set; }
+        public IStepConfiguration Configuration { get; set; }
 
         #region Public Methods
         public static ExtensionConfigurationViewModel FromConfigurableExtensionDefinition(ConfigurableExtensionDefinition definition)

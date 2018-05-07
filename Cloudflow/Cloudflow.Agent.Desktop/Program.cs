@@ -8,7 +8,6 @@ using Cloudflow.Agent.Desktop.Properties;
 using Cloudflow.Core.Agents;
 using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions.Controllers;
 using log4net.Repository.Hierarchy;
 using Microsoft.AspNet.SignalR;
 

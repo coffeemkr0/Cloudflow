@@ -3,38 +3,30 @@ using Cloudflow.Core.Extensions.ExtensionAttributes;
 using System;
 using System.ComponentModel.Composition;
 using Cloudflow.Core.Agents;
+using Cloudflow.Core.Steps;
 
 namespace Cloudflow.Extensions.Steps
 {
-    [ExportConfigurableExtension("43D6FD16-0344-4204-AEE9-A09B3998C017", typeof(LogStep), "191A3C1A-FD25-4790-8141-DFC132DA4970",
-        "LogStepName", "LogStepDescription")]
-    public class LogStep : Step
+    [Export(typeof(IStep))]
+    [ExportMetadata("Type", typeof(LogStep))]
+    public class LogStep : IStep
     {
-        #region Constructors
+        private readonly LogStepConfiguration _configuration;
+
         [ImportingConstructor]
-        public LogStep([Import("ExtensionConfiguration")]ExtensionConfiguration stepConfiguration) : base(stepConfiguration)
+        public LogStep([Import("Configuration")] IStepConfiguration configuration)
         {
-
+            _configuration = (LogStepConfiguration) configuration;
         }
-        #endregion
 
-        #region  Private Methods
-
-        #endregion
-
-        #region Public Methods
-        public override void Execute()
+        public void Dispose()
         {
-            try
-            {
-                StepLogger.Info(((LogStepConfiguration)StepConfiguration).LogMessage);
-            }
-            catch (Exception ex)
-            {
-                StepLogger.Error(ex);
-                OnStepOutput(OutputEventLevels.Error, ex.ToString());
-            }
+            
         }
-        #endregion
+
+        public void Execute(IStepMonitor stepMonitor)
+        {
+            stepMonitor.OnStepActivity(this, _configuration.LogMessage);
+        }
     }
 }

@@ -3,44 +3,52 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
+using Cloudflow.Core.Triggers;
 
 namespace Cloudflow.Extensions.Triggers
 {
-    [ExportConfigurableExtension("DAD72E34-F229-43B6-8B4E-AEDA64BCCF4E", typeof(WatchFolderTrigger), "893809A2-C02D-488B-9808-27159BFBB580",
-        "WatchFolderTriggerName", "WatchFolderTriggerDescription")]
-    public class WatchFolderTrigger : Trigger
+    [Export(typeof(ITrigger))]
+    [ExportMetadata("Type", typeof(WatchFolderTrigger))]
+    public class WatchFolderTrigger : ITrigger
     {
-        FileSystemWatcher _fileSystemWatcher;
+        readonly FileSystemWatcher _fileSystemWatcher;
+        ITriggerMonitor _triggerMonitor;
 
         [ImportingConstructor]
-        public WatchFolderTrigger([Import("ExtensionConfiguration")]ExtensionConfiguration triggerConfiguration) : base(triggerConfiguration)
+        public WatchFolderTrigger([Import("Configuration")] ITriggerConfiguration configuration)
         {
             _fileSystemWatcher = new FileSystemWatcher();
 
-            var configuration = (WatchFolderTriggerConfiguration)triggerConfiguration;
-            _fileSystemWatcher.Path = configuration.WatchFolderPath;
+            var watchFolderTriggerConfiguration = (WatchFolderTriggerConfiguration)configuration;
+            _fileSystemWatcher.Path = watchFolderTriggerConfiguration.WatchFolderPath;
             _fileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
                | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            _fileSystemWatcher.Filter = string.Join(";", configuration.FileNameMasks.ToArray());
+            _fileSystemWatcher.Filter = string.Join(";", watchFolderTriggerConfiguration.FileNameMasks.ToArray());
 
             _fileSystemWatcher.Created += _fileSystemWatcher_Created;
         }
 
         private void _fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            var triggerData = new Dictionary<string, object>();
-            triggerData.Add("FilePath", e.FullPath);
-            OnTriggerFired();
+            _triggerMonitor.OnTriggerFired(this);
         }
 
-        public override void Start()
+        public void Start(ITriggerMonitor triggerMonitor)
         {
+            _triggerMonitor = triggerMonitor;
             _fileSystemWatcher.EnableRaisingEvents = true;
+            _triggerMonitor.OnTriggerStarted(this);
         }
 
-        public override void Stop()
+        public void Stop()
         {
             _fileSystemWatcher.EnableRaisingEvents = false;
+            _triggerMonitor.OnTriggerStopped(this);
+        }
+
+        public void Dispose()
+        {
+            _fileSystemWatcher.Dispose();
         }
     }
 }

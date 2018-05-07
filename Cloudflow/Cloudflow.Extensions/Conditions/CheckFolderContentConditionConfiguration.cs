@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 namespace Cloudflow.Extensions.Conditions
 {
-    [ExportExtension("2822B8DB-56BF-42C2-869D-C4C658CF8A34", typeof(CheckFolderContentConditionConfiguration))]
-    public class CheckFolderContentConditionConfiguration : ExtensionConfiguration
+    public class CheckFolderContentConditionConfiguration
     {
         #region Properties
         [DisplayOrder(1)]

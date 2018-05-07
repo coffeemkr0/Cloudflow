@@ -1,11 +1,13 @@
-﻿using Cloudflow.Core.Extensions;
+﻿using System.ComponentModel.Composition;
+using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Extensions.ExtensionAttributes;
+using Cloudflow.Core.Steps;
 
 namespace Cloudflow.Extensions.Steps
 {
-    
-    [ExportExtension("191A3C1A-FD25-4790-8141-DFC132DA4970", typeof(LogStepConfiguration))]
-    public class LogStepConfiguration : ExtensionConfiguration
+    [Export(typeof(IStepConfiguration))]
+    [ExportMetadata("Type", typeof(LogStepConfiguration))]
+    public class LogStepConfiguration : IStepConfiguration
     {
         [LabelTextResource("LogMessageLabel")]
         public string LogMessage { get; set; }

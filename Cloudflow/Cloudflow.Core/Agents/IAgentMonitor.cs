@@ -1,10 +1,11 @@
-﻿using Cloudflow.Core.Data.Agent.Models;
-using Cloudflow.Core.Extensions;
-
-namespace Cloudflow.Core.Agents
+﻿namespace Cloudflow.Core.Agents
 {
-    public interface IAgentMonitor : IJobMonitor
+    public interface IAgentMonitor
     {
-        void AgentStatusChanged(AgentStatus status);
+        void OnAgentStarted(IAgent agent);
+
+        void OnAgentStopped(IAgent agent);
+
+        void OnAgentActivity(IAgent agent, string activity);
     }
 }

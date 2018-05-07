@@ -9,8 +9,6 @@ namespace TempProject.Tests.Steps
     {
         private readonly ConfigurableStepConfiguration _configuration;
 
-        private IStepMonitor _stepMonitor;
-
         [ImportingConstructor]
         public ConfigurableTestStep([Import("Configuration")] IStepConfiguration configuration)
         {
@@ -23,13 +21,11 @@ namespace TempProject.Tests.Steps
 
         public void Execute(IStepMonitor stepMonitor)
         {
-            _stepMonitor = stepMonitor;
+            stepMonitor.OnStepStarted(this);
 
-            _stepMonitor.OnStepStarted(this);
+            stepMonitor.OnStepActivity(this, _configuration.Message);
 
-            _stepMonitor.OnStepActivity(this, _configuration.Message);
-
-            _stepMonitor.OnStepCompleted(this);
+            stepMonitor.OnStepCompleted(this);
         }
     }
 }

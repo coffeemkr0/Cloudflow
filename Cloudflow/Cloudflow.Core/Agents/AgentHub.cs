@@ -6,7 +6,7 @@ using Cloudflow.Core.Data.Agent;
 using Cloudflow.Core.Data.Agent.Models;
 using Cloudflow.Core.Data.Shared.Models;
 using Cloudflow.Core.Extensions;
-using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Jobs;
 using log4net;
 using Microsoft.AspNet.SignalR;
 
@@ -27,30 +27,6 @@ namespace Cloudflow.Core.Agents
         public void RunStatusChanged(Run run)
         {
             Clients.All.runStatusChanged(run);
-        }
-
-        public void StepOutput(Job job, Step step, OutputEventLevels level, string message)
-        {
-            switch (level)
-            {
-                case OutputEventLevels.Debug:
-                    Logger.Debug($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Info:
-                    Logger.Info($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Warning:
-                    Logger.Warn($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Error:
-                    Logger.Error($"[Step Output] {message}");
-                    break;
-                case OutputEventLevels.Fatal:
-                    Logger.Fatal($"[Step Output] {message}");
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
         }
 
         public AgentStatus GetAgentStatus()
@@ -118,14 +94,14 @@ namespace Cloudflow.Core.Agents
                         //https://docs.microsoft.com/en-us/aspnet/signalr/overview/advanced/dependency-injection
                         using (AgentDbContext agentDbContext = new AgentDbContext())
                         {
-                            var jobControllerService = new JobControllerService(new JobDefinitionService((agentDbContext)));
-                            _agent = new Agent(jobControllerService, this);
+                            //TODO:Get some jobs
+                            _agent = new Agent(new List<IJob>());
                         }
                     }
 
                     if (_agent.AgentStatus.Status == AgentStatus.AgentStatuses.NotRunning)
                     {
-                        _agent.Start();
+                        _agent.Start(this);
                     }
                 }
             }
@@ -172,8 +148,23 @@ namespace Cloudflow.Core.Agents
             {
                 if (_agent == null)
                     return new List<Run>();
-                return _agent.GetQueuedRuns();
+                return null;
             }
+        }
+
+        public void OnAgentStarted(IAgent agent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAgentStopped(IAgent agent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAgentActivity(IAgent agent, string activity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

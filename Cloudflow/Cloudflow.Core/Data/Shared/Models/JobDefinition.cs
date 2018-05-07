@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cloudflow.Core.Extensions.Controllers;
+using Cloudflow.Core.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
-    public class JobDefinition : ConfigurableExtensionDefinition
+    public class JobDefinition
     {
         #region Constructors
 
@@ -22,30 +22,26 @@ namespace Cloudflow.Core.Data.Shared.Models
         {
             var jobDefinition = new JobDefinition
             {
-                ExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99"),
-                ExtensionAssemblyPath = extensionsAssemblyPath,
-                ConfigurationExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399"),
-                ConfigurationExtensionAssemblyPath = extensionsAssemblyPath
+                Name = "Test job"
             };
 
-            var jobConfigurationController = new ExtensionConfigurationController(
-                jobDefinition.ConfigurationExtensionId, extensionsAssemblyPath);
-
-            var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
-            jobConfiguration.Name = "Hard coded test job";
-            jobDefinition.Configuration = jobConfiguration.ToJson();
+            var jsonSerializer = new JsonConfigurationSerializer();
 
             jobDefinition.TriggerDefinitions.Add(TriggerDefinition.CreateTestItem(extensionsAssemblyPath, "Trigger 1",
-                0));
+                0, jsonSerializer));
             jobDefinition.TriggerDefinitions.Add(TriggerDefinition.CreateTestItem(extensionsAssemblyPath, "Trigger 2",
-                1));
-            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath, "Step 1", 0));
-            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath, "Step 2", 1));
+                1, jsonSerializer));
+            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath, "Step 1", 0,
+                jsonSerializer));
+            jobDefinition.StepDefinitions.Add(StepDefinition.CreateTestItem(extensionsAssemblyPath, "Step 2", 1,
+                jsonSerializer));
 
             return jobDefinition;
         }
 
         #region Properties
+
+        public string Name { get; set; }
 
         public Guid JobDefinitionId { get; set; }
 

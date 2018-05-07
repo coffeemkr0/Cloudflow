@@ -99,22 +99,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agents\IJobControllerService.cs" />
-    <Compile Include="Agents\IJobDefinitionService.cs" />
-    <Compile Include="Agents\IJobMonitor.cs" />
+    <Compile Include="Agents\Agent.cs" />
+    <Compile Include="Agents\IAgent.cs" />
+    <Compile Include="Agents\IAgentMonitor.cs" />
     <Compile Include="Configuration\AgentLocalConfigurationSettings.cs" />
     <Compile Include="Data\Shared\Models\ConfigurableExtensionDefinition.cs" />
     <Compile Include="Data\Shared\Models\StepConditionDefinition.cs" />
     <Compile Include="Data\Shared\Models\TriggerConditionDefinition.cs" />
     <Compile Include="Data\Shared\SharedDbContext.cs" />
-    <Compile Include="Extensions\ConfigurableExtension.cs" />
-    <Compile Include="Extensions\ConfigurableExtensionTypes.cs" />
-    <Compile Include="Extensions\Controllers\ConditionController.cs" />
-    <Compile Include="Agents\IJobController.cs" />
-    <Compile Include="Extensions\Controllers\IJobControllerData.cs" />
-    <Compile Include="Extensions\Controllers\JobControllerService.cs" />
-    <Compile Include="Data\Agent\JobDefinitionService.cs" />
-    <Compile Include="Extensions\Controllers\ObjectFactoryController.cs" />
+    <Compile Include="Exceptions\ExtensionNotFoundException.cs" />
+    <Compile Include="ExtensionManagement\AssemblyCatalogProvider.cs" />
+    <Compile Include="ExtensionManagement\ExtensionService.cs" />
+    <Compile Include="ExtensionManagement\ICatalogProvider.cs" />
+    <Compile Include="ExtensionManagement\IConfigurationMetaData.cs" />
+    <Compile Include="ExtensionManagement\IConfigurationSerializer.cs" />
+    <Compile Include="ExtensionManagement\IDescriptorMetaData.cs" />
+    <Compile Include="ExtensionManagement\IExtensionService.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemCollection.cs" />
     <Compile Include="Extensions\ExtensionAttributes\CategorizedItemSelectorAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\DisplayOrderAttribute.cs" />
@@ -122,25 +122,15 @@
     <Compile Include="Extensions\ExtensionAttributes\ICategorizedItemFetcher.cs" />
     <Compile Include="Extensions\ExtensionAttributes\LabelTextResourceAttribute.cs" />
     <Compile Include="Extensions\ExtensionAttributes\HiddenAttribute.cs" />
-    <Compile Include="Extensions\ConfigurableExtensionBrowser.cs" />
-    <Compile Include="Extensions\ExtensionAttributes\ExportConfigurableExtensionAttribute.cs" />
-    <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Extensions\ExtensionAttributes\PropertyGroupAttribute.cs" />
-    <Compile Include="Extensions\ExtensionConfiguration.cs" />
-    <Compile Include="Extensions\IConfigurableExtensionMetaData.cs" />
-    <Compile Include="Extensions\IConfigurableExtension.cs" />
-    <Compile Include="Extensions\IExtension.cs" />
-    <Compile Include="Extensions\IExtensionMetaData.cs" />
     <Compile Include="Data\Shared\Models\JobDefinition.cs" />
     <Compile Include="Data\Shared\Models\StepDefinition.cs" />
     <Compile Include="Data\Shared\Models\TriggerDefinition.cs" />
-    <Compile Include="Extensions\ExtensionAttributes\ExportExtensionAttribute.cs" />
-    <Compile Include="Extensions\Job.cs" />
-    <Compile Include="Extensions\Controllers\JobController.cs" />
-    <Compile Include="Extensions\ObjectFactory.cs" />
-    <Compile Include="Extensions\Step.cs" />
-    <Compile Include="Extensions\Condition.cs" />
-    <Compile Include="Extensions\Trigger.cs" />
+    <Compile Include="Jobs\IJob.cs" />
+    <Compile Include="Jobs\IJobMonitor.cs" />
+    <Compile Include="Jobs\Job.cs" />
+    <Compile Include="Jobs\JobConfiguration.cs" />
+    <Compile Include="Jobs\JobConfigurationFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -155,14 +145,20 @@
     <Compile Include="Data\Server\ServerDbContext.cs" />
     <Compile Include="Data\Server\Models\AgentConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Agents\IAgentMonitor.cs" />
-    <Compile Include="Agents\OutputEventLevels.cs" />
-    <Compile Include="Extensions\Controllers\RunController.cs" />
-    <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\AgentHub.cs" />
-    <Compile Include="Extensions\Controllers\ExtensionConfigurationController.cs" />
-    <Compile Include="Extensions\Controllers\StepController.cs" />
-    <Compile Include="Extensions\Controllers\TriggerController.cs" />
+    <Compile Include="Serialization\JsonConfigurationSerializer.cs" />
+    <Compile Include="Steps\IStep.cs" />
+    <Compile Include="Steps\IStepConfiguration.cs" />
+    <Compile Include="Steps\IStepDescriptor.cs" />
+    <Compile Include="Steps\IStepMetaData.cs" />
+    <Compile Include="Steps\IStepMonitor.cs" />
+    <Compile Include="Steps\StepDefinition.cs" />
+    <Compile Include="Triggers\ITrigger.cs" />
+    <Compile Include="Triggers\ITriggerConfiguration.cs" />
+    <Compile Include="Triggers\ITriggerDescriptor.cs" />
+    <Compile Include="Triggers\ITriggerMetaData.cs" />
+    <Compile Include="Triggers\ITriggerMonitor.cs" />
+    <Compile Include="Triggers\TriggerDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
