@@ -23,6 +23,13 @@ namespace TempProject.ExtensionService
         [ImportMany] protected IEnumerable<Lazy<ITriggerDescriptor, IDescriptorMetaData>> TriggerDescriptors = null;
         [ImportMany] protected IEnumerable<Lazy<ITrigger, ITriggerMetaData>> Triggers = null;
 
+        readonly IConfigurationSerializer _configurationSerializer;
+
+        public ExtensionService(IConfigurationSerializer configurationSerializer)
+        {
+            _configurationSerializer = configurationSerializer;
+        }
+
         public ITrigger LoadTrigger(ICatalogProvider catalogProvider, Guid extensionId,
             ITriggerConfiguration configuration)
         {
@@ -51,7 +58,7 @@ namespace TempProject.ExtensionService
             var triggerDescriptor = GetTriggerDescriptor(extensionId);
 
             if (!string.IsNullOrEmpty(configuration))
-                return (ITriggerConfiguration) JsonConvert.DeserializeObject(configuration,
+                return (ITriggerConfiguration) _configurationSerializer.Deserialize(configuration,
                     triggerDescriptor.ConfigurationType);
 
             foreach (var triggerConfiguration in TriggerConfigurations)
@@ -88,7 +95,7 @@ namespace TempProject.ExtensionService
             var stepDescriptor = GetStepDescriptor(extensionId);
 
             if (!string.IsNullOrEmpty(configuration))
-                return (IStepConfiguration) JsonConvert.DeserializeObject(configuration,
+                return (IStepConfiguration) _configurationSerializer.Deserialize(configuration,
                     stepDescriptor.ConfigurationType);
 
             foreach (var stepConfiguration in StepConfigurations)

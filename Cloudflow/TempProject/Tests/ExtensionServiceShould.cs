@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TempProject.Exceptions;
 using TempProject.ExtensionService;
+using TempProject.Serialization;
 using TempProject.Steps;
 using TempProject.Tests.Steps;
 
@@ -17,7 +18,7 @@ namespace TempProject.Tests
         public void InitializeTest()
         {
             _assemblyCatalogProvider = new AssemblyCatalogProvider(GetType().Assembly.CodeBase);
-            _extensionService = new ExtensionService.ExtensionService();
+            _extensionService = new ExtensionService.ExtensionService(new JsonConfigurationSerializer());
         }
 
         [TestMethod]

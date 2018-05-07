@@ -11,6 +11,7 @@ using TempProject.Tests.Triggers;
 using TempProject.Triggers;
 using System.Linq;
 using Newtonsoft.Json;
+using TempProject.Serialization;
 
 namespace TempProject.Tests
 {
@@ -24,7 +25,7 @@ namespace TempProject.Tests
         public void InitializeTest()
         {
             var testAssemblyCatalogProvider = new AssemblyCatalogProvider(this.GetType().Assembly.CodeBase);
-            var extensionService = new ExtensionService.ExtensionService();
+            var extensionService = new ExtensionService.ExtensionService(new JsonConfigurationSerializer());
 
             var jobDefinition = new JobDefinition
             {
