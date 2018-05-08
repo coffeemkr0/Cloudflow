@@ -16,7 +16,7 @@
             <input type="hidden" name="@($"Steps[{Model.Index}].StepDefinitionId")"
                    id="@($"Steps[{Model.Index}]_StepDefinitionId")"
                    value="@Model.StepDefinitionId" />
-            @Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { $"Steps[{Model.Index}].ExtensionConfiguration" })
+            @Html.CreateModelEdit(Model.ConfigurationViewModel, new List<string> { $"Steps[{Model.Index}].ExtensionConfiguration" })
         </div>
 
         <div role="tabpanel" class="tab-pane" id="@(Model.StepDefinitionId)__conditions">

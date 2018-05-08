@@ -12,7 +12,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public int Index { get; set; }
 
-        public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
+        public StepConfigurationViewModel ConfigurationViewModel { get; set; }
 
         public ConditionCollectionViewModel Conditions { get; set; }
         #endregion
@@ -33,7 +33,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 Index = index
             };
 
-            model.ExtensionConfiguration = ExtensionConfigurationViewModel.FromConfigurableExtensionDefinition(stepDefinition);
+            model.ConfigurationViewModel = StepConfigurationViewModel.FromStepDefinition(stepDefinition);
             model.Conditions = ConditionCollectionViewModel.FromStepDefinition(stepDefinition, index);
 
             return model;

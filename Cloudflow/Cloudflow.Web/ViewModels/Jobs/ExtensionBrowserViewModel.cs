@@ -2,7 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using Cloudflow.Core;
+using Cloudflow.Core.ExtensionManagement;
+using Cloudflow.Core.Serialization;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -53,20 +57,28 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 model.ExtensionLibraries.Add(extensionLibrary);
 
-                var extensionBrowser = new ConfigurableExtensionBrowser(extensionLibraryFile);
-                foreach (var configurableExtension in extensionBrowser.GetConfigurableExtensions(extensionType))
-                {
-                    var extension = new ExtensionLibrary.Extension
-                    {
-                        ExtensionId = Guid.Parse(configurableExtension.ExtensionId),
-                        ExtensionAssemblyPath = extensionLibraryFile,
-                        Name = configurableExtension.ExtensionName,
-                        Description = configurableExtension.ExtensionDescription,
-                        Icon = configurableExtension.Icon,
-                    };
+                var extensionService = new ExtensionService(new JsonConfigurationSerializer());
+                var assemblyCatalogProvider = new AssemblyCatalogProvider(extensionLibraryFile);
 
-                    extensionLibrary.Extensions.Add(extension);
+                switch (extensionType)
+                {
+                    case ConfigurableExtensionTypes.Trigger:
+                        foreach (var triggerDescriptor in extensionService.GetTriggerDescriptors(assemblyCatalogProvider))
+                        {
+                            var extension = new ExtensionLibrary.Extension
+                            {
+                                ExtensionId = triggerDescriptor.ExtensionId,
+                                ExtensionAssemblyPath = extensionLibraryFile,
+                                Name = triggerDescriptor.Name,
+                                Description = triggerDescriptor.Description,
+                                Icon = triggerDescriptor.Icon,
+                            };
+
+                            extensionLibrary.Extensions.Add(extension);
+                        }
+                        break;
                 }
+                
             }
 
             return model;
@@ -101,7 +113,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
                 public string Description { get; set; }
 
-                public byte[] Icon { get; set; }
+                public Image Icon { get; set; }
                 #endregion
             }
             #endregion

@@ -14,13 +14,13 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public string PropertyName { get; set; }
 
-        public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
+        public ConditionConfigurationViewModel ConfigurationViewModel { get; set; }
         #endregion
 
         #region Constructors
         public ConditionViewModel()
         {
-            ExtensionConfiguration = new ExtensionConfigurationViewModel();
+
         }
         #endregion
 
@@ -34,7 +34,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 PropertyName = $"Triggers[{conditionDefinition.TriggerDefinition.Index}].Conditions"
             };
 
-            model.ExtensionConfiguration = ExtensionConfigurationViewModel.FromConfigurableExtensionDefinition(conditionDefinition);
+            model.ConfigurationViewModel = Jobs.ConditionConfigurationViewModel.FromTriggerConditionDefinition(conditionDefinition);
 
             return model;
         }
@@ -48,7 +48,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 PropertyName = $"Steps[{conditionDefinition.StepDefinition.Index}].Conditions"
             };
 
-            model.ExtensionConfiguration = ExtensionConfigurationViewModel.FromConfigurableExtensionDefinition(conditionDefinition);
+            model.ConfigurationViewModel = Jobs.ConditionConfigurationViewModel.FromStepConditionDefinition(conditionDefinition);
 
             return model;
         }

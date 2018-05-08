@@ -1,10 +1,11 @@
 ﻿using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
-using Cloudflow.Core.Extensions.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cloudflow.Core;
 using Cloudflow.Core.Extensions;
+using Cloudflow.Core.Serialization;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -13,7 +14,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Properties
         public Guid JobDefinitionId { get; set; }
 
-        public ExtensionConfigurationViewModel ExtensionConfiguration { get; set; }
+        public StepConfigurationViewModel ExtensionConfiguration { get; set; }
 
         public List<TriggerViewModel> Triggers { get; set; }
 
@@ -29,7 +30,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public EditJobViewModel()
         {
-            ExtensionConfiguration = new ExtensionConfigurationViewModel();
+            ExtensionConfiguration = new StepConfigurationViewModel();
             Triggers = new List<TriggerViewModel>();
             Steps = new List<StepViewModel>();
         }
@@ -43,12 +44,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
             model.LoadExtensions(extensionLibraryFolder);
 
             model.JobDefinitionId = jobDefinition.JobDefinitionId;
-            model.ExtensionConfiguration.ConfigurationExtensionId = jobDefinition.ConfigurationExtensionId;
-            model.ExtensionConfiguration.ConfigurationExtensionAssemblyPath = jobDefinition.ConfigurationExtensionAssemblyPath;
-
-            var extensionConfigurationController = new ExtensionConfigurationController(jobDefinition.ConfigurationExtensionId,
-               jobDefinition.ConfigurationExtensionAssemblyPath);
-            model.ExtensionConfiguration.Configuration = extensionConfigurationController.Load(jobDefinition.Configuration);
 
             var index = 0;
             foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
@@ -75,10 +70,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void Save(ServerDbContext serverDbContext)
         {
-            var jobDefinition = serverDbContext.JobDefinitions.FirstOrDefault(i => i.JobDefinitionId == JobDefinitionId);
-
+            var jobDefinition = serverDbContext.JobDefinitions.First(i => i.JobDefinitionId == JobDefinitionId);
             jobDefinition.Version += 1;
-            jobDefinition.Configuration = ExtensionConfiguration.Configuration.ToJson();
 
             SaveTriggers(serverDbContext, jobDefinition);
             SaveSteps(serverDbContext, jobDefinition);
@@ -88,6 +81,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         private void SaveTriggers(ServerDbContext serverDbContext, JobDefinition jobDefinition)
         {
+            var configurationSerializer = new JsonConfigurationSerializer();
+
             var triggerIds = Triggers.Select(i => i.TriggerDefinitionId);
             var deletedTriggers = serverDbContext.TriggerDefinitions.Where(
                 i => i.JobDefinitionId == JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
@@ -101,17 +96,19 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 if (triggerDefinition != null)
                 {
                     triggerDefinition.Index = index;
-                    triggerDefinition.Configuration = trigger.ExtensionConfiguration.Configuration.ToJson();
+                    triggerDefinition.Configuration =
+                        configurationSerializer.SerializeToString(trigger.ConfigurationViewModel.Configuration);
                 }
                 else
                 {
-                    triggerDefinition = new TriggerDefinition();
-                    triggerDefinition.Index = index;
-                    triggerDefinition.ExtensionId = trigger.ExtensionConfiguration.ExtensionId;
-                    triggerDefinition.ExtensionAssemblyPath = trigger.ExtensionConfiguration.ExtensionAssemblyPath;
-                    triggerDefinition.ConfigurationExtensionId = trigger.ExtensionConfiguration.ConfigurationExtensionId;
-                    triggerDefinition.ConfigurationExtensionAssemblyPath = trigger.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
-                    triggerDefinition.Configuration = trigger.ExtensionConfiguration.Configuration.ToJson();
+                    triggerDefinition = new TriggerDefinition
+                    {
+                        Index = index,
+                        ExtensionId = trigger.ConfigurationViewModel.ExtensionId,
+                        AssemblyPath = trigger.ConfigurationViewModel.AssemblyPath,
+                        Configuration =
+                        configurationSerializer.SerializeToString(trigger.ConfigurationViewModel.Configuration)
+                    };
 
                     jobDefinition.TriggerDefinitions.Add(triggerDefinition);
                 }
@@ -129,17 +126,18 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     if (conditionDefinition != null)
                     {
                         conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                        conditionDefinition.Configuration =
+                            configurationSerializer.SerializeToString(condition.ConfigurationViewModel.Configuration);
                     }
                     else
                     {
-                        conditionDefinition = new TriggerConditionDefinition();
-                        conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
-                        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
-                        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
-                        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
-                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                        conditionDefinition = new TriggerConditionDefinition
+                        {
+                            Index = conditionIndex,
+                            ExtensionId = condition.ConfigurationViewModel.ExtensionId,
+                            Configuration =
+                            configurationSerializer.SerializeToString(condition.ConfigurationViewModel.Configuration)
+                        };
 
                         triggerDefinition.TriggerConditionDefinitions.Add(conditionDefinition);
                     }
@@ -153,6 +151,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         private void SaveSteps(ServerDbContext serverDbContext, JobDefinition jobDefinition)
         {
+            var configurationSerializer = new JsonConfigurationSerializer();
+
             var stepIds = Steps.Select(i => i.StepDefinitionId);
             var deletedSteps = serverDbContext.StepDefinitions.Where(
                 i => i.JobDefinitionId == JobDefinitionId && !stepIds.Contains(i.StepDefinitionId));
@@ -166,17 +166,19 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 if (stepDefinition != null)
                 {
                     stepDefinition.Index = index;
-                    stepDefinition.Configuration = step.ExtensionConfiguration.Configuration.ToJson();
+                    stepDefinition.Configuration =
+                        configurationSerializer.SerializeToString(step.ConfigurationViewModel.Configuration);
                 }
                 else
                 {
-                    stepDefinition = new StepDefinition();
-                    stepDefinition.Index = index;
-                    stepDefinition.ExtensionId = step.ExtensionConfiguration.ExtensionId;
-                    stepDefinition.ExtensionAssemblyPath = step.ExtensionConfiguration.ExtensionAssemblyPath;
-                    stepDefinition.ConfigurationExtensionId = step.ExtensionConfiguration.ConfigurationExtensionId;
-                    stepDefinition.ConfigurationExtensionAssemblyPath = step.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
-                    stepDefinition.Configuration = step.ExtensionConfiguration.Configuration.ToJson();
+                    stepDefinition = new StepDefinition
+                    {
+                        Index = index,
+                        ExtensionId = step.ConfigurationViewModel.ExtensionId,
+                        AssemblyPath = step.ConfigurationViewModel.AssemblyPath,
+                        Configuration =
+                        configurationSerializer.SerializeToString(step.ConfigurationViewModel.Configuration)
+                    };
 
                     jobDefinition.StepDefinitions.Add(stepDefinition);
                 }
@@ -194,17 +196,19 @@ namespace Cloudflow.Web.ViewModels.Jobs
                     if (conditionDefinition != null)
                     {
                         conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                        conditionDefinition.Configuration =
+                            configurationSerializer.SerializeToString(condition.ConfigurationViewModel.Configuration);
                     }
                     else
                     {
-                        conditionDefinition = new StepConditionDefinition();
-                        conditionDefinition.Index = conditionIndex;
-                        conditionDefinition.ExtensionId = condition.ExtensionConfiguration.ExtensionId;
-                        conditionDefinition.ExtensionAssemblyPath = condition.ExtensionConfiguration.ExtensionAssemblyPath;
-                        conditionDefinition.ConfigurationExtensionId = condition.ExtensionConfiguration.ConfigurationExtensionId;
-                        conditionDefinition.ConfigurationExtensionAssemblyPath = condition.ExtensionConfiguration.ConfigurationExtensionAssemblyPath;
-                        conditionDefinition.Configuration = condition.ExtensionConfiguration.Configuration.ToJson();
+                        conditionDefinition = new StepConditionDefinition
+                        {
+                            Index = conditionIndex,
+                            ExtensionId = condition.ConfigurationViewModel.ExtensionId,
+                            AssemblyPath = condition.ConfigurationViewModel.AssemblyPath,
+                            Configuration =
+                            configurationSerializer.SerializeToString(condition.ConfigurationViewModel.Configuration)
+                        };
 
                         stepDefinition.StepConditionDefinitions.Add(conditionDefinition);
                     }

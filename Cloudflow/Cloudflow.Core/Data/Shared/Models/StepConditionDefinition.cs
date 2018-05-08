@@ -3,18 +3,20 @@ using System.Web.Script.Serialization;
 
 namespace Cloudflow.Core.Data.Shared.Models
 {
-    public class StepConditionDefinition : ConfigurableExtensionDefinition
+    public class StepConditionDefinition
     {
-        #region Constructors
-
         public StepConditionDefinition()
         {
             StepConditionDefinitionId = Guid.NewGuid();
         }
 
-        #endregion
+        public string Name { get; set; }
 
-        #region Properties
+        public string AssemblyPath { get; set; }
+
+        public Guid ExtensionId { get; set; }
+
+        public string Configuration { get; set; }
 
         public Guid StepConditionDefinitionId { get; set; }
 
@@ -23,7 +25,5 @@ namespace Cloudflow.Core.Data.Shared.Models
         public Guid StepDefinitionId { get; set; }
 
         [ScriptIgnore] public virtual StepDefinition StepDefinition { get; set; }
-
-        #endregion
     }
 }

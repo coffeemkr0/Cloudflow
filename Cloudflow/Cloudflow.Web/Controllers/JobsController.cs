@@ -3,15 +3,16 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Cloudflow.Core;
+using Cloudflow.Core.Conditions;
 using Cloudflow.Core.Data.Server;
 using Cloudflow.Core.Data.Shared.Models;
+using Cloudflow.Core.ExtensionManagement;
+using Cloudflow.Core.Serialization;
 using Cloudflow.Web.ViewModels.Jobs;
-using Cloudflow.Core.Extensions.Controllers;
-using Cloudflow.Core.Extensions;
 using Cloudflow.Core.Steps;
+using Cloudflow.Core.Triggers;
 using Cloudflow.Web.Utility;
-using Cloudflow.Web.ViewModels.ExtensionConfigurationEdits;
-using Cloudflow.Web.Utility.HtmlHelpers;
 
 namespace Cloudflow.Web.Controllers
 {
@@ -31,17 +32,15 @@ namespace Cloudflow.Web.Controllers
             base.Dispose(disposing);
         }
 
-        private JsonResult GetNewTriggerResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, ExtensionConfiguration configuration)
+        private JsonResult GetNewTriggerResult(Guid extensionId, string assemblyPath, ITriggerConfiguration configuration)
         {
             var triggerViewModel = new TriggerViewModel
             {
                 TriggerDefinitionId = Guid.NewGuid(),
-                ExtensionConfiguration = new ExtensionConfigurationViewModel
+                ConfigurationViewModel = new TriggerConfigurationViewModel
                 {
-                    ExtensionId = Guid.Parse(extension.ExtensionId),
-                    ExtensionAssemblyPath = extensionAssemblyPath,
-                    ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
-                    ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
+                    ExtensionId = extensionId,
+                    AssemblyPath = assemblyPath,
                     Configuration = configuration
                 }
             };
@@ -60,10 +59,10 @@ namespace Cloudflow.Web.Controllers
             var stepViewModel = new StepViewModel
             {
                 StepDefinitionId = Guid.NewGuid(),
-                ExtensionConfiguration = new ExtensionConfigurationViewModel
+                ConfigurationViewModel = new StepConfigurationViewModel
                 {
                     ExtensionId = extensionId,
-                    ExtensionAssemblyPath = extensionAssemblyPath,
+                    AssemblyPath = extensionAssemblyPath,
                     Configuration = configuration
                 }
             };
@@ -77,21 +76,19 @@ namespace Cloudflow.Web.Controllers
             return Json(new { navigationItem, itemEdit });
         }
 
-        private JsonResult GetNewConditionResult(IConfigurableExtensionMetaData extension, string extensionAssemblyPath, 
-            ExtensionConfiguration configuration, string propertyName)
+        private JsonResult GetNewConditionResult(Guid extensionId, string extensionAssemblyPath, 
+            IConditionConfiguration configuration, string propertyName)
         {
             var conditionViewModel = new ConditionViewModel
             {
                 ConditionDefinitionId = Guid.NewGuid(),
                 PropertyName = propertyName,
-                ExtensionConfiguration = new ExtensionConfigurationViewModel
-                {
-                    ExtensionId = Guid.Parse(extension.ExtensionId),
-                    ExtensionAssemblyPath = extensionAssemblyPath,
-                    ConfigurationExtensionId = Guid.Parse(extension.ConfigurationExtensionId),
-                    ConfigurationExtensionAssemblyPath = extensionAssemblyPath,
-                    Configuration = configuration
-                }
+                //ExtensionConfiguration = new ConditionConfigurationViewModel
+                //{
+                //    ExtensionId = extensionId,
+                //    AssemblyPath = extensionAssemblyPath,
+                //    Configuration = configuration
+                //}
             };
 
             var navigationItem = ViewHelpers.RenderRazorViewToString(ControllerContext,
@@ -143,19 +140,8 @@ namespace Cloudflow.Web.Controllers
         // GET: Jobs/Create
         public ActionResult Create()
         {
-            //TODO:Replace with a job selector
             var model = new JobDefinition();
-            model.ExtensionId = Guid.Parse("3F6F5796-E313-4C53-8064-747C1989DA99");
-            model.ExtensionAssemblyPath = this.GetExtensionLibraries().First();
-            model.ConfigurationExtensionId = Guid.Parse("62A56D5B-07E5-41A3-A637-5E7C53FCF399");
-            model.ConfigurationExtensionAssemblyPath = this.GetExtensionLibraries().First();
-
-            var jobConfigurationController = new ExtensionConfigurationController(model.ConfigurationExtensionId, model.ConfigurationExtensionAssemblyPath);
-
-            var jobConfiguration = jobConfigurationController.CreateNewConfiguration();
-            jobConfiguration.Name = "New Job";
-
-            model.Configuration = jobConfiguration.ToJson();
+            model.Name = "New Job";
 
             return View(model);
         }
@@ -254,21 +240,21 @@ namespace Cloudflow.Web.Controllers
         public JsonResult AddConfigurableExtension(Guid extensionId, string extensionAssemblyPath, 
             ConfigurableExtensionTypes extensionType, string propertyName)
         {
-            var configurableExtensionBrowser = new ConfigurableExtensionBrowser(extensionAssemblyPath);
-            var extension = configurableExtensionBrowser.GetConfigurableExtension(extensionId);
-
-            var extensionConfigurationController = new ExtensionConfigurationController(Guid.Parse(extension.ConfigurationExtensionId), extensionAssemblyPath);
-            var configuration = extensionConfigurationController.CreateNewConfiguration();
-            configuration.Name = extension.ExtensionName;
+            var assemblyCatalogProvider = new AssemblyCatalogProvider(extensionAssemblyPath);
+            var extensionService = new ExtensionService(new JsonConfigurationSerializer());
 
             switch (extensionType)
             {
                 case ConfigurableExtensionTypes.Trigger:
-                    return GetNewTriggerResult(extension, extensionAssemblyPath, configuration);
+                    var triggerConfiguration =
+                        extensionService.CreateNewTriggerConfiguration(assemblyCatalogProvider, extensionId);
+                    return GetNewTriggerResult(extensionId, extensionAssemblyPath, triggerConfiguration);
                 case ConfigurableExtensionTypes.Step:
-                    return GetNewStepResult(extension, extensionAssemblyPath, configuration);
+                    var stepConfiguration =
+                        extensionService.CreateNewStepConfiguration(assemblyCatalogProvider, extensionId);
+                    return GetNewStepResult(extensionId, extensionAssemblyPath, stepConfiguration);
                 case ConfigurableExtensionTypes.Condition:
-                    return GetNewConditionResult(extension, extensionAssemblyPath, configuration, propertyName);
+                    return GetNewConditionResult(extensionId, extensionAssemblyPath, null, propertyName);
                 default:
                     throw new NotImplementedException();
             }
