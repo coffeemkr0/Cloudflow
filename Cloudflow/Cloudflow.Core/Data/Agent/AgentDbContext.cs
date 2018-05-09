@@ -6,10 +6,16 @@ namespace Cloudflow.Core.Data.Agent
 {
     public class AgentDbContext : SharedDbContext
     {
-        #region Properties
-
         public DbSet<Run> Runs { get; set; }
 
-        #endregion
+        public AgentDbContext()
+        {
+            
+        }
+
+        public AgentDbContext(bool createTestData, string extensionsAssemblyPath) : this()
+        {
+            if (createTestData) CreateTestData(extensionsAssemblyPath);
+        }
     }
 }
