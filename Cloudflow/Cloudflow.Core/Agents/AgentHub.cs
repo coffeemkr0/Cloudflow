@@ -160,16 +160,20 @@ namespace Cloudflow.Core.Agents
 
         public void OnAgentStarted(IAgent agent)
         {
+            Logger.Info("Agent started.");
             Clients.All.updateStatus(agent.AgentStatus);
         }
 
         public void OnAgentStopped(IAgent agent)
         {
+            Logger.Info("Agent stopped.");
             Clients.All.updateStatus(agent.AgentStatus);
         }
 
         public void OnAgentActivity(IAgent agent, string activity)
         {
+            Logger.Info(activity);
+
             //TODO:Get the run that caused the activity or modify the client side scripting that responds to activity
             //Clients.All.runStatusChanged(run);
         }
