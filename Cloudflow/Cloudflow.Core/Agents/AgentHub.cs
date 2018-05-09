@@ -19,16 +19,6 @@ namespace Cloudflow.Core.Agents
         private static readonly object AgentControlSynch = new object();
         private static readonly object PublishJobSynch = new object();
 
-        public void AgentStatusChanged(AgentStatus status)
-        {
-            Clients.All.updateStatus(status);
-        }
-
-        public void RunStatusChanged(Run run)
-        {
-            Clients.All.runStatusChanged(run);
-        }
-
         public AgentStatus GetAgentStatus()
         {
             try
@@ -154,17 +144,18 @@ namespace Cloudflow.Core.Agents
 
         public void OnAgentStarted(IAgent agent)
         {
-            throw new NotImplementedException();
+            Clients.All.updateStatus(agent.AgentStatus);
         }
 
         public void OnAgentStopped(IAgent agent)
         {
-            throw new NotImplementedException();
+            Clients.All.updateStatus(agent.AgentStatus);
         }
 
         public void OnAgentActivity(IAgent agent, string activity)
         {
-            throw new NotImplementedException();
+            //TODO:Get the run that caused the activity or modify the client side scripting that responds to activity
+            //Clients.All.runStatusChanged(run);
         }
     }
 }
