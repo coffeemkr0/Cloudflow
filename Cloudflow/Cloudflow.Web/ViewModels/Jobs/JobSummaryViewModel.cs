@@ -6,15 +6,14 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class JobSummaryViewModel
     {
         #region Properties
-        public Guid Id { get; }
+        public JobDefinition JobDefinition { get; }
 
-        public JobDefinition JobDefinition { get; set; }
         #endregion
 
         #region Constructors
         public JobSummaryViewModel(JobDefinition jobDefinition)
         {
-            Id = jobDefinition.JobDefinitionId;
+            JobDefinition = jobDefinition;
         }
         #endregion
     }
