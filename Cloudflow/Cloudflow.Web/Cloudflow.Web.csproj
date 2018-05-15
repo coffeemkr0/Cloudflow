@@ -297,6 +297,7 @@
     <Content Include="Content\Shared\CategorizedItemSelector.less" />
     <Content Include="Content\Jobs\Jobs.less" />
     <None Include="Content\Site.less" />
+    <None Include="Resources\GenericExtensionIcon.png" />
     <Content Include="Scripts\Agents\Index.js" />
     <Content Include="Scripts\ExtensionConfigurationEdits\ObjectCollectionEdit.js" />
     <Content Include="Scripts\ExtensionConfigurationEdits\StringCollectionEdit.js" />

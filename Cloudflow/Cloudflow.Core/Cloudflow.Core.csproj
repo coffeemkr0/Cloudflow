@@ -105,6 +105,9 @@
     <Compile Include="Agents\IAgent.cs" />
     <Compile Include="Agents\IAgentMonitor.cs" />
     <Compile Include="Conditions\IConditionConfiguration.cs" />
+    <Compile Include="Conditions\IConditionDescriptor.cs" />
+    <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="Conditions\IConditionMetaData.cs" />
     <Compile Include="ConfigurableExtensionTypes.cs" />
     <Compile Include="Configuration\AgentLocalConfigurationSettings.cs" />
     <Compile Include="Data\Shared\Models\StepConditionDefinition.cs" />

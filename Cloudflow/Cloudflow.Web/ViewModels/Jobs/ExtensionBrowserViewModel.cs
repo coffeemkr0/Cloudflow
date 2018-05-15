@@ -7,6 +7,7 @@ using System.IO;
 using Cloudflow.Core;
 using Cloudflow.Core.ExtensionManagement;
 using Cloudflow.Core.Serialization;
+using Cloudflow.Web.Properties;
 
 namespace Cloudflow.Web.ViewModels.Jobs
 {
@@ -71,7 +72,37 @@ namespace Cloudflow.Web.ViewModels.Jobs
                                 ExtensionAssemblyPath = extensionLibraryFile,
                                 Name = triggerDescriptor.Name,
                                 Description = triggerDescriptor.Description,
-                                Icon = triggerDescriptor.Icon,
+                                Icon = triggerDescriptor.Icon ?? Resources.GenericExtensionIcon
+                            };
+
+                            extensionLibrary.Extensions.Add(extension);
+                        }
+                        break;
+                    case ConfigurableExtensionTypes.Step:
+                        foreach (var stepDescriptor in extensionService.GetStepDescriptors(assemblyCatalogProvider))
+                        {
+                            var extension = new ExtensionLibrary.Extension
+                            {
+                                ExtensionId = stepDescriptor.ExtensionId,
+                                ExtensionAssemblyPath = extensionLibraryFile,
+                                Name = stepDescriptor.Name,
+                                Description = stepDescriptor.Description,
+                                Icon = stepDescriptor.Icon ?? Resources.GenericExtensionIcon
+                            };
+
+                            extensionLibrary.Extensions.Add(extension);
+                        }
+                        break;
+                    case ConfigurableExtensionTypes.Condition:
+                        foreach (var conditionDescriptor in extensionService.GetConditionDescriptors(assemblyCatalogProvider))
+                        {
+                            var extension = new ExtensionLibrary.Extension
+                            {
+                                ExtensionId = conditionDescriptor.ExtensionId,
+                                ExtensionAssemblyPath = extensionLibraryFile,
+                                Name = conditionDescriptor.Name,
+                                Description = conditionDescriptor.Description,
+                                Icon = conditionDescriptor.Icon ?? Resources.GenericExtensionIcon
                             };
 
                             extensionLibrary.Extensions.Add(extension);
@@ -112,6 +143,18 @@ namespace Cloudflow.Web.ViewModels.Jobs
                 public string Name { get; set; }
 
                 public string Description { get; set; }
+
+                public byte[] IconArray
+                {
+                    get
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            Icon.Save(ms, Icon.RawFormat);
+                            return ms.ToArray();
+                        }
+                    }
+                }
 
                 public Image Icon { get; set; }
                 #endregion

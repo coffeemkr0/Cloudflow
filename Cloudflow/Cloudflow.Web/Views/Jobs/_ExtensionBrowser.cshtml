@@ -43,7 +43,7 @@
                                                         <input type="hidden" name="extensionAssemblyPath" value="@extension.ExtensionAssemblyPath" />
                                                         <input type="hidden" name="extensionId" value="@extension.ExtensionId" />
                                                         <div class="col-sm-2">
-                                                            <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.Icon))" />
+                                                            <img class="extensionBrowser__extensionIcon" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(extension.IconArray))" />
                                                         </div>
                                                         <div class="col-sm-8">
                                                             <h5>@extension.Name</h5>

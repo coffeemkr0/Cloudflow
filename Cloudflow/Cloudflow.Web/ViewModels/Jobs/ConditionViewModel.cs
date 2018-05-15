@@ -8,6 +8,8 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Properties
         public Guid ConditionDefinitionId { get; set; }
 
+        public string Name { get; set; }
+
         public bool Active { get; set; }
 
         public int Index { get; set; }
