@@ -13,7 +13,7 @@
 }
 
 <section>
-    <h3>@Model.ExtensionConfiguration.Configuration.Name</h3>
+    <h3>@Model.JobDefinition.Name</h3>
 
     <section>
         @using (Html.BeginForm())
@@ -47,9 +47,9 @@
 
             <div class="tab-content clearfix">
                 <div role="tabpanel" class="tab-pane active" id="job__generalTab">
-                    @Html.HiddenFor(m => m.JobDefinitionId)
+                    @Html.HiddenFor(m => m.JobDefinition.JobDefinitionId)
 
-                    @Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { "ExtensionConfiguration" })
+                    @*@Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { "ExtensionConfiguration" })*@
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="job__triggersTab">

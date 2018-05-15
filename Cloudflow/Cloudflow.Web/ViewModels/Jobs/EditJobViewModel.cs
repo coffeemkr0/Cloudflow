@@ -12,9 +12,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
     public class EditJobViewModel
     {
         #region Properties
-        public Guid JobDefinitionId { get; set; }
-
-        public StepConfigurationViewModel ExtensionConfiguration { get; set; }
+        public JobDefinition JobDefinition { get; set; }
 
         public List<TriggerViewModel> Triggers { get; set; }
 
@@ -30,7 +28,6 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Constructors
         public EditJobViewModel()
         {
-            ExtensionConfiguration = new StepConfigurationViewModel();
             Triggers = new List<TriggerViewModel>();
             Steps = new List<StepViewModel>();
         }
@@ -39,14 +36,15 @@ namespace Cloudflow.Web.ViewModels.Jobs
         #region Public Methods
         public static EditJobViewModel FromJobDefinition(JobDefinition jobDefinition, string extensionLibraryFolder)
         {
-            var model = new EditJobViewModel();
+            var model = new EditJobViewModel
+            {
+                JobDefinition = jobDefinition
+            };
 
             model.LoadExtensions(extensionLibraryFolder);
 
-            model.JobDefinitionId = jobDefinition.JobDefinitionId;
-
             var index = 0;
-            foreach (var triggerDefinition in jobDefinition.TriggerDefinitions.OrderBy(i => i.Index))
+            foreach (var triggerDefinition in jobDefinition.TriggerDefinitions)
             {
                 var triggerViewModel = TriggerViewModel.FromTriggerDefinition(triggerDefinition, index);
                 triggerViewModel.Active = index == 0;
@@ -56,7 +54,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
             }
 
             index = 0;
-            foreach (var stepDefinition in jobDefinition.StepDefinitions.OrderBy(i => i.Index))
+            foreach (var stepDefinition in jobDefinition.StepDefinitions)
             {
                 var stepViewModel = StepViewModel.FromStepDefinition(stepDefinition, index);
                 stepViewModel.Active = index == 0;
@@ -70,7 +68,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
         public void Save(ServerDbContext serverDbContext)
         {
-            var jobDefinition = serverDbContext.JobDefinitions.First(i => i.JobDefinitionId == JobDefinitionId);
+            var jobDefinition = serverDbContext.JobDefinitions.First(i => i.JobDefinitionId == JobDefinition.JobDefinitionId);
             jobDefinition.Version += 1;
 
             SaveTriggers(serverDbContext, jobDefinition);
@@ -85,7 +83,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
             var triggerIds = Triggers.Select(i => i.TriggerDefinitionId);
             var deletedTriggers = serverDbContext.TriggerDefinitions.Where(
-                i => i.JobDefinitionId == JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
+                i => i.JobDefinitionId == JobDefinition.JobDefinitionId && !triggerIds.Contains(i.TriggerDefinitionId));
             serverDbContext.TriggerDefinitions.RemoveRange(deletedTriggers);
 
             var index = 0;
@@ -110,7 +108,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
                         configurationSerializer.SerializeToString(trigger.ConfigurationViewModel.Configuration)
                     };
 
-                    jobDefinition.TriggerDefinitions.Add(triggerDefinition);
+                    jobDefinition.TriggerDefinitions.Add( triggerDefinition);
                 }
 
                 var triggerConditionIds = trigger.Conditions.Select(i => i.ConditionDefinitionId);
@@ -155,7 +153,7 @@ namespace Cloudflow.Web.ViewModels.Jobs
 
             var stepIds = Steps.Select(i => i.StepDefinitionId);
             var deletedSteps = serverDbContext.StepDefinitions.Where(
-                i => i.JobDefinitionId == JobDefinitionId && !stepIds.Contains(i.StepDefinitionId));
+                i => i.JobDefinitionId == JobDefinition.JobDefinitionId && !stepIds.Contains(i.StepDefinitionId));
             serverDbContext.StepDefinitions.RemoveRange(deletedSteps);
 
             var index = 0;
