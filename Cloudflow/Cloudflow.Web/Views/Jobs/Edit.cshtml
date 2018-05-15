@@ -49,7 +49,10 @@
                 <div role="tabpanel" class="tab-pane active" id="job__generalTab">
                     @Html.HiddenFor(m => m.JobDefinition.JobDefinitionId)
 
-                    @*@Html.CreateModelEdit(Model.ExtensionConfiguration, new List<string> { "ExtensionConfiguration" })*@
+                    <div class="form-group">
+                        <label for="JobDefinition_Name">Name</label>
+                        <input id="JobDefinition_Name" name="JobDefinition.Name" type="text" class="form-control" value="@Model.JobDefinition.Name"/>
+                    </div>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="job__triggersTab">
